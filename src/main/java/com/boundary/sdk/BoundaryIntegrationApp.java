@@ -18,8 +18,8 @@ public class BoundaryIntegrationApp {
  
     public void boot() throws Exception {
 		// TODO Fixed values, need to make externally configurable
-		//String orgID = "3ehRi7uZeeaTN12dErF5XOnRXjC";
-		//String apiKey = "ARI0PzUzWYUo7GG1OxiHmABTpr9";
+		String orgID = "3ehRi7uZeeaTN1	2dErF5XOnRXjC";
+		String apiKey = "ARI0PzUzWYUo7GG1OxiHmABTpr9";
 
         //
 		// Create new main instance and enable hang support so the process can be killed.
@@ -32,36 +32,20 @@ public class BoundaryIntegrationApp {
         // Bind any beans if we are using any to the registry.
         //TODO: Configurable or dynamic configuration.
         
-        main.bind("foo", new MyBean());
+        main.bind("boundary", new BoundaryBean());
         
         //
         // Add routes
         // TODO: how to integrate spring configuration routes
         // TODO: Dynamic loading of route objects using reflection
         // main.addRouteBuilder(new BoundaryRoute(orgID,apiKey));
-        main.addRouteBuilder(new MyRouteBuilder());
+        //main.addRouteBuilder(new BoundaryTimerRoute(5000));
+        main.addRouteBuilder(new SNMPRoute());
+        main.addRouteBuilder(new BoundaryEventRoute(orgID,apiKey));
+
  
         // run until you terminate the JVM
         System.out.println("Starting Boundary Integration Application. Use ctrl + c to terminate the JVM.\n");
         main.run();
-    }
- 
-    private static class MyRouteBuilder extends RouteBuilder {
-        @Override
-        public void configure() throws Exception {
-            from("timer:foo?delay=4000")
-                .process(new Processor() {
-                    public void process(Exchange exchange) throws Exception {
-                        System.out.println("Invoked timer at " + new Date());
-                    }
-                })
-                .beanRef("foo");
-        }
-    }
- 
-    public static class MyBean {
-        public void callMe() {
-            System.out.println("MyBean.calleMe method has been called");
-        }
     }
 }
