@@ -23,7 +23,7 @@ public class BoundaryIntegrationApp {
 
         //
 		// Create new main instance and enable hang support so the process can be killed.
-		// TODO: Option to run daemonized
+		// TODO: Option to run as a daemon
         main = new Main();
         // enable hangup support so you can press ctrl + c to terminate the JVM
         main.enableHangupSupport();
