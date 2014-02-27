@@ -3,11 +3,13 @@ package com.boundary.sdk;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.http.AuthMethod;
+import org.apache.camel.component.http.HttpComponent;
+import org.apache.camel.component.http.HttpConfiguration;
 
 public class BoundaryEventRoute extends RouteBuilder {
 
 	private String apiHost = "api.boundary.com";
-	//private String apiHost = "localhost";
 	private String orgID;
 	private String apiKey;
 	private String authorization;
@@ -16,11 +18,8 @@ public class BoundaryEventRoute extends RouteBuilder {
 	public BoundaryEventRoute(String orgID, String apiKey) {
 		this.orgID = orgID;
 		this.apiKey = apiKey;
-		this.authorization = "Basic: " + apiKey + ":";
-		//
-		// https://$APIHOST/$APIID/events"
+		this.authorization = apiKey + ":";
 		url.append("https://" + apiHost + "/" + orgID + "/" + "events");
-		//url.append("http://" + apiHost + "/~davidg/hello.txt");
 		System.out.println("url: " + url + ", orgID: " + orgID + ", apiKey: " + apiKey);
 	}
 	
@@ -29,16 +28,24 @@ public class BoundaryEventRoute extends RouteBuilder {
 	}
 	@Override
 	public void configure() {
+            HttpConfiguration config = new HttpConfiguration();
+            config.setAuthMethod(AuthMethod.Basic);
+            config.setAuthUsername(this.apiKey);
+            config.setAuthPassword("");
+
+            HttpComponent http = this.getContext().getComponent("https", HttpComponent.class);
+            http.setHttpConfiguration(config);
+
 		from("direct:event")
 				.setHeader(Exchange.ACCEPT_CONTENT_TYPE,constant(contentType))
-				.setHeader(Exchange.AUTHENTICATION, constant(authorization))
 				.setHeader(Exchange.HTTP_METHOD, constant("POST"))
+				.setBody().simple(getBody())
+				.marshal().json()
 				.process(new Processor() {
                     public void process(Exchange exchange) throws Exception {
-                        System.out.println("Received order: " + exchange.getIn().getBody(String.class));
+                        System.out.println("Received event: " + exchange.getIn().getBody(String.class));
                     }
                 })
-				.setBody().simple(getBody())
 				.to(url.toString())
 		;
 	}
