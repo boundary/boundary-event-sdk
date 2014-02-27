@@ -12,8 +12,8 @@ public class BoundaryIntegrationApp {
     private Main main;
  
     public static void main(String[] args) throws Exception {
-        MainExample example = new MainExample();
-        example.boot();
+    	BoundaryIntegrationApp app = new BoundaryIntegrationApp();
+        app.boot();
     }
  
     public void boot() throws Exception {
