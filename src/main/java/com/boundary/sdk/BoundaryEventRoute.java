@@ -24,7 +24,9 @@ public class BoundaryEventRoute extends RouteBuilder {
 	}
 	
 	protected String getBody() {
-		return "{\"fingerprintFields\": [\"mytitle\"],\"source\": {\"ref\": \"mymeter\",\"type\": \"host\"},\"title\": \"My title\"}";
+		String s1 = "{ \"title\": \"example\", \"message\": \"test\",\"tags\": [\"example\", \"test\", \"stuff\"], \"fingerprintFields\": [\"@title\"], \"source\": { \"ref\": \"myhost\",\"type\": \"host\"}}";
+		String s2 = "{\"fingerprintFields\": [\"mytitle\"],\"source\": {\"ref\": \"mymeter\",\"type\": \"host\"},\"title\": \"My title\"}";
+		return s1;
 	}
 	@Override
 	public void configure() {
@@ -38,15 +40,16 @@ public class BoundaryEventRoute extends RouteBuilder {
 
 		from("direct:event")
 				.setHeader(Exchange.ACCEPT_CONTENT_TYPE,constant(contentType))
+				.setHeader(Exchange.CONTENT_TYPE,constant(contentType))
 				.setHeader(Exchange.HTTP_METHOD, constant("POST"))
 				.setBody().simple(getBody())
-				.marshal().json()
 				.process(new Processor() {
                     public void process(Exchange exchange) throws Exception {
                         System.out.println("Received event: " + exchange.getIn().getBody(String.class));
                     }
                 })
-				.to(url.toString())
+                .to("file://target?fileName=http.log")
+				.to(url.toString());
 		;
 	}
 }
