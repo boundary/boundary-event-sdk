@@ -18,7 +18,7 @@ public class BoundaryIntegrationApp {
  
     public void boot() throws Exception {
 		// TODO Fixed values, need to make externally configurable
-		String orgID = "3ehRi7uZeeaTN1	2dErF5XOnRXjC";
+		String orgID = "3ehRi7uZeeaTN12dErF5XOnRXjC";
 		String apiKey = "ARI0PzUzWYUo7GG1OxiHmABTpr9";
 
         //
@@ -40,7 +40,7 @@ public class BoundaryIntegrationApp {
         // TODO: Dynamic loading of route objects using reflection
         // main.addRouteBuilder(new BoundaryRoute(orgID,apiKey));
         //main.addRouteBuilder(new BoundaryTimerRoute(5000));
-        main.addRouteBuilder(new SNMPRoute());
+        main.addRouteBuilder(new BoundaryTimerRoute(5000));
         main.addRouteBuilder(new BoundaryEventRoute(orgID,apiKey));
 
  

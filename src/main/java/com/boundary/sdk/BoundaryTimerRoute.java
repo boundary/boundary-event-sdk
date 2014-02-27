@@ -8,7 +8,7 @@ import org.apache.camel.Exchange;
 
 public class BoundaryTimerRoute extends RouteBuilder {
 	
-	private int delay=2000;
+	private int delay=10000;
 	
 	public BoundaryTimerRoute(int delay) {
 		this.delay = delay;
@@ -21,7 +21,7 @@ public class BoundaryTimerRoute extends RouteBuilder {
 				System.out.println(this.getClass().getName() + ": Invoked timer at " + new Date());
 			}
 		}).beanRef("boundary")
-//		.to("direct:event")
+		.to("direct:event")
 		;
 	}
 }

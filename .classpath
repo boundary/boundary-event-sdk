@@ -20,4 +20,6 @@
   <classpathentry kind="var" path="M2_REPO/commons-codec/commons-codec/1.8/commons-codec-1.8.jar" sourcepath="M2_REPO/commons-codec/commons-codec/1.8/commons-codec-1.8-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-quartz/2.12.2/camel-quartz-2.12.2.jar" sourcepath="M2_REPO/org/apache/camel/camel-quartz/2.12.2/camel-quartz-2.12.2-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/quartz-scheduler/quartz/1.8.6/quartz-1.8.6.jar" sourcepath="M2_REPO/org/quartz-scheduler/quartz/1.8.6/quartz-1.8.6-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-snmp/2.12.2/camel-snmp-2.12.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/servicemix/bundles/org.apache.servicemix.bundles.snmp4j/2.2.2_1/org.apache.servicemix.bundles.snmp4j-2.2.2_1.jar"/>
 </classpath>
