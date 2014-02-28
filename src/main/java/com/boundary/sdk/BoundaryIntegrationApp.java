@@ -40,7 +40,7 @@ public class BoundaryIntegrationApp {
         // TODO: Dynamic loading of route objects using reflection
         // main.addRouteBuilder(new BoundaryRoute(orgID,apiKey));
         //main.addRouteBuilder(new BoundaryTimerRoute(5000));
-        main.addRouteBuilder(new BoundaryTimerRoute(5000));
+        main.addRouteBuilder(new SNMPRoute());
         main.addRouteBuilder(new BoundaryEventRoute(orgID,apiKey));
 
  

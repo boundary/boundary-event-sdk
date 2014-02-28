@@ -25,7 +25,6 @@ public class BoundaryEventRoute extends RouteBuilder {
 	
 	protected String getBody() {
 		String s1 = "{ \"title\": \"example\", \"message\": \"test\",\"tags\": [\"example\", \"test\", \"stuff\"], \"fingerprintFields\": [\"@title\"], \"source\": { \"ref\": \"myhost\",\"type\": \"host\"}}";
-		String s2 = "{\"fingerprintFields\": [\"mytitle\"],\"source\": {\"ref\": \"mymeter\",\"type\": \"host\"},\"title\": \"My title\"}";
 		return s1;
 	}
 	@Override
@@ -48,7 +47,7 @@ public class BoundaryEventRoute extends RouteBuilder {
                         System.out.println("Received event: " + exchange.getIn().getBody(String.class));
                     }
                 })
-                .to("file://target?fileName=http.log")
+                .to("file://?fileName=http.log")
 				.to(url.toString());
 		;
 	}
