@@ -41,6 +41,7 @@ public class BoundaryIntegrationApp {
         // main.addRouteBuilder(new BoundaryRoute(orgID,apiKey));
         //main.addRouteBuilder(new BoundaryTimerRoute(5000));
         main.addRouteBuilder(new SNMPRoute());
+        main.addRouteBuilder(new SysLogRoute());
         main.addRouteBuilder(new BoundaryEventRoute(orgID,apiKey));
 
  
