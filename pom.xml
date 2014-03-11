@@ -83,6 +83,11 @@
 			<artifactId>camel-mina</artifactId>
 			<version>${camel-version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-syslog</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
 	</dependencies>
 
 </project>
