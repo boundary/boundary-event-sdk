@@ -1,7 +1,11 @@
 package com.boundary.sdk;
 
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
+import org.apache.camel.Message;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.http.AuthMethod;
 import org.apache.camel.component.http.HttpComponent;
@@ -45,6 +49,11 @@ public class BoundaryEventRoute extends RouteBuilder {
 				.process(new Processor() {
                     public void process(Exchange exchange) throws Exception {
                         System.out.println("Received event: " + exchange.getIn().getBody(String.class));
+                        Message m = exchange.getIn();
+                        Object o = m.getBody();
+                        System.out.println("Class: " + o.getClass());
+                        Map <String,Object> headers = m.getHeaders();
+                        System.out.println("headers: " + headers);
                     }
                 })
                 .to("file://?fileName=http.log")
