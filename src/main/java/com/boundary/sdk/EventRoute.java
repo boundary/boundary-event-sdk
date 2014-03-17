@@ -18,13 +18,6 @@ import org.apache.camel.component.http.HttpConfiguration;
  */
 public class EventRoute extends BoundaryEventRoute {
 
-	private String apiHost = "api.boundary.com";
-	private String orgID;
-	private String apiKey;
-	private String authorization;
-	private StringBuffer url = new StringBuffer();
-	private String contentType = "application/json";
-
 	public EventRoute(String orgID, String apiKey) {
 		super(orgID, apiKey,"EVENT-ROUTE","event");
 	}

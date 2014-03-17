@@ -97,17 +97,26 @@ public class Event implements Serializable {
 	public void setCreatedAt(Date createdAt) {
 		this.mCreatedAt = createdAt;
 	}
-	
-	public Severity getSeverity() {
-		return this.mSeverity;
-	}
+		
 	
 	public void setSource(String ref, String type, Properties properties) {
 	}
-	
+	/**
+	 * 
+	 * @return Severity
+	 */
+	public Severity getSeverity() {
+		return this.mSeverity;
+	}
+
+	/**
+	 * 
+	 * @param severity - Severity Value
+	 */
 	public void setSeverity(Severity severity) {
 		this.mSeverity = severity;
 	}
+	
 	
 	public String toString() {
 		StringBuffer s = new StringBuffer();
@@ -117,5 +126,14 @@ public class Event implements Serializable {
 		s.append(",source: " + mSource);
 		
 		return s.toString();
+	}
+	
+	public static Event getDefaultEvent() {
+		Event event = new Event();
+		// Set the minimum required fields
+		// { "ref": platform.node(),"type": "host"}
+		event.setTitle("MyEvent");
+		event.setFingerprintFields("@title");
+		return event;
 	}
 }
