@@ -43,6 +43,7 @@ public class BoundaryIntegrationApp {
         main.addRouteBuilder(new SNMPRoute());
         main.addRouteBuilder(new SysLogRoute());
         main.addRouteBuilder(new BoundaryEventRoute(orgID,apiKey));
+        main.addRouteBuilder(new TestRoute());
         
         // run until you terminate the JVM
         System.out.println("Starting Boundary Integration Application. Use ctrl + c to terminate the JVM.\n");

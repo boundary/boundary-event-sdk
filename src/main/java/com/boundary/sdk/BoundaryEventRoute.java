@@ -11,6 +11,11 @@ import org.apache.camel.component.http.AuthMethod;
 import org.apache.camel.component.http.HttpComponent;
 import org.apache.camel.component.http.HttpConfiguration;
 
+/**
+ * 
+ * @author davidg
+ *
+ */
 public class BoundaryEventRoute extends RouteBuilder {
 
 	private String apiHost = "api.boundary.com";
