@@ -47,7 +47,8 @@ public class SyslogToEventProcessor implements Processor {
 		// Create our event so that we can populate with the Syslog data
 		Event event = new Event();
 		event = event.getDefaultEvent();
-		event.setTitle(sm.getHostname()+":" + sm.getSeverity() + ":" + sm.getTimestamp()); 
+		setSeverity(sm,event);
+		event.setTitle(sm.getHostname() + ":" + sm.getTimestamp()); 
 		
 		// Delegate to member method call to perform the translation
 		//this.translateSyslogMessage(message, event);
