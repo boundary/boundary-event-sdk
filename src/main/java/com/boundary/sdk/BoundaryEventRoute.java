@@ -18,18 +18,26 @@ import org.apache.camel.component.http.HttpConfiguration;
  */
 public class BoundaryEventRoute extends RouteBuilder {
 
-	private String apiHost = "api.boundary.com";
-	private String orgID;
-	private String apiKey;
-	private String authorization;
-	private StringBuffer url = new StringBuffer();
-	private String contentType = "application/json";
+	protected String apiHost = "api.boundary.com";
+	protected String orgID;
+	protected String apiKey;
+	protected String authorization;
+	protected StringBuffer url = new StringBuffer();
+	protected String contentType = "application/json";
+	protected String routeName;
+	protected String fromID;
+	
 	public BoundaryEventRoute(String orgID, String apiKey) {
+		this(orgID,apiKey,"BOUNDARY-EVENT-ROUTE","boundary-event");
+	}
+	public BoundaryEventRoute(String orgID, String apiKey, String routeName, String fromID) {
 		this.orgID = orgID;
 		this.apiKey = apiKey;
 		this.authorization = apiKey + ":";
 		url.append("https://" + apiHost + "/" + orgID + "/" + "events");
 		System.out.println("url: " + url + ", orgID: " + orgID + ", apiKey: " + apiKey);
+		this.routeName = routeName;
+		this.fromID = fromID;
 	}
 	
 	protected String getBody() {
@@ -46,7 +54,8 @@ public class BoundaryEventRoute extends RouteBuilder {
             HttpComponent http = this.getContext().getComponent("https", HttpComponent.class);
             http.setHttpConfiguration(config);
 
-		from("direct:event")
+		from("direct:" + this.fromID)
+				.routeId(this.routeName)
 				.setHeader(Exchange.ACCEPT_CONTENT_TYPE,constant(contentType))
 				.setHeader(Exchange.CONTENT_TYPE,constant(contentType))
 				.setHeader(Exchange.HTTP_METHOD, constant("POST"))

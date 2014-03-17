@@ -10,13 +10,53 @@
        ">
 
   <bean id="mylogger" class="org.apache.camel.component.log.LogComponent"/>
+  
+  <bean id = "syslog-processor" class="com.boundary.sdk.SyslogToEventProcessor"/>
+  
+  <bean id ="debug-processor" class="com.boundary.sdk.DebugProcessor"/>
+  
 
   <camelContext xmlns="http://camel.apache.org/schema/spring">
+    <dataFormats>
+		<syslog id="mySyslog"/>
+    </dataFormats>
+ 
+ <!-- 
     <route>
       <from uri="timer:logMessageTimer?period=1s"/>
       <to uri="mylogger:insideTheRoute?showHeaders=true"/>
       <log message="Event triggered by ${property.CamelTimerName} at ${header.CamelTimerFiredTime}"/>
     </route>
+  -->
+    
+    <camel:route id="SYSLOG-ROUTE">
+    <camel:from id = "syslog-listener" uri="netty:udp://127.0.0.1:10514?sync=false&amp;allowDefaultCodec=false"/>
+    <camel:unmarshal ref="mySyslog"/>
+    <camel:process id = "syslog-route-processor" ref="syslog-processor"/>
+    <camel:marshal>
+    	<camel:serialization/>
+    </camel:marshal>
+    <camel:to id="to-test-route" uri="direct:test" />
+    </camel:route>
+    
+    <camel:route id ="TEST-ROUTE">
+    	<camel:from uri="direct:test"/>
+    	<camel:unmarshal>
+    		<camel:serialization/>
+    	</camel:unmarshal>
+    	<camel:marshal>
+    		<camel:string/>
+    	</camel:marshal>
+    	<camel:to uri="file://?fileName=test.log"/>
+    </camel:route>
+    
+ <!-- 
+    <camel:route id ="BOUNDARY-EVENT_ROUTE">
+    	<camel:from uri="direct:event"/>
+    	<camel:setHeader headerName=""/>
+    </camel:route>
+ -->
+ 
   </camelContext>
 
 </beans>
