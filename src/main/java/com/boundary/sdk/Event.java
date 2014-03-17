@@ -15,8 +15,8 @@ public class Event implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private String mTitle;
-	private String mSource;
-	private String mFingerprintFields;
+	private Source mSource;
+	private String[] mFingerprintFields;
 	private Date mCreatedAt;
 	private Date mReceivedAt;
 	private Severity mSeverity;
@@ -65,9 +65,21 @@ public class Event implements Serializable {
 	}
 	
 	public Event() {
-		this.mTitle = "";
-		this.mFingerprintFields = "";
-		this.mSource = "";
+		this(null,null,null);
+	}
+	
+	public Event(String title) {
+		this(title,null,null);
+	}
+	
+	public Event(String title,String[] fingerprintFields) {
+		this(title,fingerprintFields,null);
+	}
+	
+	public Event(String title,String[] fingerprintFields,Source source) {
+		this.mTitle = title;
+		this.mFingerprintFields = fingerprintFields;
+		this.mSource = source;
 	}
 	
 	public String getTitle() {
@@ -78,17 +90,14 @@ public class Event implements Serializable {
 		this.mTitle = title;
 	}
 
-	public String getFingerprintFields() {
+	public String[] getFingerprintFields() {
 		return mFingerprintFields;
 	}
 	
-	public void setFingerprintFields(String fingerprintFields) {
+	public void setFingerprintFields(String[] fingerprintFields) {
 		this.mFingerprintFields = fingerprintFields;
 	}
 
-	public String getSource() {
-		return mSource;
-	}
 	
 	public Date getCreatedAt() {
 		return mCreatedAt;
@@ -98,8 +107,13 @@ public class Event implements Serializable {
 		this.mCreatedAt = createdAt;
 	}
 		
-	
+	public Source getSource() {
+		return mSource;
+	}
+
 	public void setSource(String ref, String type, Properties properties) {
+		this.mSource.setRef(ref);
+		//this.mSource.setType(type);
 	}
 	/**
 	 * 
@@ -122,18 +136,29 @@ public class Event implements Serializable {
 		StringBuffer s = new StringBuffer();
 		
 		s.append("title: " + mTitle);
-		s.append(",fingerprintFields: " + mFingerprintFields);
+		s.append(",fingerprintFields: " + mFingerprintFields.toString());
 		s.append(",source: " + mSource);
 		
 		return s.toString();
 	}
 	
-	public static Event getDefaultEvent() {
+	public Event getDefaultEvent() {
 		Event event = new Event();
-		// Set the minimum required fields
-		// { "ref": platform.node(),"type": "host"}
+
 		event.setTitle("MyEvent");
-		event.setFingerprintFields("@title");
+		String[] fields = new String[1];
+		fields[0] = "@title";
+		event.setFingerprintFields(fields);
+		Source s = new Source();
+		
+		try {
+			String hostname = java.net.InetAddress.getLocalHost().getHostName();
+			event.setSource(hostname, "host",null);
+		}
+		catch(Exception e) {
+			System.out.println(e.getStackTrace());
+		}
+
 		return event;
 	}
 }

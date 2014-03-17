@@ -36,7 +36,7 @@
     <camel:marshal>
     	<camel:serialization/>
     </camel:marshal>
-    <camel:to id="to-test-route" uri="direct:test" />
+    <camel:to id="to-test-route" uri="direct:event" />
     </camel:route>
     
     <camel:route id ="TEST-ROUTE">
