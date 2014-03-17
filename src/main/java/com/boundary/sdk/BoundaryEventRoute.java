@@ -43,12 +43,12 @@ public class BoundaryEventRoute extends RouteBuilder {
 	
 	protected String getBody(Exchange exchange) {
 		String s1 = "{ \"title\": \"example\", \"message\": \"test\",\"tags\": [\"example\", \"test\", \"stuff\"], \"fingerprintFields\": [\"@title\"], \"source\": { \"ref\": \"myhost\",\"type\": \"host\"}}";
-		String s2 = "{ \"title\": \"%s\", \"message\": \"test\",\"fingerprintFields\": [\"@title\"], \"source\": { \"ref\": \"myhost\",\"type\": \"host\"}}";
+		String s2 = "{ \"title\": \"%s\", \"severity\": \"%s\",\"status\":\"OPEN\",\"message\": \"test\",\"fingerprintFields\": [\"@title\"], \"source\": { \"ref\": \"myhost\",\"type\": \"host\"}}";
 		Message m = exchange.getIn();
 		Event event = (Event) m.getBody(Event.class);
 		System.out.println("EVENT: " + event);
 		
-		String result = String.format(s2,event.getTitle());
+		String result = String.format(s2,event.getTitle(),event.getSeverity().toString());
 		
 		return result;
 	}
