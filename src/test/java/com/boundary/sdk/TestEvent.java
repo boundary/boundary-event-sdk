@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.boundary.sdk.Event;
+import com.boundary.sdk.Event.Severity;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -39,6 +40,9 @@ public class TestEvent {
 		assertEquals(event.getFingerprintFields(),expectedFingerprintFields);
 	}
 	
+	/**
+	 * Test default values of Events
+	 */
 	@Test
 	public void testDefault() {
 		String emptyString = new String();
@@ -55,7 +59,15 @@ public class TestEvent {
 		Event event = new Event();
 		event.setCreatedAt(expectedDate.getTime());
 		
-		assertEquals(event.getCreatedAt(),expectedDate.getTime());
+		assertEquals("Check creatdAt",event.getCreatedAt(),expectedDate.getTime());
+	}
+	
+	@Test
+	public void testSeverity() {
+		Severity expectedSeverity = Severity.CRITICAL;
+		Event event = new Event();
+		event.setSeverity(expectedSeverity);
+		assertEquals("Check Severity", event.getSeverity(),expectedSeverity);
 	}
 }
 
