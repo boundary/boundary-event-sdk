@@ -10,6 +10,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.http.AuthMethod;
 import org.apache.camel.component.http.HttpComponent;
 import org.apache.camel.component.http.HttpConfiguration;
+import org.apache.camel.component.syslog.SyslogMessage;
 
 /**
  * 
@@ -40,9 +41,16 @@ public class BoundaryEventRoute extends RouteBuilder {
 		this.fromID = fromID;
 	}
 	
-	protected String getBody() {
+	protected String getBody(Exchange exchange) {
 		String s1 = "{ \"title\": \"example\", \"message\": \"test\",\"tags\": [\"example\", \"test\", \"stuff\"], \"fingerprintFields\": [\"@title\"], \"source\": { \"ref\": \"myhost\",\"type\": \"host\"}}";
-		return s1;
+		String s2 = "{ \"title\": \"%s\", \"message\": \"test\",\"fingerprintFields\": [\"@title\"], \"source\": { \"ref\": \"myhost\",\"type\": \"host\"}}";
+		Message m = exchange.getIn();
+		Event event = (Event) m.getBody(Event.class);
+		System.out.println("EVENT: " + event);
+		
+		String result = String.format(s2,event.getTitle());
+		
+		return result;
 	}
 	@Override
 	public void configure() {
@@ -59,11 +67,13 @@ public class BoundaryEventRoute extends RouteBuilder {
 				.setHeader(Exchange.ACCEPT_CONTENT_TYPE,constant(contentType))
 				.setHeader(Exchange.CONTENT_TYPE,constant(contentType))
 				.setHeader(Exchange.HTTP_METHOD, constant("POST"))
-				.setBody().simple(getBody())
+				// .setBody().simple(getBody())
+				.unmarshal().serialization()
 				.process(new Processor() {
                     public void process(Exchange exchange) throws Exception {
-                        System.out.println("Received event: " + exchange.getIn().getBody(String.class));
+                        System.out.println("Received event: " + exchange.getIn().getBody(Event.class));
                         Message m = exchange.getIn();
+                        m.setBody(getBody(exchange));
                         Object o = m.getBody();
                         System.out.println("Class: " + o.getClass());
                         Map <String,Object> headers = m.getHeaders();

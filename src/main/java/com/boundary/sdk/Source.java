@@ -3,13 +3,14 @@
  */
 package com.boundary.sdk;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
  * @author davidg
  *
  */
-public class Source {
+public class Source implements Serializable {
 	
 	private String mRef;
 	private String mType;
@@ -54,6 +55,13 @@ public class Source {
 	
 	public void setProperties(Map<String,String> properties) {
 		this.mProperties = properties;
+	}
+	
+	public String toString() {
+		StringBuffer s = new StringBuffer();
+		s.append("ref: " + this.mRef);
+		s.append("type: " + this.mType);
+		return s.toString();
 	}
 
 

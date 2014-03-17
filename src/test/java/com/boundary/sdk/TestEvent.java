@@ -34,23 +34,31 @@ public class TestEvent {
 	
 	@Test
 	public void testFingerprintFields() {
-		String expectedFingerprintFields = "My Message";
+		String[] expectedFingerprintFields = new String[1];
 		event = new Event();
 		event.setFingerprintFields(expectedFingerprintFields);
-		assertEquals(event.getFingerprintFields(),expectedFingerprintFields);
+		assertArrayEquals("Check fingerprintFields", expectedFingerprintFields,event.getFingerprintFields());
 	}
 	
 	/**
 	 * Test default values of Events
 	 */
 	@Test
-	public void testDefault() {
-		String emptyString = new String();
+	public void testDefaultConstructor() {
 		Event event = new Event();
 		
-		assertEquals(event.getTitle(), emptyString);
-		assertEquals(event.getFingerprintFields(), emptyString);
-		assertEquals(event.getSource(), emptyString);
+		assertNull(event.getTitle());
+		assertNull(event.getFingerprintFields());
+		assertNull(event.getSource());
+	}
+	
+	@Test
+	public void testConstructor() {
+		String [] fields = new String[1];
+		fields[0]  = "@message";
+		Source source = new Source();
+		
+		Event event = new Event("foo",fields);
 	}
 	
 	@Test
