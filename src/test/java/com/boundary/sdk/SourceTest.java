@@ -9,7 +9,7 @@ import com.boundary.sdk.Source;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TestSource {
+public class SourceTest {
 	
 	@Test
 	public void testDefaultConstructor() {

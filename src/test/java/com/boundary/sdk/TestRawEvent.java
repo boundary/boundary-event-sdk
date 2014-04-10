@@ -7,8 +7,8 @@ import org.junit.After;
 import org.junit.Before;
 
 import com.boundary.sdk.RawEvent;
-import com.boundary.sdk.RawEvent.Severity;
-import com.boundary.sdk.RawEvent.Status;
+import com.boundary.sdk.Severity;
+import com.boundary.sdk.Status;
 
 import java.util.ArrayList;
 import java.util.Calendar;

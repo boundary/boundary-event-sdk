@@ -8,7 +8,7 @@ import org.apache.camel.component.syslog.SyslogMessage;
 import org.apache.camel.component.syslog.SyslogSeverity;
 
 import com.boundary.sdk.RawEvent;
-import com.boundary.sdk.RawEvent.Severity;
+import com.boundary.sdk.Severity;
 
 
 /**

@@ -7,7 +7,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
-public class TestDateParse {
+public class DateParseTest {
 
 	@Test
 	public void testParseExample() {

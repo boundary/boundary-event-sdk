@@ -35,67 +35,9 @@ public class RawEvent extends BaseEvent implements Serializable {
 	private String title;
 
 	
-	/**
-	 * 
-	 * @author davidg
-	 *
-	 */
-	private enum RawEventFields {
-		CREATED_AT,
-		EVENT_ID,
-		FINGERPRINT_FIELDS,
-		ID,
-		MESSAGE,
-		ORGANIZATION_ID,
-		PROPERTIES,
-		RECEIVED_AT,
-		SENDER,
-		SEVERITY,
-		SOURCE,
-		STATUS,
-		TAGS,
-		TITLE
-	}
 	
-	/**
-	 * Boundary event severity enumeration
-	 * 
-	 * @author davidg
-	 *
-	 */
-	public enum Severity {
-		
-		INFO,
-		WARN,
-		ERROR,
-		CRITICAL;
-		
-		private Severity() {
-			
-		}
-	}
 	
-	/**
-	 * Boundary event status enumeration
-	 * 
-	 * @author davidg
-	 *
-	 */
-	public enum Status {
-		
-		OPEN,
-		CLOSED,
-		ACKNOWLEDGED,
-		OK;
-		
-		/**
-		 * 
-		 */
-		private Status() {
-			
-		}
-	}
-	
+
 	/**
 	 *  Default contructor for a RawEvent
 	 */

@@ -53,9 +53,7 @@ public class SyslogMessageConverterTest extends CamelTestSupport {
 
         System.out.println(event);
 
-        assertEquals(RawEvent.Severity.INFO, event.getSeverity());
-//        assertEquals("179.95", order.getPrice().toString());
-//        assertEquals(3, order.getAmount());
+        assertEquals(Severity.INFO, event.getSeverity());
     }
 
 }
