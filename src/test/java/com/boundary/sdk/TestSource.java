@@ -15,9 +15,9 @@ public class TestSource {
 	public void testDefaultConstructor() {
 		Source s = new Source();
 		
-		assertNull(s.getRef());
-		assertNull(s.getType());
-		assertNull(s.getProperties());
+		assertNotNull(s.getRef());
+		assertNotNull(s.getType());
+		assertNotNull(s.getProperties());
 	}
 
 	@Test
@@ -38,7 +38,7 @@ public class TestSource {
 	
 	@Test
 	public void testProperties() {
-		Map<String,String> expectedProperties = new HashMap<String,String>();
+		Map<String,Object> expectedProperties = new HashMap<String,Object>();
 		Source s = new Source();
 		expectedProperties.put("foo", "bar");
 		s.setProperties(expectedProperties);

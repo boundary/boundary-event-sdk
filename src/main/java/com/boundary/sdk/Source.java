@@ -4,6 +4,7 @@
 package com.boundary.sdk;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -12,55 +13,90 @@ import java.util.Map;
  */
 public class Source implements Serializable {
 	
-	private String mRef;
-	private String mType;
-	private String mName;
-	private Map<String,String> mProperties;
+	private String ref;
+	private String type;
+	private String name;
+	private Map<String,Object> properties;
 
 	/**
 	 * 
 	 */
 	public Source() {
+		this("","");
 	}
 	
+	/**
+	 * 
+	 * @param ref
+	 * @param type
+	 */
 	public Source(String ref, String type) {
-		this(ref,type,null);
+		this(ref,type,"");
 	}
 	
-	public Source(String ref, String type, Map<String,String> properties) {
-		this.mRef = ref;
-		this.mType = type;
-		this.mProperties = properties;
+	/**
+	 * Constructor with the required parameters for an event
+	 * 
+	 * @param ref
+	 * @param type
+	 * @param name
+	 */
+	public Source(String ref,String type,String name) {
+		this(ref,type,name,new HashMap<String,Object>());
+	}
+
+	/**
+	 * 
+	 * @param ref
+	 * @param type
+	 * @param name
+	 * @param properties
+	 */
+	public Source(String ref, String type, String name, Map<String,Object> properties) {
+		this.ref = ref;
+		this.type = type;
+		this.name = name;
+		this.properties = properties;
 	}
 	
 	public void setRef(String ref) {
-		this.mRef = ref;
+		this.ref = ref;
 	}
 	
 	public String getRef() {
-		return this.mRef;
+		return this.ref;
 	}
 	
 	public void setType(String type) {
-		this.mType = type;
+		this.type = type;
 	}
 	
 	public String getType() {
-		return this.mType;
+		return this.type;
 	}
 	
-	public Map<String,String> getProperties() {
-		return mProperties;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
-	public void setProperties(Map<String,String> properties) {
-		this.mProperties = properties;
+	public String getName() {
+		return this.name;
+	}
+	
+	public Map<String,Object> getProperties() {
+		return properties;
+	}
+	
+	public void setProperties(Map<String,Object> properties) {
+		this.properties = properties;
 	}
 	
 	public String toString() {
 		StringBuffer s = new StringBuffer();
-		s.append("ref: " + this.mRef);
-		s.append("type: " + this.mType);
+		s.append("ref: " + this.ref);
+		s.append("type: " + this.type);
+		s.append("name: " + this.name);
+		s.append("properties: " + this.properties);
 		return s.toString();
 	}
 
