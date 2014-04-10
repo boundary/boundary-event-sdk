@@ -14,12 +14,12 @@
   <bean id = "syslog-processor" class="com.boundary.sdk.SyslogToEventProcessor"/>
   
   <bean id ="debug-processor" class="com.boundary.sdk.DebugProcessor"/>
-  
 
-  <camelContext xmlns="http://camel.apache.org/schema/spring">
-    <dataFormats>
-		<syslog id="mySyslog"/>
-    </dataFormats>
+
+	<camelContext xmlns="http://camel.apache.org/schema/spring">
+		<dataFormats>
+			<syslog id="mySyslog" />
+		</dataFormats>
  
  <!-- 
     <route>
@@ -29,26 +29,26 @@
     </route>
   -->
     
-    <camel:route id="SYSLOG-ROUTE">
-    <camel:from id = "syslog-listener" uri="netty:udp://127.0.0.1:10514?sync=false&amp;allowDefaultCodec=false"/>
-    <camel:unmarshal ref="mySyslog"/>
-    <camel:process id = "syslog-route-processor" ref="syslog-processor"/>
-    <camel:marshal>
-    	<camel:serialization/>
-    </camel:marshal>
-    <camel:to id="to-test-route" uri="direct:event" />
-    </camel:route>
+    <route id="SYSLOG-ROUTE">
+    <from id = "syslog-listener" uri="netty:udp://127.0.0.1:10514?sync=false&amp;allowDefaultCodec=false"/>
+    <unmarshal ref="mySyslog"/>
+    <process id = "syslog-route-processor" ref="syslog-processor"/>
+    <marshal>
+    	<serialization/>
+    </marshal>
+    <to id="to-test-route" uri="direct:event" />
+    </route>
     
-    <camel:route id ="TEST-ROUTE">
-    	<camel:from uri="direct:test"/>
-    	<camel:unmarshal>
-    		<camel:serialization/>
-    	</camel:unmarshal>
-    	<camel:marshal>
-    		<camel:string/>
-    	</camel:marshal>
-    	<camel:to uri="file://?fileName=test.log"/>
-    </camel:route>
+    <route id ="TEST-ROUTE">
+    	<from uri="direct:test"/>
+    	<unmarshal>
+    		<serialization/>
+    	</unmarshal>
+    	<marshal>
+    		<string/>
+    	</marshal>
+    	<to uri="file://?fileName=test.log"/>
+    </route>
     
  <!-- 
     <camel:route id ="BOUNDARY-EVENT_ROUTE">

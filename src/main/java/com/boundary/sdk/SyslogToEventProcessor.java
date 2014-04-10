@@ -10,8 +10,8 @@ import org.apache.camel.Processor;
 import org.apache.camel.component.syslog.SyslogMessage;
 import org.apache.camel.component.syslog.SyslogSeverity;
 
-import com.boundary.sdk.Event;
-import com.boundary.sdk.Event.Severity;
+import com.boundary.sdk.RawEvent;
+import com.boundary.sdk.RawEvent.Severity;
 
 
 /**
@@ -45,17 +45,17 @@ public class SyslogToEventProcessor implements Processor {
 		System.out.println("Received syslog message: " + sm);
 		
 		// Create our event so that we can populate with the Syslog data
-		Event event = new Event();
+		RawEvent event = new RawEvent();
 		event = event.getDefaultEvent();
 		setSeverity(sm,event);
 		event.setTitle(sm.getHostname() + ":" + sm.getTimestamp()); 
 		
 		// Delegate to member method call to perform the translation
 		//this.translateSyslogMessage(message, event);
-		message.setBody(event, Event.class);
+		message.setBody(event, RawEvent.class);
 	}
 	
-	private void translateSyslogMessage(SyslogMessage message, Event event) {
+	private void translateSyslogMessage(SyslogMessage message, RawEvent event) {
 		
 		// Set severity
 		setSeverity(message,event);
@@ -67,7 +67,7 @@ public class SyslogToEventProcessor implements Processor {
 	 * @param m
 	 * @param e
 	 */
-	private void setSeverity(SyslogMessage message, Event event) {
+	private void setSeverity(SyslogMessage message, RawEvent event) {
 		
 		switch(message.getSeverity()) {
 		case EMERG:

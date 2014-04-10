@@ -11,7 +11,7 @@ import org.apache.camel.Message;
 import org.apache.camel.Processor;
 import org.apache.camel.component.syslog.SyslogMessage;
 
-import com.boundary.sdk.Event;
+import com.boundary.sdk.RawEvent;
 
 
 /**
