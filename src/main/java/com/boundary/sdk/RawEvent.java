@@ -528,11 +528,12 @@ public class RawEvent extends BaseEvent implements Serializable {
 		ArrayList<String> fields = new ArrayList<String>();
 		fields.add("@title");
 		event.setFingerprintFields(fields);
-		Source s = new RawEvent.Source();
+		
+		RawEvent.Source s = event.new Source();
 		
 		try {
 			String hostname = java.net.InetAddress.getLocalHost().getHostName();
-			event.setSource(hostname, "host");
+			event.setSource(s);
 		}
 		catch(Exception e) {
 			System.out.println(e.getStackTrace());
