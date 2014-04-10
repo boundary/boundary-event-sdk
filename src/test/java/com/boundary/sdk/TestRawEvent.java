@@ -41,7 +41,8 @@ public class TestRawEvent {
 	
 	@Test
 	public void testSource() {
-		Source source = new Source();
+		RawEvent e = new RawEvent();
+		RawEvent.Source source = e.new Source();
 		String aRef = "stimpy.nick.com";
 		String aType = "host";
 		String aName = "ren";
