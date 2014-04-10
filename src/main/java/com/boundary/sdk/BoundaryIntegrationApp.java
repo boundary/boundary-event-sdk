@@ -19,7 +19,7 @@ public class BoundaryIntegrationApp {
     public void boot() throws Exception {
 		// TODO Fixed values, need to make externally configurable
 		String orgID = "3ehRi7uZeeaTN12dErF5XOnRXjC";
-		String apiKey = "ARI0PzUzWYUo7GG1OxiHmABTpr9";
+		String apiKey = "GN5HMCeu9trD5NYO5ZqYQrZe8aY";
 
         //
 		// Create new main instance and enable hang support so the process can be killed.

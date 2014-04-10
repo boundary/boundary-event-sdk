@@ -45,7 +45,7 @@ public class BoundaryEventRoute extends RouteBuilder {
 		String s1 = "{ \"title\": \"example\", \"message\": \"test\",\"tags\": [\"example\", \"test\", \"stuff\"], \"fingerprintFields\": [\"@title\"], \"source\": { \"ref\": \"myhost\",\"type\": \"host\"}}";
 		String s2 = "{ \"title\": \"%s\", \"severity\": \"%s\",\"status\":\"OPEN\",\"message\": \"test\",\"fingerprintFields\": [\"@title\"], \"source\": { \"ref\": \"myhost\",\"type\": \"host\"}}";
 		Message m = exchange.getIn();
-		Event event = (Event) m.getBody(Event.class);
+		RawEvent event = (RawEvent) m.getBody(RawEvent.class);
 		System.out.println("EVENT: " + event);
 		
 		String result = String.format(s2,event.getTitle(),event.getSeverity().toString());
@@ -71,7 +71,7 @@ public class BoundaryEventRoute extends RouteBuilder {
 				.unmarshal().serialization()
 				.process(new Processor() {
                     public void process(Exchange exchange) throws Exception {
-                        System.out.println("Received event: " + exchange.getIn().getBody(Event.class));
+                        System.out.println("Received event: " + exchange.getIn().getBody(RawEvent.class));
                         Message m = exchange.getIn();
                         m.setBody(getBody(exchange));
                         Object o = m.getBody();

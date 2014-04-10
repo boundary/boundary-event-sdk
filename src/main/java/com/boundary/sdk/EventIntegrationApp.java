@@ -22,10 +22,11 @@ public class EventIntegrationApp
         
 		// TODO Fixed values, need to make externally configurable
 		String orgID = "3ehRi7uZeeaTN12dErF5XOnRXjC";
-		String apiKey = "ARI0PzUzWYUo7GG1OxiHmABTpr9";
+		String apiKey = "GN5HMCeu9trD5NYO5ZqYQrZe8aY";
 
         main.addRouteBuilder(new EventRoute(orgID,apiKey));
         main.addRouteBuilder(new BoundaryEventRoute(orgID,apiKey));
+        main.addRouteBuilder(new SNMPRoute());
          
         // run until you terminate the JVM
         System.out.println("Starting Camel. Use ctrl + c to terminate the JVM.\n");
