@@ -12,6 +12,8 @@ import org.apache.camel.Message;
 import org.apache.camel.Processor;
 import org.apache.camel.component.syslog.SyslogMessage;
 import org.apache.camel.component.syslog.SyslogSeverity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.boundary.sdk.RawEvent;
 import com.boundary.sdk.Severity;
@@ -22,18 +24,9 @@ import com.boundary.sdk.Severity;
  */
 public class SyslogToEventProcessor implements Processor {
 
-	private boolean debug = false;
-
-	/**
-	 * 
-	 */
+	private static Logger LOG = LoggerFactory.getLogger(SyslogToEventProcessor.class);
 
 	public SyslogToEventProcessor() {
-		this(false);
-	}
-
-	public SyslogToEventProcessor(boolean debug) {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -45,7 +38,7 @@ public class SyslogToEventProcessor implements Processor {
 		// Extract SyslogMessage from the message body.
 		SyslogMessage syslogMessage = (SyslogMessage) message
 				.getBody(SyslogMessage.class);
-		System.out.println("Received syslog message: " + syslogMessage);
+		LOG.debug("Received syslog message: " + syslogMessage);
 
 		// Create new event to translate the syslog message to
 		RawEvent event = new RawEvent();
@@ -65,17 +58,32 @@ public class SyslogToEventProcessor implements Processor {
 	 */
 	private void syslogMessageToEvent(SyslogMessage sm, RawEvent e) {
 
+		// Add the facility to 
+		// Set the event severity based on our default mapping
+		// defined in a properties file
 		//
-		// Facility
-		// Hostname
-		// Log Message
-		// Remote Address
-		// Severity
-		// Timestamp
-		// Get the CamelContext and Message
-
-		setEventSeverity(sm, e);
+		e.getProperties().put("facility", sm.getFacility());
+		
+		// Add the hostname
+		e.getSource().setRef(sm.getHostname()).setType("host");
+		e.getProperties().put("hostname", sm.getHostname());
+		
+		// Add the message
+		e.setMessage(sm.getLogMessage());
+		e.getProperties().put("message", sm.getLogMessage());
+		
+		// Add the remote address
+		e.getProperties().put("remote_address", sm.getRemoteAddress());
+		
+		// Map the syslog severity to Boundary event severity
+		Severity severity = getEventSeverity(sm.getSeverity());
+		e.setSeverity(severity);
+		
+		// Set the time at which the syslog record was created
+		e.setCreatedAt(sm.getTimestamp());
+		
 		e.setTitle(sm.getHostname() + ":" + sm.getTimestamp());
+
 	}
 
 	/**
@@ -84,44 +92,10 @@ public class SyslogToEventProcessor implements Processor {
 	 * @param m
 	 * @param e
 	 */
-	private void setEventSeverity(SyslogMessage sm, RawEvent e) {
-		Properties severityMap = getSeverityProperties("syslog.properties");
-//		System.out.println("SEVERITY MAP" + severityMap);
-//		System.out.println(severityMap.getProperty(sm.getSeverity().toString()));
-		String strSeverity = severityMap.getProperty(sm.getSeverity().toString());
-		Severity severity = Severity.valueOf(strSeverity);
-		e.setSeverity(Severity.INFO);
-
-		// switch(message.getSeverity()) {
-		// case EMERG:
-		// event.setSeverity(Severity.CRITICAL);
-		// break;
-		// case ALERT:
-		// event.setSeverity(Severity.CRITICAL);
-		// break;
-		// case CRIT:
-		// event.setSeverity(Severity.CRITICAL);
-		// break;
-		// case ERR:
-		// event.setSeverity(Severity.ERROR);
-		// break;
-		// case WARNING:
-		// event.setSeverity(Severity.WARN);
-		// break;
-		// case NOTICE:
-		// event.setSeverity(Severity.INFO);
-		// break;
-		// case INFO:
-		// event.setSeverity(Severity.INFO);
-		// break;
-		// case DEBUG:
-		// event.setSeverity(Severity.INFO);
-		// break;
-		// default:
-		// //TODO: How to bail in this case. It should not happen but should
-		// still be asserted.
-		// }
-
+	private Severity getEventSeverity(SyslogSeverity severity) {
+		Properties severityMap = getSeverityProperties("syslog.severity.properties");
+		String strSeverity = severityMap.getProperty(severity.toString());
+		return Severity.valueOf(strSeverity);
 	}
 
 	private static Properties severityProperties = null;
@@ -136,9 +110,9 @@ public class SyslogToEventProcessor implements Processor {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				LOG.error(e.getStackTrace().toString());
 			}
 		}
 		return severityProperties;
 	}
-
 }
