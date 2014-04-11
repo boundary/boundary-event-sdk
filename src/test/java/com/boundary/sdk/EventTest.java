@@ -24,7 +24,7 @@ public class EventTest extends CamelSpringTestSupport {
 		
 		template.sendBody("direct:event-test", event);
 		
-		Thread.sleep(10000);
+		Thread.sleep(5000);
 
 		File target = new File("target/event-test.log");
 		assertTrue("Log file exists: ", target.exists());
