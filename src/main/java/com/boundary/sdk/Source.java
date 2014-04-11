@@ -19,13 +19,14 @@ public class Source implements Serializable {
 	private Map<String,Object> properties;
 
 	/**
-	 * 
+	 * Default constructor
 	 */
 	public Source() {
 		this("","");
 	}
 	
 	/**
+	 * Constructor that uses ref and type
 	 * 
 	 * @param ref
 	 * @param type
@@ -35,7 +36,7 @@ public class Source implements Serializable {
 	}
 	
 	/**
-	 * Constructor with the required parameters for an event
+	 * Constructor
 	 * 
 	 * @param ref
 	 * @param type
@@ -46,6 +47,7 @@ public class Source implements Serializable {
 	}
 
 	/**
+	 * Constructor
 	 * 
 	 * @param ref
 	 * @param type
@@ -59,26 +61,57 @@ public class Source implements Serializable {
 		this.properties = properties;
 	}
 	
-	public void setRef(String ref) {
+	/**
+	 * Set the ref value
+	 * 
+	 * @param ref
+	 * @return
+	 */
+	public Source setRef(String ref) {
 		this.ref = ref;
+		return this;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getRef() {
 		return this.ref;
 	}
 	
-	public void setType(String type) {
+	/**
+	 * Set the type of the source.
+	 * @param type
+	 * @return
+	 */
+	public Source setType(String type) {
 		this.type = type;
+		return this;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getType() {
 		return this.type;
 	}
 	
-	public void setName(String name) {
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public Source setName(String name) {
 		this.name = name;
+		return this;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getName() {
 		return this.name;
 	}
@@ -87,8 +120,14 @@ public class Source implements Serializable {
 		return properties;
 	}
 	
-	public void setProperties(Map<String,Object> properties) {
+	/**
+	 * 
+	 * @param properties
+	 * @return
+	 */
+	public Source setProperties(Map<String,Object> properties) {
 		this.properties = properties;
+		return this;
 	}
 	
 	public String toString() {
@@ -99,14 +138,4 @@ public class Source implements Serializable {
 		s.append("properties: " + this.properties);
 		return s.toString();
 	}
-
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
 }
