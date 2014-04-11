@@ -1,9 +1,12 @@
 package com.boundary.sdk;
 import org.apache.camel.spring.Main;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EventIntegrationApp
 {
-     
+	private static Logger LOG = LoggerFactory.getLogger(EventIntegrationApp.class);
+
     private Main main;
      
     public static void main(String[] args) throws Exception
