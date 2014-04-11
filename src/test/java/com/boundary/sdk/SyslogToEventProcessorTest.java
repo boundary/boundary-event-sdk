@@ -13,12 +13,10 @@ public class SyslogToEventProcessorTest {
 
 	@Test
 	public void testSeverityProperties() {
-		Properties props = SyslogToEventProcessor.getSeverityProperties("syslog.properties");
+		Properties props = SyslogToEventProcessor.getSeverityProperties("syslog.severity.properties");
 		SyslogMessage m = new SyslogMessage();
 		Severity e;
 		m.setSeverity(SyslogSeverity.NOTICE);
-		
-
 	}
 
 }
