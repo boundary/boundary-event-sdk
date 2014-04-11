@@ -10,6 +10,8 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
 import org.apache.camel.component.syslog.SyslogMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.boundary.sdk.RawEvent;
 
@@ -19,6 +21,8 @@ import com.boundary.sdk.RawEvent;
  * 
  */
 public class DebugProcessor implements Processor {
+
+	private static Logger LOG = LoggerFactory.getLogger(DebugProcessor.class);
 
 	private boolean debug = false;
 	/**
@@ -34,11 +38,11 @@ public class DebugProcessor implements Processor {
 	
 	@Override
 	public void process(Exchange exchange) throws Exception {
-        System.out.println("Received message body: " + exchange.getIn().getBody(String.class));
+        LOG.debug("Received message body: " + exchange.getIn().getBody(String.class));
         Message m = exchange.getIn();
         Object o = m.getBody();
-        System.out.println("Class: " + o.getClass());
+        LOG.debug("Class: " + o.getClass());
         Map <String,Object> headers = m.getHeaders();
-        System.out.println("headers: " + headers);
+        LOG.debug("headers: " + headers);
 	}
 }

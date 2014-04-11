@@ -11,6 +11,8 @@ import org.apache.camel.component.http.AuthMethod;
 import org.apache.camel.component.http.HttpComponent;
 import org.apache.camel.component.http.HttpConfiguration;
 import org.apache.camel.component.syslog.SyslogMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -18,6 +20,8 @@ import org.apache.camel.component.syslog.SyslogMessage;
  *
  */
 public class BoundaryEventRoute extends RouteBuilder {
+	
+	private static Logger LOG = LoggerFactory.getLogger(BoundaryEventRoute.class);
 
 	protected String apiHost = "api.boundary.com";
 	protected String orgID;
@@ -36,7 +40,7 @@ public class BoundaryEventRoute extends RouteBuilder {
 		this.apiKey = apiKey;
 		this.authorization = apiKey + ":";
 		url.append("https://" + apiHost + "/" + orgID + "/" + "events");
-		System.out.println("url: " + url + ", orgID: " + orgID + ", apiKey: " + apiKey);
+		LOG.debug("url: " + url + ", orgID: " + orgID + ", apiKey: " + apiKey);
 		this.routeName = routeName;
 		this.fromID = fromID;
 	}
@@ -46,7 +50,7 @@ public class BoundaryEventRoute extends RouteBuilder {
 		String s2 = "{ \"title\": \"%s\", \"severity\": \"%s\",\"status\":\"OPEN\",\"message\": \"test\",\"fingerprintFields\": [\"@title\"], \"source\": { \"ref\": \"myhost\",\"type\": \"host\"}}";
 		Message m = exchange.getIn();
 		RawEvent event = (RawEvent) m.getBody(RawEvent.class);
-		System.out.println("EVENT: " + event);
+		LOG.debug("EVENT: " + event);
 		
 		String result = String.format(s2,event.getTitle(),event.getSeverity().toString());
 		
@@ -71,13 +75,13 @@ public class BoundaryEventRoute extends RouteBuilder {
 				.unmarshal().serialization()
 				.process(new Processor() {
                     public void process(Exchange exchange) throws Exception {
-                        System.out.println("Received event: " + exchange.getIn().getBody(RawEvent.class));
+                        LOG.debug("Received event: " + exchange.getIn().getBody(RawEvent.class));
                         Message m = exchange.getIn();
                         m.setBody(getBody(exchange));
                         Object o = m.getBody();
-                        System.out.println("Class: " + o.getClass());
+                        LOG.debug("Class: " + o.getClass());
                         Map <String,Object> headers = m.getHeaders();
-                        System.out.println("headers: " + headers);
+                        LOG.debug("headers: " + headers);
                     }
                 })
                 .to("file://?fileName=http.log")
