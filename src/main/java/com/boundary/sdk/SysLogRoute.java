@@ -21,7 +21,7 @@ public class SysLogRoute extends RouteBuilder {
 
         from("netty:udp://127.0.0.1:10514?sync=false&allowDefaultCodec=false")
 		.unmarshal(syslogDataFormat)
-		.process(new SyslogToEventProcessor(true))
+		.process(new SyslogToEventProcessor())
 		.marshal().serialization()
         .to("direct:test")
         ;
