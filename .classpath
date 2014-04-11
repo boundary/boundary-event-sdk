@@ -6,37 +6,39 @@
   <classpathentry kind="output" path="target/classes"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
   <classpathentry kind="var" path="M2_REPO/junit/junit/4.8.1/junit-4.8.1.jar" sourcepath="M2_REPO/junit/junit/4.8.1/junit-4.8.1-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-core/2.12.2/camel-core-2.12.2.jar" sourcepath="M2_REPO/org/apache/camel/camel-core/2.12.2/camel-core-2.12.2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-core/2.13.0/camel-core-2.13.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.7.6/slf4j-api-1.7.6.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-spring/2.12.2/camel-spring-2.12.2.jar" sourcepath="M2_REPO/org/apache/camel/camel-spring/2.12.2/camel-spring-2.12.2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-spring/2.13.0/camel-spring-2.13.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-context/3.2.5.RELEASE/spring-context-3.2.5.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-context/3.2.5.RELEASE/spring-context-3.2.5.RELEASE-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-aop/3.2.4.RELEASE/spring-aop-3.2.4.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-aop/3.2.4.RELEASE/spring-aop-3.2.4.RELEASE-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-aop/3.2.8.RELEASE/spring-aop-3.2.8.RELEASE.jar"/>
   <classpathentry kind="var" path="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0.jar" sourcepath="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-beans/3.2.5.RELEASE/spring-beans-3.2.5.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-beans/3.2.5.RELEASE/spring-beans-3.2.5.RELEASE-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-core/3.2.5.RELEASE/spring-core-3.2.5.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-core/3.2.5.RELEASE/spring-core-3.2.5.RELEASE-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar" sourcepath="M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-expression/3.2.5.RELEASE/spring-expression-3.2.5.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-expression/3.2.5.RELEASE/spring-expression-3.2.5.RELEASE-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-tx/3.2.4.RELEASE/spring-tx-3.2.4.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-tx/3.2.4.RELEASE/spring-tx-3.2.4.RELEASE-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-tx/3.2.8.RELEASE/spring-tx-3.2.8.RELEASE.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.6/commons-lang-2.6.jar" sourcepath="M2_REPO/commons-lang/commons-lang/2.6/commons-lang-2.6-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-test/2.12.2/camel-test-2.12.2.jar" sourcepath="M2_REPO/org/apache/camel/camel-test/2.12.2/camel-test-2.12.2-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-test-spring/2.12.2/camel-test-spring-2.12.2.jar" sourcepath="M2_REPO/org/apache/camel/camel-test-spring/2.12.2/camel-test-spring-2.12.2-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-test/3.2.4.RELEASE/spring-test-3.2.4.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-test/3.2.4.RELEASE/spring-test-3.2.4.RELEASE-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-test/2.13.0/camel-test-2.13.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-test-spring/2.13.0/camel-test-spring-2.13.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-test/3.2.8.RELEASE/spring-test-3.2.8.RELEASE.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-log4j12/1.7.6/slf4j-log4j12-1.7.6.jar" sourcepath="M2_REPO/org/slf4j/slf4j-log4j12/1.7.6/slf4j-log4j12-1.7.6-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.17/log4j-1.2.17.jar" sourcepath="M2_REPO/log4j/log4j/1.2.17/log4j-1.2.17-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-ahc/2.12.2/camel-ahc-2.12.2.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/ning/async-http-client/1.7.20/async-http-client-1.7.20.jar"/>
-  <classpathentry kind="var" path="M2_REPO/io/netty/netty/3.8.0.Final/netty-3.8.0.Final.jar" sourcepath="M2_REPO/io/netty/netty/3.8.0.Final/netty-3.8.0.Final-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-http/2.12.2/camel-http-2.12.2.jar" sourcepath="M2_REPO/org/apache/camel/camel-http/2.12.2/camel-http-2.12.2-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/geronimo/specs/geronimo-servlet_2.5_spec/1.2/geronimo-servlet_2.5_spec-1.2.jar" sourcepath="M2_REPO/org/apache/geronimo/specs/geronimo-servlet_2.5_spec/1.2/geronimo-servlet_2.5_spec-1.2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-ahc/2.13.0/camel-ahc-2.13.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/ning/async-http-client/1.8.3/async-http-client-1.8.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/netty/netty/3.9.0.Final/netty-3.9.0.Final.jar" sourcepath="M2_REPO/io/netty/netty/3.9.0.Final/netty-3.9.0.Final-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-http/2.13.0/camel-http-2.13.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/geronimo/specs/geronimo-servlet_3.0_spec/1.0/geronimo-servlet_3.0_spec-1.0.jar" sourcepath="M2_REPO/org/apache/geronimo/specs/geronimo-servlet_3.0_spec/1.0/geronimo-servlet_3.0_spec-1.0-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-httpclient/commons-httpclient/3.1/commons-httpclient-3.1.jar" sourcepath="M2_REPO/commons-httpclient/commons-httpclient/3.1/commons-httpclient-3.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-codec/commons-codec/1.8/commons-codec-1.8.jar" sourcepath="M2_REPO/commons-codec/commons-codec/1.8/commons-codec-1.8-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-quartz/2.12.2/camel-quartz-2.12.2.jar" sourcepath="M2_REPO/org/apache/camel/camel-quartz/2.12.2/camel-quartz-2.12.2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-quartz/2.13.0/camel-quartz-2.13.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/quartz-scheduler/quartz/1.8.6/quartz-1.8.6.jar" sourcepath="M2_REPO/org/quartz-scheduler/quartz/1.8.6/quartz-1.8.6-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-snmp/2.12.2/camel-snmp-2.12.2.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/servicemix/bundles/org.apache.servicemix.bundles.snmp4j/2.2.2_1/org.apache.servicemix.bundles.snmp4j-2.2.2_1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-netty/2.12.2/camel-netty-2.12.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-snmp/2.13.0/camel-snmp-2.13.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/servicemix/bundles/org.apache.servicemix.bundles.snmp4j/2.2.5_1/org.apache.servicemix.bundles.snmp4j-2.2.5_1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-netty/2.13.0/camel-netty-2.13.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-pool/commons-pool/1.6/commons-pool-1.6.jar" sourcepath="M2_REPO/commons-pool/commons-pool/1.6/commons-pool-1.6-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-mina/2.12.2/camel-mina-2.12.2.jar" sourcepath="M2_REPO/org/apache/camel/camel-mina/2.12.2/camel-mina-2.12.2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-mina/2.13.0/camel-mina-2.13.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/mina/mina-core/1.1.7/mina-core-1.1.7.jar" sourcepath="M2_REPO/org/apache/mina/mina-core/1.1.7/mina-core-1.1.7-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-syslog/2.12.2/camel-syslog-2.12.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-syslog/2.13.0/camel-syslog-2.13.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/commons/commons-lang3/3.3.2/commons-lang3-3.3.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-io/commons-io/1.3.2/commons-io-1.3.2.jar"/>
 </classpath>
