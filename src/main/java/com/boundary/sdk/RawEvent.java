@@ -48,6 +48,8 @@ public class RawEvent extends BaseEvent implements Serializable {
 	
 	/**
 	 * 
+	 * @param source
+	 * @param fingerprintFields
 	 * @param title
 	 */
 	public RawEvent(Source source,ArrayList<String> fingerprintFields,String title) {
@@ -56,8 +58,8 @@ public class RawEvent extends BaseEvent implements Serializable {
 		this.fingerprintFields = fingerprintFields;
 		this.message = "";
 		this.organizationId = "";
-		this.properties = properties;
-		this.receivedAt = receivedAt;
+		this.properties = new HashMap<String,Object>();
+		this.receivedAt = new Date();
 		this.sender = new Source();
 		this.severity = Severity.INFO;
 		this.source = source;
@@ -147,8 +149,14 @@ public class RawEvent extends BaseEvent implements Serializable {
 		return createdAt;
 	}
 	
-	public void setCreatedAt(Date createdAt) {
+	/**
+	 * 
+	 * @param createdAt
+	 * @return RawEvent
+	 */
+	public RawEvent setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
+		return this;
 	}
 
 	/**
@@ -163,18 +171,22 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * Adds a single fingerprint field to the existing fingerprint fields.
 	 * 
 	 * @param Field to use in the fingerprint field
+	 * @return RawEvent
 	 */
-	public void addFingerprintField(String value) {
+	public RawEvent addFingerprintField(String value) {
 		this.fingerprintFields.add(value);
+		return this;
 	}
 	
 	/**
 	 * Sets the fingerprint fields for the event
 	 * 
 	 * @param fingerprintFields Fingerprint fields to use for the event
+	 * @return RawEvent
 	 */
-	public void setFingerprintFields(ArrayList<String> fingerprintFields) {
+	public RawEvent setFingerprintFields(ArrayList<String> fingerprintFields) {
 		this.fingerprintFields = fingerprintFields;
+		return this;
 	}
 
 	/**
@@ -190,9 +202,11 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * Set the message describing the event.
 	 * 
 	 * @param message Value to set the event message to
+	 * @return RawEvent
 	 */
-	public void setMessage(String message) {
+	public RawEvent setMessage(String message) {
 		this.message = message;
+		return this;
 	}
 	
 	/**
@@ -207,9 +221,11 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * Set the Boundary organization id on the event
 	 * 
 	 * @param organizationId Boundary organizationId
+	 * @return RawEvent
 	 */
-	public void setOrganizationId(String organizationId) {
+	public RawEvent setOrganizationId(String organizationId) {
 		this.organizationId = organizationId;
+		return this;
 	}
 	
 	/**
@@ -225,9 +241,11 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * Sets the properties of an event
 	 * 
 	 * @param properties Map<String,Object> containing the properties to add to the event.
+	 * @return RawEvent
 	 */
-	public void setProperties(Map<String,Object> properties) {
+	public RawEvent setProperties(Map<String,Object> properties) {
 		this.properties = properties;
+		return this;
 	}
 	
 	/**
@@ -242,10 +260,12 @@ public class RawEvent extends BaseEvent implements Serializable {
 	/**
 	 * Sets the received date/time of the event
 	 * 
-	 * @param receivedAt Date contain the even received tim
+	 * @param receivedAt Date containing the event received time
+	 * @return
 	 */
-	public void setReceivedAt(Date receivedAt) {
+	public RawEvent setReceivedAt(Date receivedAt) {
 		this.receivedAt = receivedAt;
+		return this;
 	}
 	
 	/**
@@ -261,9 +281,11 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * Sets the sender associated with the event
 	 * 
 	 * @parm sender Source to assign as sender
+	 * @return RawEvent
 	 */
-	public void setSender(Source sender) {
+	public RawEvent setSender(Source sender) {
 		this.sender = sender;
+		return this;
 	}
 
 	/**
@@ -277,9 +299,11 @@ public class RawEvent extends BaseEvent implements Serializable {
 	/**
 	 * 
 	 * @param severity - Severity Value
+	 * @return RawEvent
 	 */
-	public void setSeverity(Severity severity) {
+	public RawEvent setSeverity(Severity severity) {
 		this.severity = severity;
+		return this;
 	}
 
 
@@ -296,9 +320,11 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * Sets the source of the event
 	 * 
 	 * @param source Source to associate with the event.
+	 * @return RawEvent
 	 */
-	public void setSource(Source source) {
+	public RawEvent setSource(Source source) {
 		this.source = source;
+		return this;
 	}
 	
 	/**
@@ -314,9 +340,11 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * Sets the status of the RawEvent
 	 * 
 	 * @param status
+	 * @return RawStatus
 	 */
-	public void setStatus(Status status) {
+	public RawEvent setStatus(Status status) {
 		this.status = status;
+		return this;
 	}
 
 	/**
@@ -331,12 +359,12 @@ public class RawEvent extends BaseEvent implements Serializable {
 	/**
 	 * 
 	 * @param title
+	 * @return RawEvent
 	 */
-	public void setTitle(String title) {
+	public RawEvent setTitle(String title) {
 		this.title = title;
+		return this;
 	}
-	
-	
 	
 	/**
 	 * Sets the entire list of tags in the event
@@ -352,9 +380,11 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * Adds a single tag value to the {@link RawEvent}.
 	 * 
 	 * @param tag Value of tag.
+	 * @return RawEvent
 	 */
-	public void addTag(String tag) {
+	public RawEvent addTag(String tag) {
 		this.tags.add(tag);
+		return this;
 	}
 	
 	/**
