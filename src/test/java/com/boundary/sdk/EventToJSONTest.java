@@ -20,6 +20,10 @@ public class EventToJSONTest extends CamelSpringTestSupport {
 	public void testEventToLog() throws Exception {
 		TestEvent event = new TestEvent("hello");
 		
+		event.addTag("red");
+		event.addTag("green");
+		event.addTag("blue");
+		
 		template.sendBody("direct:event-to-json", event);
 		
 		Thread.sleep(1000);
@@ -27,6 +31,6 @@ public class EventToJSONTest extends CamelSpringTestSupport {
 		File target = new File("target/event-to-json.log");
 		assertTrue("Log file exists: ", target.exists());
 		String content = context.getTypeConverter().convertTo(String.class,target);
-		assertEquals("{\"name\":\"hello\"}", content);
+		assertEquals("{\"name\":\"hello\",\"tags\":[\"red\",\"green\",\"blue\"]}", content);
 	}
 }
