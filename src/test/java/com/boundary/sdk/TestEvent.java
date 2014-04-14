@@ -65,8 +65,11 @@ public class TestEvent {
 	public String toString() {
 		StringBuffer s = new StringBuffer();
 		s.append("TestEvent");
-		s.append("\nname = " + name);
-		s.append("\ntags = " + tags);
+		s.append(",name = " + name);
+		s.append(",tags = " + tags);
+		s.append(",props = " + props);
+		s.append(",status = " + status);
+		s.append(",source = " + source);
 		return s.toString();	
 	}
 }
