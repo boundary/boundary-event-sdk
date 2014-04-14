@@ -159,6 +159,11 @@
                   <artifactId>camel-xmljson</artifactId>
         	  <version>${camel-version}</version>
                 </dependency>
+                <dependency>
+                  <groupId>org.apache.camel</groupId>
+                  <artifactId>camel-script</artifactId>
+                  <version>${camel-version}</version>
+                </dependency>
 	</dependencies>
 
 </project>
