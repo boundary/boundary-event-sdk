@@ -1,6 +1,7 @@
 package com.boundary.sdk;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import org.apache.camel.Endpoint;
 import org.apache.camel.Exchange;
@@ -24,6 +25,23 @@ public class EventToJSONTest extends CamelSpringTestSupport {
 		event.addTag("green");
 		event.addTag("blue");
 		
+		event.addProp("hello", "world");
+		ArrayList<String> aList = new ArrayList<String>();
+		aList.add("yellow");
+		aList.add("magenta");
+		aList.add("cyan");
+		
+		event.addProp("mylist",aList);
+		
+		ArrayList<String> aSongList = new ArrayList<String>();
+		aSongList.add("Red Barchetta");
+		aSongList.add("Free Will");
+		aSongList.add("La Villa Strangiato");
+		
+		event.getSource().setRef("localhost").setType("host");
+		event.getSource().addProp("song_list", aSongList);
+		
+		
 		template.sendBody("direct:event-to-json", event);
 		
 		Thread.sleep(1000);
@@ -31,6 +49,7 @@ public class EventToJSONTest extends CamelSpringTestSupport {
 		File target = new File("target/event-to-json.log");
 		assertTrue("Log file exists: ", target.exists());
 		String content = context.getTypeConverter().convertTo(String.class,target);
-		assertEquals("{\"name\":\"hello\",\"tags\":[\"red\",\"green\",\"blue\"]}", content);
+		String expectedContent = "{\"name\":\"hello\",\"tags\":[\"red\",\"green\",\"blue\"],\"props\":{\"hello\":\"world\",\"mylist\":[\"yellow\",\"magenta\",\"cyan\"]},\"status\":\"SUCCEED\",\"source\":{\"ref\":\"localhost\",\"props\":{\"song_list\":[\"Red Barchetta\",\"Free Will\",\"La Villa Strangiato\"]}}}";
+		assertEquals(expectedContent,content);
 	}
 }
