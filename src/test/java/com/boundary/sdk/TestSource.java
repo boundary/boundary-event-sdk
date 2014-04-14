@@ -5,6 +5,11 @@ import java.util.Map;
 
 public class TestSource {
 	
+	@Override
+	public String toString() {
+		return "TestSource [ref=" + ref + ", type=" + type + ", props=" + props + "]";
+	}
+
 	String ref;
 	String type;
 	Map<String,Object> props;

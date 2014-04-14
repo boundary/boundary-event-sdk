@@ -7,6 +7,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.test.junit4.CamelSpringTestSupport;
 import org.junit.Test;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -14,6 +15,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @SuppressWarnings("deprecation")
 public class EventTest extends CamelSpringTestSupport {
+	private static Logger LOG = LoggerFactory.getLogger(EventTest.class);
+
 	protected AbstractXmlApplicationContext createApplicationContext() {
 		return new ClassPathXmlApplicationContext("META-INF/event-test.xml");
 	}
@@ -29,6 +32,8 @@ public class EventTest extends CamelSpringTestSupport {
 		File target = new File("target/event-test.log");
 		assertTrue("Log file exists: ", target.exists());
 		String content = context.getTypeConverter().convertTo(String.class,target);
-		assertEquals("TestEvent [name=hello]", content);
+		LOG.info(content);
+		String expectedContent = "TestEvent,name = hello,tags = [],props = {},status = SUCCEED,source = TestSource [ref=, type=, props={}]";
+		assertEquals(expectedContent, content);
 	}
 }
