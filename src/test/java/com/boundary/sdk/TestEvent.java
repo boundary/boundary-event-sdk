@@ -9,7 +9,7 @@ public class TestEvent {
 	
 	private String name;
 	private ArrayList<String> tags;
-	private Map<String,Object> props;
+	private Map<String,Object> properties;
 	private TestStatus status;
 	private TestSource source;
 
@@ -27,8 +27,8 @@ public class TestEvent {
 		return this;
 	}
 	
-	public TestEvent addProp(String key, Object value) {
-		props.put(key, value);
+	public TestEvent addProperty(String key, Object value) {
+		properties.put(key, value);
 		return this;
 	}
 	
@@ -36,8 +36,8 @@ public class TestEvent {
 		return this.status;
 	}
 	
-	public Map<String,Object> getProps() {
-		return this.props;
+	public Map<String,Object> getProperties() {
+		return this.properties;
 	}
 	
 	public ArrayList<String> getTags() {
@@ -51,7 +51,7 @@ public class TestEvent {
 	public TestEvent() {
 		this.name = new String();
 		this.tags = new ArrayList<String>();
-		this.props = new LinkedHashMap<String,Object>();
+		this.properties = new LinkedHashMap<String,Object>();
 		this.status = TestStatus.SUCCEED;
 		this.source = new TestSource();
 	}
@@ -67,7 +67,7 @@ public class TestEvent {
 		s.append("TestEvent");
 		s.append(",name = " + name);
 		s.append(",tags = " + tags);
-		s.append(",props = " + props);
+		s.append(",properties = " + properties);
 		s.append(",status = " + status);
 		s.append(",source = " + source);
 		return s.toString();	
