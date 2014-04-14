@@ -1,0 +1,21 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+                   http://www.springframework.org/schema/beans
+                   http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                   http://camel.apache.org/schema/spring
+                   http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+		<dataFormats>
+			<json id="myJson" library="Jackson" />
+		</dataFormats>
+
+		<route id="TEST-ROUTE">
+			<from uri="direct:event-test" />
+			<to uri="language:javascript:classpath:event-map.js" />
+			<marshal ref="myJson" />
+			<to uri="file://?fileName=target/event-javascript-test.log" />
+		</route>
+	</camelContext>
+</beans>

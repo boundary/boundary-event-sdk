@@ -7,21 +7,24 @@ public class TestSource {
 	
 	@Override
 	public String toString() {
-		return "TestSource [ref=" + ref + ", type=" + type + ", props=" + props + "]";
+		return "TestSource [ref=" + ref + ", type=" + type + ", props=" + properties + "]";
 	}
 
 	String ref;
 	String type;
-	Map<String,Object> props;
+	Map<String,Object> properties;
 	
 	
 	public TestSource() {
 		this.ref = "";
 		this.type = "";
-		this.props = new LinkedHashMap<String,Object>();
+		this.properties = new LinkedHashMap<String,Object>();
 	}
 	
 	public TestSource(String ref,String type) {
+		this();
+		this.ref = ref;
+		this.type = type;
 	}
 	
 	public TestSource setRef(String ref) {
@@ -42,13 +45,13 @@ public class TestSource {
 		return this.type;
 	}
 	
-	public TestSource addProp(String key,Object value) {
-		this.props.put(key, value);
+	public TestSource addProperty(String key,Object value) {
+		this.properties.put(key, value);
 		return this;
 	}
 	
-	public Map<String,Object> getProps() {
-		return this.props;
+	public Map<String,Object> getProperties() {
+		return this.properties;
 	}
 
 }
