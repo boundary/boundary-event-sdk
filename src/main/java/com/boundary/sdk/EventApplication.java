@@ -3,15 +3,15 @@ import org.apache.camel.spring.Main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class EventIntegrationApp
+public class EventApplication
 {
-	private static Logger LOG = LoggerFactory.getLogger(EventIntegrationApp.class);
+	private static Logger LOG = LoggerFactory.getLogger(EventApplication.class);
 
     private Main main;
      
     public static void main(String[] args) throws Exception
     {
-    	EventIntegrationApp app = new EventIntegrationApp();
+    	EventApplication app = new EventApplication();
         app.boot();
     }
      
@@ -19,17 +19,12 @@ public class EventIntegrationApp
     {
         // create a Main instance
         main = new Main();
+        
         // enable hangup support so you can press ctrl + c to terminate the JVM
         main.enableHangupSupport();
-        main.setApplicationContextUri("META-INF/event-application.xml");
         
-		// TODO Fixed values, need to make externally configurable
-		String orgID = "3ehRi7uZeeaTN12dErF5XOnRXjC";
-		String apiKey = "GN5HMCeu9trD5NYO5ZqYQrZe8aY";
-
-//       main.addRouteBuilder(new EventRoute(orgID,apiKey));
-//        main.addRouteBuilder(new BoundaryEventRoute(orgID,apiKey));
-        main.addRouteBuilder(new SNMPRoute());
+        // Get spring definition of the routes to start
+        main.setApplicationContextUri("META-INF/event-application.xml");
          
         // run until you terminate the JVM
         System.out.println("Starting Camel. Use ctrl + c to terminate the JVM.\n");
