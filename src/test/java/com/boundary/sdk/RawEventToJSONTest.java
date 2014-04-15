@@ -36,4 +36,14 @@ public class RawEventToJSONTest extends CamelSpringTestSupport {
 		producerTemplate.sendBody(event);
 		assertMockEndpointsSatisfied();
 	}
+	
+	@Test
+	public void testEmptyJSON() throws Exception {
+		mockOut.setExpectedMessageCount(1);
+		RawEvent event = new RawEvent();
+		
+		producerTemplate.sendBody(event);
+
+		mockOut.equals("{}");
+	}
 }

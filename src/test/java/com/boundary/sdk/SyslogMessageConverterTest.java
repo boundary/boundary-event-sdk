@@ -52,6 +52,8 @@ public class SyslogMessageConverterTest extends CamelTestSupport {
         assertNotNull(event);
 
         System.out.println(event);
+        
+        assertNotNull(event.getSeverity());
 
         assertEquals(Severity.INFO, event.getSeverity());
     }

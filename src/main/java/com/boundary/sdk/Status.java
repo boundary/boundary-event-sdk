@@ -1,12 +1,14 @@
 package com.boundary.sdk;
 
+import java.io.Serializable;
+
 /**
  * Boundary event status enumeration
  * 
  * @author davidg
  * 
  */
-public enum Status {
+public enum Status implements Serializable {
 
 	OPEN("OPEN"),
 	CLOSED("CLOSED"),

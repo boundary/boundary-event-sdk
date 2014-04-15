@@ -4,7 +4,10 @@
 package com.boundary.sdk;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
+import java.util.TimeZone;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
@@ -80,7 +83,11 @@ public class SyslogToEventProcessor implements Processor {
 		e.setSeverity(severity);
 		
 		// Set the time at which the syslog record was created
+		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		f.setTimeZone(TimeZone.getTimeZone("UTC"));
+
 		e.setCreatedAt(sm.getTimestamp());
+
 		
 		e.setTitle(sm.getHostname() + ":" + sm.getTimestamp());
 

@@ -7,6 +7,7 @@ import org.junit.Test;
 import com.boundary.sdk.Source;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class SourceTest {
@@ -15,8 +16,8 @@ public class SourceTest {
 	public void testDefaultConstructor() {
 		Source s = new Source();
 		
-		assertNotNull(s.getRef());
-		assertNotNull(s.getType());
+		assertNull(s.getRef());
+		assertNull(s.getType());
 		assertNotNull(s.getProperties());
 	}
 
@@ -38,13 +39,18 @@ public class SourceTest {
 	
 	@Test
 	public void testProperties() {
-		Map<String,Object> expectedProperties = new HashMap<String,Object>();
+		LinkedHashMap<String,Object> expectedProperties = new LinkedHashMap<String,Object>();
 		Source s = new Source();
 		expectedProperties.put("foo", "bar");
 		s.setProperties(expectedProperties);
 		assertEquals(s.getProperties(),expectedProperties);
-		
 	}
-
-
+	
+	@Test
+	public void testDefaultToString() {
+		Source s = new Source();
+		assertNotNull(s);
+		assertNotNull(s.toString());
+		assertEquals("",s.toString());
+	}
 }

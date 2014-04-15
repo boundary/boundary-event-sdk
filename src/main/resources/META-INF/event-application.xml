@@ -7,29 +7,22 @@
            http://camel.apache.org/schema/spring
            http://camel.apache.org/schema/spring/camel-spring.xsd">
 
-	<bean id="mylogger" class="org.apache.camel.component.log.LogComponent" />
-	<bean id="syslog-processor" class="com.boundary.sdk.SyslogToEventProcessor" />
-	<bean id="debug-processor" class="com.boundary.sdk.DebugProcessor" />
 	<bean id="boundary-event-route" class="com.boundary.sdk.BoundaryEventRoute">
-		<!-- TBD: Encryption using Camel APIs -->
+		<property name="routeId" value="BOUNDARY-EVENT-ROUTE"/>
+		<!-- TBD: Encryption of apiKey using Camel APIs -->
 		<property name="orgId" value="3ehRi7uZeeaTN12dErF5XOnRXjC"/>
 		<property name="apiKey" value="GN5HMCeu9trD5NYO5ZqYQrZe8aY"/>
+		<property name="fromUri" value="direct:boundary-event"/>
+	</bean>
+	
+	<bean id="syslog-route" class="com.boundary.sdk.SysLogRoute">
+		<property name="routeId" value="SYSLOG-ROUTE"/>
+		<property name="port" value="10514"/>
+		<property name="toUri" value="direct:boundary-event"/>
 	</bean>
 
 	<camelContext xmlns="http://camel.apache.org/schema/spring">
-		<routeBuilder ref="boundary-event-route" />
-		<dataFormats>
-			<syslog id="mySyslog"/>
-		</dataFormats>
-		<route id="SYSLOG-ROUTE">
-			<from id="syslog-listener"
-				uri="netty:udp://127.0.0.1:10514?sync=false&amp;allowDefaultCodec=false"/>
-			<unmarshal ref="mySyslog" />
-			<process id="syslog-route-processor" ref="syslog-processor"/>
-			<marshal>
-				<serialization/>
-			</marshal>
-			<to uri="direct:boundary-event"/>
-		</route>
+		<routeBuilder ref="boundary-event-route"/>
+		<routeBuilder ref="syslog-route"/>
 	</camelContext>
 </beans>

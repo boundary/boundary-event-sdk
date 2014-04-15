@@ -24,17 +24,17 @@ public class BoundaryEventRoute extends RouteBuilder {
 	
 	private static Logger LOG = LoggerFactory.getLogger(BoundaryEventRoute.class);
 
-	protected String apiHost;
-	protected String orgId;
-	protected String apiKey;
-	protected String endPoint;
-	protected String routeId;
+	private String apiHost;
+	private String orgId;
+	private String apiKey;
+	private String fromUri;
+	private String routeId;
 	
 	public BoundaryEventRoute() {
 		this.apiHost = "api.boundary.com";
 		this.orgId = "";
 		this.apiKey = "";
-		this.endPoint = "direct:boundary-event";
+		this.fromUri = "direct:boundary-event";
 	}
 	
 	protected String getBody(Exchange exchange) {
@@ -80,18 +80,41 @@ public class BoundaryEventRoute extends RouteBuilder {
 	
 	/**
 	 * 
-	 * @param endPoint
+	 * @return
 	 */
-	public void setEndPoint(String endPoint) {
-		this.endPoint = endPoint;
+	public String getApiHost() {
+		return this.apiHost;
+	}
+		
+	/**
+	 * 
+	 * @param fromUri
+	 */
+	public void setFromUri(String fromUri) {
+		this.fromUri = fromUri;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getFromUri() {
+		return this.fromUri;
+	}
+
 	/**
 	 * 
 	 * @param routeId
 	 */
 	public void setRouteId(String routeId) {
 		this.routeId = routeId;
+	}
+	
+	/**
+	 * 
+	 */
+	public String getRouteId() {
+		return this.routeId;
 	}
 	
 	/**
@@ -110,18 +133,16 @@ public class BoundaryEventRoute extends RouteBuilder {
 		config.setAuthUsername(this.apiKey);
 		config.setAuthPassword("");
 		
-
 		HttpComponent http = this.getContext().getComponent("https",HttpComponent.class);
 		http.setHttpConfiguration(config);
 		
-		// TODO: Add route Id
-		from(endPoint)
-				.unmarshal().serialization()
-				.marshal().json(JsonLibrary.Jackson)
-				.setHeader(Exchange.ACCEPT_CONTENT_TYPE, constant("application/json"))
-				.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
-				.setHeader(Exchange.HTTP_METHOD, constant("POST"))
-				.to(url.toString());
-		;
+		from(fromUri)
+			.routeId(routeId)
+			.unmarshal().serialization()
+			.marshal().json(JsonLibrary.Jackson)
+			.setHeader(Exchange.ACCEPT_CONTENT_TYPE, constant("application/json"))
+			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
+			.setHeader(Exchange.HTTP_METHOD, constant("POST"))
+			.to(url.toString());
 	}
 }
