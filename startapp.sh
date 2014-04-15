@@ -4,4 +4,4 @@
 
 # mvn exec:java -Dexec.mainClass="com.boundary.sdk.BoundarySpringSDKApp"
 
-mvn exec:java -Dexec.mainClass="com.boundary.sdk.EventIntegrationApp"
+mvn exec:java -Dexec.mainClass="com.boundary.sdk.EventApplication"

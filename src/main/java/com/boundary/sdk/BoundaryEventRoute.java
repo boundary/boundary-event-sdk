@@ -11,6 +11,7 @@ import org.apache.camel.component.http.AuthMethod;
 import org.apache.camel.component.http.HttpComponent;
 import org.apache.camel.component.http.HttpConfiguration;
 import org.apache.camel.component.syslog.SyslogMessage;
+import org.apache.camel.model.dataformat.JsonLibrary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,26 +24,17 @@ public class BoundaryEventRoute extends RouteBuilder {
 	
 	private static Logger LOG = LoggerFactory.getLogger(BoundaryEventRoute.class);
 
-	protected String apiHost = "api.boundary.com";
-	protected String orgID;
+	protected String apiHost;
+	protected String orgId;
 	protected String apiKey;
-	protected String authorization;
-	protected StringBuffer url = new StringBuffer();
-	protected String contentType = "application/json";
-	protected String routeName;
-	protected String fromID;
+	protected String endPoint;
+	protected String routeId;
 	
-	public BoundaryEventRoute(String orgID, String apiKey) {
-		this(orgID,apiKey,"BOUNDARY-EVENT-ROUTE","boundary-event");
-	}
-	public BoundaryEventRoute(String orgID, String apiKey, String routeName, String fromID) {
-		this.orgID = orgID;
-		this.apiKey = apiKey;
-		this.authorization = apiKey + ":";
-		url.append("https://" + apiHost + "/" + orgID + "/" + "events");
-		LOG.debug("url: " + url + ", orgID: " + orgID + ", apiKey: " + apiKey);
-		this.routeName = routeName;
-		this.fromID = fromID;
+	public BoundaryEventRoute() {
+		this.apiHost = "api.boundary.com";
+		this.orgId = "";
+		this.apiKey = "";
+		this.endPoint = "direct:boundary-event";
 	}
 	
 	protected String getBody(Exchange exchange) {
@@ -56,35 +48,79 @@ public class BoundaryEventRoute extends RouteBuilder {
 		
 		return result;
 	}
+	
+	/**
+	 * 
+	 * @param orgId
+	 */
+	
+	public void setOrgId(String orgId) {
+		this.orgId = orgId;
+	}
+	
+	/**
+	 * 
+	 * @param apiKey
+	 */
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
+	
+	public String getApiKey() {
+		return this.apiKey;
+	}
+		
+	/**
+	 * 
+	 * @param apiHost
+	 */
+	public void setApiHost(String apiHost) {
+		this.apiHost = apiHost;
+	}
+	
+	/**
+	 * 
+	 * @param endPoint
+	 */
+	public void setEndPoint(String endPoint) {
+		this.endPoint = endPoint;
+	}
+	
+	/**
+	 * 
+	 * @param routeId
+	 */
+	public void setRouteId(String routeId) {
+		this.routeId = routeId;
+	}
+	
+	/**
+	 * Configuration for sending events to Boundary.
+	 * 
+	 */
 	@Override
 	public void configure() {
-            HttpConfiguration config = new HttpConfiguration();
-            config.setAuthMethod(AuthMethod.Basic);
-            config.setAuthUsername(this.apiKey);
-            config.setAuthPassword("");
+		
+		// Create the URL used to send events
+		String url = "https://" + apiHost + "/" + orgId + "/" + "events";
+		
+		// Configure our HTTP connection to use BASIC authentication
+		HttpConfiguration config = new HttpConfiguration();
+		config.setAuthMethod(AuthMethod.Basic);
+		config.setAuthUsername(this.apiKey);
+		config.setAuthPassword("");
+		
 
-            HttpComponent http = this.getContext().getComponent("https", HttpComponent.class);
-            http.setHttpConfiguration(config);
-
-		from("direct:" + this.fromID)
-				.routeId(this.routeName)
-				.setHeader(Exchange.ACCEPT_CONTENT_TYPE,constant(contentType))
-				.setHeader(Exchange.CONTENT_TYPE,constant(contentType))
-				.setHeader(Exchange.HTTP_METHOD, constant("POST"))
-				// .setBody().simple(getBody())
+		HttpComponent http = this.getContext().getComponent("https",HttpComponent.class);
+		http.setHttpConfiguration(config);
+		
+		// TODO: Add route Id
+		from(endPoint)
 				.unmarshal().serialization()
-				.process(new Processor() {
-                    public void process(Exchange exchange) throws Exception {
-                        LOG.debug("Received event: " + exchange.getIn().getBody(RawEvent.class));
-                        Message m = exchange.getIn();
-                        m.setBody(getBody(exchange));
-                        Object o = m.getBody();
-                        LOG.debug("Class: " + o.getClass());
-                        Map <String,Object> headers = m.getHeaders();
-                        LOG.debug("headers: " + headers);
-                    }
-                })
-                .to("file://?fileName=http.log")
+				.marshal().json(JsonLibrary.Jackson)
+				.setHeader(Exchange.ACCEPT_CONTENT_TYPE, constant("application/json"))
+				.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
+				.setHeader(Exchange.HTTP_METHOD, constant("POST"))
 				.to(url.toString());
 		;
 	}
