@@ -40,6 +40,7 @@ public class EventToJSONTest extends CamelSpringTestSupport {
 		
 		event.getSource().setRef("localhost").setType("host");
 		event.getSource().addProperty("song_list", aSongList);
+		event.setStatus(TestStatus.SUCCEED);
 		
 		
 		template.sendBody("direct:event-to-json", event);
@@ -49,7 +50,42 @@ public class EventToJSONTest extends CamelSpringTestSupport {
 		File target = new File("target/event-to-json.log");
 		assertTrue("Log file exists: ", target.exists());
 		String content = context.getTypeConverter().convertTo(String.class,target);
-		String expectedContent = "{\"name\":\"hello\",\"tags\":[\"red\",\"green\",\"blue\"],\"properties\":{\"hello\":\"world\",\"mylist\":[\"yellow\",\"magenta\",\"cyan\"]},\"status\":\"SUCCEED\",\"source\":{\"ref\":\"localhost\",\"properties\":{\"song_list\":[\"Red Barchetta\",\"Freewill\",\"La Villa Strangiato\"]}}}";
+		String expectedContent = "{\"name\":\"hello\",\"tags\":[\"red\",\"green\",\"blue\"],\"properties\":{\"hello\":\"world\",\"mylist\":[\"yellow\",\"magenta\",\"cyan\"]},\"status\":\"SUCCEED\",\"source\":{\"ref\":\"localhost\",\"type\":\"host\",\"properties\":{\"song_list\":[\"Red Barchetta\",\"Freewill\",\"La Villa Strangiato\"]}}}";
+		assertEquals(expectedContent,content);
+	}
+	
+	@Test
+	public void testJSONNullHandling() throws Exception {
+		TestEvent event = new TestEvent();
+		
+		template.sendBody("direct:event-to-json", event);
+		
+		Thread.sleep(1000);
+
+		File target = new File("target/event-to-json.log");
+		assertTrue("Log file exists: ", target.exists());
+		String content = context.getTypeConverter().convertTo(String.class,target);
+		String expectedContent = "{}";
+		assertEquals(expectedContent,content);
+
+	}
+	
+	@Test
+	public void testJSONAllFields() throws Exception {
+		TestEvent event = new TestEvent();
+		
+		event.setName("red");
+		event.setStatus(TestStatus.FAIL);
+		event.addProperty("Hello", "World!");
+		event.addTag("foobar");
+		
+		
+		template.sendBody("direct:event-to-json", event);
+		
+		File target = new File("target/event-to-json.log");
+		assertTrue("Log file exists: ", target.exists());
+		String content = context.getTypeConverter().convertTo(String.class,target);
+		String expectedContent = "{\"name\":\"red\",\"tags\":[\"foobar\"],\"properties\":{\"Hello\":\"World!\"},\"status\":\"FAIL\"}";
 		assertEquals(expectedContent,content);
 	}
 }

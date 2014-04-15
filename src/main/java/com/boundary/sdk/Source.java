@@ -5,18 +5,34 @@ package com.boundary.sdk;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * @author davidg
  *
  */
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_EMPTY)
+@JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
+
 public class Source implements Serializable {
-	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@JsonProperty
 	private String ref;
+	@JsonProperty
 	private String type;
+	@JsonProperty
 	private String name;
-	private Map<String,Object> properties;
+	@JsonProperty
+	private LinkedHashMap<String,Object> properties;
 
 	/**
 	 * Default constructor
@@ -55,10 +71,10 @@ public class Source implements Serializable {
 	 * @param properties
 	 */
 	public Source(String ref, String type, String name, Map<String,Object> properties) {
-		this.ref = ref;
-		this.type = type;
-		this.name = name;
-		this.properties = properties;
+//		this.ref = ref;
+//		this.type = type;
+//		this.name = name;
+//		this.properties = properties;
 	}
 	
 	/**
@@ -116,7 +132,17 @@ public class Source implements Serializable {
 		return this.name;
 	}
 	
+	/**
+	 * Internal method to initialize the source properties
+	 */
+	private void initializeProperties() {
+		properties = new LinkedHashMap<String,Object>();
+	}
+	
 	public Map<String,Object> getProperties() {
+		if (properties == null) {
+			initializeProperties();
+		}
 		return properties;
 	}
 	
@@ -125,17 +151,20 @@ public class Source implements Serializable {
 	 * @param properties
 	 * @return
 	 */
-	public Source setProperties(Map<String,Object> properties) {
+	public Source setProperties(LinkedHashMap<String,Object> properties) {
+		if (properties == null) {
+			initializeProperties();
+		}
 		this.properties = properties;
 		return this;
 	}
 	
 	public String toString() {
 		StringBuffer s = new StringBuffer();
-		s.append("ref: " + this.ref);
-		s.append("type: " + this.type);
-		s.append("name: " + this.name);
-		s.append("properties: " + this.properties);
+		s.append(ref == null ? "": "ref: " + this.ref);
+		s.append(type == null ? "" : ",type: " + this.type);
+		s.append(name == null ? "" : "name: " + this.name);
+		s.append(properties == null ? "": "properties: " + this.properties);
 		return s.toString();
 	}
 }

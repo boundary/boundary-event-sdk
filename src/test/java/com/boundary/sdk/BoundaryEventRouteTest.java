@@ -40,5 +40,26 @@ public class BoundaryEventRouteTest {
 		route.setApiKey(expectedApiKey);
 		assertEquals("Check apiKey",expectedApiKey,route.getApiKey());
 	}
+	
+	@Test
+	public void testApiHost() {
+		String expectedApiHost = "some.where.but.no.where.com";
+		route.setApiHost(expectedApiHost);
+		assertEquals("Check api host",expectedApiHost,route.getApiHost());
+	}
+	
+	@Test
+	public void testRouteId() {
+		String expectedRouteId = "Toucan Sam";
+		route.setRouteId(expectedRouteId);
+		assertEquals("Check route Id",expectedRouteId,route.getRouteId());
+	}
+	
+	@Test
+	public void testFromUri() {
+		String expectedFromUri = "Toucan Sam";
+		route.setFromUri(expectedFromUri);
+		assertEquals("Check fromUri",expectedFromUri,route.getFromUri());
+	}
 
 }

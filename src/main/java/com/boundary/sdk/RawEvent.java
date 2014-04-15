@@ -4,46 +4,68 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * 
  * An <code>RawEvent</code> object is a Java implementation of the JSON representation used in the
  * Boundary Event REST API.
+ * 
+ * NOTE: This classes uses lazy initialization for some fields so that the
+ *       serialization to JSON is skipped for those fields that have not been
+ *       specified.
  *
  * @author davidg
  */
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_EMPTY)
+@JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 public class RawEvent extends BaseEvent implements Serializable {
 	
 	/**
 	 * Members
 	 */
 	private static final long serialVersionUID = 1L;
+	@JsonProperty
 	private Date createdAt;
+	@JsonProperty
 	private ArrayList<String> fingerprintFields;
+	@JsonProperty
 	private String message;
+	@JsonProperty
 	private String organizationId;
-	private Map<String,Object> properties;
+	@JsonProperty
+	private LinkedHashMap<String,Object> properties;
+	@JsonProperty
 	private Date receivedAt;
+	@JsonProperty
 	private Source sender;
+	@JsonProperty
 	private Severity severity;
+	@JsonProperty
 	private Source source;
+	@JsonProperty
 	private Status status;
+	@JsonProperty
 	private ArrayList<String> tags;
+	@JsonProperty
 	private String title;
 
-	
-	
-	
-
 	/**
-	 *  Default contructor for a RawEvent
+	 *  Default constructor for a RawEvent
 	 */
 	public RawEvent() {
-		this(new Source(),new ArrayList<String>(),"");
-		this.addFingerprintField("@title");
+//		this(new Source(),new ArrayList<String>(),"");
+//		this.addFingerprintField("@title");
 	}
 	
 	/**
@@ -52,95 +74,21 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * @param fingerprintFields
 	 * @param title
 	 */
-	public RawEvent(Source source,ArrayList<String> fingerprintFields,String title) {
-		
-		this.createdAt = new Date();
-		this.fingerprintFields = fingerprintFields;
-		this.message = "";
-		this.organizationId = "";
-		this.properties = new HashMap<String,Object>();
-		this.receivedAt = new Date();
-		this.sender = new Source();
-		this.severity = Severity.INFO;
-		this.source = source;
-		this.status = Status.OK;
-		this.tags = new ArrayList<String>();
-		this.title = title;
+	public RawEvent(Source source,ArrayList<String> fingerprintFields,String title) {	
+//		this.createdAt = new Date().toString();
+//		this.fingerprintFields = fingerprintFields;
+//		this.message = "";
+//		this.organizationId = "";
+//		this.properties = new LinkedHashMap<String,Object>();
+//		this.receivedAt = new Date().toString();
+//		this.sender = new Source();
+//		this.severity = Severity.INFO;
+//		this.source = source;
+//		this.status = Status.OK;
+//		this.tags = new ArrayList<String>();
+//		this.title = title;
 	}
 	
-//	/**
-//	 * 
-//	 * @param title
-//	 * @param fingerprintFields
-//	 */
-//	public RawEvent(String title,ArrayList<String> fingerprintFields) {
-//		this(title,fingerprintFields,null);
-//	}
-//	
-//	/**
-//	 * 
-//	 * @param title
-//	 * @param fingerprintFields
-//	 * @param source
-//	 */
-//	public RawEvent(String title,ArrayList<String> fingerprintFields,Source source) {
-//		this(null,
-//				fingerprintFields,
-//				"",
-//				"",
-//				new HashMap<String,Object>(),
-//				new Date(),
-//				null,
-//				Severity.INFO,
-//				null,
-//				Status.OK,
-//				new ArrayList<String>(),
-//				title);
-//	}
-//	
-//	/**
-//	 * 
-//	 * @param createdAt
-//	 * @param fingerprintFields
-//	 * @param message
-//	 * @param organizationId
-//	 * @param properties
-//	 * @param receivedAt
-//	 * @param sender
-//	 * @param severity
-//	 * @param source
-//	 * @param status
-//	 * @param tags
-//	 * @param title
-//	 */
-//	public RawEvent(
-//			Date createdAt,
-//			ArrayList<String> fingerprintFields,
-//			String message,
-//			String organizationId,
-//			HashMap<String,Object> properties,
-//			Date receivedAt,
-//			Source sender,
-//			Severity severity,
-//			Source source,
-//			Status status,
-//			ArrayList<String> tags,
-//			String title
-//			) {
-//		this.createdAt = createdAt;
-//		this.fingerprintFields = fingerprintFields;
-//		this.message = message;
-//		this.organizationId = organizationId;
-//		this.properties = properties;
-//		this.receivedAt = receivedAt;
-//		this.sender = sender;
-//		this.severity = severity;
-//		this.source = source;
-//		this.status = status;
-//		this.tags = tags;
-//		this.title = title;
-//	}
-//	
 	/**
 	 * Returns the creation event of the event
 	 * @return
@@ -158,12 +106,22 @@ public class RawEvent extends BaseEvent implements Serializable {
 		this.createdAt = createdAt;
 		return this;
 	}
+	
+	/**
+	 * Used for lazy initialization of the fingerprint fields.
+	 */
+	private void initFingerprintFields() {
+		this.fingerprintFields = new ArrayList<String>();
+	}
 
 	/**
 	 * 
 	 * @return
 	 */
 	public ArrayList<String> getFingerprintFields() {
+		if (fingerprintFields == null) {
+			initFingerprintFields();
+		}
 		return fingerprintFields;
 	}
 	
@@ -173,8 +131,18 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * @param Field to use in the fingerprint field
 	 * @return RawEvent
 	 */
-	public RawEvent addFingerprintField(String value) {
-		this.fingerprintFields.add(value);
+	public RawEvent putFingerprintField(String value) {
+		if (fingerprintFields == null) {
+			initFingerprintFields();
+		}
+		fingerprintFields.add(value);
+		return this;
+	}
+	
+	public RawEvent removeFingerprintField(String value) {
+		if (fingerprintFields != null){
+			fingerprintFields.remove(value);
+		}
 		return this;
 	}
 	
@@ -185,6 +153,9 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * @return RawEvent
 	 */
 	public RawEvent setFingerprintFields(ArrayList<String> fingerprintFields) {
+		if (fingerprintFields == null) {
+			initFingerprintFields();
+		}
 		this.fingerprintFields = fingerprintFields;
 		return this;
 	}
@@ -229,11 +200,45 @@ public class RawEvent extends BaseEvent implements Serializable {
 	}
 	
 	/**
-	 * Returns the properties of the event
+	 * Internal method to initialize event properties
+	 */
+	private void initProperties() {
+		this.properties = new LinkedHashMap<String,Object>();
+	}
+	
+	/**
+	 * Adds a property to an event. A property consists of
+	 * a key/value pair.
+	 * 
+	 * @param key
+	 * @param value
+	 */
+	public void putProperty(String key,Object value) {
+		if (properties == null) {
+			initProperties();
+		}
+		this.properties.put(key, value);
+	}
+	
+	/**
+	 * Removes a property with the key from the {@link RawEvent}.
+	 * @param key
+	 */
+	public void removeProperty(String key) {
+		if (properties != null) {
+			this.properties.remove(key);
+		}
+	}
+	
+	/**
+	 * Returns all of the properties associated with {@link RawEvent}
 	 * 
 	 * @return Map<String,Object> containing the properties
 	 */
-	public Map<String,Object> getProperties() {
+	public LinkedHashMap<String,Object> getProperties() {
+		if (properties == null) {
+			initProperties();
+		}
 		return this.properties;
 	}
 	
@@ -243,7 +248,10 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * @param properties Map<String,Object> containing the properties to add to the event.
 	 * @return RawEvent
 	 */
-	public RawEvent setProperties(Map<String,Object> properties) {
+	public RawEvent setProperties(LinkedHashMap<String,Object> properties) {
+		if (properties == null) {
+			initProperties();
+		}
 		this.properties = properties;
 		return this;
 	}
@@ -268,12 +276,19 @@ public class RawEvent extends BaseEvent implements Serializable {
 		return this;
 	}
 	
+	private void initializeSender() {
+		this.sender = new Source();
+	}
+	
 	/**
 	 * Returns the current sender associated with the event
 	 * 
 	 * @return Source containing the sender
 	 */
 	public Source getSender() {
+		if (sender == null) {
+			initializeSender();
+		}
 		return this.sender;
 	}
 	
@@ -284,8 +299,19 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * @return RawEvent
 	 */
 	public RawEvent setSender(Source sender) {
+		if (sender == null) {
+			initializeSender();
+		}
+
 		this.sender = sender;
 		return this;
+	}
+	
+	/**
+	 * Internal method to initialize Status
+	 */
+	private void initializeSeverity() {
+		this.severity = Severity.INFO;
 	}
 
 	/**
@@ -293,6 +319,9 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * @return Severity
 	 */
 	public Severity getSeverity() {
+		if (severity == null) {
+			initializeSeverity();
+		}
 		return this.severity;
 	}
 
@@ -302,10 +331,16 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * @return RawEvent
 	 */
 	public RawEvent setSeverity(Severity severity) {
+		if (severity == null) {
+			initializeSeverity();
+		}
 		this.severity = severity;
 		return this;
 	}
 
+	private void initializeSource() {
+		source = new Source();
+	}
 
 	/**
 	 * Gets the source of the event
@@ -313,6 +348,9 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * @return Source associated with the event
 	 */
 	public Source getSource() {
+		if (source == null) {
+			initializeSource();
+		}
 		return source;
 	}
 	
@@ -323,8 +361,15 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * @return RawEvent
 	 */
 	public RawEvent setSource(Source source) {
+		if (source == null) {
+			initializeSource();
+		}
 		this.source = source;
 		return this;
+	}
+	
+	private void initializeStatus() {
+		this.status = Status.OK;
 	}
 	
 	/**
@@ -333,6 +378,9 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * @return Status
 	 */
 	public Status getStatus() {
+		if (status == null) {
+			initializeStatus();
+		}
 		return this.status;
 	}
 	
@@ -343,6 +391,9 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * @return RawStatus
 	 */
 	public RawEvent setStatus(Status status) {
+		if (status == null) {
+			initializeStatus();
+		}
 		this.status = status;
 		return this;
 	}
@@ -367,13 +418,24 @@ public class RawEvent extends BaseEvent implements Serializable {
 	}
 	
 	/**
+	 * Internal method to initialize the {@link RawEvent} tags attribute
+	 */
+	private void initializeTags() {
+		this.tags = new ArrayList<String>();
+	}
+	
+	/**
 	 * Sets the entire list of tags in the event
 	 * from the list of tags passed in.
 	 * 
 	 * @param tags List of tags to add to the event
 	 */
-	public void setTags(ArrayList<String> tags) {
+	public RawEvent setTags(ArrayList<String> tags) {
+		if (tags == null) {
+			initializeTags();
+		}
 		this.tags = tags;
+		return this;
 	}
 	
 	/**
@@ -382,8 +444,18 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * @param tag Value of tag.
 	 * @return RawEvent
 	 */
-	public RawEvent addTag(String tag) {
+	public RawEvent putTag(String tag) {
+		if (tags == null) {
+			initializeTags();
+		}
 		this.tags.add(tag);
+		return this;
+	}
+	
+	public RawEvent removeTag(String tag) {
+		if (tags != null) {
+			tags.remove(tag);
+		}
 		return this;
 	}
 	
@@ -393,6 +465,10 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * @return
 	 */
 	public ArrayList<String> getTags() {
+		if (tags == null) {
+			initializeTags();
+		}
+
 		return tags;
 	}
 	
@@ -401,17 +477,19 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 */
 	public String toString() {
 		StringBuffer s = new StringBuffer();
-		
-		s.append("createdAt: " + createdAt);
-		s.append("\nfingerprintFields: " + fingerprintFields.toString());
-		s.append("\nmessage: " + message);
-		s.append("\norganizationId: " + organizationId);
-		s.append("\nproperties: " + properties);
-		s.append("\nreceivedAt: " + receivedAt);
-		s.append("\nsender: " + sender);
-		s.append("\nsource: " + source);
-		s.append("\ntags: " + tags.toString());
-		s.append("\ntitle: " + title);
+
+		s.append(createdAt == null ? "" : "createdAt: " +  createdAt);
+		s.append(fingerprintFields == null ? "" : ",fingerprintFields: " + fingerprintFields.toString());
+		s.append(message == null ? "": ",message: " + message);
+		s.append(organizationId == null ? "": ",organizationId: " + organizationId);
+		s.append(properties == null ? "" : ",properties: " + properties);
+		s.append(receivedAt == null ? "" : ",receivedAt: " + receivedAt);
+		s.append(sender == null ? "" : ",sender: " + sender);
+		s.append(severity == null ? "" : ",severity: " + severity);
+		s.append(source == null ? "" : ",source: " + source);
+		s.append(status == null ? "" : ",status: " + status);
+		s.append(tags == null ? "" : ",tags: " + tags.toString());
+		s.append(title == null ? "" : ",title: " + title);
 
 		return s.toString();
 	}

@@ -9,11 +9,13 @@ import org.junit.Before;
 import com.boundary.sdk.RawEvent;
 import com.boundary.sdk.Severity;
 import com.boundary.sdk.Status;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class TestRawEvent {
@@ -44,9 +46,20 @@ public class TestRawEvent {
 	 */
 	@Test
 	public void testDefaultConstructor() {
-		assertNotNull("check for null title",event.getTitle());
+	
+		assertNull("Check createdAt",event.getCreatedAt());
 		assertNotNull("check for null fingerprint fields",event.getFingerprintFields());
+		assertNull("Check message",event.getMessage());
+		assertNull("Check organization id",event.getOrganizationId());
+		assertNotNull("check fingerprint fields",event.getProperties());
+		assertNull("Check receivedAt",event.getReceivedAt());
+		assertNotNull("Check sender",event.getSender());
+		assertNotNull("Check severity",event.getSeverity());
+		assertNotNull("Check source",event.getSource());
 		assertNotNull("check for null source",event.getSource());
+		assertNotNull("Check status", event.getStatus());
+		assertNotNull("Check tags",event.getTags());
+		assertNull("check for null title",event.getTitle());
 	}
 	
 	@Test
@@ -71,7 +84,7 @@ public class TestRawEvent {
 	
 	@Test
 	public void testMessage() {
-		String expectedMessage ="Good Morning Vietname!";
+		String expectedMessage ="Good Morning Vietnam!";
 		event.setMessage(expectedMessage);
 		assertEquals("Check message field",expectedMessage,event.getMessage());
 	}
@@ -85,12 +98,11 @@ public class TestRawEvent {
 	
 	@Test
 	public void testProperties() {
-		Map<String,Object> expectedProperties = new HashMap<String,Object>();
+		LinkedHashMap<String,Object> expectedProperties = new LinkedHashMap<String,Object>();
 		
 		expectedProperties.put("host","some.really.long.host.name");
 		event.setProperties(expectedProperties);
 		
-		//Todo needs additional checking
 		assertEquals("Check properities field",expectedProperties,event.getProperties());
 		
 	}
@@ -124,7 +136,7 @@ public class TestRawEvent {
 		String aRef = "stimpy.nick.com";
 		String aType = "host";
 		String aName = "ren";
-		Map<String,Object> aProp = new HashMap<String,Object>();
+		LinkedHashMap<String,Object> aProp = new LinkedHashMap<String,Object>();
 		String aValue = "Hello World!";
 		aProp.put("hello",aValue);
 		source.setRef(aRef);

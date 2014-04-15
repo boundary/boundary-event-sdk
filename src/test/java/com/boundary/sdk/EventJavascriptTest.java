@@ -29,7 +29,7 @@ public class EventJavascriptTest extends CamelSpringTestSupport {
 		assertTrue("Log file exists: ", target.exists());
 		String content = context.getTypeConverter().convertTo(String.class,target);
 		LOG.info(content);
-		String expectedContent = "{\"name\":\"hello\",\"tags\":[\"red\",\"green\",\"blue\"],\"properties\":{\"hello\":\"world\",\"mylist\":[\"yellow\",\"magenta\",\"cyan\"]},\"status\":\"SUCCEED\",\"source\":{\"ref\":\"localhost\",\"properties\":{\"song_list\":[\"Red Barchetta\",\"Freewill\",\"La Villa Strangiato\"]}}}";
+		String expectedContent = "{\"name\":\"hello\",\"tags\":[\"red\",\"green\",\"blue\"],\"properties\":{\"hello\":\"world\",\"mylist\":[\"yellow\",\"magenta\",\"cyan\"]},\"source\":{\"ref\":\"localhost\",\"properties\":{\"song_list\":[\"Red Barchetta\",\"Freewill\",\"La Villa Strangiato\"]}}}";
 		assertEquals(expectedContent, content);
 	}
 }
