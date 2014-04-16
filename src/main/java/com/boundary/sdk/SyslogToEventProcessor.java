@@ -31,17 +31,23 @@ public class SyslogToEventProcessor implements Processor {
 
 	public SyslogToEventProcessor() {
 	}
+	
+	private void logSyslogMessage(SyslogMessage slm) {
+		LOG.debug(slm.getTimestamp()
+				+ "|" + slm.getFacility()
+				+ "|" + slm.getSeverity()
+				+ "|" + slm.getHostname()
+				+ "|" + slm.getRemoteAddress()
+				+ "|" + slm.getLogMessage());
+	}
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
-
-		CamelContext context = exchange.getContext();
 		Message message = exchange.getIn();
 
 		// Extract SyslogMessage from the message body.
-		SyslogMessage syslogMessage = (SyslogMessage) message
-				.getBody(SyslogMessage.class);
-		LOG.debug("Received syslog message: " + syslogMessage);
+		SyslogMessage syslogMessage = (SyslogMessage) message.getBody(SyslogMessage.class);
+		logSyslogMessage(syslogMessage);
 
 		// Create new event to translate the syslog message to
 		RawEvent event = new RawEvent();
@@ -61,15 +67,13 @@ public class SyslogToEventProcessor implements Processor {
 	 */
 	private void syslogMessageToEvent(SyslogMessage sm, RawEvent e) {
 
-		// Add the facility to 
-		// Set the event severity based on our default mapping
-		// defined in a properties file
-		//
 		e.getProperties().put("facility", sm.getFacility());
+		e.putTag(sm.getFacility().toString());
 		
 		// Add the hostname
 		e.getSource().setRef(sm.getHostname()).setType("host");
 		e.getProperties().put("hostname", sm.getHostname());
+		e.putTag(sm.getHostname());
 		
 		// Add the message
 		e.setMessage(sm.getLogMessage());
@@ -77,20 +81,30 @@ public class SyslogToEventProcessor implements Processor {
 		
 		// Add the remote address
 		e.getProperties().put("remote_address", sm.getRemoteAddress());
+		e.putTag(sm.getRemoteAddress());
 		
 		// Map the syslog severity to Boundary event severity
 		Severity severity = getEventSeverity(sm.getSeverity());
 		e.setSeverity(severity);
+		e.putProperty("severity", sm.getSeverity().toString());
+		e.putTag(sm.getSeverity().toString());
+		
+		Status status = getEventStatus(sm.getSeverity());
+		e.setStatus(status);
+		
+		// Set the uniqueness of the event by hostname and facility
+		// TBD These fields need to be split out in a configuration file
+		e.putFingerprintField("hostname");
+		e.putFingerprintField("facility");
 		
 		// Set the time at which the syslog record was created
-		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		f.setTimeZone(TimeZone.getTimeZone("UTC"));
-
+		// TBD: Ensure time is in UTC
 		e.setCreatedAt(sm.getTimestamp());
+		e.putProperty("timestamp", sm.getTimestamp());
 
-		
-		e.setTitle(sm.getHostname() + ":" + sm.getTimestamp());
-
+		// Set Title
+		// TBD External configuration
+		e.setTitle("Syslog Message from  " + sm.getHostname());
 	}
 
 	/**
@@ -100,18 +114,30 @@ public class SyslogToEventProcessor implements Processor {
 	 * @param e
 	 */
 	private Severity getEventSeverity(SyslogSeverity severity) {
-		Properties severityMap = getSeverityProperties("syslog.severity.properties");
+		getProperties(severityMap,"syslog.severity.properties");
 		String strSeverity = severityMap.getProperty(severity.toString());
 		return Severity.valueOf(strSeverity);
 	}
+	
+	/**
+	 * 
+	 * @param severity
+	 * @return
+	 */
+	private Status getEventStatus(SyslogSeverity severity) {
+		getProperties(statusMap,"syslog.status.properties");
+		String strStatus = statusMap.getProperty(severity.toString());
+		return Status.valueOf(strStatus);
+	}
 
-	private static Properties severityProperties = null;
 
-	public static Properties getSeverityProperties(String propertyFileName) {
-		if (severityProperties == null) {
+	private static Properties severityMap = new Properties();
+	private static Properties statusMap = new Properties();
+
+	public static void getProperties(Properties properties, String propertyFileName) {
+		if (properties.isEmpty()) {
 			try {
-				severityProperties = new Properties();
-				severityProperties.load(Thread.currentThread()
+				properties.load(Thread.currentThread()
 						.getContextClassLoader()
 						.getResourceAsStream(propertyFileName));
 			} catch (IOException e) {
@@ -120,6 +146,5 @@ public class SyslogToEventProcessor implements Processor {
 				LOG.error(e.getStackTrace().toString());
 			}
 		}
-		return severityProperties;
 	}
 }
