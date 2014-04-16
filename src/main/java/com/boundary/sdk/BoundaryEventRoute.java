@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.camel.Exchange;
+import org.apache.camel.LoggingLevel;
 import org.apache.camel.Processor;
 import org.apache.camel.Message;
 import org.apache.camel.builder.RouteBuilder;
@@ -16,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
+ * {@link RouteBuilder} for sending events to Boundary.
  * @author davidg
  *
  */
@@ -36,22 +37,11 @@ public class BoundaryEventRoute extends RouteBuilder {
 		this.apiKey = "";
 		this.fromUri = "direct:boundary-event";
 	}
-	
-	protected String getBody(Exchange exchange) {
-		String s1 = "{ \"title\": \"example\", \"message\": \"test\",\"tags\": [\"example\", \"test\", \"stuff\"], \"fingerprintFields\": [\"@title\"], \"source\": { \"ref\": \"myhost\",\"type\": \"host\"}}";
-		String s2 = "{ \"title\": \"%s\", \"severity\": \"%s\",\"status\":\"OPEN\",\"message\": \"test\",\"fingerprintFields\": [\"@title\"], \"source\": { \"ref\": \"myhost\",\"type\": \"host\"}}";
-		Message m = exchange.getIn();
-		RawEvent event = (RawEvent) m.getBody(RawEvent.class);
-		LOG.debug("EVENT: " + event);
 		
-		String result = String.format(s2,event.getTitle(),event.getSeverity().toString());
-		
-		return result;
-	}
-	
 	/**
+	 * Set the Boundary Organization ID to use by default
 	 * 
-	 * @param orgId
+	 * @param orgId Organizationa Id from the Boundary console.
 	 */
 	
 	public void setOrgId(String orgId) {
@@ -59,18 +49,25 @@ public class BoundaryEventRoute extends RouteBuilder {
 	}
 	
 	/**
+	 * Set the Boundary authentication key
 	 * 
-	 * @param apiKey
+	 * @param apiKey API key from the Boundary Console
 	 */
 	public void setApiKey(String apiKey) {
 		this.apiKey = apiKey;
 	}
 	
+	/**
+	 * Current value of the API key
+	 * 
+	 * @return String
+	 */
 	public String getApiKey() {
 		return this.apiKey;
 	}
 		
 	/**
+	 * Set the host to use for sending Boundary API requests
 	 * 
 	 * @param apiHost
 	 */
@@ -79,6 +76,7 @@ public class BoundaryEventRoute extends RouteBuilder {
 	}
 	
 	/**
+	 * Return the current Boundary API host
 	 * 
 	 * @return
 	 */
@@ -87,7 +85,7 @@ public class BoundaryEventRoute extends RouteBuilder {
 	}
 		
 	/**
-	 * 
+	 * URI used to receive {@link RawEvents} from.
 	 * @param fromUri
 	 */
 	public void setFromUri(String fromUri) {
@@ -95,6 +93,7 @@ public class BoundaryEventRoute extends RouteBuilder {
 	}
 	
 	/**
+	 * Get the current URI that is receiving {@link RawEvents}
 	 * 
 	 * @return
 	 */
@@ -103,6 +102,8 @@ public class BoundaryEventRoute extends RouteBuilder {
 	}
 
 	/**
+	 * Set the route Id which provides a well-known name in JMX
+	 * and Camel logs.
 	 * 
 	 * @param routeId
 	 */
@@ -111,14 +112,17 @@ public class BoundaryEventRoute extends RouteBuilder {
 	}
 	
 	/**
+	 * Return current value of the route Id
 	 * 
+	 * @return String
 	 */
 	public String getRouteId() {
 		return this.routeId;
 	}
 	
 	/**
-	 * Configuration for sending events to Boundary.
+	 * Configures the Camel route that receives {@link RawEvents}
+	 * and then sends to the Boundary API
 	 * 
 	 */
 	@Override
@@ -142,7 +146,9 @@ public class BoundaryEventRoute extends RouteBuilder {
 			.marshal().json(JsonLibrary.Jackson)
 			.setHeader(Exchange.ACCEPT_CONTENT_TYPE, constant("application/json"))
 			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
-			.setHeader(Exchange.HTTP_METHOD, constant("POST"))
-			.to(url.toString());
+			.setHeader(Exchange.HTTP_METHOD, constant("POST"))			.to("log:com.boundary.sdk.BoundaryEventRoute?level=DEBUG&groupInterval=10000&groupDelay=60000&groupActiveOnly=false")
+			.to(url.toString())
+			.log(LoggingLevel.DEBUG, "created event")
+			;
 	}
 }

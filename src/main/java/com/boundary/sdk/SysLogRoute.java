@@ -82,7 +82,6 @@ public class SysLogRoute extends RouteBuilder {
 
         DataFormat syslogDataFormat = new Rfc3164SyslogDataFormat();
 
-//        from("netty:udp://127.0.0.1:10514?sync=false&allowDefaultCodec=false")
 		from(uri)
 		.routeId(routeId)
 		.unmarshal(syslogDataFormat)
