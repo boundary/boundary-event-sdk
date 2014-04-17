@@ -56,7 +56,7 @@ public class TestRawEvent {
 		assertNotNull("Check sender",event.getSender());
 		assertNotNull("Check severity",event.getSeverity());
 		assertNotNull("Check source",event.getSource());
-		assertNotNull("check for null source",event.getSource());
+		assertNotNull("Check for null source",event.getSource());
 		assertNotNull("Check status", event.getStatus());
 		assertNotNull("Check tags",event.getTags());
 		assertNull("check for null title",event.getTitle());
