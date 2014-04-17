@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * @author davidg
  *
  */
-public class BoundaryEventRoute extends RouteBuilder {
+public class BoundaryEventRoute extends BoundaryRouteBuilder {
 	
 	private static Logger LOG = LoggerFactory.getLogger(BoundaryEventRoute.class);
 
@@ -29,7 +29,6 @@ public class BoundaryEventRoute extends RouteBuilder {
 	private String orgId;
 	private String apiKey;
 	private String fromUri;
-	private String routeId;
 	
 	public BoundaryEventRoute() {
 		this.apiHost = "api.boundary.com";
@@ -100,25 +99,6 @@ public class BoundaryEventRoute extends RouteBuilder {
 	public String getFromUri() {
 		return this.fromUri;
 	}
-
-	/**
-	 * Set the route Id which provides a well-known name in JMX
-	 * and Camel logs.
-	 * 
-	 * @param routeId
-	 */
-	public void setRouteId(String routeId) {
-		this.routeId = routeId;
-	}
-	
-	/**
-	 * Return current value of the route Id
-	 * 
-	 * @return String
-	 */
-	public String getRouteId() {
-		return this.routeId;
-	}
 	
 	/**
 	 * Configures the Camel route that receives {@link RawEvents}
@@ -144,11 +124,13 @@ public class BoundaryEventRoute extends RouteBuilder {
 			.routeId(routeId)
 			.unmarshal().serialization()
 			.marshal().json(JsonLibrary.Jackson)
+			.to("log:com.boundary.sdk.BoundaryEventRoute?level=DEBUG&showBody=true")
 			.setHeader(Exchange.ACCEPT_CONTENT_TYPE, constant("application/json"))
 			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
-			.setHeader(Exchange.HTTP_METHOD, constant("POST"))			.to("log:com.boundary.sdk.BoundaryEventRoute?level=DEBUG&groupInterval=10000&groupDelay=60000&groupActiveOnly=false")
+			.setHeader(Exchange.HTTP_METHOD, constant("POST"))
+			.to("log:com.boundary.sdk.BoundaryEventRoute?level=DEBUG&groupInterval=10000&groupDelay=60000&groupActiveOnly=false")
 			.to(url.toString())
-			.log(LoggingLevel.DEBUG, "created event")
+			.to("log:com.boundary.sdk.BoundaryEventRoute?level=DEBUG&showHeaders=true&multiline=true")
 			;
 	}
 }

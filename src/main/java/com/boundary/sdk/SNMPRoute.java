@@ -1,23 +1,40 @@
 package com.boundary.sdk;
 
-import org.apache.camel.builder.RouteBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
+ * Route builder that receives SNMP messages into {@link RawEvent}
+ * and then sends to Boundary event route.
  * 
  * @author davidg
  *
  */
-public class SNMPRoute extends RouteBuilder {
+public class SNMPRoute extends UDPRouterBuilder {
+	
+	private static Logger LOG = LoggerFactory.getLogger(SNMPRoute.class);
+	
+	private final int DEFAULT_SNMP_PORT=162;
 
 	public SNMPRoute() {
+		this.port = DEFAULT_SNMP_PORT;
 	}
 	
+	/**
+	 * Configuration for the SNMP route 
+	 */
 	@Override
 	public void configure() {
-		from("snmp:127.0.0.1:1162?protocol=udp&type=TRAP")
-		.routeId("SNMP-ROUTE")
-		.to("file://?fileName=snmptrap.log")
+		// TBD, verify if I have to provide host property
+		// TBD, Should the trap listener be bound to port 0.0.0.0??
+		// TBD, Support of TCP??
+		String uri = "snmp:127.0.0.1:" + this.port + "?protocol=udp&type=TRAP";
+		from(uri)
+		.routeId(this.routeId)
+		.to("log:" + this.getClass().toString() + "?level=INFO&showBody=true&showHeaders=true")
 		.process(new SNMPToEventProcessor())
 		.marshal().serialization()
-		.to("direct:event");
+		.to(toUri)
+		;
 	}
 }

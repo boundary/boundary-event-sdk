@@ -14,15 +14,19 @@ public class SysLogRoute extends RouteBuilder {
 	private int port;
 	private String toUri;
 	private String routeId;
+	
+	private final String DEFAULT_SYSLOG_ROUTE_NAME="SYSLOG-ROUTE";
+	// Standard syslog port multiplied by 10
+	private final int DEFAULT_SYSLOG_PORT = 5140;
+	
 
 	/**
 	 * Constructor
 	 */
 	public SysLogRoute() {
-		this.toUri = "direct:boundary-event";
-		this.routeId = "SYSLOG-ROUTE";
-		// Standard syslog port multiplied by 10
-		this.port = 5140;
+		this.toUri = BoundaryRouteBuilder.DEFAULT_EVENT_TO_URI;
+		this.routeId = DEFAULT_SYSLOG_ROUTE_NAME;
+		this.port = DEFAULT_SYSLOG_PORT;
 	}
 	
 	/**
