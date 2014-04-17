@@ -16,8 +16,7 @@ public class SysLogRoute extends RouteBuilder {
 	private String routeId;
 	
 	private final String DEFAULT_SYSLOG_ROUTE_NAME="SYSLOG-ROUTE";
-	// Standard syslog port multiplied by 10
-	private final int DEFAULT_SYSLOG_PORT = 5140;
+	private final int DEFAULT_SYSLOG_PORT = 1514;
 	
 
 	/**
@@ -85,7 +84,6 @@ public class SysLogRoute extends RouteBuilder {
 		String uri = "netty:udp://127.0.0.1:" + port + "?sync=false&allowDefaultCodec=false";
 
         DataFormat syslogDataFormat = new Rfc3164SyslogDataFormat();
-
 		from(uri)
 		.routeId(routeId)
 		.unmarshal(syslogDataFormat)
