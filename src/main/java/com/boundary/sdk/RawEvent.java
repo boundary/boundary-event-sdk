@@ -499,27 +499,21 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * 
 	 * title - "MyEvent"
 	 * fingerprintFields - "@title"
-	 * source - 
+	 * source - "localhost"
+	 * status - OPEN
 	 * 
 	 * @return Default event
 	 */
 	public static RawEvent getDefaultEvent() {
 		RawEvent event = new RawEvent();
-
+		
 		event.setTitle("MyEvent");
-		ArrayList<String> fields = new ArrayList<String>();
-		fields.add("@title");
-		event.setFingerprintFields(fields);
-		
-		Source s = new Source();
-		
-		try {
-			String hostname = java.net.InetAddress.getLocalHost().getHostName();
-			event.setSource(s);
-		}
-		catch(Exception e) {
-			System.out.println(e.getStackTrace());
-		}
+		event.setStatus(Status.OPEN);
+		event.setSeverity(Severity.WARN);
+		event.putFingerprintField("@title");
+		event.getSource().setRef("localhost");
+		event.getSource().setType("host");
+
 		return event;
 	}
 }
