@@ -10,8 +10,9 @@
 	<name>boundary-camel-example</name>
 	<url>http://maven.apache.org</url>
 	<properties>
-		<camel-version>2.12.3</camel-version>
-		<spring-version>3.2.5.RELEASE</spring-version>
+          <camel-version>2.12.3</camel-version>
+          <spring-version>3.2.5.RELEASE</spring-version>
+          <activemq-version>5.9.0</activemq-version>
     	<spring-security-version>3.1.4.RELEASE</spring-security-version>
 	</properties>
 
@@ -130,6 +131,16 @@
 			<artifactId>camel-syslog</artifactId>
 			<version>${camel-version}</version>
 		</dependency>
+		<dependency>
+                  <groupId>org.apache.camel</groupId>
+                  <artifactId>camel-jms</artifactId>
+                  <version>${camel-version}</version>
+                </dependency>
+                <dependency>
+                  <groupId>org.apache.activemq</groupId>
+                  <artifactId>activemq-all</artifactId>
+                  <version>${activemq-version}</version>
+                </dependency>
 		<!-- transitive dependencies -->
      	        <dependency>
         		<groupId>org.springframework</groupId>
