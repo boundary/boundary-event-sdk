@@ -8,9 +8,11 @@ import org.junit.Test;
 import org.apache.camel.component.syslog.SyslogMessage;
 import org.apache.camel.component.syslog.SyslogSeverity;
 
-
 public class SyslogToEventProcessorTest {
 	
+	/**
+	 *  Tests to validate Severity retrieval from a properties file.
+	 */
 	@Test
 	public void testSeverityProperties() {
 		Properties props = new Properties();
@@ -19,5 +21,4 @@ public class SyslogToEventProcessorTest {
 		Severity e;
 		m.setSeverity(SyslogSeverity.NOTICE);
 	}
-
 }
