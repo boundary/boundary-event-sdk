@@ -28,7 +28,7 @@ public class BoundaryEventRoute extends BoundaryRouteBuilder {
 	private String apiHost;
 	private String orgId;
 	private String apiKey;
-	private String fromUri;
+
 	
 	public BoundaryEventRoute() {
 		this.apiHost = "api.boundary.com";
@@ -83,22 +83,6 @@ public class BoundaryEventRoute extends BoundaryRouteBuilder {
 		return this.apiHost;
 	}
 		
-	/**
-	 * URI used to receive {@link RawEvents} from.
-	 * @param fromUri
-	 */
-	public void setFromUri(String fromUri) {
-		this.fromUri = fromUri;
-	}
-	
-	/**
-	 * Get the current URI that is receiving {@link RawEvents}
-	 * 
-	 * @return
-	 */
-	public String getFromUri() {
-		return this.fromUri;
-	}
 	
 	/**
 	 * Configures the Camel route that receives {@link RawEvents}
