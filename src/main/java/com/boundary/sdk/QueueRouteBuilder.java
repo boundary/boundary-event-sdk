@@ -18,11 +18,34 @@ import org.apache.camel.impl.DefaultCamelContext;
  * @author davidg
  *
  */
-public class QueueRouterBuilder extends BoundaryRouteBuilder {
+public class QueueRouteBuilder extends BoundaryRouteBuilder {
+	
+	private String queueName;
+	
+	private static final String DEFAULT_QUEUE_NAME="direct:queue";
 
-	public QueueRouterBuilder() {
-		// TODO Auto-generated constructor stub
+	public QueueRouteBuilder() {
+		queueName = DEFAULT_QUEUE_NAME;
 	}
+	
+	/**
+	 * Sets the name of JMS queue
+	 * 
+	 * @param queueName
+	 */
+	public void setQueueName(String queueName) {
+		this.queueName = queueName;
+	}
+	
+	/**
+	 * Gets the name of the JMS queue
+	 * 
+	 * @return
+	 */
+	public String getQueueName() {
+		return this.queueName;
+	}
+	
 
     @Override
     public void configure() {
@@ -31,12 +54,13 @@ public class QueueRouterBuilder extends BoundaryRouteBuilder {
     	        // connect to embedded ActiveMQ JMS broker
         ConnectionFactory connectionFactory =
             new ActiveMQConnectionFactory("vm://localhost");
-        context.addComponent("jms",
-            JmsComponent.jmsComponentAutoAcknowledge(connectionFactory));
+        context.addComponent("jms",JmsComponent.jmsComponentAutoAcknowledge(connectionFactory));
 
         // load file orders from src/data into the JMS queue
-        from("direct:syslog-queue")
-        .to("jms:incomingOrders")
+        from(fromUri)
+        .routeId(routeId)
+        .to("jms:pending_events?asyncConsumer=true")
+        .to("log:com.boundary.sdk.QueueRouterBuilder?level=INFO&groupInterval=10000&groupDelay=60000&groupActiveOnly=false")
         .to(toUri);
 
 //        // content-based router

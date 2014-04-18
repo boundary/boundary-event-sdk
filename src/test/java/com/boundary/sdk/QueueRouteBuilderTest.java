@@ -29,7 +29,7 @@ public class QueueRouteBuilderTest {
 	@Test
 	public void testQueueName() {
 		String expectedQueueName = "foobar";
-		QueueRouterBuilder q = new QueueRouterBuilder();
+		QueueRouteBuilder q = new QueueRouteBuilder();
 		
 		q.setQueueName(expectedQueueName);
 		
