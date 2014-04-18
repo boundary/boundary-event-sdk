@@ -6,23 +6,37 @@
            http://www.springframework.org/schema/beans/spring-beans.xsd
            http://camel.apache.org/schema/spring
            http://camel.apache.org/schema/spring/camel-spring.xsd">
-
+           
 	<bean id="boundary-event-route" class="com.boundary.sdk.BoundaryEventRoute">
-		<property name="routeId" value="BOUNDARY-EVENT-ROUTE"/>
+		<property name="routeId" value="BOUNDARY-EVENT"/>
 		<!-- TBD: Encryption of apiKey using Camel APIs -->
-		<property name="orgId" value="3ehRi7uZeeaTN12dErF5XOnRXjC"/>
-		<property name="apiKey" value="GN5HMCeu9trD5NYO5ZqYQrZe8aY"/>
+		<property name="orgId" value="#{systemEnvironment['BOUNDARY_ORG_ID']}"/>
+		<property name="apiKey" value="#{systemEnvironment['BOUNDARY_API_KEY']}"/>
 		<property name="fromUri" value="direct:boundary-event"/>
 	</bean>
 	
 	<bean id="syslog-route" class="com.boundary.sdk.SysLogRoute">
-		<property name="routeId" value="SYSLOG-ROUTE"/>
-		<property name="port" value="10514"/>
+		<property name="routeId" value="SYSLOG"/>
+		<property name="port" value="1514"/>
+		<property name="toUri" value="seda:event-queue"/>
+	</bean>
+	
+	<bean id="snmp-route" class="com.boundary.sdk.SNMPRoute">
+		<property name="routeId" value="SNMP"/>
+		<property name="port" value="1162"/>
+		<property name="toUri" value="seda:event-queue"/>
+	</bean>
+	
+	<bean id="event-queue" class="com.boundary.sdk.QueueRouteBuilder">
+		<property name="routeId" value="EVENT-QUEUE"/>
+		<property name="fromUri" value="seda:event-queue"/>
 		<property name="toUri" value="direct:boundary-event"/>
 	</bean>
-
+	
 	<camelContext xmlns="http://camel.apache.org/schema/spring">
 		<routeBuilder ref="boundary-event-route"/>
 		<routeBuilder ref="syslog-route"/>
+		<routeBuilder ref="event-queue"/>
+   		<routeBuilder ref="snmp-route"/>
 	</camelContext>
 </beans>
