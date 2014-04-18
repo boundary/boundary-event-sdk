@@ -51,41 +51,19 @@ public class QueueRouteBuilder extends BoundaryRouteBuilder {
     public void configure() {
     	
     	CamelContext  context = getContext();
-    	        // connect to embedded ActiveMQ JMS broker
+    	// connect to embedded ActiveMQ JMS broker
         ConnectionFactory connectionFactory =
             new ActiveMQConnectionFactory("vm://localhost");
         context.addComponent("jms",JmsComponent.jmsComponentAutoAcknowledge(connectionFactory));
 
-        // load file orders from src/data into the JMS queue
+        /**
+         * Receives serialized @{link RawEvent} messages
+         */
         from(fromUri)
         .routeId(routeId)
         .to("jms:pending_events?asyncConsumer=true")
-        .to("log:com.boundary.sdk.QueueRouterBuilder?level=INFO&groupInterval=10000&groupDelay=60000&groupActiveOnly=false")
-        .to(toUri);
-
-//        // content-based router
-//        from("jms:incomingOrders")
-//        .choice()
-//            .when(header("CamelFileName").endsWith(".xml"))
-//                .to("jms:topic:xmlOrders")  
-//            .when(header("CamelFileName").endsWith(".csv"))
-//                .to("jms:topic:csvOrders");
-//
-//        from("jms:topic:xmlOrders").to("jms:accounting");  
-//        from("jms:topic:xmlOrders").to("jms:production");  
-//        
-//        // test that our route is working
-//        from("jms:accounting").process(new Processor() {
-//            public void process(Exchange exchange) throws Exception {
-//                System.out.println("Accounting received order: "
-//                        + exchange.getIn().getHeader("CamelFileName"));  
-//            }
-//        });
-//        from("jms:production").process(new Processor() {
-//            public void process(Exchange exchange) throws Exception {
-//                System.out.println("Production received order: "
-//                        + exchange.getIn().getHeader("CamelFileName"));  
-//            }
-//        });
+		.to("log:com.boundary.sdk.QueueRouteBuilder?level=DEBUG&showHeaders=true&multiline=true")
+        .to(toUri)
+        ;
     }    
 }
