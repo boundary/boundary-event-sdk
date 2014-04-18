@@ -11,6 +11,7 @@ import org.apache.camel.builder.RouteBuilder;
 public abstract class BoundaryRouteBuilder extends RouteBuilder {
 	
 	protected String toUri;
+	protected String fromUri;
 	protected String routeId;
 	// TBD, does this make sense adding
 	protected String logFileName;
@@ -38,6 +39,24 @@ public abstract class BoundaryRouteBuilder extends RouteBuilder {
 	public String getToUri() {
 		return this.toUri;
 	}
+	
+	/**
+	 * URI used to receive {@link RawEvents} from.
+	 * @param fromUri
+	 */
+	public void setFromUri(String fromUri) {
+		this.fromUri = fromUri;
+	}
+	
+	/**
+	 * Get the current URI that is receiving {@link RawEvents}
+	 * 
+	 * @return
+	 */
+	public String getFromUri() {
+		return this.fromUri;
+	}
+
 	
 	/**
 	 * Sets the route ID to a defined value, make it easier to track
