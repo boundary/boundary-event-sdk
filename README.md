@@ -37,4 +37,32 @@ $ ./camelrun.sh
 ## SNMP Configuration
 
 
+# Building
+
+
+# Install SNMP4J
+
+1. Download distribution:
+
+```wget http://www.snmp4j.com/smi/snmp4j-smi-1.1.3-dist.zip```
+
+2. Extract distribution:
+
+```unzip snmp4j-smi-1.1.3-dist.zip```
+
+3. Install snmp4j jar
+
+``` ./install-jar 
+
+2. Extract distribution:
+
+```unzip snmp4j-smi-1.1.3-dist.zip```
+
+3. Install snmp4j jar
+
+``` ./install-jar.sh <args>```
+
+4. Install snmp4j-smi jar
+
+``` ./install-jar.sh <args>```
 
