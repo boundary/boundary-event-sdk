@@ -39,19 +39,16 @@ public class SendTrap {
 	      PDU trap = new PDU();
 	      trap.setType(PDU.TRAP);
 
-	      OID oid = new OID();
-	      trap.add(new VariableBinding(SnmpConstants.linkDown, oid));
-	      trap.add(new VariableBinding(SnmpConstants.sysUpTime, new TimeTicks(5000))); // put your uptime here, hundreths of a second
-	      trap.add(new VariableBinding(SnmpConstants.sysDescr, new OctetString("Trap sent by " + SendTrap.class.toString()))); 
+	      trap.add(new VariableBinding(SnmpConstants.linkDown, new OctetString("Host has been restarted")));
+	      trap.add(new VariableBinding(SnmpConstants.sysUpTime, new TimeTicks(5000))); // put your uptime here, hundredths of a second
+	      trap.add(new VariableBinding(SnmpConstants.sysDescr, new OctetString("Test TRAP")));         
 
-	      //Add Payload
-	      Variable var = new OctetString("SOME STRING");          
-	      trap.add(new VariableBinding(oid, var));          
-
-	      // Specify receiver
+	      // TBD Make this configurable
 	      Address targetaddress = new UdpAddress("localhost/1162");
 	      CommunityTarget target = new CommunityTarget();
+	      // TBD Make this configurable
 	      target.setCommunity(new OctetString("public"));
+	      // TBD make configurable
 	      target.setVersion(SnmpConstants.version2c);
 	      target.setAddress(targetaddress);
 
