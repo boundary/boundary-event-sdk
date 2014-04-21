@@ -19,9 +19,9 @@ import com.snmp4j.smi.CompilationMonitor;
  * @author davidg
  *
  */
-public class SMISupport {
+public class SmiSupport {
 	
-	private static Logger LOG = LoggerFactory.getLogger(SMISupport.class);
+	private static Logger LOG = LoggerFactory.getLogger(SmiSupport.class);
 	
 	protected SmiManager smiManager;
 	
@@ -30,7 +30,7 @@ public class SMISupport {
 	
 	private CompilationMonitor monitor;
 
-	public SMISupport() {
+	public SmiSupport() {
 		this.monitor = new MIBCompilerLogger();
 	}
 	

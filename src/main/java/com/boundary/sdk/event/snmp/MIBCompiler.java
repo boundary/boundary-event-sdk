@@ -26,7 +26,7 @@ import org.snmp4j.SNMP4JSettings;
  * @author davidg
  * 
  */
-public class MIBCompiler extends SMISupport {
+public class MIBCompiler extends SmiSupport {
 
 	private static Logger LOG = LoggerFactory.getLogger(MIBCompiler.class);
 	

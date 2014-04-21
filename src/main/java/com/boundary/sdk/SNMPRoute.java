@@ -15,9 +15,31 @@ public class SNMPRoute extends UDPRouterBuilder {
 	private static Logger LOG = LoggerFactory.getLogger(SNMPRoute.class);
 	
 	private final int DEFAULT_SNMP_PORT=162;
+	
+	private String mibRepositoryPath;
 
 	public SNMPRoute() {
 		this.port = DEFAULT_SNMP_PORT;
+		this.mibRepositoryPath="";
+	}
+	
+	/**
+	 * Sets the path to the directory
+	 * to the compiled MIBs.
+	 * 
+	 * @param path
+	 */
+	public void setMibRepository(String path) {
+		this.mibRepositoryPath = path;
+	}
+	
+	/**
+	 * Returns the currently configured path
+	 * to the compiled MIBs
+	 * @return
+	 */
+	public String getMibRepository() {
+		return this.mibRepositoryPath;
 	}
 	
 	/**
