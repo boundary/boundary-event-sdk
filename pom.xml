@@ -3,13 +3,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.boundary.sdk</groupId>
-	<artifactId>boundary-camel-example</artifactId>
+	<groupId>com.boundary</groupId>
+	<artifactId>boundary-sdk</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>0.00.01</version>
 
-	<name>boundary-camel-example</name>
-	<url>http://maven.apache.org</url>
+	<name>boundary-sdk</name>
+	<url>https://github.com/boundary/boundary-sdk</url>
 	<properties>
 		<camel-version>2.12.3</camel-version>
 		<spring-version>3.2.5.RELEASE</spring-version>
@@ -17,6 +17,9 @@
 		<snmp4j-version>2.2.5</snmp4j-version>
 		<snmp4j-smi-version>1.1.3</snmp4j-smi-version>
 		<spring-security-version>3.1.4.RELEASE</spring-security-version>
+                <commons-cli-version>1.2</commons-cli-version>
+		<commons-io-version>1.3.2</commons-io-version>
+		<commons-lang3-version>3.3.2</commons-lang3-version>
 	</properties>
 
 	<build>
@@ -155,7 +158,6 @@
 			<artifactId>activemq-all</artifactId>
 			<version>${activemq-version}</version>
 		</dependency>
-		<!-- transitive dependencies -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -174,12 +176,12 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.3.2</version>
+			<version>${commons-lang3-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>1.3.2</version>
+			<version>${commons-io-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
@@ -199,7 +201,7 @@
 		<dependency>
 			<groupId>commons-cli</groupId>
 			<artifactId>commons-cli</artifactId>
-			<version>1.2</version>
+			<version>${commons-cli-version}</version>
 		</dependency>
 	</dependencies>
 
