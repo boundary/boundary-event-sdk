@@ -1,11 +1,17 @@
-#!/bin/bash -x
+#!/bin/bash  -x 
 
+[[ -z "$BOUNDARY_SDK_HOME" ]]  && echo "BOUNDARY_SDK_HOME is not set. Set to top-level directory of the distribution" && exit 1
+
+#
+# Location of SNMP4J-SMI distribution
+#
 SNMP4J_SMI_ZIP_FILE='snmp4j-smi-1.1.3-dist.zip'
 SNMP4J_SMI_URI="http://www.snmp4j.com/smi/$SNMP4J_SMI_ZIP_FILE"
 
-CURL_CMD=curl1
-WGET_CMD=wget1
-UNZIP_CMD=unzip1
+CURL_CMD=curl
+WGET_CMD=wget
+UNZIP_CMD=unzip
+INSTALL_JAR_CMD='install-jar'
 
 Usage()
 {
@@ -17,31 +23,34 @@ CheckForPreqs()
    typeset -i rc=0
 
    # Check to see if either curl or wget are available
-   type "$WGET_CMD"
+   type "$WGET_CMD" > /dev/null 2>&1
    if [ $? -ne 0 ]
    then
-     type "$CURL_CMD"
+     type "$CURL_CMD" > /dev/null 2>&1
      if [ $? -ne 0 ]     
      then
        rc=1
-       echo "Could not find either ${WGET_CMD} or ${CURL_CMD} to use. Please install either and run the script again"
+       echo "Could not find either ${WGET_CMD} or ${CURL_CMD} commands. Please install ${WGET_CMD} or ${CURL_CMD} and run the installation script again"
+       DOWNLOAD_CMD="$CURL_CMD"
+     fi
    else
     DOWNLOAD_CMD="$WGET_CMD"
    fi
 
    # Check to see if unzip is available
-   type "$UNZIP_CMD"
+   type "$UNZIP_CMD" > /dev/null 2>&1
    if [ $? -ne 0 ]
    then
        rc=1
-       echo "Could not find ${UNZIP_CMD}to use. Please install and run the script again"
+       echo "Could not find ${UNZIP_CMD} command. Please install ${UNZIP_CMD} and run the installation script again"
    fi
 
    # Check for the install jar script
-   if [ ! -x install-jar.sh ]
+   type "$INSTALL_JAR_CMD" > /dev/null 2>&1
+   if [ $? -ne 0 ]
    then
       rc=1
-      echo "Could not find ${UNZIP_CMD}to use. Please install and run the script again"
+      echo "Could not find ${INSTALL_JAR_CMD} command. ${INSTALL_JAR_CMD} should be located in the directory ${BOUNDARY_SDK_HOME}/src/main/scripts"
    fi
    
    return $rc
@@ -58,36 +67,64 @@ wgetDownloadDistribution()
 {
   typeset -r file="$1"
   typeset -r url="$2"
+  typeset -i rc=0
   wget "$url"
+  rc=$?
+  return $?
 }
 
-DownloadDistribution() {
+DownloadDistribution()
+{
   typeset -r cmd="$1"
   typeset -r file="$2"
   typeset -r url="$3"
+  typeset -i rc=0
 
-  "$cmd"DownloadDistribution "$2" "$3"
+  # Remove old one if it exists
+  if [ -r "$file" ]
+  then
+    rm -f "$file"
+  fi
+
+  # Dispatch to the proper shell function
+  rc=$("$cmd"DownloadDistribution "$file" "$url")
+  return $rc
 }
 
 ExtractDistributions()
 {
   typeset file="$1"
-  "$UNZIP_COMMAND" "$file"
+  "$UNZIP_CMD" "$file"
 }
 
-InstallJarsFromDistribution()
+InstallJars()
 {
 :
 }
 
-Main $*
+Main()
 {
 
   CheckForPreqs
-  if [ $? -eq 1 ]
+  if [ $? -ne 0 ]
   then
      exit 1
   fi
 
+  DownloadDistribution "$DOWNLOAD_CMD" "$SNMP4J_SMI_ZIP_FILE" "$SNMP4J_SMI_URI" 
+  if [ $? -ne 0 ]
+  then
+     exit 1
+  fi
+
+  ExtractDistributions "$SNMP4J_SMI_ZIP_FILE"
+  if [ $? -ne 0 ]
+  then
+     exit 1
+  fi
+  InstallJars
+  
 }
+
+Main $*
 
