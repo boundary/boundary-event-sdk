@@ -8,8 +8,6 @@ import org.productivity.java.syslog4j.SyslogIF;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.boundary.sdk.event.snmp.SmiSupport;
-
 /**
  * Class to generate syslog messages for testing
  * 
