@@ -7,7 +7,7 @@
            http://camel.apache.org/schema/spring
            http://camel.apache.org/schema/spring/camel-spring.xsd">
            
-	<bean id="boundary-event-route" class="com.boundary.sdk.BoundaryEventRoute">
+	<bean id="boundary-event-route" class="com.boundary.sdk.BoundaryEventRouteBuilder">
 		<property name="routeId" value="BOUNDARY-EVENT"/>
 		<!-- TBD: Encryption of apiKey using Camel APIs -->
 		<property name="orgId" value="#{systemEnvironment['BOUNDARY_ORG_ID']}"/>
@@ -15,15 +15,17 @@
 		<property name="fromUri" value="direct:boundary-event"/>
 	</bean>
 	
-	<bean id="syslog-route" class="com.boundary.sdk.SysLogRoute">
+	<bean id="syslog-route" class="com.boundary.sdk.SysLogRouteBuilder">
 		<property name="routeId" value="SYSLOG"/>
 		<property name="port" value="1514"/>
 		<property name="toUri" value="seda:event-queue"/>
 	</bean>
 	
-	<bean id="snmp-route" class="com.boundary.sdk.SNMPRoute">
+	<bean id="snmp-route" class="com.boundary.sdk.SNMPRouteBuilder">
 		<property name="routeId" value="SNMP"/>
 		<property name="port" value="1162"/>
+		<property name="mibRepository" value="#{systemEnvironment['BOUNDARY_MIB_REPOSITORY']}"/>
+		<property name="license" value="#{systemEnvironment['BOUNDARY_MIB_LICENSE']}"/>
 		<property name="toUri" value="seda:event-queue"/>
 	</bean>
 	

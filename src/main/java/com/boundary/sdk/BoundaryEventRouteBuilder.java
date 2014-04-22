@@ -21,16 +21,16 @@ import org.slf4j.LoggerFactory;
  * @author davidg
  *
  */
-public class BoundaryEventRoute extends BoundaryRouteBuilder {
+public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	
-	private static Logger LOG = LoggerFactory.getLogger(BoundaryEventRoute.class);
+	private static Logger LOG = LoggerFactory.getLogger(BoundaryEventRouteBuilder.class);
 
 	private String apiHost;
 	private String orgId;
 	private String apiKey;
 
 	
-	public BoundaryEventRoute() {
+	public BoundaryEventRouteBuilder() {
 		this.apiHost = "api.boundary.com";
 		this.orgId = "";
 		this.apiKey = "";

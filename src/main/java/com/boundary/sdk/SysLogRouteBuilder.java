@@ -9,7 +9,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.spi.DataFormat;
 import org.apache.camel.component.syslog.Rfc3164SyslogDataFormat;
 
-public class SysLogRoute extends RouteBuilder {
+public class SysLogRouteBuilder extends RouteBuilder {
 	
 	private int port;
 	private String toUri;
@@ -22,7 +22,7 @@ public class SysLogRoute extends RouteBuilder {
 	/**
 	 * Constructor
 	 */
-	public SysLogRoute() {
+	public SysLogRouteBuilder() {
 		this.toUri = BoundaryRouteBuilder.DEFAULT_EVENT_TO_URI;
 		this.routeId = DEFAULT_SYSLOG_ROUTE_NAME;
 		this.port = DEFAULT_SYSLOG_PORT;

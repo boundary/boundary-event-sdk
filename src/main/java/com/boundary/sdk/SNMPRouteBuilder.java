@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory;
  * @author davidg
  *
  */
-public class SNMPRoute extends UDPRouterBuilder {
+public class SNMPRouteBuilder extends UDPRouterBuilder {
 	
-	private static Logger LOG = LoggerFactory.getLogger(SNMPRoute.class);
+	private static Logger LOG = LoggerFactory.getLogger(SNMPRouteBuilder.class);
 	
 	private final int DEFAULT_SNMP_PORT=162;
 	
@@ -22,7 +22,7 @@ public class SNMPRoute extends UDPRouterBuilder {
 	/**
 	 * Default constructor
 	 */
-	public SNMPRoute() {
+	public SNMPRouteBuilder() {
 		this.port = DEFAULT_SNMP_PORT;
 		this.mibRepositoryPath="";
 		this.license = "";
@@ -77,7 +77,7 @@ public class SNMPRoute extends UDPRouterBuilder {
 		from(uri)
 		.routeId(this.routeId)
 		.to("log:" + this.getClass().toString() + "?level=INFO&showBody=true&showHeaders=true")
-		.process(new SNMPToEventProcessor(mibRepositoryPath))
+		.process(new SNMPToEventProcessor(mibRepositoryPath,license))
 		.marshal().serialization()
 		.to(toUri)
 		;
