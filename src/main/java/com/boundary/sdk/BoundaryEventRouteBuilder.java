@@ -105,6 +105,7 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 		http.setHttpConfiguration(config);
 		
 		from(fromUri)
+			.startupOrder(startUpOrder)
 			.routeId(routeId)
 			.unmarshal().serialization()
 			.marshal().json(JsonLibrary.Jackson)
@@ -114,7 +115,7 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 			.setHeader(Exchange.HTTP_METHOD, constant("POST"))
 			.to("log:com.boundary.sdk.BoundaryEventRoute?level=DEBUG&groupInterval=10000&groupDelay=60000&groupActiveOnly=false")
 			.to(url.toString())
-			.to("log:com.boundary.sdk.BoundaryEventRoute?level=DEBUG&showHeaders=true&multiline=true")
+			.to("log:com.boundary.sdk.BoundaryEventRoute?level=INFO&showHeaders=true&multiline=true")
 			;
 	}
 }
