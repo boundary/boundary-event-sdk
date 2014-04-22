@@ -33,13 +33,14 @@ public class SNMPToEventProcessor implements Processor {
     
     SmiSupport smi;
     
-    String mibRepositoryPath;
+    String mibRepository;
+    String license;
 	
-	public SNMPToEventProcessor(String mibRepositoryPath) {
-		this.mibRepositoryPath = mibRepositoryPath;
+	public SNMPToEventProcessor(String mibRepository,String license) {
+		this.mibRepository = mibRepository;
 		smi = new SmiSupport();
-		smi.setLicense("a8 29 19 b4 66 e5 4c 1f / LlSFSvNS");
-		File mibDirectory = new File("/Users/davidg/git_working/boundary-camel-example/snmp4j-smi-1.1.3/mibrepository");
+		smi.setLicense(license);
+		File mibDirectory = new File(mibRepository);
 		smi.setRepositoryPath(mibDirectory.getAbsolutePath());
 		smi.initialize();
 		smi.loadModules();
@@ -50,8 +51,12 @@ public class SNMPToEventProcessor implements Processor {
 	 * 
 	 * @return
 	 */
-	public String getMibRepositoryPath() {
-		return this.mibRepositoryPath;
+	public String getMibRepository() {
+		return this.mibRepository;
+	}
+	
+	public String getLicense() {
+		return this.license;
 	}
 
 	

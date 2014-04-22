@@ -10,7 +10,7 @@ import org.junit.Test;
 
 public class BoundaryEventRouteBuilderTest {
 	
-	private BoundaryEventRoute route;
+	private BoundaryEventRouteBuilder route;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -22,7 +22,7 @@ public class BoundaryEventRouteBuilderTest {
 
 	@Before
 	public void setUp() throws Exception {
-		route = new BoundaryEventRoute();
+		route = new BoundaryEventRouteBuilder();
 	}
 
 	@After

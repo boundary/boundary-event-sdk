@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.boundary.sdk.SNMPRoute;
+import com.boundary.sdk.SNMPRouteBuilder;
 
 /**
  * @author davidg
@@ -50,7 +50,7 @@ public class SNMPRouteTest {
 	@Test
 	public void testMibRepository() {
 		String expectedPath = "foobar";
-		SNMPRoute builder = new SNMPRoute();
+		SNMPRouteBuilder builder = new SNMPRouteBuilder();
 		
 		builder.setMibRepository(expectedPath);
 		assertEquals("Check license",expectedPath,builder.getMibRepository());
@@ -59,7 +59,7 @@ public class SNMPRouteTest {
 	@Test
 	public void testLicense() {
 		String expectedLicense = "foobar";
-		SNMPRoute builder = new SNMPRoute();
+		SNMPRouteBuilder builder = new SNMPRouteBuilder();
 		
 		builder.setLicense(expectedLicense);
 		assertEquals("Check license",expectedLicense,builder.getLicense());

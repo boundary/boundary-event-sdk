@@ -38,11 +38,11 @@ public class RawEventToBoundaryEvent extends CamelTestSupport {
     	RouteBuilder[] routes = new RouteBuilder[2];
     	
     	// Create the Boundary Event Route
-		BoundaryEventRoute boundary = new BoundaryEventRoute();
+		BoundaryEventRouteBuilder boundary = new BoundaryEventRouteBuilder();
 		// Configure our properties
 		boundary.setApiKey(BOUNDARY_API_KEY);
 		boundary.setOrgId(BOUNDARY_ORG_ID);
-		boundary.setFromUri(BoundaryEventRoute.DEFAULT_EVENT_TO_URI);
+		boundary.setFromUri(BoundaryEventRouteBuilder.DEFAULT_EVENT_TO_URI);
 		
 		routes[0] = boundary;
 		routes[1] = new RouteBuilder() {

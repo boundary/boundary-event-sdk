@@ -10,7 +10,7 @@ import org.junit.Test;
 
 public class SysLogRouteTest {
 	
-	SysLogRoute route;
+	SysLogRouteBuilder route;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -22,7 +22,7 @@ public class SysLogRouteTest {
 
 	@Before
 	public void setUp() throws Exception {
-		route = new SysLogRoute();
+		route = new SysLogRouteBuilder();
 	}
 
 	@After
