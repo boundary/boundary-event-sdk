@@ -63,4 +63,5 @@
   <classpathentry kind="var" path="M2_REPO/xalan/xalan/2.7.0/xalan-2.7.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-script/2.12.3/camel-script-2.12.3.jar" sourcepath="M2_REPO/org/apache/camel/camel-script/2.12.3/camel-script-2.12.3-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-cli/commons-cli/1.2/commons-cli-1.2.jar" sourcepath="M2_REPO/commons-cli/commons-cli/1.2/commons-cli-1.2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/syslog4j/syslog4j/0.9.30/syslog4j-0.9.30.jar"/>
 </classpath>
