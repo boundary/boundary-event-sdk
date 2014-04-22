@@ -75,6 +75,7 @@ public class SNMPRouteBuilder extends UDPRouterBuilder {
 		// TBD, Support of TCP??
 		String uri = "snmp:127.0.0.1:" + this.port + "?protocol=udp&type=TRAP";
 		from(uri)
+		.startupOrder(startUpOrder)
 		.routeId(this.routeId)
 		.to("log:" + this.getClass().toString() + "?level=INFO&showBody=true&showHeaders=true")
 		.process(new SNMPToEventProcessor(mibRepositoryPath,license))

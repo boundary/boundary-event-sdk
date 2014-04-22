@@ -15,6 +15,7 @@ public abstract class BoundaryRouteBuilder extends RouteBuilder {
 	protected String routeId;
 	// TBD, does this make sense adding
 	protected String logFileName;
+	protected int startUpOrder;
 	
 	protected final static String DEFAULT_EVENT_TO_URI = "direct:boundary-event";
 
@@ -22,7 +23,8 @@ public abstract class BoundaryRouteBuilder extends RouteBuilder {
 		this.toUri = "";
 		this.routeId = "";
 		this.logFileName = "";
-		}
+		this.startUpOrder = 0;
+	}
 	
 	/**
 	 * Sets the URI to send events to
@@ -74,6 +76,22 @@ public abstract class BoundaryRouteBuilder extends RouteBuilder {
 	 */
 	public String getRouteId() {
 		return this.routeId;
+	}
+	
+	/**
+	 * Sets relative order of when this route starts
+	 * @param startUpOrder
+	 */
+	public void setStartUpOrder(int startUpOrder) {
+		this.startUpOrder = startUpOrder;
+	}
+	
+	/**
+	 * Returns the start up order of the route
+	 * @return
+	 */
+	public int getStartUpOrder() {
+		return this.startUpOrder;
 	}
 
 
