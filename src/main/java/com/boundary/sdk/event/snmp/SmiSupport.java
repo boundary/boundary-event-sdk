@@ -26,7 +26,7 @@ public class SmiSupport {
 	protected SmiManager smiManager;
 	
 	private String repositoryPath;
-	private String license;
+	private String license = null;
 	
 	private CompilationMonitor monitor;
 
@@ -38,8 +38,8 @@ public class SmiSupport {
 	 * Sets the which contains compiled MIBs
 	 * @param repositoryPath Directory path (e.g. /home/kermit/mibRepository)
 	 */
-	public void setRepositoryPath(String repositoryPath) {
-		this.repositoryPath = repositoryPath;
+	public void setRepository(String path) {
+		this.repositoryPath = path;
 	}
 	
 	/**
@@ -47,25 +47,32 @@ public class SmiSupport {
 	 * 
 	 * @return
 	 */
-	public String getRepositoryPath() {
+	public String getRepository() {
 		return this.repositoryPath;
 	}
 	
 	/**
+	 * Sets the SNMP4j-SMI license for decoding OIDs
+	 * If the license parameter is an empty string then
+	 * the license is set to null so SNMP4J-SMI will handle
+	 * non-enterprise OID branch, otherwise it will fail on all
+	 * calls to decode OIDs. We construct this behavior so that
+	 * in spring files we can specify null as the empty string.
 	 * 
 	 * @param license
 	 */
 	public void setLicense(String license) {
-		this.license = license;
+		this.license = license.isEmpty() ? null : license;
 	}
 	
 	
 	/**
-	 * 
+	 * Returns the SNMP4J-SMI license.
 	 * @return
 	 */
 	public String getLicense() {
-		return this.license;
+		// If the license is null then translate to empty string.
+		return this.license == null ? "" : this.license;
 	}
 	
 	/**
