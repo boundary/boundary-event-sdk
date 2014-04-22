@@ -32,16 +32,18 @@ public class SNMPToEventProcessor implements Processor {
     private static final Logger LOG = LoggerFactory.getLogger(SNMPToEventProcessor.class);
     
     SmiSupport smi;
-    
-    String mibRepository;
-    String license;
 	
-	public SNMPToEventProcessor(String mibRepository,String license) {
-		this.mibRepository = mibRepository;
+    /**
+     * 
+     * @param mibRepository Path to compiled MIBs
+     * @param license SNMP4J-SMI license from <a href="http://www.snmp4j.org">http://www.snmp4j.org</a>
+     */
+	public SNMPToEventProcessor(String repositoryPath,String license) {
 		smi = new SmiSupport();
+		
 		smi.setLicense(license);
-		File mibDirectory = new File(mibRepository);
-		smi.setRepositoryPath(mibDirectory.getAbsolutePath());
+		File mibDirectory = new File(repositoryPath);
+		smi.setRepository(mibDirectory.getAbsolutePath());
 		smi.initialize();
 		smi.loadModules();
 	}
@@ -52,13 +54,15 @@ public class SNMPToEventProcessor implements Processor {
 	 * @return
 	 */
 	public String getMibRepository() {
-		return this.mibRepository;
+		return smi.getRepository();
 	}
 	
+	/*
+	 * Returns the current SNMP4J-SMI license
+	 */
 	public String getLicense() {
-		return this.license;
+		return smi.getLicense();
 	}
-
 	
 	@Override
 	public void process(Exchange exchange) throws Exception {
@@ -76,10 +80,10 @@ public class SNMPToEventProcessor implements Processor {
 		// Get the variable bindings from the trap and create properties in the event
 		Vector<? extends VariableBinding> varBinds = pdu.getVariableBindings();
 		for (VariableBinding var : varBinds) {
-			event.putProperty(var.getOid().toString(),var.toValueString());
-			event.putFingerprintField(var.getOid().toString());
+			event.addProperty(var.getOid().toString(),var.toValueString());
+			event.addFingerprintField(var.getOid().toString());
 		}
-		event.putProperty("error_status", pdu.getErrorStatusText());
+		event.addProperty("error_status", pdu.getErrorStatusText());
 		
 		// Address is in the form of X.X.X.X/port if IPV4
 		String hostname = snmpMessage.getHeader("peerAddress").toString();
@@ -87,7 +91,7 @@ public class SNMPToEventProcessor implements Processor {
 		//TBD, Set title using the trap type and hostname
 		event.setTitle(trapType + " from " + hostname);
 		
-		event.putProperty("type", trapType == "TRAP" ? "v2c" : "v1");
+		event.addProperty("type", trapType == "TRAP" ? "v2c" : "v1");
 		
 		//TBD, What should the message field be set to by default??
 		event.setMessage(pdu.getErrorStatusText());

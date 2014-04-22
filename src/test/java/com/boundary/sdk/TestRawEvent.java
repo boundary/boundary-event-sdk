@@ -83,6 +83,16 @@ public class TestRawEvent {
 	}
 	
 	@Test
+	public void testAddFingerprintFields() {
+		String expectedField = "DEADBEEFDEADBEEFDEADBEEF";
+		ArrayList<String> expectedFingerprintFields = new ArrayList<String>();
+		expectedFingerprintFields.add(expectedField);
+		event.addFingerprintField(expectedField);
+		assertTrue("Check add fingerprintFields", event.getFingerprintFields().containsAll(expectedFingerprintFields));
+
+	}
+	
+	@Test
 	public void testMessage() {
 		String expectedMessage ="Good Morning Vietnam!";
 		event.setMessage(expectedMessage);
@@ -168,6 +178,15 @@ public class TestRawEvent {
 		
 		event.setTags(tags);
 		assertEquals("Check tags",tags,event.getTags());
+	}
+	
+	@Test
+	public void testAddTag() {
+		String expectedTag = "DEADBEEFDEADBEEFDEADBEEF";
+		ArrayList<String> expectedTags = new ArrayList<String>();
+		expectedTags.add(expectedTag);
+		event.addTag(expectedTag);
+		assertTrue("Check add tag", event.getTags().containsAll(expectedTags));
 	}
 
 	@Test
