@@ -17,10 +17,15 @@ public class SNMPRoute extends UDPRouterBuilder {
 	private final int DEFAULT_SNMP_PORT=162;
 	
 	private String mibRepositoryPath;
+	private String license;
 
+	/**
+	 * Default constructor
+	 */
 	public SNMPRoute() {
 		this.port = DEFAULT_SNMP_PORT;
 		this.mibRepositoryPath="";
+		this.license = "";
 	}
 	
 	/**
@@ -43,6 +48,24 @@ public class SNMPRoute extends UDPRouterBuilder {
 	}
 	
 	/**
+	 * Sets the SNMP4J-SMI license key
+	 * 
+	 * @param license
+	 */
+	public void setLicense(String license) {
+		this.license = license;
+	}
+	
+	/**
+	 * Returns the current value ofthe SNMP4J-SMI license key
+	 * 
+	 * @return
+	 */
+	public String getLicense() {
+		return this.license;
+	}
+	
+	/**
 	 * Configuration for the SNMP route 
 	 */
 	@Override
@@ -54,7 +77,7 @@ public class SNMPRoute extends UDPRouterBuilder {
 		from(uri)
 		.routeId(this.routeId)
 		.to("log:" + this.getClass().toString() + "?level=INFO&showBody=true&showHeaders=true")
-		.process(new SNMPToEventProcessor())
+		.process(new SNMPToEventProcessor(mibRepositoryPath))
 		.marshal().serialization()
 		.to(toUri)
 		;
