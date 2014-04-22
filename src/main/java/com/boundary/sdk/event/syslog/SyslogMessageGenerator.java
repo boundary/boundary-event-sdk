@@ -5,6 +5,10 @@ import java.util.Date;
 
 import org.productivity.java.syslog4j.Syslog;
 import org.productivity.java.syslog4j.SyslogIF;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.boundary.sdk.event.snmp.SmiSupport;
 
 /**
  * Class to generate syslog messages for testing
@@ -14,14 +18,31 @@ import org.productivity.java.syslog4j.SyslogIF;
  */
 public class SyslogMessageGenerator {
 	
+	private static Logger LOG = LoggerFactory.getLogger(SyslogMessageGenerator.class);
 	
 	private SyslogIF syslog;
+	
+	private static final int DEFAULT_COUNT=10;
+	private static final int DEFAULT_DELAY=10;
+	
+	private int count = DEFAULT_COUNT;
+	private int delay = DEFAULT_DELAY;
 
 	public SyslogMessageGenerator() {
 		syslog = Syslog.getInstance("udp");
 		syslog.getConfig().setUseStructuredData(false);
 		syslog.getConfig().setHost("localhost");
 		syslog.getConfig().setFacility(SyslogIF.FACILITY_LOCAL0);
+		count = DEFAULT_COUNT;
+		delay = DEFAULT_DELAY;
+	}
+	
+	public void setCount(int count) {
+		this.count = count;
+	}
+	
+	public void setDelay(int delay) {
+		this.delay = delay;
 	}
 	
 	/**
@@ -51,23 +72,50 @@ public class SyslogMessageGenerator {
 		syslog.getConfig().setPort(port);
 	}
 	
+	public void sendMessages() throws InterruptedException {
+		sendMessages(count,delay);
+	}
+	
 	public void sendMessages(int count,int delay) throws InterruptedException {
 		for (int n = count ; n != 0 ; n--) {
 			
 			syslog.info(new Date() + "TESTING------TESTING-----TESTING-----TESTING");
 			if (n != count && n % 10 == 0) {
-				System.out.println("Sent " + (count - n) + " messages");
+				LOG.info("Sent " + (count - n) + " messages");
 			}
 			Thread.sleep(delay);
 		}
-		System.out.println("Sent " + count + " messages");
+		LOG.info("Sent " + count + " messages");
 
 	}
 	
-	public static void main(String[] args) throws InterruptedException {
-		SyslogMessageGenerator generator = new SyslogMessageGenerator();
+	/**
+	 * 
+	 * @param args
+	 */
+	void handleArguments(String[] args) {
 		
-		generator.sendMessages(100,10);
+		if (args.length != 3) {
+			System.err.println("usage: " + (args.length == 1 ? args[0] : "") + " <count> <delay>");
+			System.exit(1);
+		}
+		
+		setCount(Integer.parseInt(args[1]));
+		setDelay(Integer.parseInt(args[2]));
+		
+	}
+	
+	/**
+	 * Sends syslog messages with the number sent and delayed between each
+	 * passed in as arguments
+	 * @param args
+	 * @throws InterruptedException
+	 */
+	public static void main(String[] args) throws InterruptedException {
 
+		SyslogMessageGenerator generator = new SyslogMessageGenerator();
+		generator.handleArguments(args);
+		
+		generator.sendMessages();
 	}
 }
