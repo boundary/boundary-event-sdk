@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.boundary</groupId>
-	<artifactId>boundary-sdk</artifactId>
+	<artifactId>boundary-event-sdk</artifactId>
 	<packaging>jar</packaging>
 	<version>0.00.01</version>
 
