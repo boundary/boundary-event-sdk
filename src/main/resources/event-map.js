@@ -3,7 +3,7 @@
  */
 
 
-// Extract the body from the requestmessage
+// Extract the body from the request message
 var event = request.body;
 
 

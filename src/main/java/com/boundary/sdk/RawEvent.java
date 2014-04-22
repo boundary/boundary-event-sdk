@@ -131,7 +131,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * @param Field to use in the fingerprint field
 	 * @return RawEvent
 	 */
-	public RawEvent putFingerprintField(String value) {
+	public RawEvent addFingerprintField(String value) {
 		if (fingerprintFields == null) {
 			initFingerprintFields();
 		}
@@ -213,7 +213,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * @param key
 	 * @param value
 	 */
-	public void putProperty(String key,Object value) {
+	public void addProperty(String key,Object value) {
 		if (properties == null) {
 			initProperties();
 		}
@@ -444,7 +444,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * @param tag Value of tag.
 	 * @return RawEvent
 	 */
-	public RawEvent putTag(String tag) {
+	public RawEvent addTag(String tag) {
 		if (tags == null) {
 			initializeTags();
 		}
@@ -510,7 +510,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 		event.setTitle("MyEvent");
 		event.setStatus(Status.OPEN);
 		event.setSeverity(Severity.WARN);
-		event.putFingerprintField("@title");
+		event.addFingerprintField("@title");
 		event.getSource().setRef("localhost");
 		event.getSource().setType("host");
 

@@ -147,7 +147,7 @@ public class Source implements Serializable {
 	}
 	
 	/**
-	 * 
+	 * Set the properties of the {@link RawEvent}
 	 * @param properties
 	 * @return
 	 */
@@ -156,6 +156,21 @@ public class Source implements Serializable {
 			initializeProperties();
 		}
 		this.properties = properties;
+		return this;
+	}
+	
+	/**
+	 * Add a property to a {@link RawEvent}
+	 * 
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	public Source addProperty(String key,Object value) {
+		if (properties == null) {
+			initializeProperties();
+		}
+		this.properties.put(key, value);
 		return this;
 	}
 	

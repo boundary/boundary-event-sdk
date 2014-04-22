@@ -68,12 +68,12 @@ public class SyslogToEventProcessor implements Processor {
 	private void syslogMessageToEvent(SyslogMessage sm, RawEvent e) {
 
 		e.getProperties().put("facility", sm.getFacility());
-		e.putTag(sm.getFacility().toString());
+		e.addTag(sm.getFacility().toString());
 		
 		// Add the hostname
 		e.getSource().setRef(sm.getHostname()).setType("host");
 		e.getProperties().put("hostname", sm.getHostname());
-		e.putTag(sm.getHostname());
+		e.addTag(sm.getHostname());
 		
 		// Add the message
 		e.setMessage(sm.getLogMessage());
@@ -81,26 +81,26 @@ public class SyslogToEventProcessor implements Processor {
 		
 		// Add the remote address
 		e.getProperties().put("remote_address", sm.getRemoteAddress());
-		e.putTag(sm.getRemoteAddress());
+		e.addTag(sm.getRemoteAddress());
 		
 		// Map the syslog severity to Boundary event severity
 		Severity severity = getEventSeverity(sm.getSeverity());
 		e.setSeverity(severity);
-		e.putProperty("severity", sm.getSeverity().toString());
-		e.putTag(sm.getSeverity().toString());
+		e.addProperty("severity", sm.getSeverity().toString());
+		e.addTag(sm.getSeverity().toString());
 		
 		Status status = getEventStatus(sm.getSeverity());
 		e.setStatus(status);
 		
 		// Set the uniqueness of the event by hostname and facility
 		// TBD These fields need to be split out in a configuration file
-		e.putFingerprintField("hostname");
-		e.putFingerprintField("facility");
+		e.addFingerprintField("hostname");
+		e.addFingerprintField("facility");
 		
 		// Set the time at which the syslog record was created
 		// TBD: Ensure time is in UTC
 		e.setCreatedAt(sm.getTimestamp());
-		e.putProperty("timestamp", sm.getTimestamp());
+		e.addProperty("timestamp", sm.getTimestamp());
 
 		// Set Title
 		// TBD External configuration
