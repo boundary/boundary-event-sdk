@@ -19,6 +19,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class QueueRouteTest extends CamelSpringTestSupport {
 	
+	public static int DEFAULT_MESSAGES_SENT=64;
+	
 	private static final String IN_URI="seda:testinQueueIn";
 	private static final String OUT_URI="mock:testingMockOut";
 	
@@ -54,13 +56,11 @@ public class QueueRouteTest extends CamelSpringTestSupport {
 		RawEvent event = RawEvent.getDefaultEvent();		
 		event.setTitle("TEST EVENT");
 		
-		for (int i = 10 ; i != 0 ; i--) {
+		for (int i = DEFAULT_MESSAGES_SENT ; i != 0 ; i--) {
 			producerTemplate.sendBody(event);
 			Thread.sleep(10);
 		}
 		
-
-
 		assertMockEndpointsSatisfied();
 	}
 }
