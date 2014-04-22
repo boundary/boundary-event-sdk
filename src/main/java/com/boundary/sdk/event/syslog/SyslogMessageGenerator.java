@@ -72,10 +72,22 @@ public class SyslogMessageGenerator {
 		syslog.getConfig().setPort(port);
 	}
 	
+	/**
+	 * Sends syslog messages with values set for count and delay.
+	 * 
+	 * @throws InterruptedException
+	 */
 	public void sendMessages() throws InterruptedException {
 		sendMessages(count,delay);
 	}
 	
+	/**
+	 * Sends syslog messages with the specified count and delay.
+	 * 
+	 * @param count
+	 * @param delay
+	 * @throws InterruptedException
+	 */
 	public void sendMessages(int count,int delay) throws InterruptedException {
 		for (int n = count ; n != 0 ; n--) {
 			
@@ -95,14 +107,14 @@ public class SyslogMessageGenerator {
 	 */
 	void handleArguments(String[] args) {
 		
-		if (args.length != 3) {
-			System.err.println("usage: " + (args.length == 1 ? args[0] : "") + " <count> <delay>");
+		if (args.length > 3) {
+			System.err.println("usage: " + (args.length == 1 ? args[0] : "") + " [count] [delay]");
 			System.exit(1);
 		}
-		
-		setCount(Integer.parseInt(args[1]));
-		setDelay(Integer.parseInt(args[2]));
-		
+		else if (args.length == 3) {
+			setCount(Integer.parseInt(args[1]));
+			setDelay(Integer.parseInt(args[2]));
+		}
 	}
 	
 	/**
