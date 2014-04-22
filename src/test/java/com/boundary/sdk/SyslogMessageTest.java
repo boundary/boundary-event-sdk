@@ -26,7 +26,7 @@ public class SyslogMessageTest extends CamelSpringTestSupport {
 	private final int DELAY = 100;
 	private final int DEFAULT_MESSAGE_COUNT = 100;
 
-	//@Test
+	@Test
 	public void syslogOnlyMessageTest() throws Exception {
 		MockEndpoint syslogOut = getMockEndpoint(SYSLOG_OUT_URI);
 		int expectedMessageCount = DEFAULT_MESSAGE_COUNT;

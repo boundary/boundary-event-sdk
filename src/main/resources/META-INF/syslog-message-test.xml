@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:camel="http://camel.apache.org/schema/spring" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://camel.apache.org/schema/spring
+           http://camel.apache.org/schema/spring/camel-spring.xsd">
+           	
+	<bean id="syslog-only-route" class="com.boundary.sdk.SysLogRouteBuilder">
+		<property name="routeId" value="SYSLOG-ONLY"/>
+		<property name="port" value="1514"/>
+		<property name="toUri" value="mock:syslog-test"/>
+	</bean>
+
+	<bean id="syslog-and-queue-route" class="com.boundary.sdk.SysLogRouteBuilder">
+		<property name="routeId" value="SYSLOG-AND-QUEUE"/>
+		<property name="port" value="10514"/>
+		<property name="toUri" value="seda:event-queue"/>
+	</bean>
+		
+	<bean id="event-queue" class="com.boundary.sdk.QueueRouteBuilder">
+		<property name="routeId" value="EVENT-QUEUE"/>
+		<property name="fromUri" value="seda:event-queue"/>
+		<property name="toUri" value="mock:queue-test"/>
+	</bean>
+	
+	<camelContext xmlns="http://camel.apache.org/schema/spring">
+		<routeBuilder ref="syslog-only-route"/>
+		<routeBuilder ref="syslog-and-queue-route"/>
+		<routeBuilder ref="event-queue"/>
+	</camelContext>
+</beans>
