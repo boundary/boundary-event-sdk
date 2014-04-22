@@ -39,6 +39,6 @@
 		<routeBuilder ref="boundary-event-route"/>
 		<routeBuilder ref="syslog-route"/>
 		<routeBuilder ref="event-queue"/>
-   		<routeBuilder ref="snmp-route"/>
+   		<!-- <routeBuilder ref="snmp-route"/> -->
 	</camelContext>
 </beans>
