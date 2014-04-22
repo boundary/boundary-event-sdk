@@ -2,6 +2,7 @@ package com.boundary.sdk;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.EndpointInject;
@@ -19,7 +20,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class QueueRouteTest extends CamelSpringTestSupport {
 	
-	public static int DEFAULT_MESSAGES_SENT=64;
+	public static int DEFAULT_MESSAGES_SENT=17;
 	
 	private static final String IN_URI="seda:testinQueueIn";
 	private static final String OUT_URI="mock:testingMockOut";
@@ -60,6 +61,8 @@ public class QueueRouteTest extends CamelSpringTestSupport {
 			producerTemplate.sendBody(event);
 			Thread.sleep(10);
 		}
+		
+		mockOut.await(60,TimeUnit.SECONDS);
 		
 		assertMockEndpointsSatisfied();
 	}
