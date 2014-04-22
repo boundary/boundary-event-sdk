@@ -30,15 +30,14 @@ public class MIBCompiler extends SmiSupport {
 
 	private static Logger LOG = LoggerFactory.getLogger(MIBCompiler.class);
 	
-	// create Options object
 	private Options options = new Options();
 	private Option repoDirOption;
 	private Option mibDirOption;
 	private Option licenseOption;
 	private Option helpOption;
 	
+	// Used to store the name of the wrapper script that is called
 	String commandName; 
-
 
 	/**
 	 * Default constructor
@@ -48,13 +47,21 @@ public class MIBCompiler extends SmiSupport {
 		commandName = this.getClass().toString();
 	}
 	
+	/**
+	 * Outputs help for the command and its options.
+	 */
 	private void usage() {
 		// automatically generate the help statement
 		HelpFormatter formatter = new HelpFormatter();
 		formatter.printHelp(this.commandName, this.options);
 		System.exit(0);
-
 	}
+	
+	/**
+	 * Handles all the options passed to the command line.
+	 * 
+	 * @param args
+	 */
 	@SuppressWarnings("static-access")
 	public void handleCommandLineOptions(String[] args) {
 		
@@ -62,16 +69,20 @@ public class MIBCompiler extends SmiSupport {
 			usage();
 		}
 		
+		// First argument is used as the name of
+		// the the script that is being run
 		commandName = args[0];
+		
+		// Remove the initial argument for later handling
+		// by the commons-cli
 		String[] optionArgs = new String[args.length-1];
 		for (int i = args.length - 2 ; i != 0 ; i--) {
 			optionArgs[i-1] = args[i];
 		}
 		
 		for (String s :optionArgs) {
-			System.out.println(s);
+			LOG.debug(s);
 		}
-//		System.exit(0);
 
 		repoDirOption = OptionBuilder.withArgName("repository_dir")
 				.hasArg()
@@ -120,16 +131,21 @@ public class MIBCompiler extends SmiSupport {
 		}
 	}
 
+	/**
+	 * Execute the compilation of the MIBs.
+	 * 
+	 * @param args
+	 */
 	public void execute(String[] args) {
 
 		// Handle the command line arguments
-		this.handleCommandLineOptions(args);
+		handleCommandLineOptions(args);
 		
 		setLicense(licenseOption.getValue());
 		System.out.println(mibDirOption.getValue());
 		File mibDirectory = new File(this.mibDirOption.getValue());
 		LOG.info(mibDirectory.getAbsolutePath());
-		setRepositoryPath(mibDirectory.getAbsolutePath());
+		setRepository(mibDirectory.getAbsolutePath());
 		initialize();
 		compile(new File(this.mibDirOption.getValue()));
 	}
