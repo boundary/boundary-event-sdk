@@ -2,16 +2,24 @@
 
 [[ -z "$BOUNDARY_SDK_HOME" ]]  && echo "BOUNDARY_SDK_HOME is not set. Set to top-level directory of the distribution" && exit 1
 
+DOWNLOAD_DIR="$BOUNDARY_SDK_HOME/download"
+
 #
 # Location of SNMP4J-SMI distribution
 #
-SNMP4J_SMI_ZIP_FILE='snmp4j-smi-1.1.3-dist.zip'
+SNMP4J_SMI_DIR='snmp4j-smi-1.1.3'
+SNMP4J_SMI_ZIP_FILE="${SNMP4J_SMI_DIR}-dist.zip"
+SNMP4J_SMI_JAR_FILE='snmp4j-smi.jar'
+SNMP4J_SMI_group_id="com.snmp4j"
+SNMP4J_SMI_artifact_id="snmp4j-smi"
+SNMP4J_SMI_version="1.1.3"
 SNMP4J_SMI_URI="http://www.snmp4j.com/smi/$SNMP4J_SMI_ZIP_FILE"
 
 CURL_CMD=curl
 WGET_CMD=wget
 UNZIP_CMD=unzip
 INSTALL_JAR_CMD='install-jar'
+MIB_REPO_INSTALL_DIR="$BOUNDARY_SDK_HOME/runtime"
 
 Usage()
 {
@@ -31,6 +39,7 @@ CheckForPreqs()
      then
        rc=1
        echo "Could not find either ${WGET_CMD} or ${CURL_CMD} commands. Please install ${WGET_CMD} or ${CURL_CMD} and run the installation script again"
+     else
        DOWNLOAD_CMD="$CURL_CMD"
      fi
    else
@@ -58,27 +67,37 @@ CheckForPreqs()
 
 curlDownloadDistribution()
 {
+  typeset -i rc=0
   typeset -r file="$1"
   typeset -r url="$2"
+
   curl "$url" -o "$file"
+  rc=$?
+
+  return $?
 }
 
 wgetDownloadDistribution()
 {
+  typeset -i rc=0
   typeset -r file="$1"
   typeset -r url="$2"
-  typeset -i rc=0
+
   wget "$url"
   rc=$?
+
   return $?
 }
 
 DownloadDistribution()
 {
-  typeset -r cmd="$1"
-  typeset -r file="$2"
-  typeset -r url="$3"
   typeset -i rc=0
+  typeset -r download_dir="$1"
+  typeset -r cmd="$2"
+  typeset -r file="$3"
+  typeset -r url="$4"
+
+  pushd "$download_dir" > /dev/null 2>&1
 
   # Remove old one if it exists
   if [ -r "$file" ]
@@ -88,18 +107,57 @@ DownloadDistribution()
 
   # Dispatch to the proper shell function
   rc=$("$cmd"DownloadDistribution "$file" "$url")
+
+  popd > /dev/null 2>&1
+
   return $rc
 }
 
 ExtractDistributions()
 {
-  typeset file="$1"
+  typeset rc=0
+  typeset download_dir="$1"
+  typeset dist_dir="$2"
+  typeset file="$3"
+
+  pushd "$download_dir" > /dev/null 2>&1
+
+  '/bin/rm' -rf "$dist_dir"
+
   "$UNZIP_CMD" "$file"
+  rc=$?
+
+  popd > /dev/null 2>&1
+
+  return $rc
+}
+
+InstallMIBRepository()
+{
+  typeset rc=0
+  typeset -r mib_repo_source=$1
+  typeset -r mib_repo_target=$2
+ 
+  mkdir -p "$mib_repo_target"
+
+  cp -R "$mib_repo_source" "$mib_repo_target"
+  rc=$?
+
+  return $rc
 }
 
 InstallJars()
 {
-:
+  typeset rc=0
+  typeset -r jar_path=$1
+  typeset -r group_id=$2
+  typeset -r artifact_id=$3
+  typeset -r version=$4
+
+  'install-jar' "$jar_path" "$group_id" "$artifact_id" "$version" 
+  rc=$?
+
+  return $rc
 }
 
 Main()
@@ -111,18 +169,35 @@ Main()
      exit 1
   fi
 
-  DownloadDistribution "$DOWNLOAD_CMD" "$SNMP4J_SMI_ZIP_FILE" "$SNMP4J_SMI_URI" 
+  mkdir -p "$DOWNLOAD_DIR"
+  DownloadDistribution "$DOWNLOAD_DIR" "$DOWNLOAD_CMD" "$SNMP4J_SMI_ZIP_FILE" "$SNMP4J_SMI_URI" 
   if [ $? -ne 0 ]
   then
+     "Error occurred while downloading the file $SNMP4j_SMI_ZIP_FILE from $SNMP4j_SMI_URI"
      exit 1
   fi
 
-  ExtractDistributions "$SNMP4J_SMI_ZIP_FILE"
+  ExtractDistributions "$DOWNLOAD_DIR" "$SNMP4J_SMI_DIR" "$SNMP4J_SMI_ZIP_FILE"
   if [ $? -ne 0 ]
   then
+     "Error occurred while extracting the file $DOWNLOAD_DIR/$SNMP4j_SMI_ZIP_FILE"
      exit 1
   fi
-  InstallJars
+
+  InstallMIBRepository "$DOWNLOAD_DIR/$SNMP4J_SMI_DIR/mibrepository" "$MIB_REPO_INSTALL_DIR"
+
+  if [ $? -ne 0 ]
+  then
+     "Error occurred installing MIB repository to $MIB_REPO_INSTALL_DIR"
+     exit 1
+  fi
+
+  InstallJars "$DOWNLOAD_DIR/$SNMP4J_SMI_DIR/snmp4j-smi.jar" "$SNMP4J_SMI_group_id" "$SNMP4J_SMI_artifact_id" "$SNMP4J_SMI_version"
+  if [ $? -ne 0 ]
+  then
+     "Error occurred while installing the file $DOWNLOAD_DIR/$SNMP4j_SMI_ZIP_FILE"
+     exit 1
+  fi
   
 }
 
