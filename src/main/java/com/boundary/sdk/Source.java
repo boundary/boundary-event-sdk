@@ -176,10 +176,10 @@ public class Source implements Serializable {
 	
 	public String toString() {
 		StringBuffer s = new StringBuffer();
-		s.append(ref == null ? "": "ref: " + this.ref);
+		s.append(ref == null ? "": ",ref: " + this.ref);
 		s.append(type == null ? "" : ",type: " + this.type);
 		s.append(name == null ? "" : "name: " + this.name);
-		s.append(properties == null ? "": "properties: " + this.properties);
+		s.append(properties == null ? "": ",properties: " + this.properties);
 		return s.toString();
 	}
 }
