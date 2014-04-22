@@ -2,8 +2,10 @@ package com.boundary.sdk;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.camel.Exchange;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.component.syslog.SyslogMessage;
 import org.apache.camel.test.junit4.CamelSpringTestSupport;
@@ -38,6 +40,12 @@ public class SyslogToEventJSTest extends CamelSpringTestSupport {
 		headers.put("event",event);
 		
 		template.sendBodyAndHeaders(SYSLOG_IN, event,headers);
+		
+		List<Exchange> exchanges = eventOut.getExchanges();
+		
+		RawEvent newEvent = exchanges.get(0).getIn().getBody(RawEvent.class);
+		
+		System.out.println(newEvent);
 		
 		eventOut.assertIsSatisfied(); 
 	}
