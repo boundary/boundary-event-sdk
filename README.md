@@ -1,5 +1,5 @@
-Boundary Camel Example
-======================
+Boundary Event SDK
+==================
 
 
 # Configuration
