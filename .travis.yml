@@ -1,4 +1,4 @@
 language: java
 jdk:
   - oraclejdk7
-before_script: src/main/scripts/install-snmp4j
+install: bash bootstrap.sh
