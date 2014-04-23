@@ -11,18 +11,21 @@
 		<property name="routeId" value="SYSLOG-ONLY"/>
 		<property name="port" value="1514"/>
 		<property name="toUri" value="mock:syslog-test"/>
+		<property name="startUpOrder" value="200"/>
 	</bean>
 
 	<bean id="syslog-and-queue-route" class="com.boundary.sdk.SysLogRouteBuilder">
 		<property name="routeId" value="SYSLOG-AND-QUEUE"/>
 		<property name="port" value="10514"/>
 		<property name="toUri" value="seda:event-queue"/>
+		<property name="startUpOrder" value="201"/>
 	</bean>
 		
 	<bean id="event-queue" class="com.boundary.sdk.QueueRouteBuilder">
 		<property name="routeId" value="EVENT-QUEUE"/>
 		<property name="fromUri" value="seda:event-queue"/>
 		<property name="toUri" value="mock:queue-test"/>
+		<property name="startUpOrder" value="202"/>
 	</bean>
 	
 	<camelContext xmlns="http://camel.apache.org/schema/spring">
