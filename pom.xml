@@ -6,7 +6,7 @@
 	<groupId>com.boundary</groupId>
 	<artifactId>boundary-event-sdk</artifactId>
 	<packaging>jar</packaging>
-	<version>0.00.01</version>
+	<version>0.00.03</version>
 
 	<name>boundary-event-sdk</name>
 	<url>https://github.com/boundary/boundary-sdk</url>
