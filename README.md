@@ -8,9 +8,10 @@ Boundary Event SDK
 
 The Boundary organization id and API keys is set by setting the following environment variables:
 
-BOUNDARY_ORG_ID=
-BOUNDARY_API_KEY=
+* `BOUNDARY_ORG_ID`
+* `BOUNDARY_API_KEY`
 
+in the `bsdk-env.sh`
 
 ## Running Camel
 
@@ -18,17 +19,10 @@ BOUNDARY_API_KEY=
 
 
 1. Set Boundary Organization and API key environmentvariables
-2. Run the following:
-
-```
-$ ./camelrun.sh
-```
+2. Run the following: ```mvn camel:run ```
 
 ### Stopping Camel
 1. Control-c in the console where Camel is running
-2. Run the following:
-
-
 
 ## Syslog Configuration
 
@@ -52,18 +46,11 @@ daemon.*          @127.0.0.1:10514
 
 In this example, all messages with a facility of `daemon` are forwarded to the localhost(127.0.0.1) on port 10514.
 
-
 ```
 local0.info          @172.16.0.1:1514
 ```
 
 In this last example, all messages with a facility of `local0` and `info` severity are forwarded to the host 172.16.0.1:1514
-
-
-
-
-
-
 
 ## SNMP Configuration
 
@@ -73,41 +60,7 @@ In this last example, all messages with a facility of `local0` and `info` severi
 
 # Install SNMP4J
 
-1. Download distribution:
-
-```
-wget http://www.snmp4j.com/smi/snmp4j-smi-1.1.3-dist.zip
-```
-
-2. Extract distribution:
-
-```
-unzip snmp4j-smi-1.1.3-dist.zip
-```
-
-3. Install snmp4j jar
-
-```
-./install-jar
-```
-
-2. Extract distribution:
-
-```
-unzip snmp4j-smi-1.1.3-dist.zip
-```
-
-3. Install snmp4j jar
-
-```
-./install-jar.sh <args>
-```
-
-4. Install snmp4j-smi jar
-
-```
-./install-jar.sh <args>
-```
+1. Execute the boot strap script: ```$ bash boostrap.sh```
 
 # SNMP4J License Configuration
 Boundary SDK uses the SNMP4J-SMI library for translating OIDs to strings. The open source version is not able to translate OIDs
@@ -120,5 +73,5 @@ JUnit tests for testing OID lookup require that the environment variable SNMP4J_
 be set to license key you purchase otherwise tests that reference the branch _iso.org.dod.internet.private.enterprises_
 or _1.3.6.1.4.1.9._ will be skipped.
 
-SNMP4J_MIB_REPOSITORY points to the compiled MIBs
+`SNMP4J_MIB_REPOSITORY` environment variables points to the directorly with the compiled MIBs
 
