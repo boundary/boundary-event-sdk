@@ -9,14 +9,14 @@
            	
 	<bean id="syslog-only-route" class="com.boundary.sdk.SysLogRouteBuilder">
 		<property name="routeId" value="SYSLOG-ONLY"/>
-		<property name="port" value="1514"/>
+		<property name="port" value="2514"/>
 		<property name="toUri" value="mock:syslog-test"/>
 		<property name="startUpOrder" value="200"/>
 	</bean>
 
 	<bean id="syslog-and-queue-route" class="com.boundary.sdk.SysLogRouteBuilder">
 		<property name="routeId" value="SYSLOG-AND-QUEUE"/>
-		<property name="port" value="10514"/>
+		<property name="port" value="3514"/>
 		<property name="toUri" value="seda:event-queue"/>
 		<property name="startUpOrder" value="201"/>
 	</bean>
