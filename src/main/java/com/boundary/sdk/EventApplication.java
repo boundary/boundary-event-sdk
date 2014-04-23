@@ -27,7 +27,7 @@ public class EventApplication
         main.setApplicationContextUri("META-INF/event-application.xml");
          
         // run until you terminate the JVM
-        System.out.println("Starting Camel. Use ctrl + c to terminate the JVM.\n");
+        LOG.info("Starting Camel. Use ctrl + c to terminate the JVM.\n");
         main.run(); 
     }
 }
