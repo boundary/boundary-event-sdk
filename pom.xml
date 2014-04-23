@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 	<version>0.00.01</version>
 
-	<name>boundary-sdk</name>
+	<name>boundary-event-sdk</name>
 	<url>https://github.com/boundary/boundary-sdk</url>
 	<properties>
 		<camel-version>2.12.3</camel-version>
