@@ -3,12 +3,9 @@
  */
 package com.boundary.sdk.event.snmp;
 
-import com.snmp4j.smi.*;
+//import com.snmp4j.smi.*;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -18,7 +15,7 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.snmp4j.SNMP4JSettings;
+
 
 /**
  * Commandline tool to compile MIBs
@@ -29,6 +26,8 @@ import org.snmp4j.SNMP4JSettings;
 public class MIBCompiler extends SmiSupport {
 
 	private static Logger LOG = LoggerFactory.getLogger(MIBCompiler.class);
+	
+	private static final String BOUNDARY_TOOLS_COMMAND_NAME_PROP_NAME="boundary.tools.command.name";
 	
 	private Options options = new Options();
 	private Option repoDirOption;
@@ -45,6 +44,10 @@ public class MIBCompiler extends SmiSupport {
 	public MIBCompiler() {
 		options = new Options();
 		commandName = this.getClass().toString();
+		commandName = System.getProperty(BOUNDARY_TOOLS_COMMAND_NAME_PROP_NAME);
+		if (commandName == null) {
+			commandName = this.getClass().toString();
+		}
 	}
 	
 	/**
@@ -65,22 +68,7 @@ public class MIBCompiler extends SmiSupport {
 	@SuppressWarnings("static-access")
 	public void handleCommandLineOptions(String[] args) {
 		
-		if (args.length < 1) {
-			usage();
-		}
-		
-		// First argument is used as the name of
-		// the the script that is being run
-		commandName = args[0];
-		
-		// Remove the initial argument for later handling
-		// by the commons-cli
-		String[] optionArgs = new String[args.length-1];
-		for (int i = args.length - 2 ; i != 0 ; i--) {
-			optionArgs[i-1] = args[i];
-		}
-		
-		for (String s :optionArgs) {
+		for (String s :args) {
 			LOG.debug(s);
 		}
 
