@@ -11,6 +11,10 @@
 	<name>boundary-event-sdk</name>
 	<url>https://github.com/boundary/boundary-sdk</url>
 	<properties>
+		<!-- Set the project encoding -->
+    		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<!-- Properties for all of the java packages -->
 		<camel-version>2.12.3</camel-version>
 		<spring-version>3.2.5.RELEASE</spring-version>
 		<activemq-version>5.9.0</activemq-version>
