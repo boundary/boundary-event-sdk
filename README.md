@@ -75,33 +75,45 @@ In this last example, all messages with a facility of `local0` and `info` severi
 
 1. Download distribution:
 
-```wget http://www.snmp4j.com/smi/snmp4j-smi-1.1.3-dist.zip```
+```
+wget http://www.snmp4j.com/smi/snmp4j-smi-1.1.3-dist.zip
+```
 
 2. Extract distribution:
 
-```unzip snmp4j-smi-1.1.3-dist.zip```
+```
+unzip snmp4j-smi-1.1.3-dist.zip
+```
 
 3. Install snmp4j jar
 
-``` ./install-jar 
+```
+./install-jar
+```
 
 2. Extract distribution:
 
-```unzip snmp4j-smi-1.1.3-dist.zip```
+```
+unzip snmp4j-smi-1.1.3-dist.zip
+```
 
 3. Install snmp4j jar
 
-``` ./install-jar.sh <args>```
+```
+./install-jar.sh <args>
+```
 
 4. Install snmp4j-smi jar
 
-``` ./install-jar.sh <args>```
+```
+./install-jar.sh <args>
+```
 
 # SNMP4J License Configuration
 Boundary SDK uses the SNMP4J-SMI library for translating OIDs to strings. The open source version is not able to translate OIDs
 in the enterprise branch: _iso.org.dod.internet.private.enterprises_
 
-A license can be purchased SNMP4J-SMI from [http://www.snmp4j.org.
+A license can be purchased SNMP4J-SMI from [http://www.snmp4j.org](http://www.snmp4j.org)
 
 ## SMI Tests
 JUnit tests for testing OID lookup require that the environment variable SNMP4J_LICENSE
