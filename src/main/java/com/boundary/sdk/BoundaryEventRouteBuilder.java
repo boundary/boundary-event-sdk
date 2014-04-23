@@ -1,17 +1,10 @@
 package com.boundary.sdk;
 
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.camel.Exchange;
-import org.apache.camel.LoggingLevel;
-import org.apache.camel.Processor;
-import org.apache.camel.Message;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.http.AuthMethod;
 import org.apache.camel.component.http.HttpComponent;
 import org.apache.camel.component.http.HttpConfiguration;
-import org.apache.camel.component.syslog.SyslogMessage;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,6 +87,8 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 		
 		// Create the URL used to send events
 		String url = "https://" + apiHost + "/" + orgId + "/" + "events";
+		
+		LOG.info("boundary event api url: " + url);
 		
 		// Configure our HTTP connection to use BASIC authentication
 		HttpConfiguration config = new HttpConfiguration();
