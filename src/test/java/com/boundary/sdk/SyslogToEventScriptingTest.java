@@ -16,15 +16,15 @@ import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @SuppressWarnings("deprecation")
-public class SyslogToEventJSTest extends CamelSpringTestSupport {
+public class SyslogToEventScriptingTest extends CamelSpringTestSupport {
 	
-	private static Logger LOG = LoggerFactory.getLogger(SyslogToEventJSTest.class);
+	private static Logger LOG = LoggerFactory.getLogger(SyslogToEventScriptingTest.class);
 	
 	private static final String SYSLOG_IN = "direct:syslog-in";
 	private static final String EVENT_OUT = "mock:event-out";
 
 	protected AbstractXmlApplicationContext createApplicationContext() {
-		return new ClassPathXmlApplicationContext("META-INF/syslog-to-event-js.xml");
+		return new ClassPathXmlApplicationContext("META-INF/syslog-to-event-scripting.xml");
 	}
 
 	@Test
