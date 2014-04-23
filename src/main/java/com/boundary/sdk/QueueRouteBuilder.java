@@ -26,13 +26,13 @@ public class QueueRouteBuilder extends BoundaryRouteBuilder {
 
 	private boolean asyncConsumer;
 	
-	private static final String DEFAULT_QUEUE_NAME="direct:queue";
+	private static final String DEFAULT_QUEUE_NAME="pending_events";
 	private static final int DEFAULT_CONCURRENT_CONSUMERS=1;
 
 	public QueueRouteBuilder() {
 		queueName = DEFAULT_QUEUE_NAME;
 		concurrentConsumers = DEFAULT_CONCURRENT_CONSUMERS;
-		asyncConsumer = false;
+		asyncConsumer = true;
 	}
 	
 	/**
@@ -76,7 +76,7 @@ public class QueueRouteBuilder extends BoundaryRouteBuilder {
         ConnectionFactory connectionFactory =
             new ActiveMQConnectionFactory("vm://localhost");
         context.addComponent("jms",JmsComponent.jmsComponentAutoAcknowledge(connectionFactory));
-        String jmsUri = String.format("jms:pending_events?asyncConsumer=%s",asyncConsumer);
+        String jmsUri = String.format("jms:%s?asyncConsumer=%s",queueName,asyncConsumer);
 
         /**
          * Receives serialized @{link RawEvent} messages

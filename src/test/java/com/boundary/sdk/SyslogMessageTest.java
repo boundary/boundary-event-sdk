@@ -21,10 +21,10 @@ public class SyslogMessageTest extends CamelSpringTestSupport {
 
 	private final String SYSLOG_OUT_URI = "mock:syslog-test";
 	private final String QUEUE_OUT_URI = "mock:queue-test";
-	private final int SYSLOG_ONLY_PORT = 1514;
-	private final int SYSLOG_AND_QUEUE_PORT = 10514;
-	private final int DELAY = 100;
-	private final int DEFAULT_MESSAGE_COUNT = 100;
+	private final int SYSLOG_ONLY_PORT = 2514;
+	private final int SYSLOG_AND_QUEUE_PORT = 3514;
+	private final int DELAY = 10;
+	private final int DEFAULT_MESSAGE_COUNT = 64;
 
 	@Test
 	public void syslogOnlyMessageTest() throws Exception {
@@ -52,7 +52,8 @@ public class SyslogMessageTest extends CamelSpringTestSupport {
 		generator.setPort(SYSLOG_AND_QUEUE_PORT);
 		generator.sendMessages(expectedMessageCount, DELAY);
 		
-		queueOut.await(60000, TimeUnit.SECONDS);
+		
+		queueOut.await(60000,TimeUnit.SECONDS);
 
 		assertMockEndpointsSatisfied();
 	}
