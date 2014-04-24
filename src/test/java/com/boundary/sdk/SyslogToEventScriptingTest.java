@@ -128,7 +128,8 @@ public class SyslogToEventScriptingTest extends CamelSpringTestSupport {
 	 * 
 	 * @throws InterruptedException
 	 */
-	//@Test
+	@Ignore("Scripting using python not implemented yet.")
+	@Test
 	public void testSysLogToEventPython() {
 		getEvent(SYSLOG_PY_IN,EVENT_PY_OUT);
 	}
@@ -138,7 +139,8 @@ public class SyslogToEventScriptingTest extends CamelSpringTestSupport {
 	 * 
 	 * @throws InterruptedException
 	 */
-	//@Test
+	@Ignore("Scripting using ruby not implemented yet.")
+	@Test
 	public void testSysLogToEventRuby() {
 		getEvent(SYSLOG_RB_IN,EVENT_RB_OUT);
 	}
