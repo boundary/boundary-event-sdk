@@ -18,11 +18,13 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * 
- * An <code>RawEvent</code> object is a Java implementation of the JSON representation used in the
- * Boundary Event REST API.
+ * An {@link RawEvent} object is a Java class that mirrors the JSON representation used in the
+ * Boundary Event REST API. For additional details see the
+ * <a href="https://app.boundary.com/docs/events_api">Boundary Event API</a>
+ * documentation.
  * 
  * NOTE: This classes uses lazy initialization for some fields so that the
- *       serialization to JSON is skipped for those fields that have not been
+ *       serialization to JSON (via Jackson) is skipped for those fields that have not been
  *       specified.
  *
  * @author davidg
@@ -61,7 +63,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	private String title;
 
 	/**
-	 *  Default constructor for a RawEvent
+	 *  Default constructor for a raw event
 	 */
 	public RawEvent() {
 //		this(new Source(),new ArrayList<String>(),"");
@@ -90,17 +92,20 @@ public class RawEvent extends BaseEvent implements Serializable {
 	}
 	
 	/**
-	 * Returns the creation event of the event
-	 * @return
+	 * Returns the creation date of a raw event.
+	 * 
+	 * @return {@link Date} that has the date and time of when the event occurred
 	 */
 	public Date getCreatedAt() {
 		return createdAt;
 	}
 	
 	/**
+	 * Sets the creation date of a raw event.
 	 * 
-	 * @param createdAt
-	 * @return RawEvent
+	 * @param createdAt Date and time ({@link Date})  of when the event was created.
+	 * 
+	 * @return Returns the {@link RawEvent}
 	 */
 	public RawEvent setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
@@ -115,8 +120,9 @@ public class RawEvent extends BaseEvent implements Serializable {
 	}
 
 	/**
+	 * Get the finger print fields associated with the raw event
 	 * 
-	 * @return
+	 * @return Returns a {@link ArrayList} with finger print fields
 	 */
 	public ArrayList<String> getFingerprintFields() {
 		if (fingerprintFields == null) {
@@ -126,31 +132,39 @@ public class RawEvent extends BaseEvent implements Serializable {
 	}
 	
 	/**
-	 * Adds a single fingerprint field to the existing fingerprint fields.
+	 * Adds a single finger print field a raw event.
 	 * 
-	 * @param Field to use in the fingerprint field
-	 * @return RawEvent
+	 * @param fingerPrintFieldName {@link String} containing the finger print field to the {@link RawEvent}
+	 * @return Returns the {@link RawEvent}
 	 */
-	public RawEvent addFingerprintField(String value) {
+	public RawEvent addFingerprintField(String fingerPrintFieldName) {
 		if (fingerprintFields == null) {
 			initFingerprintFields();
 		}
-		fingerprintFields.add(value);
+		fingerprintFields.add(fingerPrintFieldName);
 		return this;
 	}
 	
-	public RawEvent removeFingerprintField(String value) {
+	/**
+	 * Removes a finger print field from a raw event.
+	 * 
+	 * @param fieldName
+	 * 
+	 * @return Returns the {@link RawEvent}
+	 */
+	public RawEvent removeFingerprintField(String fieldName) {
 		if (fingerprintFields != null){
-			fingerprintFields.remove(value);
+			fingerprintFields.remove(fieldName);
 		}
 		return this;
 	}
 	
 	/**
-	 * Sets the fingerprint fields for the event
+	 * Sets the finger print fields for a raw event.
 	 * 
-	 * @param fingerprintFields Fingerprint fields to use for the event
-	 * @return RawEvent
+	 * @param fingerprintFields Finger print fields to use for the {@link RawEvent}
+	 * 
+	 * @return Returns the {@link RawEvent}
 	 */
 	public RawEvent setFingerprintFields(ArrayList<String> fingerprintFields) {
 		if (fingerprintFields == null) {
@@ -161,19 +175,19 @@ public class RawEvent extends BaseEvent implements Serializable {
 	}
 
 	/**
-	 * Returns the current value of the message describing the event.
+	 * Returns the current value of the message describing the raw event.
 	 * 
-	 * @return Current value of event message
+	 * @return {@link String} containing the message associated with the {@link RawEvent}
 	 */
 	public String getMessage() {
 		return this.message;
 	}
 	
 	/**
-	 * Set the message describing the event.
+	 * Set the message describing the raw event.
 	 * 
-	 * @param message Value to set the event message to
-	 * @return RawEvent
+	 * @param message {@link String} to set the {@link RawEvent} to
+	 * @return Returns the {@link RawEvent}
 	 */
 	public RawEvent setMessage(String message) {
 		this.message = message;
@@ -189,10 +203,10 @@ public class RawEvent extends BaseEvent implements Serializable {
 	}
 	
 	/**
-	 * Set the Boundary organization id on the event
+	 * Set the Boundary organization id on the raw event.
 	 * 
 	 * @param organizationId Boundary organizationId
-	 * @return RawEvent
+	 * @return Returns the {@link RawEvent}
 	 */
 	public RawEvent setOrganizationId(String organizationId) {
 		this.organizationId = organizationId;
@@ -207,33 +221,34 @@ public class RawEvent extends BaseEvent implements Serializable {
 	}
 	
 	/**
-	 * Adds a property to an event. A property consists of
-	 * a key/value pair.
+	 * Adds a property to a raw event. A property consists of
+	 * a name/value pair.
 	 * 
-	 * @param key
-	 * @param value
+	 * @param propertyName
+	 * @param propertValue
 	 */
-	public void addProperty(String key,Object value) {
+	public void addProperty(String propertyName,Object propertValue) {
 		if (properties == null) {
 			initProperties();
 		}
-		this.properties.put(key, value);
+		this.properties.put(propertyName, propertValue);
 	}
 	
 	/**
-	 * Removes a property with the key from the {@link RawEvent}.
-	 * @param key
+	 * Removes a property with the given name from the raw event.
+	 * 
+	 * @param propertyName {@link String} containing the name of the property to remove from the {@link RawEvent}.
 	 */
-	public void removeProperty(String key) {
+	public void removeProperty(String propertyName) {
 		if (properties != null) {
-			this.properties.remove(key);
+			this.properties.remove(propertyName);
 		}
 	}
 	
 	/**
-	 * Returns all of the properties associated with {@link RawEvent}
+	 * Returns all of the properties associated with the raw event
 	 * 
-	 * @return Map<String,Object> containing the properties
+	 * @return {@link LinkedHashMap} containing the properties of the {@link RawEvent}
 	 */
 	public LinkedHashMap<String,Object> getProperties() {
 		if (properties == null) {
@@ -243,10 +258,10 @@ public class RawEvent extends BaseEvent implements Serializable {
 	}
 	
 	/**
-	 * Sets the properties of an event
+	 * Sets the properties of a raw event.
 	 * 
-	 * @param properties Map<String,Object> containing the properties to add to the event.
-	 * @return RawEvent
+	 * @param properties ({@link LinkedHashMap}) to be associated with the {@link RawEvent}
+	 * @return Returns the {@link RawEvent}
 	 */
 	public RawEvent setProperties(LinkedHashMap<String,Object> properties) {
 		if (properties == null) {
@@ -257,33 +272,36 @@ public class RawEvent extends BaseEvent implements Serializable {
 	}
 	
 	/**
-	 * Returns the date associated with the event.
+	 * Returns received date and time associated with the raw event.
 	 * 
-	 * @return Date received 
+	 * @return {@link Date} Date and time when the {@link RawEvent} 
 	 */
 	public Date getReceivedAt() {
 		return this.receivedAt;
 	}
 	
 	/**
-	 * Sets the received date/time of the event
+	 * Sets the received date and time of a raw event.
 	 * 
-	 * @param receivedAt Date containing the event received time
-	 * @return
+	 * @param receivedAt {@link Date} containing the {@link RawEvent} received date and time
+	 * @return Returns the {@link RawEvent}
 	 */
 	public RawEvent setReceivedAt(Date receivedAt) {
 		this.receivedAt = receivedAt;
 		return this;
 	}
 	
+	/**
+	 * Internal method of initializing the sender ({@link Source}).
+	 */
 	private void initializeSender() {
 		this.sender = new Source();
 	}
 	
 	/**
-	 * Returns the current sender associated with the event
+	 * Returns the current sender associated with the raw event
 	 * 
-	 * @return Source containing the sender
+	 * @return {@link Source} containing the sender of the {@link RawEvent}
 	 */
 	public Source getSender() {
 		if (sender == null) {
@@ -293,30 +311,30 @@ public class RawEvent extends BaseEvent implements Serializable {
 	}
 	
 	/**
-	 * Sets the sender associated with the event
+	 * Sets the sender associated with the raw event.
 	 * 
-	 * @parm sender Source to assign as sender
-	 * @return RawEvent
+	 * @param sender Sender ({@link Source}) to associate with the {@link RawEvent}
+	 * @return Returns the {@link RawEvent}
 	 */
 	public RawEvent setSender(Source sender) {
 		if (sender == null) {
 			initializeSender();
 		}
-
 		this.sender = sender;
 		return this;
 	}
 	
 	/**
-	 * Internal method to initialize Status
+	 * Internal method to initialize this {@link RawEvent} severity({@link Severity}).
 	 */
 	private void initializeSeverity() {
 		this.severity = Severity.INFO;
 	}
 
 	/**
+	 * Gets the current severity from a raw event
 	 * 
-	 * @return Severity
+	 * @return Returns {@link Severity} of this {@link RawEvent}
 	 */
 	public Severity getSeverity() {
 		if (severity == null) {
@@ -326,9 +344,10 @@ public class RawEvent extends BaseEvent implements Serializable {
 	}
 
 	/**
+	 * Set the severity of a raw event
 	 * 
-	 * @param severity - Severity Value
-	 * @return RawEvent
+	 * @param severity - Severity {@link Severity} to be associated with the {@link RawEvent}
+	 * @return Returns the {@link RawEvent}
 	 */
 	public RawEvent setSeverity(Severity severity) {
 		if (severity == null) {
@@ -338,14 +357,17 @@ public class RawEvent extends BaseEvent implements Serializable {
 		return this;
 	}
 
+	/**
+	 * Internal method for lazy initialization.
+	 */
 	private void initializeSource() {
 		source = new Source();
 	}
 
 	/**
-	 * Gets the source of the event
+	 * Gets the source of the raw event.
 	 * 
-	 * @return Source associated with the event
+	 * @return Source({@link Source}) associated with the {@link RawEvent}
 	 */
 	public Source getSource() {
 		if (source == null) {
@@ -355,10 +377,10 @@ public class RawEvent extends BaseEvent implements Serializable {
 	}
 	
 	/**
-	 * Sets the source of the event
+	 * Sets the source of a raw event
 	 * 
-	 * @param source Source to associate with the event.
-	 * @return RawEvent
+	 * @param source {@link Source} to associate with the event.
+	 * @return Returns the {@link RawEvent}
 	 */
 	public RawEvent setSource(Source source) {
 		if (source == null) {
@@ -368,14 +390,17 @@ public class RawEvent extends BaseEvent implements Serializable {
 		return this;
 	}
 	
+	/**
+	 * Internal method of lazy initialization of {@link Status}
+	 */
 	private void initializeStatus() {
 		this.status = Status.OK;
 	}
 	
 	/**
-	 * Returns the status of the event
+	 * Returns the status of the raw event
 	 * 
-	 * @return Status
+	 * @return {@link Status} of the {@link RawEvent}
 	 */
 	public Status getStatus() {
 		if (status == null) {
@@ -385,10 +410,11 @@ public class RawEvent extends BaseEvent implements Serializable {
 	}
 	
 	/**
-	 * Sets the status of the RawEvent
+	 * Sets the status of the raw event.
 	 * 
-	 * @param status
-	 * @return RawStatus
+	 * @param status {@Status} associated with the {@link RawEvent}
+	 * 
+	 * @return Returns the {@link RawEvent}
 	 */
 	public RawEvent setStatus(Status status) {
 		if (status == null) {
@@ -399,18 +425,19 @@ public class RawEvent extends BaseEvent implements Serializable {
 	}
 
 	/**
-	 * Returns the current value of the RawEvent
+	 * Returns the current value of the {@link RawEvent}
 	 * 
-	 * @return
+	 * @return {@link String} with title name of the {@link RawEvent}
 	 */
 	public String getTitle() {
 		return this.title;
 	}
 	
 	/**
+	 * Sets the title of the raw event.
 	 * 
-	 * @param title
-	 * @return RawEvent
+	 * @param title {@link String} containing the title to associate with the {@link RawEvent}
+	 * @return Returns the {@link RawEvent}
 	 */
 	public RawEvent setTitle(String title) {
 		this.title = title;
@@ -425,10 +452,9 @@ public class RawEvent extends BaseEvent implements Serializable {
 	}
 	
 	/**
-	 * Sets the entire list of tags in the event
-	 * from the list of tags passed in.
+	 * Associates an array of tags with a raw event.
 	 * 
-	 * @param tags List of tags to add to the event
+	 * @param tags {@link ArrayList} of tags to associate with the {@link RawEvent}
 	 */
 	public RawEvent setTags(ArrayList<String> tags) {
 		if (tags == null) {
@@ -439,10 +465,10 @@ public class RawEvent extends BaseEvent implements Serializable {
 	}
 	
 	/**
-	 * Adds a single tag value to the {@link RawEvent}.
+	 * Adds a single tag to a {@link RawEvent}.
 	 * 
 	 * @param tag Value of tag.
-	 * @return RawEvent
+	 * @return Returns the {@link RawEvent}
 	 */
 	public RawEvent addTag(String tag) {
 		if (tags == null) {
@@ -452,6 +478,12 @@ public class RawEvent extends BaseEvent implements Serializable {
 		return this;
 	}
 	
+	/**
+	 * Removes a tag from the raw event
+	 * 
+	 * @param tag {@link String} containing the tag to be removed from a {@link RawEvent}
+	 * @return Returns the {@link RawEvent}
+	 */
 	public RawEvent removeTag(String tag) {
 		if (tags != null) {
 			tags.remove(tag);
@@ -460,9 +492,9 @@ public class RawEvent extends BaseEvent implements Serializable {
 	}
 	
 	/**
-	 * Get the tags associated with the {@link RawEvent}
+	 * Get the tags associated with the raw event
 	 * 
-	 * @return
+	 * @return {@link ArrayList} containing all of the tags associated with the {@link RawEvent}
 	 */
 	public ArrayList<String> getTags() {
 		if (tags == null) {
@@ -473,7 +505,9 @@ public class RawEvent extends BaseEvent implements Serializable {
 	}
 	
 	/**
-	 * Converts a {@link RawEvent} into a string representation
+	 * Converts a raw event into a string representation.
+	 * 
+	 * @return {@link String} representation of a {@link RawEvent}
 	 */
 	public String toString() {
 		StringBuffer s = new StringBuffer();
@@ -493,16 +527,24 @@ public class RawEvent extends BaseEvent implements Serializable {
 
 		return s.toString();
 	}
+	
 	/**
 	 * 
 	 * Creates an event with default values as follows:
+	 * <p>
+	 * <em>title</em> - MyEvent
+	 * </p>
+	 * <p>
+	 * <em>fingerprintFields</em> - <code>@title</code>
+	 * </p>
+	 * <p>
+	 * <em>source</em> - localhost
+	 * </p>
+	 * <p>
+	 * <em>status</em> - <code>OPEN</code>
+	 * </p>
 	 * 
-	 * title - "MyEvent"
-	 * fingerprintFields - "@title"
-	 * source - "localhost"
-	 * status - OPEN
-	 * 
-	 * @return Default event
+	 * @return Default population of the fields in a {@link RawEvent}
 	 */
 	public static RawEvent getDefaultEvent() {
 		RawEvent event = new RawEvent();
