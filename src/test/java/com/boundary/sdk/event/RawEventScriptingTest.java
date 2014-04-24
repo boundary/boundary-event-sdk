@@ -51,8 +51,17 @@ public class RawEventScriptingTest {
 
 	@After
 	public void tearDown() throws Exception {
+        manager = null;
+        engine = null;
+        event = null;
+        
 	}
 	
+	/**
+	 * Finds a script to be tested from 
+	 * @param scriptName
+	 * @return {@link File}
+	 */
 	private FileReader getScript(String scriptName) {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
@@ -69,35 +78,61 @@ public class RawEventScriptingTest {
 		return reader;
 	}
 	
-	private void runScript(String scriptName) {
+	private Object runScript(String scriptName) throws ScriptException {
+		Object o = null;
 		
         // evaluate a script string. The script accesses "file"
         // variable and calls method on it
         try {
-            engine.eval(getScript(scriptName));
+            o = engine.eval(getScript(scriptName));
 		} catch (ScriptException e) {
 			e.printStackTrace();
 			LOG.error("file: " + e.getFileName());
 			LOG.error("line: " + e.getLineNumber());
 			LOG.error("column: " + e.getColumnNumber());
 			LOG.error("message" + e.getMessage());
+			throw e;
 		}
+        return o;
 	}
 
 	@Test
-	public void testScriptEngine(){
+	public void testScriptEngine() throws ScriptException{
 		event.setTitle("foobar");
 		runScript("smoke.js");
 	}
 	
-	@Test
-	public void testException() {
+	@Test(expected=ScriptException.class)
+	public void testException() throws ScriptException {
 		runScript("exception.js");
 	}
 	
 	@Test
-	public void testTitle() {
-		runScript("title.js");
-		assertEquals(event.getTitle(),"foobar");
+	public void testSetTitle() throws ScriptException {
+		runScript("set_title.js");
+		assertEquals("Test setTitle()", event.getTitle(),"foobar");
+	}
+	
+	@Test
+	public void testChangeTitle() throws ScriptException {
+		String title = "2112";
+		event.setTitle(title);
+		runScript("set_title.js");
+		assertFalse(title == event.getTitle());
+	}
+	
+	@Test
+	public void testReturnsTrue() throws ScriptException {
+		Boolean o = (Boolean)runScript("return_true.js");
+
+		assertTrue(o.booleanValue());
+	}
+	
+	@Test
+	public void testSetSourceRef() throws ScriptException {
+		runScript("set_source.js");
+		
+		assertEquals("Check setRef()","Geddy Lee",event.getSource().getRef());
+		assertEquals("Check setType()","Musician",event.getSource().getType());
 	}
 }
