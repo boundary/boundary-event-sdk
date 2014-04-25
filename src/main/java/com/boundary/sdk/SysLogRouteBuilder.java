@@ -10,7 +10,7 @@ import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.spi.DataFormat;
 import org.apache.camel.component.syslog.Rfc3164SyslogDataFormat;
 
-public class SysLogRouteBuilder extends UDPRouterBuilder {
+public class SysLogRouteBuilder extends UDPRouteBuilder {
 	
 	private final String DEFAULT_SYSLOG_ROUTE_NAME="SYSLOG-ROUTE";
 	private final int DEFAULT_SYSLOG_PORT = 1514;
