@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ $# == 1 ]
+then
+  mvn -q exec:java -Dexec.mainClass="com.boundary.sdk.TCPSocketServer" -Dexec.args="$1"
+else
+  echo "usage: $(basename $0) port"
+fi
