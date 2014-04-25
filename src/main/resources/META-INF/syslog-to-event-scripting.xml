@@ -21,7 +21,7 @@
 		
 		<route id="SYSLOG-TO-EVENT-RB">
 			<from uri="direct:syslog-rb-in" />
-			<to uri="language:python:classpath:syslog_to_event.rb" />
+			<to uri="language:ruby:classpath:syslog_to_event.rb" />
 			<to uri="mock:event-rb-out"/>
 		</route>
 		
