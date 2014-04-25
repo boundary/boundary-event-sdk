@@ -9,7 +9,38 @@
 	<version>0.00.03</version>
 
 	<name>boundary-event-sdk</name>
+	<description>Boundary Event SDK enables the rapid integration of foreign events into the Boundary monitoring platform</description>
 	<url>https://github.com/boundary/boundary-sdk</url>
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>manual</distribution>
+			<comments>A business-friendly OSS license</comments>
+		</license>
+	</licenses>
+	<organization>
+		<name>Boundary,Inc.</name>
+		<url>http://www.boundary.com</url>
+	</organization>
+	<developers>
+		<developer>
+			<id>davidg</id>
+			<name>David Gwartney</name>
+			<email>davidg@boundary.com</email>
+			<url>https://www.linkedin.com/in/davidgwartney</url>
+			<organization>Boundary,Inc.</organization>
+			<organizationUrl>http://www.boundary.com</organizationUrl>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<timezone>-8</timezone>
+			<properties>
+				<picUrl>https://media.licdn.com/media/p/5/005/03e/1c1/19f5f33.jpg</picUrl>
+			</properties>
+		</developer>
+	</developers>
 	<properties>
 		<!-- Set the project encoding -->
     		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
