@@ -1,13 +1,12 @@
 package com.boundary.sdk.event;
 import com.boundary.sdk.RawEvent;
-import com.boundary.sdk.SyslogToEventProcessor;
+
 
 import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.InputStream;
 import java.net.URL;
 
 import javax.script.ScriptEngine;
