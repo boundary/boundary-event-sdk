@@ -10,7 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * {@link RouteBuilder} for sending events to Boundary.
+ * {@link RouteBuilder} for sending events to Boundary. Accepts serialized {@link RawEvent}
+ * that is transformed to JSON.
+ *  
  * @author davidg
  *
  */
@@ -22,7 +24,9 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	private String orgId;
 	private String apiKey;
 
-	
+	/**
+	 * Default constructor
+	 */
 	public BoundaryEventRouteBuilder() {
 		this.apiHost = "api.boundary.com";
 		this.orgId = "";
@@ -33,7 +37,7 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	/**
 	 * Set the Boundary Organization ID to use by default
 	 * 
-	 * @param orgId Organizationa Id from the Boundary console.
+	 * @param orgId Organization Id from the Boundary console.
 	 */
 	
 	public void setOrgId(String orgId) {
@@ -70,7 +74,7 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	/**
 	 * Return the current Boundary API host
 	 * 
-	 * @return
+	 * @return String
 	 */
 	public String getApiHost() {
 		return this.apiHost;
@@ -78,7 +82,7 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 		
 	
 	/**
-	 * Configures the Camel route that receives {@link RawEvents}
+	 * Configures the Camel route that receives {@link RawEvent}
 	 * and then sends to the Boundary API
 	 * 
 	 */

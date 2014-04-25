@@ -36,7 +36,7 @@ public class SmiSupport {
 	
 	/**
 	 * Sets the which contains compiled MIBs
-	 * @param repositoryPath Directory path (e.g. /home/kermit/mibRepository)
+	 * @param path Directory path (e.g. /home/kermit/mibRepository)
 	 */
 	public void setRepository(String path) {
 		this.repositoryPath = path;
@@ -45,7 +45,7 @@ public class SmiSupport {
 	/**
 	 * Returns the current path to the repository
 	 * 
-	 * @return
+	 * @return {@link String}
 	 */
 	public String getRepository() {
 		return this.repositoryPath;
@@ -68,7 +68,7 @@ public class SmiSupport {
 	
 	/**
 	 * Returns the SNMP4J-SMI license.
-	 * @return
+	 * @return {@link String}
 	 */
 	public String getLicense() {
 		// If the license is null then translate to empty string.
@@ -77,7 +77,7 @@ public class SmiSupport {
 	
 	/**
 	 * 
-	 * @return
+	 * @return {@link SmiManager}
 	 */
 	public SmiManager getSmiManager() {
 		return this.smiManager;
@@ -117,7 +117,7 @@ public class SmiSupport {
 	 * Handles the compiling of a single MIB, single zip file with MIBs, or a directory of MIBs.
 	 * 
 	 * TODO: Add support of handling a zip file.??
-	 * @param file
+	 * @param file {@link File}
 	 */
 	public void compile(File file) {
 		
@@ -185,6 +185,12 @@ public class SmiSupport {
 		
 		LOG.debug("END MIB COMPILE");
 	}
+	
+	/**
+	 * 
+	 * @param fname {@link String}
+	 * @throws IOException
+	 */
 	public void compile(String fname) throws IOException {
 		//super(new File(fname));
 	}

@@ -24,7 +24,10 @@ public class SysLogRouteBuilder extends UDPRouterBuilder {
 		this.routeId = DEFAULT_SYSLOG_ROUTE_NAME;
 		this.port = DEFAULT_SYSLOG_PORT;
 	}
-				
+	
+	/**
+	 * Builds route for handling message forwarded from syslog.
+	 */
 	@Override
 	public void configure() {
 		String uri = "netty:udp://127.0.0.1:" + port + "?sync=false&allowDefaultCodec=false";

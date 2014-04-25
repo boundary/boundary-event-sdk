@@ -412,7 +412,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	/**
 	 * Sets the status of the raw event.
 	 * 
-	 * @param status {@Status} associated with the {@link RawEvent}
+	 * @param status {@link Status} associated with the {@link RawEvent}
 	 * 
 	 * @return Returns the {@link RawEvent}
 	 */

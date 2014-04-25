@@ -47,7 +47,7 @@ public class QueueRouteBuilder extends BoundaryRouteBuilder {
 	/**
 	 * Gets the name of the JMS queue
 	 * 
-	 * @return
+	 * @return Name of the JMS queue
 	 */
 	public String getQueueName() {
 		return this.queueName;
