@@ -6,11 +6,11 @@ package com.boundary.sdk;
  * @author davidg
  *
  */
-public abstract class UDPRouterBuilder extends BoundaryRouteBuilder {
+public abstract class UDPRouteBuilder extends BoundaryRouteBuilder {
 	
 	protected int port;
 
-	public UDPRouterBuilder() {
+	public UDPRouteBuilder() {
 	}
 	
 	/**

@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  * @author davidg
  *
  */
-public class SNMPRouteBuilder extends UDPRouterBuilder {
+public class SNMPRouteBuilder extends UDPRouteBuilder {
 	
 	private static Logger LOG = LoggerFactory.getLogger(SNMPRouteBuilder.class);
 	
