@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:camel="http://camel.apache.org/schema/spring" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://camel.apache.org/schema/spring
+           http://camel.apache.org/schema/spring/camel-spring.xsd">
+           
+	<!-- Definition of the route that communicates with the Boundary API host -->
+	<bean id="boundary-event-route" class="com.boundary.sdk.BoundaryEventRouteBuilder">
+	
+		<property name="routeId" value="BOUNDARY-EVENT"/>
+		<!-- This route needs to start first and stop last so all routes
+		     need to be configured with a start order higher than 100
+		  -->
+		<property name="startUpOrder" value="100"/>
+		<!-- TBD: Encryption of apiKey using Camel APIs -->
+		
+		<!-- Boundary organization ID and API key can obtained by logging into the web
+		     console. Organization ID and API key are located in the users settings
+		  -->
+		<property name="orgId" value="#{systemEnvironment['BOUNDARY_ORG_ID']}"/>
+		<property name="apiKey" value="#{systemEnvironment['BOUNDARY_API_KEY']}"/>
+		<property name="fromUri" value="direct:boundary-event"/>
+	</bean>
+	
+	<!-- This route is queue to persist pending events before they
+	     are sent to the Boundary event route.
+	  -->
+	<bean id="event-queue" class="com.boundary.sdk.QueueRouteBuilder">
+		<property name="routeId" value="EVENT-QUEUE"/>
+		<property name="startUpOrder" value="110"/>		
+		<property name="fromUri" value="seda:event-queue"/>
+		<property name="toUri" value="direct:boundary-event"/>
+	</bean>
+	
+	
+	<bean id="socket-poller-route" class="com.boundary.sdk.SocketPollerRouteBuilder">
+		<property name="routeId" value="SOCKET_POLLER"/>
+		<property name="startUpOrder" value="120"/>
+		<property name="port" value="1514"/>
+		<property name="toUri" value="mock:result"/>
+	</bean>
+			
+	<!-- This configuration associates the route builders with the Camel
+	     context which orchestrates the connection of routes, and sending/receiving
+	     of messages between the routes
+	  -->
+	<camelContext xmlns="http://camel.apache.org/schema/spring">
+	
+<!-- 		<routeBuilder ref="boundary-event-route"/>
+		<routeBuilder ref="event-queue"/> -->
+		<routeBuilder ref="socket-poller-route"/>
+
+	</camelContext>
+</beans>
