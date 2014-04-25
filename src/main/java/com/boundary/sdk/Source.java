@@ -81,7 +81,7 @@ public class Source implements Serializable {
 	 * Set the ref value
 	 * 
 	 * @param ref
-	 * @return
+	 * @return {@link Source}
 	 */
 	public Source setRef(String ref) {
 		this.ref = ref;
@@ -90,7 +90,7 @@ public class Source implements Serializable {
 	
 	/**
 	 * 
-	 * @return
+	 * @return {@link Source}
 	 */
 	public String getRef() {
 		return this.ref;
@@ -99,7 +99,7 @@ public class Source implements Serializable {
 	/**
 	 * Set the type of the source.
 	 * @param type
-	 * @return
+	 * @return {@link Source}
 	 */
 	public Source setType(String type) {
 		this.type = type;
@@ -107,17 +107,19 @@ public class Source implements Serializable {
 	}
 	
 	/**
+	 * Get the type of this source.
 	 * 
-	 * @return
+	 * @return {@link Source}
 	 */
 	public String getType() {
 		return this.type;
 	}
 	
 	/**
+	 * Sets the name of this source
 	 * 
 	 * @param name
-	 * @return
+	 * @return {@link Source}
 	 */
 	public Source setName(String name) {
 		this.name = name;
@@ -126,7 +128,7 @@ public class Source implements Serializable {
 	
 	/**
 	 * 
-	 * @return
+	 * @return {@link String}
 	 */
 	public String getName() {
 		return this.name;
@@ -139,6 +141,10 @@ public class Source implements Serializable {
 		properties = new LinkedHashMap<String,Object>();
 	}
 	
+	/**
+	 * 
+	 * @return {@link Map}
+	 */
 	public Map<String,Object> getProperties() {
 		if (properties == null) {
 			initializeProperties();
@@ -149,7 +155,7 @@ public class Source implements Serializable {
 	/**
 	 * Set the properties of the {@link RawEvent}
 	 * @param properties
-	 * @return
+	 * @return {@link Source}
 	 */
 	public Source setProperties(LinkedHashMap<String,Object> properties) {
 		if (properties == null) {
@@ -164,7 +170,7 @@ public class Source implements Serializable {
 	 * 
 	 * @param key
 	 * @param value
-	 * @return
+	 * @return {@link Source}
 	 */
 	public Source addProperty(String key,Object value) {
 		if (properties == null) {
@@ -174,6 +180,11 @@ public class Source implements Serializable {
 		return this;
 	}
 	
+	/**
+	 * Converts to a string representation
+	 * 
+	 * @return {@link String}
+	 */
 	public String toString() {
 		StringBuffer s = new StringBuffer();
 		s.append(ref == null ? "": ",ref: " + this.ref);

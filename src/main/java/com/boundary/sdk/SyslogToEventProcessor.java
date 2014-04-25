@@ -122,7 +122,7 @@ public class SyslogToEventProcessor implements Processor {
 	/**
 	 * 
 	 * @param severity
-	 * @return
+	 * @return {@link Status}
 	 */
 	private Status getEventStatus(SyslogSeverity severity) {
 		getProperties(statusMap,"syslog.status.properties");

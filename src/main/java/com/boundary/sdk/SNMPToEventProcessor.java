@@ -35,7 +35,7 @@ public class SNMPToEventProcessor implements Processor {
 	
     /**
      * 
-     * @param mibRepository Path to compiled MIBs
+     * @param repositoryPath Path to compiled MIBs
      * @param license SNMP4J-SMI license from <a href="http://www.snmp4j.org">http://www.snmp4j.org</a>
      */
 	public SNMPToEventProcessor(String repositoryPath,String license) {
@@ -51,7 +51,7 @@ public class SNMPToEventProcessor implements Processor {
 	/**
 	 * Returns the current path to the MIB repository
 	 * 
-	 * @return
+	 * @return {@link String}
 	 */
 	public String getMibRepository() {
 		return smi.getRepository();

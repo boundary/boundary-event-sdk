@@ -19,6 +19,10 @@ public abstract class BoundaryRouteBuilder extends RouteBuilder {
 	
 	protected final static String DEFAULT_EVENT_TO_URI = "direct:boundary-event";
 
+	/**
+	 * Default constructor
+	 * 
+	 */
 	public BoundaryRouteBuilder() {
 		this.toUri = "";
 		this.routeId = "";
@@ -35,15 +39,15 @@ public abstract class BoundaryRouteBuilder extends RouteBuilder {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns the current value of the to URI
+	 * @return String
 	 */
 	public String getToUri() {
 		return this.toUri;
 	}
 	
 	/**
-	 * URI used to receive {@link RawEvents} from.
+	 * URI used to receive {@link RawEvent} from.
 	 * @param fromUri
 	 */
 	public void setFromUri(String fromUri) {
@@ -51,9 +55,9 @@ public abstract class BoundaryRouteBuilder extends RouteBuilder {
 	}
 	
 	/**
-	 * Get the current URI that is receiving {@link RawEvents}
+	 * Get the current URI that is receiving {@link RawEvent}
 	 * 
-	 * @return
+	 * @return String
 	 */
 	public String getFromUri() {
 		return this.fromUri;
@@ -71,15 +75,16 @@ public abstract class BoundaryRouteBuilder extends RouteBuilder {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns the current value of the route id.
+	 * @return String
 	 */
 	public String getRouteId() {
 		return this.routeId;
 	}
 	
 	/**
-	 * Sets relative order of when this route starts
+	 * Sets relative order of when this route starts.
+	 * 
 	 * @param startUpOrder
 	 */
 	public void setStartUpOrder(int startUpOrder) {
@@ -88,11 +93,10 @@ public abstract class BoundaryRouteBuilder extends RouteBuilder {
 	
 	/**
 	 * Returns the start up order of the route
-	 * @return
+	 * 
+	 * @return int
 	 */
 	public int getStartUpOrder() {
 		return this.startUpOrder;
 	}
-
-
 }

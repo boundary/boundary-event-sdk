@@ -24,7 +24,7 @@ public abstract class UDPRouterBuilder extends BoundaryRouteBuilder {
 	
 	/**
 	 * 
-	 * @return
+	 * @return int returns the port configured by this {@link BoundaryRouteBuilder}
 	 */
 	public int getPort() {
 		return this.port;

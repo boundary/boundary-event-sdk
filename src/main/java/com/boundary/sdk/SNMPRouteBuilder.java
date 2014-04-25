@@ -41,7 +41,8 @@ public class SNMPRouteBuilder extends UDPRouterBuilder {
 	/**
 	 * Returns the currently configured path
 	 * to the compiled MIBs
-	 * @return
+	 * 
+	 * @return {@link String} with the path to the MIB repository
 	 */
 	public String getMibRepository() {
 		return this.mibRepositoryPath;
@@ -57,9 +58,9 @@ public class SNMPRouteBuilder extends UDPRouterBuilder {
 	}
 	
 	/**
-	 * Returns the current value ofthe SNMP4J-SMI license key
+	 * Returns the current value of the SNMP4J-SMI license key
 	 * 
-	 * @return
+	 * @return {@link String} contain the configured license key
 	 */
 	public String getLicense() {
 		return this.license;
