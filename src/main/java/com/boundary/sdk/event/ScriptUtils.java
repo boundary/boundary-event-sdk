@@ -1,4 +1,4 @@
-package com.boundary.sdk;
+package com.boundary.sdk.event;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,7 +8,6 @@ import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.boundary.sdk.event.BaseScriptTest;
 
 public class ScriptUtils {
 	
