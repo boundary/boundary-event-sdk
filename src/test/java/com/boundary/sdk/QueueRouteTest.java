@@ -38,9 +38,6 @@ public class QueueRouteTest extends CamelSpringTestSupport {
 	
     @Override
     protected RouteBuilder createRouteBuilder() throws Exception {
-    	
-    	// TBD: Provide shutdown strategy where the thread does not give up
-    	CamelContext context = context();
 
     	QueueRouteBuilder q = new QueueRouteBuilder();
     	
