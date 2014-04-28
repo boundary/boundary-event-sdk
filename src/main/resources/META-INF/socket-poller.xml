@@ -39,8 +39,9 @@
 	<bean id="socket-poller-route" class="com.boundary.sdk.SocketPollerRouteBuilder">
 		<property name="routeId" value="SOCKET_POLLER"/>
 		<property name="startUpOrder" value="120"/>
-		<property name="port" value="1514"/>
-		<property name="toUri" value="mock:result"/>
+		<property name="host" value="localhost"/>
+		<property name="port" value="9991"/>
+		<property name="toUri" value="seda:event-queue"/>
 	</bean>
 			
 	<!-- This configuration associates the route builders with the Camel
@@ -49,8 +50,8 @@
 	  -->
 	<camelContext xmlns="http://camel.apache.org/schema/spring">
 	
-<!-- 		<routeBuilder ref="boundary-event-route"/>
-		<routeBuilder ref="event-queue"/> -->
+		<routeBuilder ref="boundary-event-route"/>
+		<routeBuilder ref="event-queue"/>
 		<routeBuilder ref="socket-poller-route"/>
 
 	</camelContext>
