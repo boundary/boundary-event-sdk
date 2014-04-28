@@ -41,6 +41,19 @@
 			</properties>
 		</developer>
 	</developers>
+	<scm>
+		<connection>scm:git:https://github.com/boundary/boundary-event-sdk</connection>
+<!--
+		<developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/plugins/tags/maven-site-plugin-3.3</developerConnection>
+-->
+		<url>https://github.com/boundary/boundary-event-sdk</url>
+	</scm>
+	<distributionManagement>
+		<site>
+			<id>sample-project.website</id>
+			<url>dav:https://dav.sample.com/sites/sample-project</url>
+		</site>
+	</distributionManagement>
 	<properties>
 		<!-- Set the project encoding -->
     		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -56,6 +69,9 @@
 		<snmp4j-smi-version>1.1.3</snmp4j-smi-version>
 		<spring-version>3.2.5.RELEASE</spring-version>
 		<spring-security-version>3.1.4.RELEASE</spring-security-version>
+		<maven-pdf-plugin-version>1.2</maven-pdf-plugin-version>
+		<maven-site-plugin-version>3.3</maven-site-plugin-version>
+		<doxia-module-markdown-version>1.5</doxia-module-markdown-version>
 	</properties>
 
 	<build>
@@ -94,7 +110,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pdf-plugin</artifactId>
-				<version>1.2</version>
+				<version>${maven-pdf-plugin-version}</version>
 				<executions>
 					<execution>
 						<id>pdf</id>
@@ -108,6 +124,13 @@
 						</configuration>
 					</execution>
 				</executions>
+				<dependencies> 
+					<dependency> 
+						<groupId>org.apache.maven.doxia</groupId> 
+						<artifactId>doxia-module-markdown</artifactId> 
+						<version>${doxia-module-markdown-version}</version>
+					</dependency> 
+				</dependencies> 
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -117,6 +140,22 @@
 					<descriptorRefs>
 						<descriptorRef>project</descriptorRef>
 					</descriptorRefs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>${maven-site-plugin-version}</version>
+				<dependencies>
+					<dependency>
+					<groupId>org.apache.maven.doxia</groupId>
+					<artifactId>doxia-module-markdown</artifactId>
+					<version>${doxia-module-markdown-version}</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<inputEncoding>UTF-8</inputEncoding>
+					<outputEncoding>UTF-8</outputEncoding>
 				</configuration>
 			</plugin>
 		</plugins>
