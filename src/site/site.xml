@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="Boundary Event SDK">
+
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-application-skin</artifactId>
+    <version>1.0</version>
+  </skin>
+
+  <bannerLeft>
+    <name>Left Banner</name>
+    <src>images/BoundaryLogo-300.png</src>
+    <href>http://boundary.com</href>
+  </bannerLeft>
+
+  <version position="left"/>
+
+  <body>
+
+    <links>
+      <item name="Boundary,Inc." href="http://www.boundary.com/"/>
+      <item name="Boundary Event SDK" href="http://github.com/boundary/boundary-event-sdk/"/>
+      <item name="Apache Camel" href="http://camel.apache.org"/>
+    </links>
+
+    <menu name="About Boundary SDK">
+      <item name="Introduction" href="introduction.html"/>
+      <item name="Usage" href="usage.html"/>
+      <item name="FAQ" href="FAQ.html"/>
+    </menu>
+
+    <menu name="Adapters">
+      <item name="Communication" href="adapters/bca.html"/>
+      <item name="SNMP" href="adapters/snmp.html"/>
+      <item name="Syslog" href="adapters/syslog.html"/>
+    </menu>
+
+    <menu name="Reference">
+      <item name="Boundary Event API" href="https://app.boundary.com/docs/events_api"/>
+      <item name="Introduction to Apache Camel" href="reference/introduction-to-camel.html"/>
+    </menu>
+
+    <menu name="Project Reports"ref="reports"/>
+
+  </body>
+</project>
