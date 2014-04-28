@@ -50,8 +50,8 @@
 	</scm>
 	<distributionManagement>
 		<site>
-			<id>sample-project.website</id>
-			<url>dav:https://dav.sample.com/sites/sample-project</url>
+			<id>boundary-sdk-website</id>
+			<url>${user.home}/Sites/boundary-event-sdk</url>
 		</site>
 	</distributionManagement>
 	<properties>
