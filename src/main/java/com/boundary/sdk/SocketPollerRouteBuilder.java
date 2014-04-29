@@ -7,39 +7,24 @@ import org.slf4j.LoggerFactory;
 //import java.nio.channels.ClosedChannelException;
 
 /**
- * Creates a route that checks to see if a port is accessible on a host.
+ * Creates a route that checks periodically checks a port on a host
+ * to see if it available.
  * 
  * @author davidg
  *
  */
 public class SocketPollerRouteBuilder extends UDPRouteBuilder {
 
-	private int repeatInterval;
 	
 	@SuppressWarnings("unused")
 	private static Logger LOG = LoggerFactory.getLogger(SocketPollerRouteBuilder.class);
 
-	public SocketPollerRouteBuilder() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	/**
-	 * 
-	 * @param repeatInterval
-	 */
-	public void setRepeatInterval(int repeatInterval) {
-		this.repeatInterval = repeatInterval;
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public int getRepeatInterval() {
-		return repeatInterval;
-	}
-	
+	private String cron;
 
+	public SocketPollerRouteBuilder() {
+		// Default to poll every minute
+		this.cron = "0/60+*+*+*+*+?";
+	}
 	
 	/**
 	 * 
@@ -51,22 +36,25 @@ public class SocketPollerRouteBuilder extends UDPRouteBuilder {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public void configure() throws Exception {
-		//String socketUri = String.format("mina:tcp://" + this.host + ":" + this.port + "?disconnect=true&sync=false");
+	public void configure() throws Exception {		
 		String socketUri = String.format("netty:tcp://" + this.host + ":" + this.port + "?sync=false");
+		String timerUri = String.format("quartz://" + this.routeId + "?cron=" + this.cron);
+		LOG.info("Polling host:  " + this.host + " on port: " + this.port + " with this schedule: " + this.cron);
 
-		from("quartz://socketPoller?cron=0+*+*+*+*+?")
+		from(timerUri)
 		.routeId(this.routeId)
+		// These are the exception classes that indicate the connection failed.
 		.onException(java.net.ConnectException.class,java.nio.channels.ClosedChannelException.class)
-		.handled(true)
+		.handled(true) // Mark these exceptions as handled
 		.bean(HostConnectionFailure.class)
 		.to("log:com.boundary.sdk.SocketPollerRouteBuilder?level=INFO&showHeaders=true&showBody=true&multiline=true")
-		.marshal().serialization()
+		.marshal().serialization() // Marshal the RawEvent before sending
 		.to(this.toUri)
 		.end()
-		.transform(constant(""))
+		.transform(constant("")) // Netty requires a body to initiate the connection. Set body to an empty string.
 		.to(socketUri)
 		.to("log:com.boundary.sdk.SocketPollerRouteBuilder?level=INFO&showHeaders=true&showBody=true&multiline=true")
+		// Connection succeeds
 		;
 	}
 }
