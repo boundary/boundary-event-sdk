@@ -1,4 +1,4 @@
-package com.boundary.sdk;
+package com.boundary.sdk.event;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import com.boundary.sdk.Severity;
+import com.boundary.sdk.Source;
+import com.boundary.sdk.Status;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

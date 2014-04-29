@@ -9,6 +9,8 @@ import org.apache.camel.model.dataformat.JsonLibrary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.boundary.sdk.event.RawEvent;
+
 /**
  * {@link RouteBuilder} for sending events to Boundary. Accepts serialized {@link RawEvent}
  * that is transformed to JSON.

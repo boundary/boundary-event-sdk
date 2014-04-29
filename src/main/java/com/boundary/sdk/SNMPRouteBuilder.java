@@ -3,6 +3,8 @@ package com.boundary.sdk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.boundary.sdk.event.RawEvent;
+
 /**
  * Route builder that receives SNMP messages into {@link RawEvent}
  * and then sends to Boundary event route.

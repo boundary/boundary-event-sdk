@@ -11,6 +11,8 @@ import org.apache.camel.component.syslog.SyslogMessage;
 import org.apache.camel.component.syslog.SyslogSeverity;
 import org.apache.camel.component.syslog.SyslogFacility;
 
+import com.boundary.sdk.event.RawEvent;
+
 /**
  * @version $Revision$
  */

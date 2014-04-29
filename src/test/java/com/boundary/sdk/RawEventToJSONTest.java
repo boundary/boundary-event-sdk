@@ -2,6 +2,7 @@ package com.boundary.sdk;
 
 import java.io.File;
 import java.util.ArrayList;
+
 import org.apache.camel.EndpointInject;
 import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
@@ -12,6 +13,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.boundary.sdk.event.RawEvent;
 
 @SuppressWarnings("deprecation")
 public class RawEventToJSONTest extends CamelSpringTestSupport {

@@ -22,6 +22,8 @@ import org.apache.camel.component.syslog.SyslogFacility;
 import org.apache.camel.component.syslog.SyslogSeverity;
 import org.apache.camel.component.syslog.SyslogConstants;
 
+import com.boundary.sdk.event.RawEvent;
+
 /**
  * Smoke test to test mapping of a {@link SyslogMessage} to a {@link RawEvent}
  * 

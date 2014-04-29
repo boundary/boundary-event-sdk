@@ -10,6 +10,9 @@ import org.apache.camel.test.junit4.CamelTestSupport;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import com.boundary.sdk.event.RawEvent;
+
 import static org.junit.Assume.*;
 
 /**

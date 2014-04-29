@@ -1,4 +1,4 @@
-package com.boundary.sdk;
+package com.boundary.sdk.event;
 
 /**
  * Common properties between RawEvent and Event

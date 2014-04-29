@@ -18,6 +18,8 @@ import org.slf4j.Logger;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.boundary.sdk.event.RawEvent;
+
 public class QueueRouteTest extends CamelSpringTestSupport {
 	
 	public static int DEFAULT_MESSAGES_SENT=17;
