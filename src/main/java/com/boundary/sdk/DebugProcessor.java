@@ -13,7 +13,7 @@ import org.apache.camel.component.syslog.SyslogMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.boundary.sdk.RawEvent;
+import com.boundary.sdk.event.RawEvent;
 
 
 /**

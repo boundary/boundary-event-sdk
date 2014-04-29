@@ -7,7 +7,6 @@ import org.apache.camel.Endpoint;
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
-
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -20,7 +19,7 @@ import org.apache.camel.component.syslog.SyslogMessage;
 //import org.apache.camel.component.syslog.SyslogSeverity;
 //import org.apache.camel.component.syslog.SyslogConstants;
 
-import com.boundary.sdk.RawEvent;
+
 //import com.boundary.sdk.SyslogToEventScriptingTest;
 import com.boundary.sdk.event.EventMapperProcessor;
 

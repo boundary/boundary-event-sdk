@@ -6,9 +6,9 @@ import org.junit.Test;
 import org.junit.After;
 import org.junit.Before;
 
-import com.boundary.sdk.RawEvent;
 import com.boundary.sdk.Severity;
 import com.boundary.sdk.Status;
+import com.boundary.sdk.event.RawEvent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;

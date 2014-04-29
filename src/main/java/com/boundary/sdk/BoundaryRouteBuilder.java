@@ -2,6 +2,8 @@ package com.boundary.sdk;
 
 import org.apache.camel.builder.RouteBuilder;
 
+import com.boundary.sdk.event.RawEvent;
+
 /**
  * Base classes for all Boundary created route builders
  * 

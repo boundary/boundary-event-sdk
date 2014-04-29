@@ -1,7 +1,4 @@
 package com.boundary.sdk.event;
-import com.boundary.sdk.RawEvent;
-
-
 import static org.junit.Assert.*;
 
 import java.io.File;

@@ -6,7 +6,8 @@ import org.apache.camel.Exchange;
 import org.apache.camel.TypeConverter;
 import org.apache.camel.component.syslog.SyslogMessage;
 import org.apache.camel.component.syslog.SyslogSeverity;
-import com.boundary.sdk.RawEvent;
+
+import com.boundary.sdk.event.RawEvent;
 
 
 @Converter

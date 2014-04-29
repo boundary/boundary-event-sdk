@@ -18,8 +18,8 @@ import org.snmp4j.PDU;
 import org.snmp4j.smi.Variable;
 import org.snmp4j.smi.VariableBinding;
 
-import com.boundary.sdk.RawEvent;
 import com.boundary.sdk.Severity;
+import com.boundary.sdk.event.RawEvent;
 import com.boundary.sdk.event.snmp.SmiSupport;
 
 

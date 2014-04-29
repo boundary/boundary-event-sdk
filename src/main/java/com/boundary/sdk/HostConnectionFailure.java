@@ -5,6 +5,8 @@ import org.apache.camel.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.boundary.sdk.event.RawEvent;
+
 public class HostConnectionFailure {
 	
     private final static Logger LOG = LoggerFactory.getLogger(HostConnectionFailure.class);
