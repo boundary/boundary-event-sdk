@@ -4,8 +4,8 @@ import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.spi.DataFormat;
 import org.apache.camel.component.syslog.Rfc3164SyslogDataFormat;
 
-import com.boundary.sdk.BoundaryRouteBuilder;
-import com.boundary.sdk.UDPRouteBuilder;
+import com.boundary.sdk.event.BoundaryRouteBuilder;
+import com.boundary.sdk.event.UDPRouteBuilder;
 
 public class SysLogRouteBuilder extends UDPRouteBuilder {
 	

@@ -8,7 +8,7 @@
            http://camel.apache.org/schema/spring/camel-spring.xsd">
            
 	<!-- Definition of the route that communicates with the Boundary API host -->
-	<bean id="boundary-event-route" class="com.boundary.sdk.BoundaryEventRouteBuilder">
+	<bean id="boundary-event-route" class="com.boundary.sdk.event.BoundaryEventRouteBuilder">
 	
 		<property name="routeId" value="BOUNDARY-EVENT"/>
 		<!-- This route needs to start first and stop last so all routes
@@ -28,7 +28,7 @@
 	<!-- This route is queue to persist pending events before they
 	     are sent to the Boundary event route.
 	  -->
-	<bean id="event-queue" class="com.boundary.sdk.QueueRouteBuilder">
+	<bean id="event-queue" class="com.boundary.sdk.event.QueueRouteBuilder">
 		<property name="routeId" value="EVENT-QUEUE"/>
 		<property name="startUpOrder" value="110"/>		
 		<property name="fromUri" value="seda:event-queue"/>
@@ -43,7 +43,7 @@
 		<property name="toUri" value="seda:event-queue"/>
 	</bean>
 		
-	<bean id="snmp-route" class="com.boundary.sdk.SNMPRouteBuilder">
+	<bean id="snmp-route" class="com.boundary.sdk.snmp.SNMPRouteBuilder">
 		<property name="routeId" value="SNMP"/>
 		<property name="startUpOrder" value="120"/>
 		<property name="port" value="1162"/>

@@ -11,8 +11,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.boundary.sdk.SNMPRouteBuilder;
-
 /**
  * @author davidg
  *
