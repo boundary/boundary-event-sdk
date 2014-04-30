@@ -58,28 +58,36 @@
 		<!-- Set the project encoding -->
     		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<!-- Properties for all of the java packages -->
+		<!-- Properties for all of the java packages versions -->
 		<activemq-version>5.9.0</activemq-version>
 		<camel-version>2.12.3</camel-version>
                 <commons-cli-version>1.2</commons-cli-version>
+		<commons-daemon-version>1.0.15</commons-daemon-version>
 		<commons-io-version>1.3.2</commons-io-version>
 		<commons-lang3-version>3.3.2</commons-lang3-version>
+		<commons-lang-version>2.6</commons-lang-version>
+		<doxia-module-markdown-version>1.5</doxia-module-markdown-version>
 		<junit-version>4.8.1</junit-version>
+		<log4j-version>1.2.17</log4j-version>
+		<maven-dependency-plugin-version>2.8</maven-dependency-plugin-version>
+		<maven-javadoc-plugin-version>2.8.1</maven-javadoc-plugin-version>
+		<maven-pdf-plugin-version>1.2</maven-pdf-plugin-version>
+		<maven-site-plugin-version>3.3</maven-site-plugin-version>
+		<maven-project-info-reports-plugin-version>2.7</maven-project-info-reports-plugin-version>
+		<rpm-maven-plugin-version>2.0.1</rpm-maven-plugin-version>
+		<slf4j-api-version>1.7.6</slf4j-api-version>
 		<snmp4j-version>2.2.5</snmp4j-version>
 		<snmp4j-smi-version>1.1.3</snmp4j-smi-version>
 		<spring-version>3.2.5.RELEASE</spring-version>
 		<spring-security-version>3.1.4.RELEASE</spring-security-version>
-		<maven-pdf-plugin-version>1.2</maven-pdf-plugin-version>
-		<maven-site-plugin-version>3.3</maven-site-plugin-version>
-		<doxia-module-markdown-version>1.5</doxia-module-markdown-version>
+		<syslog4j-version>0.9.30</syslog4j-version>
 	</properties>
-
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.8</version>
+				<version>${maven-dependency-plugin-version}</version>
 				<executions>
 					<execution>
 						<id>copy</id>
@@ -105,7 +113,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>2.7</version>
+				<version>${maven-project-info-reports-plugin-version}</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -137,9 +145,14 @@
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.4</version>
 				<configuration>
+<!--
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
+-->
+					<descriptors>
+						<descriptor>src/main/assembly/default.xml</descriptor>
+					</descriptors>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -161,7 +174,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>rpm-maven-plugin</artifactId>
-				<version>2.0.1</version>
+				<version>${rpm-maven-plugin-version}</version>
 <!--
 				<executions>
 					<execution>
@@ -189,13 +202,13 @@
 						</defineStatements>
 					<mappings>
 						<mapping>
-							<directory>/opt/boundary/bin/landfill</directory>
+							<directory>/opt/boundary/bin/event-application</directory>
 							<filemode>440</filemode>
 							<username>root</username>
 							<groupname>root</groupname>
 							<sources>
                                 				<source>
-									<location>target/classes</location>
+									<location>src/main/scripts/event-application</location>
                                 				</source>
 							</sources>
 						</mapping>
@@ -205,6 +218,20 @@
 					</preinstallScriptlet>
 				</configuration>
 			</plugin>
+			<plugin>
+                                <!-- JavaDoc Plugin to generate a JAR containing documentation from the project. -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${maven-javadoc-plugin-version}</version>
+				<executions>
+					<execution>
+						<id>attach-javadoc</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+                        </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -239,7 +266,7 @@
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
-			<version>2.6</version>
+			<version>${commons-lang-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
@@ -256,13 +283,13 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.6</version>
+			<version>${slf4j-api-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<scope>runtime</scope>
-			<version>1.2.17</version>
+			<version>${log4j-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.snmp4j</groupId>
@@ -367,12 +394,12 @@
 		<dependency>
 			<groupId>org.syslog4j</groupId>
 			<artifactId>syslog4j</artifactId>
-			<version>0.9.30</version>
+			<version>${syslog4j-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-daemon</groupId>
 			<artifactId>commons-daemon</artifactId>
-			<version>1.0.15</version>
+			<version>${commons-daemon-version}</version>
 		</dependency>
 	</dependencies>
 
