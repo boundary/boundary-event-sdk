@@ -24,7 +24,7 @@ public class EventApplication
         main.enableHangupSupport();
         
         // Get spring definition of the routes to start
-        main.setApplicationContextUri("META-INF/event-application.xml");
+        main.setApplicationContextUri(System.getProperty("boundary.application.context.uri"));
          
         // run until you terminate the JVM
         LOG.info("Starting Camel. Use ctrl + c to terminate the JVM.\n");
