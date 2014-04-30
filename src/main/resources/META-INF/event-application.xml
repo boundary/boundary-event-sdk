@@ -43,7 +43,7 @@
 		<property name="toUri" value="seda:event-queue"/>
 	</bean>
 		
-	<bean id="snmp-route" class="com.boundary.sdk.snmp.SNMPRouteBuilder">
+	<bean id="snmp-route" class="com.boundary.sdk.event.snmp.SNMPRouteBuilder">
 		<property name="routeId" value="SNMP"/>
 		<property name="startUpOrder" value="120"/>
 		<property name="port" value="1162"/>
