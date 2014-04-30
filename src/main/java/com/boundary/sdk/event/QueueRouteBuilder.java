@@ -25,6 +25,8 @@ public class QueueRouteBuilder extends BoundaryRouteBuilder {
 	private int concurrentConsumers;
 
 	private boolean asyncConsumer;
+
+	private String jmsUri;
 	
 	private static final String DEFAULT_QUEUE_NAME="pending_events";
 	private static final int DEFAULT_CONCURRENT_CONSUMERS=1;
@@ -33,6 +35,7 @@ public class QueueRouteBuilder extends BoundaryRouteBuilder {
 		queueName = DEFAULT_QUEUE_NAME;
 		concurrentConsumers = DEFAULT_CONCURRENT_CONSUMERS;
 		asyncConsumer = true;
+		jmsUri = "vm://localhost";
 	}
 	
 	/**
@@ -67,6 +70,10 @@ public class QueueRouteBuilder extends BoundaryRouteBuilder {
 	public void setAsyncConsumer(boolean async) {
 			this.asyncConsumer = async;
 	}
+	
+	public void setJmsUri(String uri) {
+		this.jmsUri = uri;
+	}
 
     @Override
     public void configure() {
@@ -74,7 +81,7 @@ public class QueueRouteBuilder extends BoundaryRouteBuilder {
     	CamelContext  context = getContext();
     	// connect to embedded ActiveMQ JMS broker
         ConnectionFactory connectionFactory =
-            new ActiveMQConnectionFactory("vm://localhost");
+            new ActiveMQConnectionFactory(this.jmsUri);
         context.addComponent("jms",JmsComponent.jmsComponentAutoAcknowledge(connectionFactory));
         String jmsUri = String.format("jms:%s?asyncConsumer=%s",queueName,asyncConsumer);
 
