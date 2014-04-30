@@ -1,0 +1,10 @@
+#!/bin/bash
+
+export LIB=$BOUNDARY_SDK_HOME/target/lib
+CLASSPATH=$(JARS=("$LIB"/*.jar); IFS=:; echo "${JARS[*]}")
+export CLASSPATH="${BOUNDARY_SDK_HOME}/target/boundary-event-sdk-${BOUNDARY_SDK_VERSION}.jar:${CLASSPATH}"
+
+
+#java -cp "$LIB/*.jars" -jar ${BOUNDARY_SDK_HOME}/target/boundary-event-sdk-${BOUNDARY_SDK_VERSION}.jar -Dboundary.application.context.uri="META-INF/event-application.xml"
+exec java -cp "$CLASSPATH" -Dboundary.application.context.uri="META-INF/event-application.xml" com.boundary.sdk.event.EventApplication
+
