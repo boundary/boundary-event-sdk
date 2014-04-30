@@ -4,10 +4,8 @@
 package com.boundary.sdk.event.snmp;
 
 import java.io.File;
-import java.util.Date;
 import java.util.Vector;
 
-import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
@@ -15,7 +13,6 @@ import org.apache.camel.component.snmp.SnmpMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.snmp4j.PDU;
-import org.snmp4j.smi.Variable;
 import org.snmp4j.smi.VariableBinding;
 
 import com.boundary.sdk.event.RawEvent;
@@ -24,6 +21,9 @@ import com.boundary.sdk.event.Status;
 
 
 /**
+ * Implements {@link Processor} interface and is responsible for converting
+ * a {@link PDU} to a {@link RawEvent}.
+ * 
  * @author davidg
  * 
  */
@@ -71,6 +71,8 @@ public class SNMPToEventProcessor implements Processor {
 		SnmpMessage snmpMessage = message.getBody(SnmpMessage.class);
 		PDU pdu = snmpMessage.getSnmpMessage();
 		
+		LOG.debug("PDU: {}",pdu);
+		
 		// Create our event so that we can populate with the Syslog data
 		RawEvent event = new RawEvent();
 		
@@ -104,9 +106,8 @@ public class SNMPToEventProcessor implements Processor {
 
 		event.getSource().setRef(hostname);
 		event.getSource().setType("host");
-//		event.setMessage(message.getBody().toString());
-//		event.putProperty("message",message.getBody().toString());
-//		event.putFingerprintField("@title");
+		
+		LOG.debug("RawEvent: {}",event);
 		
 		// Assign the RawEvent to the body
 		message.setBody(event, RawEvent.class);
