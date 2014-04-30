@@ -8,7 +8,12 @@ import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+/**
+ * Utilities used for java script execution
+ * 
+ * @author davidg
+ *
+ */
 public class ScriptUtils {
 	
 	private static Logger LOG = LoggerFactory.getLogger(ScriptUtils.class);
@@ -18,7 +23,7 @@ public class ScriptUtils {
 	
 	/**
 	 * Finds a script to be tested from 
-	 * @param scriptName
+	 * @param scriptPath
 	 * @return {@link File}
 	 */
 	static public FileReader getFile(String scriptPath) {
