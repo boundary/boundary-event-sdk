@@ -1,14 +1,11 @@
-package com.boundary.sdk;
+package com.boundary.sdk.event.syslog;
 
-import java.util.Map;
-
-import org.apache.camel.Exchange;
-import org.apache.camel.Message;
-import org.apache.camel.Processor;
-import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.spi.DataFormat;
 import org.apache.camel.component.syslog.Rfc3164SyslogDataFormat;
+
+import com.boundary.sdk.BoundaryRouteBuilder;
+import com.boundary.sdk.UDPRouteBuilder;
 
 public class SysLogRouteBuilder extends UDPRouteBuilder {
 	

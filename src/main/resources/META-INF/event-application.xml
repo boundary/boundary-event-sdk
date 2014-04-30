@@ -36,7 +36,7 @@
 	</bean>
 	
 	
-	<bean id="syslog-route" class="com.boundary.sdk.SysLogRouteBuilder">
+	<bean id="syslog-route" class="com.boundary.sdk.event.syslog.SysLogRouteBuilder">
 		<property name="routeId" value="SYSLOG"/>
 		<property name="startUpOrder" value="120"/>
 		<property name="port" value="1514"/>

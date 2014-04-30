@@ -11,7 +11,7 @@
 
   <bean id="mylogger" class="org.apache.camel.component.log.LogComponent"/>
   
-  <bean id = "syslog-processor" class="com.boundary.sdk.SyslogToEventProcessor"/>
+  <bean id = "syslog-processor" class="com.boundary.sdk.event.syslog.SyslogToEventProcessor"/>
   
   <bean id ="debug-processor" class="com.boundary.sdk.DebugProcessor"/>
 

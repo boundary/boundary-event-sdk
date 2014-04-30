@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.boundary.sdk;
+package com.boundary.sdk.event.syslog;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.boundary.sdk.Severity;
+import com.boundary.sdk.Status;
 import com.boundary.sdk.event.RawEvent;
 
 /**
