@@ -45,7 +45,7 @@
 		
 	<bean id="snmp-route" class="com.boundary.sdk.event.snmp.SNMPRouteBuilder">
 		<property name="routeId" value="SNMP"/>
-		<property name="startUpOrder" value="120"/>
+		<property name="startUpOrder" value="130"/>
 		<property name="port" value="1162"/>
 		<property name="mibRepository" value="#{systemEnvironment['BOUNDARY_MIB_REPOSITORY']}"/>
 		<property name="license" value="#{systemEnvironment['BOUNDARY_MIB_LICENSE']}"/>
