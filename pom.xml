@@ -166,6 +166,15 @@
 					<version>${doxia-module-markdown-version}</version>
 					</dependency>
 				</dependencies>
+				<executions>
+					<execution>
+						<id>site-web</id>
+						<phase>package</phase>
+						<goals>
+							<goal>site</goal>
+						</goals>
+					</execution>
+				</executions>
 				<configuration>
 					<inputEncoding>UTF-8</inputEncoding>
 					<outputEncoding>UTF-8</outputEncoding>
