@@ -37,7 +37,7 @@
 
     <menu name="Reference">
       <item name="Boundary Event API" href="https://app.boundary.com/docs/events_api"/>
-      <item name="Introduction to Apache Camel" href="reference/introduction-to-camel.html"/>
+      <item name="Apache Camel" href="reference/apache-camel.html"/>
     </menu>
 
     <menu name="Project Reports"ref="reports"/>
