@@ -13,7 +13,7 @@
   
   <bean id = "syslog-processor" class="com.boundary.sdk.event.syslog.SyslogToEventProcessor"/>
   
-  <bean id ="debug-processor" class="com.boundary.sdk.DebugProcessor"/>
+  <bean id ="debug-processor" class="com.boundary.sdk.event.DebugProcessor"/>
 
 
 	<camelContext xmlns="http://camel.apache.org/schema/spring">

@@ -18,9 +18,9 @@ import org.apache.camel.component.syslog.SyslogSeverity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.boundary.sdk.Severity;
-import com.boundary.sdk.Status;
 import com.boundary.sdk.event.RawEvent;
+import com.boundary.sdk.event.Severity;
+import com.boundary.sdk.event.Status;
 
 /**
  * @author davidg

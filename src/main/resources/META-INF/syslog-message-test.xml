@@ -21,7 +21,7 @@
 		<property name="startUpOrder" value="201"/>
 	</bean>
 		
-	<bean id="event-queue" class="com.boundary.sdk.QueueRouteBuilder">
+	<bean id="event-queue" class="com.boundary.sdk.event.QueueRouteBuilder">
 		<property name="routeId" value="EVENT-QUEUE"/>
 		<property name="fromUri" value="seda:event-queue"/>
 		<property name="toUri" value="mock:queue-test"/>
