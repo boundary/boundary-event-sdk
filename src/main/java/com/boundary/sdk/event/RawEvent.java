@@ -3,20 +3,16 @@ package com.boundary.sdk.event;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+
+
 
 import com.boundary.sdk.Severity;
 import com.boundary.sdk.Source;
 import com.boundary.sdk.Status;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
@@ -69,29 +65,6 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 *  Default constructor for a raw event
 	 */
 	public RawEvent() {
-//		this(new Source(),new ArrayList<String>(),"");
-//		this.addFingerprintField("@title");
-	}
-	
-	/**
-	 * 
-	 * @param source
-	 * @param fingerprintFields
-	 * @param title
-	 */
-	public RawEvent(Source source,ArrayList<String> fingerprintFields,String title) {	
-//		this.createdAt = new Date().toString();
-//		this.fingerprintFields = fingerprintFields;
-//		this.message = "";
-//		this.organizationId = "";
-//		this.properties = new LinkedHashMap<String,Object>();
-//		this.receivedAt = new Date().toString();
-//		this.sender = new Source();
-//		this.severity = Severity.INFO;
-//		this.source = source;
-//		this.status = Status.OK;
-//		this.tags = new ArrayList<String>();
-//		this.title = title;
 	}
 	
 	/**
