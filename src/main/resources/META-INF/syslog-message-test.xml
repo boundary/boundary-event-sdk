@@ -7,14 +7,14 @@
            http://camel.apache.org/schema/spring
            http://camel.apache.org/schema/spring/camel-spring.xsd">
            	
-	<bean id="syslog-only-route" class="com.boundary.sdk.SysLogRouteBuilder">
+	<bean id="syslog-only-route" class="com.boundary.sdk.event.syslog.SysLogRouteBuilder">
 		<property name="routeId" value="SYSLOG-ONLY"/>
 		<property name="port" value="2514"/>
 		<property name="toUri" value="mock:syslog-test"/>
 		<property name="startUpOrder" value="200"/>
 	</bean>
 
-	<bean id="syslog-and-queue-route" class="com.boundary.sdk.SysLogRouteBuilder">
+	<bean id="syslog-and-queue-route" class="com.boundary.sdk.event.syslog.SysLogRouteBuilder">
 		<property name="routeId" value="SYSLOG-AND-QUEUE"/>
 		<property name="port" value="3514"/>
 		<property name="toUri" value="seda:event-queue"/>

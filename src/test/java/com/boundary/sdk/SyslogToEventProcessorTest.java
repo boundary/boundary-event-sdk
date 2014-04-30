@@ -8,6 +8,8 @@ import org.junit.Test;
 import org.apache.camel.component.syslog.SyslogMessage;
 import org.apache.camel.component.syslog.SyslogSeverity;
 
+import com.boundary.sdk.event.syslog.SyslogToEventProcessor;
+
 public class SyslogToEventProcessorTest {
 	
 	/**
