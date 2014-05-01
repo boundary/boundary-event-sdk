@@ -12,7 +12,8 @@
 	
 		<property name="routeId" value="BOUNDARY-EVENT"/>
 		<!-- This route needs to start first and stop last so all routes
-		     need to be configured with a start order higher than 100
+		     then send events to the boundary event route need to be
+                     configured with a start order higher than 100
 		  -->
 		<property name="startUpOrder" value="100"/>
 		<!-- TBD: Encryption of apiKey using Camel APIs -->
@@ -22,10 +23,12 @@
 		  -->
 		<property name="orgId" value="#{systemEnvironment['BOUNDARY_ORG_ID']}"/>
 		<property name="apiKey" value="#{systemEnvironment['BOUNDARY_API_KEY']}"/>
-		<property name="fromUri" value="direct:boundary-event"/>
+
+                <!-- The endpoint URI to listen for boundary events -->
+		<property name="fromUri" value="seda:boundary-event"/>
 	</bean>
 	
-	<!-- This route is queue to persist pending events before they
+	<!-- This route is a queue to persist pending events before they
 	     are sent to the Boundary event route.
 	  -->
 	<bean id="event-queue" class="com.boundary.sdk.event.QueueRouteBuilder">
@@ -34,22 +37,23 @@
 		<property name="fromUri" value="seda:event-queue"/>
 		<property name="toUri" value="direct:boundary-event"/>
 	</bean>
-	
-	
+
+        <!-- This route receives Syslog RFC 3164 messages -->	
 	<bean id="syslog-route" class="com.boundary.sdk.event.syslog.SysLogRouteBuilder">
 		<property name="routeId" value="SYSLOG"/>
 		<property name="startUpOrder" value="120"/>
 		<property name="port" value="1514"/>
-		<property name="toUri" value="seda:event-queue"/>
+		<property name="toUri" value="seda:boundary-event"/>
 	</bean>
 		
+        <!-- This route recieves v1 and v2c SNMP traps -->
 	<bean id="snmp-route" class="com.boundary.sdk.event.snmp.SNMPRouteBuilder">
 		<property name="routeId" value="SNMP"/>
 		<property name="startUpOrder" value="130"/>
 		<property name="port" value="1162"/>
 		<property name="mibRepository" value="#{systemEnvironment['BOUNDARY_MIB_REPOSITORY']}"/>
 		<property name="license" value="#{systemEnvironment['BOUNDARY_MIB_LICENSE']}"/>
-		<property name="toUri" value="seda:event-queue"/>
+		<property name="toUri" value="seda:boundary-event"/>
 	</bean>
 	
 	<!-- This configuration associates the route builders with the Camel
@@ -58,11 +62,12 @@
 	  -->
 	<camelContext xmlns="http://camel.apache.org/schema/spring">
 	
-		<routeBuilder ref="boundary-event-route"/>
+                <routeBuilder ref="boundary-event-route"/>
 		<routeBuilder ref="syslog-route"/>
-		<routeBuilder ref="event-queue"/>
+              
+		<!-- DISABLED <routeBuilder ref="event-queue"/>-->
 		
-		<!-- SNMP ROUTE DISABLED -->
-   		<!-- <routeBuilder ref="snmp-route"/> -->
+   		<!-- DISABLED <routeBuilder ref="snmp-route"/> -->
+
 	</camelContext>
 </beans>
