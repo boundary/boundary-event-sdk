@@ -7,7 +7,7 @@ public class EventApplication
 {
 	private static Logger LOG = LoggerFactory.getLogger(EventApplication.class);
 
-    private Main main;
+    protected Main main;
      
     public static void main(String[] args) throws Exception
     {
@@ -15,7 +15,7 @@ public class EventApplication
         app.boot();
     }
      
-    private void boot() throws Exception
+    protected void boot() throws Exception
     {
         // create a Main instance
         main = new Main();
@@ -24,10 +24,14 @@ public class EventApplication
         main.enableHangupSupport();
         
         // Get spring definition of the routes to start
-        main.setApplicationContextUri(System.getProperty("boundary.application.context.uri"));
+        String uri = System.getProperty("boundary.application.context.uri");
+        LOG.info("Loading application context from: " + uri);
+        
+        // Set the application context that configures the camel routes
+        main.setApplicationContextUri(uri);
          
         // run until you terminate the JVM
-        LOG.info("Starting Camel. Use ctrl + c to terminate the JVM.\n");
+        LOG.info("Starting Boundary Event SDK.");
         main.run(); 
     }
 }
