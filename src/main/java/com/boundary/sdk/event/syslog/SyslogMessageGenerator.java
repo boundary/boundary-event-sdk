@@ -89,7 +89,7 @@ public class SyslogMessageGenerator {
 	public void sendMessages(int count,int delay) throws InterruptedException {
 		for (int n = count ; n != 0 ; n--) {
 			
-			syslog.info(new Date() + "TESTING------TESTING-----TESTING-----TESTING");
+			syslog.info(new Date() + "TEST MESSAGE");
 			if (n != count && n % 10 == 0) {
 				LOG.info("Sent " + (count - n) + " messages");
 			}
