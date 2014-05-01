@@ -2,7 +2,10 @@ package com.boundary.sdk.event;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import org.apache.commons.daemon.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class EchoTask extends TimerTask {
     @Override
@@ -11,13 +14,19 @@ class EchoTask extends TimerTask {
     }
 }
 
-public class BoundaryEventDaemon implements Daemon {
+public class BoundaryEventDaemon extends EventApplication implements Daemon {
+	
+	private static Logger LOG = LoggerFactory.getLogger(BoundaryEventDaemon.class);
 
     private static Timer timer = null;
+    
+    public BoundaryEventDaemon() {
+    	
+    }
 
     public static void main(String[] args) {
-        timer = new Timer();
-        timer.schedule(new EchoTask(), 0, 1000);
+//        timer = new Timer();
+//        timer.schedule(new EchoTask(), 0, 1000);
     }
 
     public void init(DaemonContext dc) throws DaemonInitException, Exception {
@@ -26,11 +35,13 @@ public class BoundaryEventDaemon implements Daemon {
 
     public void start() throws Exception {
         System.out.println("starting ...");
-        main(null);
+        boot();
     }
 
     public void stop() throws Exception {
         System.out.println("stopping ...");
+        main.stop();
+        
         if (timer != null) {
             timer.cancel();
         }
