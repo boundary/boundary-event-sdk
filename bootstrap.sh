@@ -1,4 +1,4 @@
 #!/bin/bash
 
-source bsdk-env.sh
-src/main/scripts/install-snmp4j
+source bsdk-dev-env.sh
+"$BOUNDARY_SDK_HOME/src/main/scripts/install-snmp4j"
