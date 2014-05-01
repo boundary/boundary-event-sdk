@@ -1,10 +1,15 @@
 #!/bin/bash
 
-export LIB=$BOUNDARY_SDK_HOME/target/lib
+if [ -z "$BOUNDARY_SDK_HOME" ]
+then
+   echo "BOUNDARY_SDK_HOME must be set"
+   exit 1
+fi
+
+export LIB=$BOUNDARY_SDK_HOME/lib
 CLASSPATH=$(JARS=("$LIB"/*.jar); IFS=:; echo "${JARS[*]}")
-export CLASSPATH="${BOUNDARY_SDK_HOME}/target/boundary-event-sdk-${BOUNDARY_SDK_VERSION}.jar:${CLASSPATH}"
+export CLASSPATH="${BOUNDARY_SDK_HOME}/boundary-event-sdk-${BOUNDARY_SDK_VERSION}.jar:${CLASSPATH}"
+MAIN_CLASS=com.boundary.sdk.event.EventApplication
+CONFIG_URI="file:$BOUNDARY_SDK_HOME/etc/event-application.xml"
 
-
-#java -cp "$LIB/*.jars" -jar ${BOUNDARY_SDK_HOME}/target/boundary-event-sdk-${BOUNDARY_SDK_VERSION}.jar -Dboundary.application.context.uri="META-INF/event-application.xml"
-exec java -cp "$CLASSPATH" -Dboundary.application.context.uri="META-INF/event-application.xml" com.boundary.sdk.event.EventApplication
-
+exec java -cp "$CLASSPATH" -Dboundary.application.context.uri="$CONFIG_URI" "$MAIN_CLASS"
