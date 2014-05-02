@@ -4,6 +4,10 @@ Boundary Event SDK
 
 # Configuration
 
+## Build Status
+
+[![Build Status](https://travis-ci.org/boundary/boundary-event-sdk.svg?branch=master)](https://travis-ci.org/boundary/boundary-event-sdk)
+
 ## Boundary Configuration
 
 The Boundary organization id and API keys is set by setting the following environment variables:
