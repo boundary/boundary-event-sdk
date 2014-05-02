@@ -1,6 +1,14 @@
 Boundary Syslog Event Adapter
 =============================
 
+* [Overview](#overview)
+* [Configuration](#configuration)
+* [Event Mapping](#event-mapping)
+** [Field Mapping](#field-mapping)
+** [Severity Mapping](#severity-mapping)
+** [Status Mapping](#status-mapping)
+* [Future Enhancements](#future-enhancements)
+
 Overview
 --------
 The Syslog adapter for Boundary enables the UDP receipt of syslog messages forwarded from a syslog daemon into Boundary events.
@@ -29,7 +37,7 @@ Configuration
 
 ```
 
-Syslog Message to Boundary Event Mapping
+Event Mapping
 ----------------------------------------
 This section describes the mapping of the Syslog message to a Boundary event.
 
