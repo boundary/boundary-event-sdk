@@ -3,17 +3,22 @@ Boundary Syslog Event Adapter
 
 Overview
 --------
+The Syslog adapter for Boundary enables the transformation of syslog messages forwarded from your UNIX syslog daemon to Boundary events.
+
+
+The [SNMPRouteBuilder](http://www.google.com) is responsible for generating a [camel route] and translating into a [`RawEvent`](https://app.boundary.com/docs/events_api#RawEvent)
 
 
 
-Operation
----------
+Configuration
+------------
 
+### Parameters
 
-Parameters
-----------
-
-* toUri - 
+* port - Port number to listen for Syslog message (default is 1514)
+* routeId - Name of the
+* startOrder - Ordering of when this route is started in relationship to other routes
+* toUri - Indicates the end point to send the transformed syslog message
 
 * startupOrder
 
@@ -22,9 +27,15 @@ Parameters
 Event Mapping
 -------------
 
-# Syslog message to Boundary Event Mapping
+### Syslog message to Boundary Event Mapping
 
-## Field Mapping
+#### Field Mapping
+
+
+* properties
+** facility
+** hostname
+
 ```
 	private void syslogMessageToEvent(SyslogMessage sm, RawEvent e) {
 
@@ -68,14 +79,9 @@ Event Mapping
 		e.setTitle("Syslog Message from  " + sm.getHostname());
 	}
 ```
-## Severity Mapping
+### Severity Mapping
 
 ```
-# Default configuration for Syslog 
-
-#
-# Default mapping of Syslog severity to Boundary severity
-#
 EMERG: CRITICAL
 ALERT: CRITICAL
 CRIT: CRITICAL
@@ -86,14 +92,9 @@ INFO: INFO
 DEBUG: INFO
 ```
 
-## Status Mapping
+### Status Mapping
 
 ```
-# Default configuration for Syslog 
-
-#
-# Default mapping of Syslog severity to Boundary status
-#
 EMERG: OPEN
 ALERT: OPEN
 CRIT: OPEN
@@ -103,5 +104,10 @@ NOTICE: OK
 INFO: OK
 DEBUG: OK
 ```
+
+Future Enhancements
+-------------------
+* Generalized mapping and transformation of Syslog message fields to Boundary event fields
+* Support for syslog format as specified by [RFC 5424](http://tools.ietf.org/html/rfc5424)
 
 
