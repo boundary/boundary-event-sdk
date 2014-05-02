@@ -25,6 +25,7 @@
 
     <menu name="About Boundary SDK">
       <item name="Introduction" href="introduction.html"/>
+      <item name="Download" href="downloads/download.html"/>
       <item name="Usage" href="usage.html"/>
       <item name="FAQ" href="FAQ.html"/>
     </menu>
