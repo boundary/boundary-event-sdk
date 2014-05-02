@@ -2,3 +2,10 @@ language: java
 jdk:
   - oraclejdk7
 install: bash bootstrap.sh
+
+notifications:
+  email:
+    recipients:
+      - davidg@boundary.com
+    on_success: always
+    on_failure: always
