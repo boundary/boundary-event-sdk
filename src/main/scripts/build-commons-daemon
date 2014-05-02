@@ -1,0 +1,56 @@
+#!/bin/bash
+
+if [ -z "$BOUNDARY_SDK_HOME" ]
+then
+   echo "BOUNDARY_SDK_HOME needs to be set to build supporting tools"
+   exit 1
+fi
+
+if [ -z "$JAVA_HOME" ]
+then
+  echo "JAVA_HOME needs to be set to the location of your java installation"
+fi
+
+# Get the operating system we are running, unix flavors only at this point
+OPERATING_SYSTEM_NAME=$(uname -s)
+
+case $OPERATING_SYSTEM_NAME in
+    Darwin|Linux)
+        BINARY_PATH=jsvc
+        pushd "$BOUNDARY_SDK_HOME/src/native/unix"
+        ;;
+esac
+
+# Generate the configure script
+support/buildconf.sh
+if [ $? -ne 0 ]
+then
+  echo "Generation of config file failed."
+  exit 1
+fi
+
+# Configure for the platform we are running on
+./configure
+if [ $? -ne 0 ]
+then
+  echo "configure failed for $OPERATING_SYSTEM_NAME"
+  exit 1
+fi
+
+# Build the binary
+make
+if [ $? -ne 0 ]
+then
+  echo "make failed for $OPERATING_SYSTEM_NAME"
+  exit 1
+fi
+
+# Install the binary to the target directory
+BUILD_DIR="$BOUNDARY_SDK_HOME/target/bin"
+mkdir -p "$BUILD_DIR"
+cp "$BINARY_PATH" "$BUILD_DIR"
+
+# Return from whence we came
+popd
+
+
