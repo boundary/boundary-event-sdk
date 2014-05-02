@@ -3,34 +3,45 @@ Boundary Syslog Event Adapter
 
 Overview
 --------
-The Syslog adapter for Boundary enables the transformation of syslog messages forwarded from your UNIX syslog daemon to Boundary events.
+The Syslog adapter for Boundary enables the UDP receipt of syslog messages forwarded from a syslog daemon into Boundary events.
 
 
 The [SNMPRouteBuilder](http://www.google.com) is responsible for generating a [camel route] and translating into a [`RawEvent`](https://app.boundary.com/docs/events_api#RawEvent)
-
-
 
 Configuration
 ------------
 
 ### Parameters
 
-* port - Port number to listen for Syslog message (default is 1514)
-* routeId - Name of the
-* startOrder - Ordering of when this route is started in relationship to other routes
-* toUri - Indicates the end point to send the transformed syslog message
+* `port` - Port number to listen for Syslog message (default is 1514)
+* `routeId` - Name of the
+* `startOrder` - Ordering of when this route is started in relationship to other routes
+* `toUri` - Indicates the end point to send the transformed syslog message
 
-* startupOrder
+### Example Configuration
+```
+        <bean id="syslog-route" class="com.boundary.sdk.event.syslog.SysLogRouteBuilder">
+                <property name="routeId" value="SYSLOG"/>
+                <property name="startUpOrder" value="120"/>
+                <property name="port" value="1514"/>
+                <property name="toUri" value="seda:boundary-event"/>
+        </bean>
 
-*
+```
 
-Event Mapping
--------------
+Syslog Message to Boundary Event Mapping
+----------------------------------------
+This section describes the mapping of the Syslog message to a Boundary event.
 
-### Syslog message to Boundary Event Mapping
+A syslog message consists of the following fields:
+
+* Facility
+* Hostname/IP Address
+* Severity
+* Message
+* Timestamp
 
 #### Field Mapping
-
 
 * properties
 ** facility
@@ -80,30 +91,33 @@ Event Mapping
 	}
 ```
 ### Severity Mapping
+Mapping of Syslog severity to Boundary event severity is a one on one
+basis give by the table below. Mapping can be customized by modification of a
+java property file.
 
-```
-EMERG: CRITICAL
-ALERT: CRITICAL
-CRIT: CRITICAL
-ERR: ERROR
-WARNING: WARN
-NOTICE: INFO
-INFO: INFO
-DEBUG: INFO
-```
+|Syslog Severity|Boundary Event Severity|
+|---------------|-----------------------|
+|EMERG          |CRITICAL               |
+|ALERT          |CRITICAL               |
+|CRIT           |CRITICAL               |
+|ERR            |ERROR                  |
+|WARNING        |WARNING                |
+|NOTICE         |INFO                   |
+|INFO           |INFO                   |
+|DEBUG          |INFO                   |
 
 ### Status Mapping
 
-```
-EMERG: OPEN
-ALERT: OPEN
-CRIT: OPEN
-ERR: OPEN
-WARNING: OPEN
-NOTICE: OK
-INFO: OK
-DEBUG: OK
-```
+|Syslog Severity|Boundary Event Status|
+|---------------|---------------------|
+|EMERG          |OPEN                 |
+|ALERT          |OPEN                 |
+|CRIT           |OPEN                 |
+|ERR            |OPEN                 |
+|WARNING        |OPEN                 |
+|NOTICE         |OK                   |
+|INFO           |OK                   |
+|DEBUG          |OK                   |
 
 Future Enhancements
 -------------------

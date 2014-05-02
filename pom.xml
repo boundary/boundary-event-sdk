@@ -29,7 +29,7 @@
 			<name>David Gwartney</name>
 			<email>davidg@boundary.com</email>
 			<url>https://www.linkedin.com/in/davidgwartney</url>
-			<organization>Boundary,Inc.</organization>
+			<organization>Boundary,Inc</organization>
 			<organizationUrl>http://www.boundary.com</organizationUrl>
 			<roles>
 				<role>architect</role>
@@ -48,6 +48,22 @@
 -->
 		<url>https://github.com/boundary/boundary-event-sdk</url>
 	</scm>
+	<ciManagement>
+		<system>travis ci</system>
+		<url>https://travis-ci.org/boundary/boundary-event-sdk</url>
+		<notifiers>
+			<notifier>
+				<type>mail</type>
+				<sendOnError>true</sendOnError>
+				<sendOnFailure>true</sendOnFailure>
+				<sendOnSuccess>false</sendOnSuccess>
+				<sendOnWarning>false</sendOnWarning>
+				<configuration>
+					<address>davidg@boundary.com</address>
+				</configuration>
+			</notifier>
+		</notifiers>
+	</ciManagement>
 	<distributionManagement>
 		<site>
 			<id>boundary-sdk-website</id>
