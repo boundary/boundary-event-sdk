@@ -177,7 +177,7 @@
 					<version>${doxia-module-markdown-version}</version>
 					</dependency>
 				</dependencies>
-<!--
+<!-- Disable execution of the site goal under the package phase
 				<executions>
 					<execution>
 						<id>site-web</id>
@@ -197,7 +197,7 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>rpm-maven-plugin</artifactId>
 				<version>${rpm-maven-plugin-version}</version>
-<!--
+<!-- Disable creation of RPM
 				<executions>
 					<execution>
 					<id>generate-rpm</id>
