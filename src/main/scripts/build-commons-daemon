@@ -1,6 +1,8 @@
 #!/bin/bash
 
-if [ -z "$BOUNDARY_SDK_HOME" ]
+BOUNDARY_SDK_HOME=$1
+
+if [ ! -d "$BOUNDARY_SDK_HOME" -o  ! -r "$BOUNDARY_SDK_HOME" ]
 then
    echo "BOUNDARY_SDK_HOME needs to be set to build supporting tools"
    exit 1
