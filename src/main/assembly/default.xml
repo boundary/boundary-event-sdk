@@ -41,6 +41,20 @@
                 <include>README.md</include>
               </includes>
       </fileSet>
+
+      <!-- Syslog specific configuration files -->
+      <fileSet>
+        <directory>src/main/resources</directory>
+        <outputDirectory>etc/syslog</outputDirectory>
+        <filtered>true</filtered>
+        <fileMode>0744</fileMode>
+        <includes>
+          <include>syslog.*</include>
+        </includes>
+        <excludes>
+          <exclude>syslog.event.properties</exclude>
+        </excludes>
+      </fileSet>
       <fileSet>
         <directory>${project.build.scriptSourceDirectory}</directory>
         <outputDirectory>bin</outputDirectory>
