@@ -23,7 +23,7 @@
       <item name="Apache Camel" href="http://camel.apache.org"/>
     </links>
 
-    <menu name="About Boundary SDK">
+    <menu name="Boundary Event SDK">
       <item name="Introduction" href="introduction.html"/>
       <item name="Download" href="downloads/download.html"/>
       <item name="Usage" href="usage.html"/>
@@ -41,7 +41,7 @@
       <item name="Apache Camel" href="reference/apache-camel.html"/>
     </menu>
 
-<!--    <menu name="Project Reports"ref="reports"/>-->
+    <menu name="Project Reports"ref="reports"/>
 
   </body>
 </project>
