@@ -11,6 +11,14 @@ then
   echo "JAVA_HOME needs to be set to the location of your java installation"
 fi
 
+if [ -r "$BOUNDARY_SDK_HOME/env.sh" ]
+then
+  source "$BOUNDARY_SDK_HOME/env.sh"
+else
+  echo "Failed to source $BOUNDARY_SDK_HOME/env.sh"
+  exit 1
+fi
+
 # Get the operating system we are running, unix flavors only at this point
 OPERATING_SYSTEM_NAME=$(uname -s)
 
@@ -49,8 +57,14 @@ fi
 BUILD_DIR="$BOUNDARY_SDK_HOME/target/bin"
 mkdir -p "$BUILD_DIR"
 cp "$BINARY_PATH" "$BUILD_DIR"
+if [ $? -ne 0 ]
+then
+  echo "cp $BINARY_PATH $BUILD_DIR failed!"
+  exit 1
+fi
 
 # Return from whence we came
 popd
+
 
 
