@@ -2,3 +2,9 @@
 /activemq-data
 /runtime
 /download
+*.o
+*.cache
+config*
+Make*
+*.a
+jsvc
