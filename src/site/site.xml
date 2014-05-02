@@ -41,7 +41,7 @@
       <item name="Apache Camel" href="reference/apache-camel.html"/>
     </menu>
 
-    <menu name="Project Reports"ref="reports"/>
+<!--    <menu name="Project Reports"ref="reports"/>-->
 
   </body>
 </project>
