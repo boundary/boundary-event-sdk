@@ -1,4 +1,6 @@
-#!/bin/bash  -x 
+#!/bin/bash  
+
+BOUNDARY_SDK_HOME=$1
 
 [[ -z "$BOUNDARY_SDK_HOME" ]]  && echo "BOUNDARY_SDK_HOME is not set. Set to top-level directory of the distribution" && exit 1
 
@@ -29,7 +31,7 @@ SNMP4J_version="2.2.5"
 CURL_CMD=curl
 WGET_CMD=wget
 UNZIP_CMD=unzip
-INSTALL_JAR_CMD='install-jar'
+INSTALL_JAR_CMD="$BOUNDARY_SDK_HOME/src/main/scripts/install-jar"
 MIB_REPO_INSTALL_DIR="$BOUNDARY_SDK_HOME/runtime"
 
 Usage()
@@ -165,7 +167,7 @@ InstallJar()
   typeset -r artifact_id=$3
   typeset -r version=$4
 
-  'install-jar' "$jar_path" "$group_id" "$artifact_id" "$version" 
+  "$INSTALL_JAR_CMD" "$jar_path" "$group_id" "$artifact_id" "$version" 
   rc=$?
 
   return $rc
