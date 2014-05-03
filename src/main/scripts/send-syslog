@@ -1,3 +1,65 @@
 #!/bin/bash
 
-logger -p local0.notice "$(date)"
+typeset FACILITY=${1-user)}
+typeset SEVERITY=${2-notice)}
+typeset MESSAGE=${3-"Test Syslog Message"}
+
+Usage() {
+  echo "$(basename $0) [-h] [-f <facility>] [-s <severity>] [-m <message> ]"
+  echo ""
+  echo "facility is one of:"
+  echo "  user"
+  echo "  local0-local07"
+  echo "severity is one of:"
+  echo "  crit"
+}
+
+# Check to see if logger is installed and on our path
+CheckForLogger() {
+   typeset -i rc=0
+   typeset -r logger=$(which logger) 
+   if [ ! -e "$logger" ]
+   then
+     rc=1
+   fi
+   return $rc
+}
+
+HandleArguments()
+{
+   while getopts u:hd:p:f: option
+   do
+        case "${option}"
+        in
+          u) USER=${OPTARG};;
+          d) DATE=${OPTARG};;
+          h) Usage;;
+          p) PRODUCT=${OPTARG};;
+          f) FORMAT=$OPTARG;;
+        esac
+   done
+}
+
+SendSyslogMessage()
+{
+   logger -p local0.notice "$(date)"
+}
+
+Main()
+{
+  typeset facility=$1
+  typeset severity=$2
+  typeset message=$3
+
+  HandleArguments $*
+
+  CheckForLogger
+  if [ $? -ne 0 ]
+  then
+  :
+  fi
+  SendSyslogMessage
+}
+
+
+Main $*
