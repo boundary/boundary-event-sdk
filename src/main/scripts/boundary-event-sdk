@@ -1,5 +1,7 @@
+#!/bin/bash
+
 export BOUNDARY_SDK_HOME=$PWD
-export BOUNDARY_SDK_VERSION=0.00.03
+export BOUNDARY_SDK_VERSION=0.01.00
 export BOUNDARY_MIB_REPOSITORY="$BOUNDARY_SDK_HOME/var/mibrepository"
 export PATH=$PATH:"$BOUNDARY_SDK_HOME/bin"
 alias bsdk='cd $BOUNDARY_SDK_HOME'

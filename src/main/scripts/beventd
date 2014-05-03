@@ -1,17 +1,14 @@
 #!/bin/sh
 
 # Setup variables
-EXEC=/usr/bin/jsvc
-#JAVA_HOME=/usr/lib/jvm/java-6-sun
+EXEC=$BOUNDARY_SDK_HOME/bin/jsvc
 
-export LIB=$BOUNDARY_SDK_HOME/target/lib
+export LIB=$BOUNDARY_SDK_HOME/lib
 CLASS_PATH=$(JARS=("$LIB"/*.jar); IFS=:; echo "${JARS[*]}")
-CLASS_PATH="${BOUNDARY_SDK_HOME}/target/boundary-event-sdk-${BOUNDARY_SDK_VERSION}.jar:${CLASS_PATH}"
-#echo $CLASS_PATH
+CLASS_PATH="${BOUNDARY_SDK_HOME}/oundary-event-sdk-${BOUNDARY_SDK_VERSION}.jar:${CLASS_PATH}"
 
 CLASS=com.boundary.sdk.event.BoundaryEventDaemon
-USER=davidg
-#USER=boundary
+USER=$USER
 PID=${BOUNDARY_SDK_HOME}/runtime/beventd.pid
 LOG_OUT=${BOUNDARY_SDK_HOME}/logs/beventd.log
 LOG_ERR=${BOUNDARY_SDK_HOME}/logs/beventd.err.log
