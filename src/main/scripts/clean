@@ -1,0 +1,13 @@
+#!/bin/bash
+
+BOUNDARY_SDK_HOME=$1
+
+if [ ! -d "$BOUNDARY_SDK_HOME" -o ! -r "$BOUNDARY_SDK_HOME" ]
+then
+   echo "BOUNDARY_SDK_HOME needs to be set to build supporting tools"
+   exit 1
+fi
+
+BUILD_STATE_DIR="$BOUNDARY_SDK_HOME/.boundary.build.state"
+
+/bin/rm -f "$BUILD_STATE_DIR"/* > /dev/null 2>&1

@@ -26,10 +26,19 @@ OPERATING_SYSTEM_NAME=$(uname -s)
 
 case $OPERATING_SYSTEM_NAME in
     Darwin|Linux)
-        BINARY_PATH=jsvc
+        BINARY_PATH="$BOUNDARY_SDK_HOME/src/native/unix/jsvc"
         pushd "$BOUNDARY_SDK_HOME/src/native/unix"
         ;;
 esac
+
+BUILD_STATE_DIR=.boundary.build.state
+STATE_FILE="$BUILD_STATE_DIR/$(basename $BASH_SOURCE[0])"
+
+# Check to see if we need to build
+#if [ -e ! "$BINARY_PATH" -e "$STATE_FILE" -a "$BASH_SOURCE[0]" -ot "$STATE_FILE" ]
+#then
+#  exit 0
+#fi
 
 # Generate the configure script
 support/buildconf.sh
@@ -67,6 +76,9 @@ fi
 
 # Return from whence we came
 popd
+
+# Set our state that indicates that we have run
+#touch "$BUILD_STATE_DIR/$(basename $BASH_SOURCE[0])
 
 
 

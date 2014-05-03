@@ -272,6 +272,33 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<version>${exec-maven-plugin-version}</version>
 				<executions>
+					<execution>
+						<id>Invoke Clean Script</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>${basedir}/src/main/scripts/clean</executable>
+							<arguments>
+								<argument>${basedir}</argument>
+							</arguments>
+						</configuration>
+ 					</execution>
+					<!-- Install the SNMP4J-SMI into our local maven repository -->
+					<execution>
+						<id>Install SNMP4J-SMI</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>${basedir}/src/main/scripts/clean</executable>
+							<arguments>
+								<argument>${basedir}</argument>
+							</arguments>
+						</configuration>
+					</execution>
 					<execution><!-- Run our version calculation script -->
 						<id>Build Native Commons Daemon</id>
 						<phase>compile</phase>
@@ -282,7 +309,7 @@
 							<executable>${basedir}/src/main/scripts/build-commons-daemon</executable>
 							<arguments>
 								<argument>${basedir}</argument>
-								</arguments>
+							</arguments>
 						</configuration>
 					</execution>
 				</executions>
