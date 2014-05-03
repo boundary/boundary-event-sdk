@@ -6,7 +6,7 @@
 	<groupId>com.boundary</groupId>
 	<artifactId>boundary-event-sdk</artifactId>
 	<packaging>jar</packaging>
-	<version>0.00.03</version>
+	<version>0.00.05</version>
 
 	<name>boundary-event-sdk</name>
 	<description>Boundary Event SDK enables the rapid integration of foreign events into the Boundary monitoring platform</description>
@@ -286,19 +286,22 @@
 						</configuration>
  					</execution>
 					<!-- Install the SNMP4J-SMI into our local maven repository -->
+					<!-- Event calling in the validate stage is too late. Build fails. -->
+<!--
 					<execution>
 						<id>Install SNMP4J-SMI</id>
-						<phase>generate-sources</phase>
+						<phase>validate</phase>
 						<goals>
 							<goal>exec</goal>
 						</goals>
 						<configuration>
-							<executable>${basedir}/src/main/scripts/clean</executable>
+							<executable>${basedir}/src/main/scripts/install-snmp4j</executable>
 							<arguments>
 								<argument>${basedir}</argument>
 							</arguments>
 						</configuration>
 					</execution>
+-->
 					<execution><!-- Run our version calculation script -->
 						<id>Build Native Commons Daemon</id>
 						<phase>compile</phase>
