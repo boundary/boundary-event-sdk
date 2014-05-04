@@ -3,12 +3,9 @@ package com.boundary.sdk.event.syslog;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
+import org.junit.Ignore;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.apache.camel.CamelContext;
-import org.apache.camel.EndpointInject;
-import org.apache.camel.Produce;
-import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.spring.CamelSpringTestSupport;
 
@@ -39,6 +36,7 @@ public class SyslogMessageTest extends CamelSpringTestSupport {
 		assertMockEndpointsSatisfied();
 	}
 	
+	@Ignore("Disable for this release")
 	@Test
 	public void syslogAndQueueMessageTest() throws Exception {
 		MockEndpoint queueOut = getMockEndpoint(QUEUE_OUT_URI);
