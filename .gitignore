@@ -8,3 +8,4 @@ config*
 Make*
 *.a
 jsvc
+.*.html
