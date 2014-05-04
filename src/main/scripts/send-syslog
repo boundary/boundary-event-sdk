@@ -1,17 +1,15 @@
 #!/bin/bash
 
-typeset FACILITY=${1-user)}
-typeset SEVERITY=${2-notice)}
-typeset MESSAGE=${3-"Test Syslog Message"}
+FACILITY="user"
+SEVERITY="err"
+MESSAGE="Test_Syslog_Message"
 
 Usage() {
-  echo "$(basename $0) [-h] [-f <facility>] [-s <severity>] [-m <message> ]"
+  echo "$(basename $0) [-h] [-f <facility>] [-s <severity>] [-m <message>]"
   echo ""
-  echo "facility is one of:"
-  echo "  user"
-  echo "  local0-local07"
-  echo "severity is one of:"
-  echo "  crit"
+  echo "facility is one of: auth, authpriv, cron, daemon, ftp, local0-local07, lpr, kern, mail, news, syslog, user, uccp"
+  echo "severity is one of: emerg, alert, crit, warning, notice, info, debug"
+  exit 0
 }
 
 # Check to see if logger is installed and on our path
@@ -27,39 +25,38 @@ CheckForLogger() {
 
 HandleArguments()
 {
-   while getopts u:hd:p:f: option
+   while getopts f:hm:s: option
    do
         case "${option}"
         in
-          u) USER=${OPTARG};;
-          d) DATE=${OPTARG};;
+          f) FACILITY=${OPTARG};;
           h) Usage;;
-          p) PRODUCT=${OPTARG};;
-          f) FORMAT=$OPTARG;;
+          m) MESSAGE=${OPTARG};;
+          s) SEVERITY=${OPTARG};;
         esac
    done
 }
 
 SendSyslogMessage()
 {
-   logger -p local0.notice "$(date)"
+   typeset -r facility=$1
+   typeset -r severity=$2
+   typeset -r message=$3
+   logger -p "$facility.$severity" "$message"
 }
 
 Main()
 {
-  typeset facility=$1
-  typeset severity=$2
-  typeset message=$3
 
   HandleArguments $*
 
   CheckForLogger
   if [ $? -ne 0 ]
   then
-  :
+    echo "logger command not available on system please install"
+    exit 1
   fi
-  SendSyslogMessage
+  SendSyslogMessage "$FACILITY" "$SEVERITY" "$MESSAGE"
 }
-
 
 Main $*
