@@ -67,7 +67,7 @@
               
 		<!-- DISABLED <routeBuilder ref="event-queue"/>-->
 		
-   		<!-- DISABLED <routeBuilder ref="snmp-route"/> -->
+   		<routeBuilder ref="snmp-route"/>
 
 	</camelContext>
 </beans>
