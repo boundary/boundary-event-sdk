@@ -36,6 +36,13 @@
         <outputDirectory>bin</outputDirectory>
         <fileMode>0744</fileMode>
       </file>
+      <!-- Binary for running Boundary SDK JVM as a daemon -->
+      <!-- TBD: Assembly is Unix like operating specific -->
+      <file>
+        <source>src/native/unix/jsvc</source>
+        <outputDirectory>bin</outputDirectory>
+        <fileMode>0755</fileMode>
+      </file>
       <file>
         <source>${project.build.scriptSourceDirectory}/send-v1-trap</source>
         <outputDirectory>bin</outputDirectory>
