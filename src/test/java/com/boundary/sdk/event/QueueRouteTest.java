@@ -51,6 +51,7 @@ public class QueueRouteTest extends CamelSpringTestSupport {
         return q;
     }
 
+    @Ignore("Disabled for this release")
 	@Test
 	public void testSendOneEvent() throws Exception {
 		mockOut.setExpectedMessageCount(10);
