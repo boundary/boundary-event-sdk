@@ -24,10 +24,11 @@
     </links>
 
     <menu name="Boundary Event SDK">
-      <item name="Introduction" href="introduction.html"/>
+      <item name="Overview" href="overview.html"/>
       <item name="Download" href="downloads/download.html"/>
-      <item name="Usage" href="usage.html"/>
+      <item name="User Guide" href="user_guide.html"/>
       <item name="FAQ" href="FAQ.html"/>
+      <!-- <item name="Javadoc" href="doc/apidocs"/> -->
     </menu>
 
     <menu name="Adapters">
@@ -37,7 +38,6 @@
 
     <menu name="Reference">
       <item name="Boundary Event API" href="https://app.boundary.com/docs/events_api"/>
-      <item name="Boundary Event SDK Javadoc" href="https://app.boundary.com/docs/events_api"/>
       <item name="Apache Camel" href="reference/apache-camel.html"/>
     </menu>
 

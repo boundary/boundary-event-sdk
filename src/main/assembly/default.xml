@@ -22,13 +22,33 @@
         <fileMode>0744</fileMode>
       </file>
       <file>
-        <source>src/main/scripts/boundary-event-sdk</source>
+        <source>${project.build.scriptSourceDirectory}/boundary-event-sdk</source>
         <outputDirectory>etc</outputDirectory>
         <fileMode>0744</fileMode>
       </file>
       <file>
         <source>target/${project.name}-${project.version}.jar</source>
         <outputDirectory>/</outputDirectory>
+        <fileMode>0744</fileMode>
+      </file>
+      <file>
+        <source>${project.build.scriptSourceDirectory}/beventd</source>
+        <outputDirectory>bin</outputDirectory>
+        <fileMode>0744</fileMode>
+      </file>
+      <file>
+        <source>${project.build.scriptSourceDirectory}/send-v1-trap</source>
+        <outputDirectory>bin</outputDirectory>
+        <fileMode>0744</fileMode>
+      </file>
+      <file>
+        <source>${project.build.scriptSourceDirectory}/send-v2c-trap</source>
+        <outputDirectory>bin</outputDirectory>
+        <fileMode>0744</fileMode>
+      </file>
+      <file>
+        <source>${project.build.scriptSourceDirectory}/send-syslog</source>
+        <outputDirectory>bin</outputDirectory>
         <fileMode>0744</fileMode>
       </file>
     </files>
@@ -55,22 +75,19 @@
           <exclude>syslog.event.properties</exclude>
         </excludes>
       </fileSet>
+<!-- TBD: Bundling of the documentation with the distribution -->
+<!--
       <fileSet>
-        <directory>${project.build.scriptSourceDirectory}</directory>
-        <outputDirectory>bin</outputDirectory>
-        <filtered>true</filtered>
+        <directory>target/apidocs</directory>
+        <outputDirectory>doc/apidocs</outputDirectory>
         <fileMode>0744</fileMode>
-        <includes>
-          <include>*</include>
-        </includes>
       </fileSet>
       <fileSet>
-        <directory>target</directory>
+        <directory>target/site</directory>
+        <outputDirectory>doc</outputDirectory>
         <fileMode>0744</fileMode>
-        <includes>
-           <include>apidocs/*</include>
-        </includes>
       </fileSet>
+-->
       <fileSet>
         <directory>runtime</directory>
         <outputDirectory>var</outputDirectory>

@@ -190,6 +190,7 @@
 				</executions>
 -->
 				<configuration>
+					<generateReports>false</generateReports>
 					<inputEncoding>UTF-8</inputEncoding>
 					<outputEncoding>UTF-8</outputEncoding>
 				</configuration>
