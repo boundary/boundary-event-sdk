@@ -23,6 +23,8 @@ import com.boundary.sdk.event.Severity;
 import com.boundary.sdk.event.Status;
 
 /**
+ * Responsible for translating a {@link SyslogMessage} to {@link RawEvent}.
+ * 
  * @author davidg
  * 
  */
@@ -68,6 +70,7 @@ public class SyslogToEventProcessor implements Processor {
 	 */
 	private void syslogMessageToEvent(SyslogMessage sm, RawEvent e) {
 
+		// Add facility
 		e.getProperties().put("facility", sm.getFacility());
 		e.addTag(sm.getFacility().toString());
 		
@@ -93,10 +96,11 @@ public class SyslogToEventProcessor implements Processor {
 		Status status = getEventStatus(sm.getSeverity());
 		e.setStatus(status);
 		
-		// Set the uniqueness of the event by hostname and facility
-		// TBD These fields need to be split out in a configuration file
+		// Set the uniqueness of the event by hostname, facility, and message.
+		// TBD: These fields need to be split out in a configuration file
 		e.addFingerprintField("hostname");
 		e.addFingerprintField("facility");
+		e.addFingerprintField("message");
 		
 		// Set the time at which the syslog record was created
 		// TBD: Ensure time is in UTC
@@ -105,7 +109,7 @@ public class SyslogToEventProcessor implements Processor {
 
 		// Set Title
 		// TBD External configuration
-		e.setTitle("Syslog Message from  " + sm.getHostname());
+		e.setTitle("Syslog message from: " + sm.getHostname());
 	}
 
 	/**
