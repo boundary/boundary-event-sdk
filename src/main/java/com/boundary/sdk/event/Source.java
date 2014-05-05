@@ -84,7 +84,7 @@ public class Source implements Serializable {
 	 * @return {@link Source}
 	 */
 	public Source setRef(String ref) {
-		this.ref = ref;
+		this.ref = BaseEvent.truncateToMaximumLength(ref);
 		return this;
 	}
 	
@@ -102,7 +102,7 @@ public class Source implements Serializable {
 	 * @return {@link Source}
 	 */
 	public Source setType(String type) {
-		this.type = type;
+		this.type = BaseEvent.truncateToMaximumLength(type);
 		return this;
 	}
 	
@@ -122,7 +122,7 @@ public class Source implements Serializable {
 	 * @return {@link Source}
 	 */
 	public Source setName(String name) {
-		this.name = name;
+		this.name = BaseEvent.truncateToMaximumLength(name);
 		return this;
 	}
 	
@@ -161,7 +161,7 @@ public class Source implements Serializable {
 		if (properties == null) {
 			initializeProperties();
 		}
-		this.properties = properties;
+		this.properties = BaseEvent.truncateToMaximumLength(properties);
 		return this;
 	}
 	
@@ -176,7 +176,7 @@ public class Source implements Serializable {
 		if (properties == null) {
 			initializeProperties();
 		}
-		this.properties.put(key, value);
+		this.properties.put(BaseEvent.truncateToMaximumLength(key), value);
 		return this;
 	}
 	
