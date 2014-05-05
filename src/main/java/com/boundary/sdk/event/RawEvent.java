@@ -117,7 +117,8 @@ public class RawEvent extends BaseEvent implements Serializable {
 		if (fingerprintFields == null) {
 			initFingerprintFields();
 		}
-		fingerprintFields.add(fingerPrintFieldName);
+
+		fingerprintFields.add(truncateToMaximumLength(fingerPrintFieldName));
 		return this;
 	}
 	
@@ -146,7 +147,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 		if (fingerprintFields == null) {
 			initFingerprintFields();
 		}
-		this.fingerprintFields = fingerprintFields;
+		this.fingerprintFields = truncateToMaximumLength(fingerprintFields);
 		return this;
 	}
 
@@ -166,7 +167,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * @return Returns the {@link RawEvent}
 	 */
 	public RawEvent setMessage(String message) {
-		this.message = message;
+		this.message = truncateToMaximumLength(message);
 		return this;
 	}
 	
@@ -243,7 +244,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 		if (properties == null) {
 			initProperties();
 		}
-		this.properties = properties;
+		this.properties = truncateToMaximumLength(properties);
 		return this;
 	}
 	
@@ -416,7 +417,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * @return Returns the {@link RawEvent}
 	 */
 	public RawEvent setTitle(String title) {
-		this.title = title;
+		this.title = truncateToMaximumLength(title);
 		return this;
 	}
 	
@@ -436,7 +437,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 		if (tags == null) {
 			initializeTags();
 		}
-		this.tags = tags;
+		this.tags = truncateToMaximumLength(tags);
 		return this;
 	}
 	
@@ -450,7 +451,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 		if (tags == null) {
 			initializeTags();
 		}
-		this.tags.add(tag);
+		this.tags.add(truncateToMaximumLength(tag));
 		return this;
 	}
 	
