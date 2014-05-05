@@ -14,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.snmp4j.PDU;
 import org.snmp4j.PDUv1;
+import org.snmp4j.mp.SnmpConstants;
+import org.snmp4j.smi.OID;
 import org.snmp4j.smi.VariableBinding;
 
 import com.boundary.sdk.event.RawEvent;
@@ -65,8 +67,13 @@ public class SNMPToEventProcessor implements Processor {
 		return smi.getLicense();
 	}
 	
+	public void processV2Traps(PDU pdu, RawEvent event) {
+		
+	}
+	
 	@Override
 	public void process(Exchange exchange) throws Exception {
+		String specificTrap="";
 		
 		Message message = exchange.getIn();
 		SnmpMessage snmpMessage = message.getBody(SnmpMessage.class);
@@ -78,7 +85,8 @@ public class SNMPToEventProcessor implements Processor {
 		RawEvent event = new RawEvent();
 		
 		// Get the type of trap received either: TRAP (v2) or TRAPV1 (v1)
-		String trapType = PDU.getTypeString(pdu.getType()) == "TRAP" ? "v2c" : "v1";
+		String trapVersion = PDU.getTypeString(pdu.getType()) == "TRAP" ? "v2c" : "v1";
+		event.addProperty("trapVersion", trapVersion);
 		
         // Extract SNMPv1 specific variables
         if (pdu.getType() == PDU.V1TRAP) {
@@ -87,7 +95,8 @@ public class SNMPToEventProcessor implements Processor {
             event.addFingerprintField("enterprise");
             event.addProperty("agent-addr", v1pdu.getAgentAddress().toString());
             event.addProperty("generic-trap", Integer.toString(v1pdu.getGenericTrap()));
-            event.addProperty("specific-trap", Integer.toString(v1pdu.getSpecificTrap()));
+            specificTrap = Integer.toString(v1pdu.getSpecificTrap());
+            event.addProperty("trap",specificTrap);
             event.addProperty("time-stamp", Long.toString(v1pdu.getTimestamp()));
         }
 
@@ -95,9 +104,21 @@ public class SNMPToEventProcessor implements Processor {
 		// Get the variable bindings from the trap and create properties in the event
 		Vector<? extends VariableBinding> varBinds = pdu.getVariableBindings();
 		for (VariableBinding var : varBinds) {
-			event.addProperty(var.getOid().toString(),var.toValueString());
-			event.addFingerprintField(var.getOid().toString());
+			OID oid = var.getOid();
+			if (oid.startsWith(SnmpConstants.snmpTraps) ||
+				oid.startsWith(SnmpConstants.snmpTrapOID)) {
+				specificTrap = var.toValueString();
+				event.addProperty("trap",specificTrap);
+				event.setMessage(var.toValueString());
+			}
+			else {
+				event.addProperty(var.getOid().toString(),var.toValueString());
+				event.addFingerprintField(var.getOid().toString());
+			}
 		}
+		
+		event.addFingerprintField("trap");
+		
 		event.addProperty("error_status", pdu.getErrorStatusText());
 		
 		// Address is in the form of X.X.X.X/port if IPV4
@@ -106,13 +127,8 @@ public class SNMPToEventProcessor implements Processor {
 		event.addProperty("hostname",hostname);
 		event.addFingerprintField("hostname");
 
-		event.setTitle(trapType + " from " + hostname);
-		
-		event.addProperty("type", trapType);
-		
-		//TBD, What should the message field be set to by default??
-		event.setMessage(pdu.getErrorStatusText());
-		
+		event.setTitle(specificTrap + " trap received from " + hostname);
+				
 		//TBD, set the severity based on content of the trap
 		event.setSeverity(Severity.WARN);
 		
