@@ -46,7 +46,7 @@ public class BaseEvent {
 	 * to the maximum allowed by the Boundary Event API
 	 * 
 	 * @param array
-	 * @return
+	 * @return {@link ArrayList} of {@link String}
 	 */
 	public static ArrayList<String> truncateToMaximumLength(ArrayList<String> array) {
 		ArrayList<String> truncatedArray = new ArrayList<String>(array.size());
@@ -60,7 +60,7 @@ public class BaseEvent {
 	 * Helper method that truncates an {@link Object} if it is a {@link String}
 	 * to the maximum allowed by the Boundary Event API
 	 * @param obj
-	 * @return
+	 * @return {@link Object}
 	 */
 	public static Object truncateToMaximumLength(Object obj) {
 		String s = "";
@@ -78,7 +78,7 @@ public class BaseEvent {
 	 * to the maximum allowed by the Boundary Event API
 	 * 
 	 * @param prop
-	 * @return
+	 * @return {@link LinkedHashMap} with key {@link String} and value {@link Object}
 	 */
 	public static LinkedHashMap<String,Object> truncateToMaximumLength(LinkedHashMap<String,Object> prop) {
 		LinkedHashMap<String,Object> truncatedProp = new LinkedHashMap<String,Object>(prop.size());
