@@ -62,7 +62,7 @@ public class SmiSupport {
 	 * @param license
 	 */
 	public void setLicense(String license) {
-		this.license = license.isEmpty() ? null : license;
+		this.license = license == null || license.isEmpty() ? null : license;
 	}
 	
 	
