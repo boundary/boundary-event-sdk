@@ -31,4 +31,4 @@ Instructions
 
 5. Build and package the distribution
 
-    ```$ mvn assembly:assembly
+    ```$ mvn assembly:assembly```
