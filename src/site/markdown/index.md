@@ -6,5 +6,5 @@ Boundary Event SDK enables the rapid integration of foreign events into the Boun
 The following sections provide information on getting the Boundary Event SDK up and running.
 
 * [Overview](overview.html)
-* [Download](downloads/download.html)
 * [User Guide](user_guide.html)
+* [Download](downloads/download.html)
