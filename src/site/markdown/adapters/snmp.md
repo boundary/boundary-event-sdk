@@ -3,15 +3,13 @@ Boundary SNMP Event Adapter
 
 This event adapter can receive v1/v2c SNMP traps and translate into Boundary Events.
 
-
 SNMP4J-SMI
 ----------
 
 The SNMP adapter uses the SNMP4J-SMI library to decode OIDs. For open source use free
 license is granted which restricts usage to standard MIB modules which are 
 not under the enterprise OID sub-tree. Licenses can be purchased from
-[www.snmp4j.org](http://www.snmp4j.org/html/buy.html) for, at the time of this writing,
-for $49 US.
+[www.snmp4j.org](http://www.snmp4j.org/html/buy.html) for $49 US, at the time of this writing.
 
 Configuration
 -------------
@@ -46,6 +44,7 @@ These parameters are configured in the `BOUNDARY_SDK_HOME/event-application.xml`
 ```
 
 ### Event Mapping
+
 This section describes the mapping of the SNMP trap to a Boundary event.
 
 A SNMP v1 trap consists of the following fields:
@@ -57,6 +56,7 @@ A SNMP v1 trap consists of the following fields:
 * Timestamp
 
 A SNMP v2 trap consists of list of varbinds:
+
 * varbind 1
 * varbind 2
 
@@ -70,6 +70,6 @@ A SNMP v2 trap consists of list of varbinds:
 
 ### Future Enhancements
 * Generalized mapping and transformation of SNMP trap varbinds message fields to Boundary event fields
-* Support for perform SNMP gets.
+* Support for perform SNMP GETs.
 
 
