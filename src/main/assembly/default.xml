@@ -6,7 +6,10 @@
   <id>dist</id>
     <formats>
       <format>tar.gz</format>
+<!-- Distribute only using a compressed tar archive for the first release -->
+<!--
       <format>zip</format>
+-->
     </formats>
     <dependencySets>
       <dependencySet>
