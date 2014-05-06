@@ -13,6 +13,11 @@
     <href>http://boundary.com</href>
   </bannerLeft>
 
+  <poweredBy>
+    <logo name="Boundary" href="http://boundary.com/"
+          img="images/BoundaryLogo-150.png"/>
+  </poweredBy>
+
   <version position="left"/>
 
   <body>
@@ -22,19 +27,26 @@
       <item name="Boundary Event SDK" href="http://github.com/boundary/boundary-event-sdk/"/>
     </links>
 
+    <breadcrumbs>
+      <item name="SDK" href="index.html"/>
+      <item name="Adapters" href="adapters/index.html"/>
+      <item name="Development" href="development/index.html"/>
+      <item name="Reference" href="reference/index.html"/>
+    </breadcrumbs>
+
     <menu name="Boundary Event SDK">
       <item name="Overview" href="overview.html"/>
-      <item name="User Guide" href="user_guide.html"/>
+      <item name="User Guide" href="user-guide.html"/>
       <item name="Download" href="downloads/download.html"/>
-    </menu>
-
-    <menu name="Development">
-      <item name="Building" href="building.html"/>
     </menu>
 
     <menu name="Adapters">
       <item name="SNMP" href="adapters/snmp.html"/>
       <item name="Syslog" href="adapters/syslog.html"/>
+    </menu>
+
+    <menu name="Development">
+      <item name="Building" href="building.html"/>
     </menu>
 
     <menu name="Reference">

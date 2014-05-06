@@ -2,12 +2,48 @@ Boundary Syslog Event Adapter
 =============================
 
 The Syslog adapter for Boundary enables the UDP receipt of syslog messages forwarded from a syslog daemon into Boundary events.
-This adapters adheres to standard set forth in [RFC 3164](http://tools.ietf.org/html/rfc3164)
+
+This adapters adheres to standard set forth in [RFC 3164](http://tools.ietf.org/html/rfc3164).
 
 Configuration
 -------------
 
+### Forwarding Syslog Messages
+
+The Syslog Event Adapter requires that syslog messages be forwarded as:
+
+* Using the `UDP` transport
+* Send in the RFC 3164 format.
+
+There are various open source and commericial implementations of syslog including:
+
+* `syslogd`
+* [Kiwi Syslog](http://www.kiwisyslog.com)
+* [RSYSLOG](http://www.rsyslog.com)
+* [syslog-ng](http://www.syslog-ng.org)
+
+Those list above have the capability to forward syslog messages using UDP and syslog format (RFC 3164).
+
+The configuration to forward syslog messages typically in this format:
+
+```
+*.*     @<hostname>:<port>
+
+```
+
+NOTE: Different implementations have different names for the configuration file location (typically /etc/syslog.conf or /etc/rsylog.conf) so
+consult the documentation for your implementation.
+
+For example if the Boundary Event SDK was running on the host `ren.stimpy.com` and the Syslog adapter parameter `port` was configured to _1514_
+then the typical syslog configuration to forward _all_ of the syslog messages would be the following:
+
+```
+*.*    @ren.stimpy.com:1514
+```
+
 ### Parameters
+
+These parameters that application in the `etc/event-application.xml` file.
 
 * `port` - Port number to listen for Syslog message (default is 1514).
 * `routeId` - Name of the route instance appears in logs.
@@ -38,16 +74,14 @@ A syslog message consists of the following fields:
 
 ### Field Mapping
 
-* properties
-* facility
-* hostname
+The table below provides a guide of how the Syslog message fields are mapped to a Boundary event.
 
 |Syslog Field  |Boundary Event Field     |Boundary Field Type|Boundary Fingerprint Field?|Boundary Tag?|
 |--------------|:-----------------------:|:-----------------:|:-------------------------:|:-----------:|
 |facility      | facility                | property          | YES                       | YES         |
-|timestamp     | createdAt               | standard          | NO                        | NO          |
-|message       | message                 | standard          | YES                       | NO          |
-|hostname      | source.ref              | standard          | YES                       | YES         |
+|timestamp     | createdAt               | standard/property | NO                        | NO          |
+|message       | message                 | standard/property | YES                       | NO          |
+|hostname      | source.ref              | standard/property | YES                       | YES         |
 |remote_address| remote_address          | property          | NO                        | YES         |
 |severity      | severity(mapped)        | standard          | NO                        | NO          |
 |severity      | status(mapped)          | standard          | NO                        | NO          |

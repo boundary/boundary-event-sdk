@@ -1,61 +1,54 @@
 Boundary SNMP Event Adapter
 ===========================
 
-The is adapter
+This event adapter can receive v1/v2c SNMP traps and translate into Boundary Events.
 
 
-Overview
---------
-
-
-
-
-
-Parameters
+SNMP4J-SMI
 ----------
 
-* toUri - 
-Boundary Syslog Event Adapter
-=============================
-
-* [Overview](#overview)
-* [Configuration](#configuration)
-* [Event Mapping](#event-mapping)
-* [Future Enhancements](#future-enhancements)
-
-Overview
---------
-The Syslog adapter for Boundary enables the UDP receipt of syslog messages forwarded from a syslog daemon into Boundary events.
-
-
-The [SNMPRouteBuilder](http://www.google.com) is responsible for generating a [camel route] and translating into a [`RawEvent`](https://app.boundary.com/docs/events_api#RawEvent)
+The SNMP adapter uses the SNMP4J-SMI library to decode OIDs. For open source use free
+license is granted which restricts usage to standard MIB modules which are 
+not under the enterprise OID sub-tree. Licenses can be purchased from
+[www.snmp4j.org](http://www.snmp4j.org/html/buy.html) for, at the time of this writing,
+for $49 US.
 
 Configuration
-------------
+-------------
+
+### Environment Variables
+
+SNMP adapter parameters `mibRepository` and `license` can be set
+by providing values in the `BOUNDARY_SDK_HOME/etc/boundary-event-sdk` file.
 
 ### Parameters
 
-* `port` - Port number to listen for Syslog message (default is 1514)
-* `routeId` - Name of the
+These parameters are configured in the `BOUNDARY_SDK_HOME/event-application.xml`.
+
+* `routeId` - Name to identify the route in the logs
 * `startOrder` - Ordering of when this route is started in relationship to other routes
-* `toUri` - Indicates the end point to send the transformed syslog message
+* `port` - Port number to listen for SNMP traps (default is 1162)
+* `mibRepository` - Indicates the end point to send the transformed SNMP trap.
+* `license` - License string purchased from SNMP4J-SMI
+* `toUri` - Indicates the end point to send the transformed SNMP trap.
 
 ### Example Configuration
 ```
-        <bean id="syslog-route" class="com.boundary.sdk.event.syslog.SysLogRouteBuilder">
-                <property name="routeId" value="SYSLOG"/>
-                <property name="startUpOrder" value="120"/>
-                <property name="port" value="1514"/>
+        <!-- This route recieves v1 and v2c SNMP traps -->
+        <bean id="snmp-route" class="com.boundary.sdk.event.snmp.SNMPRouteBuilder">
+                <property name="routeId" value="SNMP"/>
+                <property name="startUpOrder" value="130"/>
+                <property name="port" value="1162"/>
+                <property name="mibRepository" value="#{systemEnvironment['BOUNDARY_MIB_REPOSITORY']}"/>
+                <property name="license" value="#{systemEnvironment['BOUNDARY_MIB_LICENSE']}"/>
                 <property name="toUri" value="seda:boundary-event"/>
         </bean>
-
 ```
 
-Event Mapping
-----------------------------------------
-This section describes the mapping of the Syslog message to a Boundary event.
+### Event Mapping
+This section describes the mapping of the SNMP trap to a Boundary event.
 
-A syslog message consists of the following fields:
+A SNMP v1 trap consists of the following fields:
 
 * Facility
 * Hostname/IP Address
@@ -63,45 +56,20 @@ A syslog message consists of the following fields:
 * Message
 * Timestamp
 
-#### Field Mapping
-
-* properties
-** facility
-** hostname
+A SNMP v2 trap consists of list of varbinds:
+* varbind 1
+* varbind 2
 
 
-### Severity Mapping
-Mapping of Syslog severity to Boundary event severity is a one on one
-basis give by the table below. Mapping can be customized by modification of a
-java property file.
+### Field Mapping
 
-|Syslog Severity|Boundary Event Severity|
-|---------------|-----------------------|
-|EMERG          |CRITICAL               |
-|ALERT          |CRITICAL               |
-|CRIT           |CRITICAL               |
-|ERR            |ERROR                  |
-|WARNING        |WARNING                |
-|NOTICE         |INFO                   |
-|INFO           |INFO                   |
-|DEBUG          |INFO                   |
 
-### Status Mapping
+### References
 
-|Syslog Severity|Boundary Event Status|
-|---------------|---------------------|
-|EMERG          |OPEN                 |
-|ALERT          |OPEN                 |
-|CRIT           |OPEN                 |
-|ERR            |OPEN                 |
-|WARNING        |OPEN                 |
-|NOTICE         |OK                   |
-|INFO           |OK                   |
-|DEBUG          |OK                   |
+* Mauro, Douglas R.; Schmidt, Kevin J.  _Essential SNMP_,2nd Ed. California: Sebastopol, OReily Media,Inc., 2009. Print.
 
-Future Enhancements
--------------------
-* Generalized mapping and transformation of Syslog message fields to Boundary event fields
-* Support for syslog format as specified by [RFC 5424](http://tools.ietf.org/html/rfc5424)
+### Future Enhancements
+* Generalized mapping and transformation of SNMP trap varbinds message fields to Boundary event fields
+* Support for perform SNMP gets.
 
 
