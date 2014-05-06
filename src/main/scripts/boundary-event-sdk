@@ -23,3 +23,6 @@ export PATH=$PATH:"$BOUNDARY_SDK_HOME/bin"
 
 # Add convenience alias to change directory to the Boundary Event SDK
 alias bsdk='cd $BOUNDARY_SDK_HOME'
+
+# Add convenience alias to view environment
+alias benv='env | grep BOUNDARY'
