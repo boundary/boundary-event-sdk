@@ -9,3 +9,4 @@ Make*
 *.a
 jsvc
 .*.html
+.DS_Store
