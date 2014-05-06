@@ -20,15 +20,13 @@
     <links>
       <item name="Boundary,Inc." href="http://www.boundary.com/"/>
       <item name="Boundary Event SDK" href="http://github.com/boundary/boundary-event-sdk/"/>
-      <item name="Apache Camel" href="http://camel.apache.org"/>
     </links>
 
     <menu name="Boundary Event SDK">
       <item name="Overview" href="overview.html"/>
-      <item name="Download" href="downloads/download.html"/>
       <item name="User Guide" href="user_guide.html"/>
-      <item name="FAQ" href="FAQ.html"/>
-      <!-- <item name="Javadoc" href="doc/apidocs"/> -->
+      <item name="Download" href="downloads/download.html"/>
+      <item name="Overview of Apache Camel" href="reference/apache-camel.html"/>
     </menu>
 
     <menu name="Adapters">
@@ -37,11 +35,9 @@
     </menu>
 
     <menu name="Reference">
-      <item name="Boundary Event API" href="https://app.boundary.com/docs/events_api"/>
-      <item name="Apache Camel" href="reference/apache-camel.html"/>
+      <item name="Boundary Event API (Requires a login)" href="https://app.boundary.com/docs/events_api"/>
+      <item name="Apache Camel Website" href="http://camel.apache.org/"/>
     </menu>
-
-<!--    <menu name="Project Reports"ref="reports"/>-->
 
   </body>
 </project>
