@@ -28,6 +28,10 @@
       <item name="Download" href="downloads/download.html"/>
     </menu>
 
+    <menu name="Development">
+      <item name="Building" href="building.html"/>
+    </menu>
+
     <menu name="Adapters">
       <item name="SNMP" href="adapters/snmp.html"/>
       <item name="Syslog" href="adapters/syslog.html"/>

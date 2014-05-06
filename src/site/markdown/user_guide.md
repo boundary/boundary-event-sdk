@@ -4,8 +4,6 @@ User Guide
 This document describes how to install and use the Boundary Event SDK to integrate
 Syslog and SNMP into your Boundary environment.
 
-src/site/markdown/downloads/boundary-event-sdk-00.01.00/
-
 Prerequisites
 -------------
 * Boundary Organizational Id
@@ -14,9 +12,9 @@ Prerequisites
 
 Installation
 ------------
-1. Download the distribution from [Boundary Event SDK Github](https://github.com/boundary/boundary-event-sdk/src/site/markdown/downloads/boundary-event-sdk-00.01.00)
+1. Download the distribution from [Boundary Event SDK Github](https://github.com/boundary/boundary-event-sdk/dist)
 2. Extract the archive:
-```$ cd tar xvf boundary-event-sdk-0.00.06-dist.tar.gz```
+```$ cd tar xvf boundary-event-sdk-X.YY.ZZ-dist.tar.gz```
 
 Configuration
 -------------
@@ -37,7 +35,7 @@ These environment variables can be either set external or setting directly in en
 
 1. Add the required environment variables to the environment.
 2. Change directory to the distribution
-```$ cd boundary-event-sdk-00.01.00```      
+```$ cd boundary-event-sdk-XX.YY.ZZ```      
 3. Source the environment
 ```$ source etc/boundary-event-sdk```     
 4. Verify the environment
