@@ -90,8 +90,6 @@ public class SyslogToEventProcessor implements Processor {
 		// Map the syslog severity to Boundary event severity
 		Severity severity = getEventSeverity(sm.getSeverity());
 		e.setSeverity(severity);
-		e.addProperty("severity", sm.getSeverity().toString());
-		e.addTag(sm.getSeverity().toString());
 		
 		Status status = getEventStatus(sm.getSeverity());
 		e.setStatus(status);
