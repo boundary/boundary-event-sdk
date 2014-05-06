@@ -26,7 +26,6 @@
       <item name="Overview" href="overview.html"/>
       <item name="User Guide" href="user_guide.html"/>
       <item name="Download" href="downloads/download.html"/>
-      <item name="Overview of Apache Camel" href="reference/apache-camel.html"/>
     </menu>
 
     <menu name="Adapters">
