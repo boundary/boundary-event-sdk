@@ -19,6 +19,9 @@ Installation
 Configuration
 -------------
 
+This sections provides the generatl configuration for the Boundary Event SDK. Specific instructions
+for each of the event adapters can found [here](adapters/index.html).
+
 ### Environment Variables
 
 Boundary SDK requires the following the environment variables be set prior to running:
@@ -26,6 +29,9 @@ Boundary SDK requires the following the environment variables be set prior to ru
 * `BOUNDARY_SDK_HOME` - Path to the extracted the Boundary SDK distribution
 * `BOUNDARY_API_KEY` - Boundary API Key
 * `BOUNDARY_ORG_ID` - Boundary Organization ID
+
+with the following variables specific to the [Syslog event adapter](adapters/syslog.md):
+
 * `BOUNDARY_MIB_REPOSITORY` - Stores the compiled MIBs for SNMP trap adapter
 * `BOUNDARY_MIB_LICENSE` - License string for SNMP4J-SMI
 
