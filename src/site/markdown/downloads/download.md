@@ -7,7 +7,9 @@ Welecome to the Boundary SDK download page. This page provides download links fo
 Release 00.01.00
 ----------------
 
+
 ### Binary Distribution
-* [RHEL/Centos 6.5](https://github.com/boundary/boundary-event-sdk/tree/master/releases/0.01.00/boundary-event-sdk-0.01.00-centos.tar.gz)
+* [Release Notes](0.01.00/index.html)
+* [RHEL/Centos 6.5](https://https://github.com/boundary/boundary-event-sdk/dist/00.01.00/boundary-event-sdk-dist-00.01.00.tar.gz)
 
 
