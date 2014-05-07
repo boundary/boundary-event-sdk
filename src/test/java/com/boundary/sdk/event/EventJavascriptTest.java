@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.apache.camel.test.junit4.CamelSpringTestSupport;
 import org.junit.Test;
+import org.junit.Ignore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractXmlApplicationContext;
@@ -17,6 +18,7 @@ public class EventJavascriptTest extends CamelSpringTestSupport {
 		return new ClassPathXmlApplicationContext("META-INF/event-javascript-test.xml");
 	}
 
+	@Ignore("Feature not enabled yet")
 	@Test
 	public void testEventToLog() throws Exception {
 		TestEvent event = new TestEvent("hello");
