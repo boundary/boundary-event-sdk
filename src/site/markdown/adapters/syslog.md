@@ -94,10 +94,9 @@ The table below provides a guide of how the Syslog message fields are mapped to 
 |Syslog Field  |Boundary Event Field     |Boundary Field Type|Boundary Fingerprint Field?|Boundary Tag?|
 |--------------|:-----------------------:|:-----------------:|:-------------------------:|:-----------:|
 |facility      | facility                | property          | YES                       | YES         |
-|timestamp     | createdAt               | standard/property | NO                        | NO          |
+|timestamp     | createdAt               | standard          | NO                        | NO          |
 |message       | message                 | standard/property | YES                       | NO          |
 |hostname      | source.ref              | standard/property | YES                       | YES         |
-|remote_address| remote_address          | property          | NO                        | YES         |
 |severity      | severity(mapped)        | standard          | NO                        | NO          |
 |severity      | status(mapped)          | standard          | NO                        | NO          |
 |              | title (text + hostname) | standard          | NO                        | NO          |
@@ -105,7 +104,7 @@ The table below provides a guide of how the Syslog message fields are mapped to 
 
 ### Severity Mapping
 Mapping of Syslog severity to Boundary event severity is given by the table below. Mapping can be customized by modification of a
-java property file (`syslog.severity.properties`).
+java property file (`BOUNDARY_SDK_HOME/syslog/etc/syslog.severity.properties`).
 
 |Syslog Severity|Boundary Event Severity|
 |---------------|-----------------------|
@@ -120,7 +119,7 @@ java property file (`syslog.severity.properties`).
 
 ### Status Mapping
 Boundary event status of a syslog message is determined by the Syslog severity. The table below shows the default mapping, which  customized by modification of a
-java property file (`syslog.status.properties`).
+java property file (`BOUNDARY_SDK_HOME/syslog/etc/syslog.status.properties`).
 
 |Syslog Severity|Boundary Event Status|
 |---------------|---------------------|
