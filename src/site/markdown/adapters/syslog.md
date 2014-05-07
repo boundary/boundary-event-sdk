@@ -1,7 +1,7 @@
 Boundary Syslog Event Adapter
 =============================
 
-The Syslog adapter for Boundary enables the UDP receipt of syslog messages forwarded from a syslog daemon into Boundary events.
+The Syslog adapter for Boundary enables the UDP receipt of forwarded syslog messagesg daemon into Boundary events.
 
 This adapters adheres to standard set forth in [RFC 3164](http://tools.ietf.org/html/rfc3164).
 
@@ -39,6 +39,21 @@ then the typical syslog configuration to forward _all_ of the syslog messages wo
 
 ```
 *.*    @ren.stimpy.com:1514
+```
+
+If only a subset of the syslog messages are to be forwarded this possible by combined filtering using _facility_ or _severity_. Examples below
+show only a subset of syslog messages:
+
+Forward all syslog messages of severity of `info` to the Boundary Event SDK on the host _192.168.0.1_ on port _1514_.
+
+```
+*.info @192.168.0.1:1514
+```
+
+Forward all `daemon` syslog messages to the Boundary Event SDK on the _localhost_ on port _10514_:
+
+```
+daemon.*          @127.0.0.1:10514
 ```
 
 ### Parameters
@@ -122,5 +137,4 @@ Future Enhancements
 -------------------
 * Generalized mapping and transformation of Syslog message fields to Boundary event fields
 * Support for syslog format as specified by [RFC 5424](http://tools.ietf.org/html/rfc5424)
-
 
