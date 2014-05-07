@@ -112,9 +112,9 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 			.setHeader(Exchange.ACCEPT_CONTENT_TYPE, constant("application/json"))
 			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
 			.setHeader(Exchange.HTTP_METHOD, constant("POST"))
-			.to("log:" + BoundaryEventRouteBuilder.class + "?level=DEBUG&groupInterval=60000&groupDelay=60000&groupActiveOnly=false")
+			.to("log:com.boundary.sdk.event.BoundaryEventRouteBuilder?level=DEBUG&groupInterval=60000&groupDelay=60000&groupActiveOnly=false")
 			.to(url.toString())
-			.to("log:" + BoundaryEventRouteBuilder.class + "?level=INFO&showHeaders=true&multiline=true")
+			.to("log:com.boundary.sdk.event.BoundaryEventRouteBuilder?level=INFO&showHeaders=true&multiline=true")
 			;
 	}
 }
