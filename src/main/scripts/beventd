@@ -39,7 +39,12 @@ do_exec()
 
 case "$1" in
     start)
-        do_exec
+        if [ ! -f "$PID" ]; then
+            do_exec
+        else
+            echo "$(basename $0) is already running"
+            exit 1
+        fi  
             ;;
     stop)
         do_exec "-stop"
