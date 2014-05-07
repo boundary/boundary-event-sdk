@@ -25,6 +25,11 @@
         <fileMode>0744</fileMode>
       </file>
       <file>
+        <source>src/main/resources/log4j.properties</source>
+        <outputDirectory>etc</outputDirectory>
+        <fileMode>0744</fileMode>
+      </file>
+      <file>
         <source>${project.build.scriptSourceDirectory}/boundary-event-sdk</source>
         <outputDirectory>etc</outputDirectory>
         <fileMode>0744</fileMode>
