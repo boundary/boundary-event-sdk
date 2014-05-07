@@ -144,7 +144,6 @@ public class SyslogToEventProcessor implements Processor {
 						.getContextClassLoader()
 						.getResourceAsStream(propertyFileName));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				LOG.error(e.getStackTrace().toString());
 			}
