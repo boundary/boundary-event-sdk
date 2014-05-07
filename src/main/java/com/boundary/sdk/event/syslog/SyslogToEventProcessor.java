@@ -4,12 +4,7 @@
 package com.boundary.sdk.event.syslog;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Properties;
-import java.util.TimeZone;
-
-import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
@@ -57,6 +52,8 @@ public class SyslogToEventProcessor implements Processor {
 
 		// Delegate to member method call to perform the translation
 		syslogMessageToEvent(syslogMessage, event);
+		
+		LOG.debug("RawEvent: " + event);
 
 		// Set the message body to the RawEvent
 		message.setBody(event, RawEvent.class);
@@ -84,13 +81,14 @@ public class SyslogToEventProcessor implements Processor {
 		e.getProperties().put("message", sm.getLogMessage());
 		
 		// Add the remote address
-		e.getProperties().put("remote_address", sm.getRemoteAddress());
-		e.addTag(sm.getRemoteAddress());
+		// e.getProperties().put("remote_address", sm.getRemoteAddress());
+		// e.addTag(sm.getRemoteAddress());
 		
 		// Map the syslog severity to Boundary event severity
 		Severity severity = getEventSeverity(sm.getSeverity());
 		e.setSeverity(severity);
 		
+		// Set event status based on Severity
 		Status status = getEventStatus(sm.getSeverity());
 		e.setStatus(status);
 		
@@ -103,11 +101,13 @@ public class SyslogToEventProcessor implements Processor {
 		// Set the time at which the syslog record was created
 		// TBD: Ensure time is in UTC
 		e.setCreatedAt(sm.getTimestamp());
-		e.addProperty("timestamp", sm.getTimestamp());
 
 		// Set Title
-		// TBD External configuration
 		e.setTitle("Syslog message from: " + sm.getHostname());
+		
+		// Set Sender
+		e.getSender().setRef("Syslog");
+		e.getSender().setType("Boundary Event SDK");
 	}
 
 	/**
