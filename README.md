@@ -11,4 +11,6 @@ Specific configuration details for the adapters are found [here](https://github.
 
 Pre-Build distributions for CentOS can be found [here](https://github.com/boundary/boundary-event-sdk/tree/master/dist/00.01.00).
 
+Release notes can be found [here](https://github.com/boundary/boundary-event-sdk/blob/master/src/site/markdown/downloads/00.01.00/index.html)
+
 
