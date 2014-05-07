@@ -48,7 +48,7 @@
     </menu>
 
     <menu name="Development">
-      <item name="Building" href="building.html"/>
+      <item name="Building" href="development/building.html"/>
     </menu>
 
     <menu name="Reference">
