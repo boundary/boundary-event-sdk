@@ -104,8 +104,8 @@
       </fileSet>
 -->
       <fileSet>
-        <directory>runtime</directory>
-        <outputDirectory>var</outputDirectory>
+        <directory>runtime/mibrepository</directory>
+        <outputDirectory>var/mibrepository</outputDirectory>
         <directoryMode>0755</directoryMode>
         <includes>
           <include>*</include>
