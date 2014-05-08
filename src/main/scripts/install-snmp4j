@@ -197,14 +197,6 @@ Main()
      exit 1
   fi
 
-  InstallMIBRepository "$DOWNLOAD_DIR/$SNMP4J_SMI_DIR/mibrepository" "$MIB_REPO_INSTALL_DIR"
-
-  if [ $? -ne 0 ]
-  then
-     "Error occurred installing MIB repository to $MIB_REPO_INSTALL_DIR"
-     exit 1
-  fi
-
   InstallJar "$SNMP4J_SMI_JAR_FILE_PATH" "$SNMP4J_SMI_group_id" "$SNMP4J_SMI_artifact_id" "$SNMP4J_SMI_version"
   if [ $? -ne 0 ]
   then
