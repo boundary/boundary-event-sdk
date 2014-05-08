@@ -10,6 +10,5 @@ Release 00.01.00
 
 ### Binary Distribution
 * [Release Notes](00.01.00/index.html)
-* [RHEL/Centos 6.5](https://https://github.com/boundary/boundary-event-sdk/dist/00.01.00/boundary-event-sdk-dist-00.01.00.tar.gz)
-
+* [RHEL/Centos 6.5](https://github.com/boundary/boundary-event-sdk/tree/master/dist/00.01.00)
 
