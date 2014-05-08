@@ -45,7 +45,7 @@ Instructions
 
 2. Start up the site:
 
-    ```$ mvn site:run```` 
+    ```$ mvn site:run``` 
 
 3. Documentation can be viewed from your local browser [http://localhost:8080](http://localhost:8080)
 
