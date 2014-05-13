@@ -25,7 +25,7 @@
 		<property name="apiKey" value="#{systemEnvironment['BOUNDARY_API_KEY']}"/>
 
                 <!-- The endpoint URI to listen for boundary events -->
-		<property name="fromUri" value="seda:boundary-event"/>
+		<property name="fromUri" value="seda:boundary-event?concurrentConsumers=10"/>
 	</bean>
 	
 	<!-- This route is a queue to persist pending events before they
