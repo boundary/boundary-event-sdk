@@ -76,7 +76,7 @@ public class SNMPToEventProcessor implements Processor {
 	 * Converts an {@link SnmpMessage}/{@link PDUv1} into a {@link RawEvent}
 	 * 
 	 * @param message - Contains a {@link SnmpMessage}
-	 * @param pdu - Contains a {@PDUv1} with the actual trap contents
+	 * @param pdu - Contains a {@link PDUv1} with the actual trap contents
 	 * @param event - {@link RawEvent} to be populated.
 	 */
 	public void processV1Trap(SnmpMessage message, PDU pdu, RawEvent event) {
@@ -127,7 +127,7 @@ public class SNMPToEventProcessor implements Processor {
 	 * Converts an {@link SnmpMessage}/{@link PDU} into a {@link RawEvent}
 	 * 
 	 * @param message - Contains a {@link SnmpMessage}
-	 * @param pdu - Contains a {@PDU} with the actual trap contents
+	 * @param pdu - Contains a {@link PDU} with the actual trap contents
 	 * @param event - {@link RawEvent} to be populated.
 	 */
 	public void processV2Trap(SnmpMessage message, PDU pdu, RawEvent event) {
