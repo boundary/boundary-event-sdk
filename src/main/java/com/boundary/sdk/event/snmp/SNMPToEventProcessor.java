@@ -83,8 +83,8 @@ public class SNMPToEventProcessor implements Processor {
         PDUv1 v1pdu = (PDUv1) pdu;
 		String hostname = getPeerAddress(message);
 
-		// CREATED_AT,
-        // event.setCreatedAt(v1pdu.getTimestamp());
+		// CREATED_AT - Set from timestamp on the PDU
+        event.setCreatedAt(new Date(v1pdu.getTimestamp()));
 		
 		// FINGERPRINT_FIELDS
 		event.addFingerprintField(HOSTNAME_PROPERTY_NAME);
@@ -135,13 +135,11 @@ public class SNMPToEventProcessor implements Processor {
 		String hostname = getPeerAddress(message);
 
 		
-		// CREATED_AT - TBD: Get from PDU
+		// CREATED_AT
 		event.setCreatedAt(new Date());
 
 		// FINGERPRINT_FIELDS
 		event.addFingerprintField(HOSTNAME_PROPERTY_NAME);
-		
-		// MESSAGE - TBD: Handled based on the content of the PDU?
 		
 		// ORGANIZATION_ID - TBD: Override based on content of the PDU?
 		
@@ -157,6 +155,7 @@ public class SNMPToEventProcessor implements Processor {
 				oid.startsWith(SnmpConstants.snmpTrapOID)) {
 				specificTrap = var.toValueString();
 				event.addProperty("trap",specificTrap);
+				// MESSAGE
 				event.setMessage(var.toValueString());
 			}
 			else {
