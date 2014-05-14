@@ -104,7 +104,7 @@
       </fileSet>
 -->
       <fileSet>
-        <directory>runtime/mibrepository</directory>
+        <directory>target/classes/mibrepository</directory>
         <outputDirectory>var/mibrepository</outputDirectory>
         <directoryMode>0755</directoryMode>
         <includes>
