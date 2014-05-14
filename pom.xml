@@ -213,7 +213,7 @@
 					<license> Apache License Version 2.0, January 2004</license>
 					<distribution>Boundary,Inc 2014</distribution>
 					<group>Application/Collectors</group>
-<!--
+<!-- TBD: Find a suitable icon
 					<icon>src/main/resources/icon.gif</icon>
 -->
 					<packager>Boundary, Inc.</packager>
@@ -223,16 +223,16 @@
 -->
 					<defineStatements>
 						<defineStatement>_unpackaged_files_terminate_build 0</defineStatement>
-						</defineStatements>
+					</defineStatements>
 					<mappings>
 						<mapping>
-							<directory>/opt/boundary/bin/event-application</directory>
+							<directory>/opt/boundary/bin/beventd</directory>
 							<filemode>440</filemode>
 							<username>root</username>
 							<groupname>root</groupname>
 							<sources>
                                 				<source>
-									<location>src/main/scripts/event-application</location>
+									<location>src/main/scripts/beventd</location>
                                 				</source>
 							</sources>
 						</mapping>
