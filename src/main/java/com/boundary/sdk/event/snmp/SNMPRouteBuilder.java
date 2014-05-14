@@ -81,7 +81,7 @@ public class SNMPRouteBuilder extends UDPRouteBuilder {
 		from(uri)
 		.startupOrder(startUpOrder)
 		.routeId(this.routeId)
-		.to("log:" + this.getClass().toString() + "?level=INFO&showBody=true&showHeaders=true")
+		.to("log:com.boundary.sdk.event.snmp.SNMPRouteBuilder?level=DEBUG&showBody=true&showHeaders=true")
 		.process(new SNMPToEventProcessor(mibRepositoryPath,license))
 		.marshal().serialization()
 		.to(toUri)
