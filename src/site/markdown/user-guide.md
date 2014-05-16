@@ -20,7 +20,7 @@ Installation
 Configuration
 -------------
 
-This sections provides the generatl configuration for the Boundary Event SDK. Specific instructions
+This sections provides the general configuration for the Boundary Event SDK. Specific instructions
 for each of the event adapters can found [here](adapters/index.html).
 
 ### Environment Variables
@@ -51,7 +51,7 @@ These environment variables can be either set external or by setting directly in
 
      ```$ benv```
 
-### Stopping the Event Daemon
+### Starting the Event Daemon
 1. Issue the command:
 
      ```$ bin/beventd start```
