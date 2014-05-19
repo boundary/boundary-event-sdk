@@ -98,7 +98,18 @@
 		<spring-version>3.2.5.RELEASE</spring-version>
 		<spring-security-version>3.1.4.RELEASE</spring-security-version>
 		<syslog4j-version>0.9.30</syslog4j-version>
-	</properties>
+
+		<!-- RPM packaging properties -->
+		<rpm-top-level-dir>/opt/boundary</rpm-top-level-dir>
+		<boundary-sdk-rpm-user-name>root</boundary-sdk-rpm-user-name>
+		<boundary-sdk-rpm-group-name>root</boundary-sdk-rpm-group-name>
+		<boundary-sdk-rpm-app-dir>/usr/share/besdk</boundary-sdk-rpm-app-dir>
+		<boundary-sdk-rpm-bin-dir>/usr/bin</boundary-sdk-rpm-bin-dir>
+		<boundary-sdk-rpm-etc-dir>/etc</boundary-sdk-rpm-etc-dir>
+		<boundary-sdk-rpm-jar-dir>/usr/share/besdk/lib</boundary-sdk-rpm-jar-dir>
+		<boundary-sdk-rpm-man-dir>/usr/share/man</boundary-sdk-rpm-man-dir>
+		<boundary-sdk-rpm-initd-dir>/etc/init.d</boundary-sdk-rpm-initd-dir>
+        </properties>
 	<build>
 		<plugins>
 			<plugin>
@@ -217,7 +228,9 @@
 					<icon>src/main/resources/icon.gif</icon>
 -->
 					<packager>Boundary, Inc.</packager>
+<!--
 					<prefix>/opt/boundary</prefix>
+-->
 <!--
 					<changelogFile>src/changelog</changelogFile>
 -->
@@ -226,13 +239,57 @@
 					</defineStatements>
 					<mappings>
 						<mapping>
-							<directory>/opt/boundary/bin/beventd</directory>
-							<filemode>440</filemode>
-							<username>root</username>
-							<groupname>root</groupname>
+							<directory>${boundary-sdk-rpm-bin-dir}</directory>
+							<filemode>550</filemode>
+							<username>${boundary-sdk-rpm-user-name}</username>
+							<groupname>${boundary-sdk-rpm-group-name}</groupname>
 							<sources>
                                 				<source>
 									<location>src/main/scripts/beventd</location>
+                                				</source>
+							</sources>
+						</mapping>
+						<mapping>
+							<directory>${boundary-sdk-rpm-jar-dir}</directory>
+							<filemode>440</filemode>
+							<username>${boundary-sdk-rpm-user-name}</username>
+							<groupname>${boundary-sdk-rpm-group-name}</groupname>
+							<sources>
+                                				<source>
+									<location>target/lib</location>
+                                				</source>
+							</sources>
+						</mapping>
+						<mapping>
+							<directory>${boundary-sdk-rpm-initd-dir}</directory>
+							<filemode>500</filemode>
+							<username>${boundary-sdk-rpm-user-name}</username>
+							<groupname>${boundary-sdk-rpm-group-name}</groupname>
+							<sources>
+								<source>
+									<location>src/main/scripts/beventd</location>
+								</source>
+							</sources>
+						</mapping>
+						<mapping>
+							<directory>${boundary-sdk-rpm-etc-dir}/besdk</directory>
+							<filemode>440</filemode>
+							<username>${boundary-sdk-rpm-user-name}</username>
+							<groupname>${boundary-sdk-rpm-group-name}</groupname>
+							<sources>
+								<source>
+									<location>src/main/scripts/beventd.conf</location>
+								</source>
+							</sources>
+						</mapping>
+						<mapping>
+							<directory>${boundary-sdk-rpm-app-dir}</directory>
+							<filemode>440</filemode>
+							<username>${boundary-sdk-rpm-user-name}</username>
+							<groupname>${boundary-sdk-rpm-group-name}</groupname>
+							<sources>
+                                				<source>
+									<location>src/main/resources/mibrepository</location>
                                 				</source>
 							</sources>
 						</mapping>
@@ -303,7 +360,7 @@
 						</configuration>
 					</execution>
 -->
-					<execution><!-- Run our version calculation script -->
+					<execution>
 						<id>Build Native Commons Daemon</id>
 						<phase>compile</phase>
 						<goals>

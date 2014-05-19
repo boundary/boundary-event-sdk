@@ -3,6 +3,15 @@ Boundary Event SDK Distribution File System Layout
 
 Description of the distribution layout of a distribution.
 
+Environment Variables
+---------------------
+
+BOUNDARY_SDK_APP_DIR - Directory that contains the application JAR file(s)
+BOUNDARY_SDK_ETC_DIR - Directory that contains all of the configuration
+BOUNDARY_SDK_JAR_DIR - Directory with all the jars the SDK is dependent upon
+BOUNDARY_SDK_LOG_DIR - Directory to write the standard out and standard error logs
+BOUNDARY_SDK_PID_DIR - Directory to write the process Id when running as a daemon
+
 Tar or Zip Archive
 ------------------
 
