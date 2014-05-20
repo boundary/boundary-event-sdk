@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ /etc/besdk/beventd.conf ]
+if [ -r /etc/besdk/beventd.conf ]
 then
   source /etc/besdk/beventd.conf
 fi

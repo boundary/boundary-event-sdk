@@ -5,6 +5,7 @@
 export BOUNDARY_SDK_HOME=$PWD
 
 export BOUNDARY_SDK_APP_DIR=${BOUNDARY_SDK_HOME}
+export BOUNDARY_SDK_BIN_DIR=${BOUNDARY_SDK_HOME}/bin
 export BOUNDARY_SDK_ETC_DIR=${BOUNDARY_SDK_HOME}/etc
 export BOUNDARY_SDK_JAR_DIR=${BOUNDARY_SDK_HOME}/lib
 export BOUNDARY_SDK_LOG_DIR=${BOUNDARY_SDK_HOME}/logs
@@ -15,9 +16,6 @@ export BOUNDARY_SDK_VAR_DIR=${BOUNDARY_SDK_HOME}/var
 # already set then use that value otherwise set to empty
 export BOUNDARY_ORG_ID=${BOUNDARY_ORG_ID:=""}
 export BOUNDARY_API_KEY=${BOUNDARY_API_KEY:=""}
-
-# Version of the Boundary SDK distribution
-export BOUNDARY_SDK_VERSION=0.01.00
 
 # SNMP4J-SMI License
 export BOUNDARY_MIB_LICENSE=${BOUNDARY_MIB_LICENSE:=""}
