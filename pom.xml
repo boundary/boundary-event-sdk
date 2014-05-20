@@ -224,6 +224,7 @@
 					<license> Apache License Version 2.0, January 2004</license>
 					<distribution>Boundary,Inc 2014</distribution>
 					<group>Application/Collectors</group>
+					<needarch>true</needarch>
 <!-- TBD: Find a suitable icon
 					<icon>src/main/resources/icon.gif</icon>
 -->
@@ -240,18 +241,32 @@
 					<mappings>
 						<mapping>
 							<directory>${boundary-sdk-rpm-bin-dir}</directory>
-							<filemode>550</filemode>
+							<directoryIncluded>false</directoryIncluded>
+							<filemode>755</filemode>
 							<username>${boundary-sdk-rpm-user-name}</username>
 							<groupname>${boundary-sdk-rpm-group-name}</groupname>
 							<sources>
                                 				<source>
-									<location>src/main/scripts/beventd</location>
+									<location>src/main/scripts</location>
+									<includes>
+										<include>bmibc</include>
+										<include>send-v1-trap</include>
+										<include>send-v2c-trap</include>
+										<include>send-syslog</include>
+									</includes>
+                                				</source>
+                                				<source>
+                                					<location>src/native/unix</location>
+                                					<includes>
+										<include>jsvc</include>
+                                					</includes>
                                 				</source>
 							</sources>
 						</mapping>
 						<mapping>
 							<directory>${boundary-sdk-rpm-jar-dir}</directory>
-							<filemode>440</filemode>
+							<directoryIncluded>false</directoryIncluded>
+							<filemode>744</filemode>
 							<username>${boundary-sdk-rpm-user-name}</username>
 							<groupname>${boundary-sdk-rpm-group-name}</groupname>
 							<sources>
@@ -262,7 +277,8 @@
 						</mapping>
 						<mapping>
 							<directory>${boundary-sdk-rpm-initd-dir}</directory>
-							<filemode>500</filemode>
+							<directoryIncluded>false</directoryIncluded>
+							<filemode>755</filemode>
 							<username>${boundary-sdk-rpm-user-name}</username>
 							<groupname>${boundary-sdk-rpm-group-name}</groupname>
 							<sources>
@@ -273,24 +289,51 @@
 						</mapping>
 						<mapping>
 							<directory>${boundary-sdk-rpm-etc-dir}/besdk</directory>
-							<filemode>440</filemode>
+							<directoryIncluded>false</directoryIncluded>
+							<filemode>744</filemode>
 							<username>${boundary-sdk-rpm-user-name}</username>
 							<groupname>${boundary-sdk-rpm-group-name}</groupname>
 							<sources>
 								<source>
 									<location>src/main/scripts/beventd.conf</location>
 								</source>
+								<source>
+									<location>src/main/resources/META-INF/event-application.xml</location>
+								</source>
+								<source>
+									<location>src/main/resources</location>
+									<includes>
+										<include>syslog.status.properties</include>
+										<include>syslog.severity.properties</include>
+										<include>syslog.facility.properties</include>
+										<include>log4j.properties</include>
+									</includes>
+								</source>
 							</sources>
 						</mapping>
 						<mapping>
-							<directory>${boundary-sdk-rpm-app-dir}</directory>
-							<filemode>440</filemode>
+							<directory>${boundary-sdk-rpm-app-dir}/mibrepository</directory>
+							<directoryIncluded>false</directoryIncluded>
+							<filemode>744</filemode>
 							<username>${boundary-sdk-rpm-user-name}</username>
 							<groupname>${boundary-sdk-rpm-group-name}</groupname>
 							<sources>
                                 				<source>
 									<location>src/main/resources/mibrepository</location>
                                 				</source>
+							</sources>
+						</mapping>
+						<mapping>
+							<directory>${boundary-sdk-rpm-app-dir}</directory>
+							<directoryIncluded>false</directoryIncluded>
+							<filemode>744</filemode>
+							<sources>
+								<source>
+									<location>target</location>
+									<includes>
+										<include>${project.name}-${project.version}.jar</include>
+									</includes>
+								</source>
 							</sources>
 						</mapping>
 					</mappings>

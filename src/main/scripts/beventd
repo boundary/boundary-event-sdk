@@ -1,17 +1,15 @@
 #!/bin/sh
 
-#[[ -z "$BOUNDARY_SDK_HOME" ]]  && echo "BOUNDARY_SDK_HOME is not set. Set to top-level directory of the distribution" && exit 1
-
-if [ /besdk/beventd.conf ]
+if [ /etc/besdk/beventd.conf ]
 then
-  . /besdk/beventd.conf
+  source /etc/besdk/beventd.conf
 fi
 
 # Set the location of the commons daemon binary 
-#EXEC=$BOUNDARY_SDK_HOME/bin/jsvc
+EXEC=$BOUNDARY_SDK_BIN_DIR/jsvc
 
 # Contains all of the jars that the Boundary Event SDK is dependent upon
-DEPENDENT_JARS="$BOUNDARY_SDK_LIB_DIR/*"
+DEPENDENT_JARS="${BOUNDARY_SDK_JAR_DIR}/*"
 
 # Create class path variable for the Boundary Event SDK configuration files
 CONFIG_DIR="$BOUNDARY_SDK_ETC_DIR"
@@ -20,7 +18,7 @@ CONFIG_PATHS=$(CONFIGS=(`find "$CONFIG_DIR" -type d -print`); IFS=:; echo "${CON
 # 1) Add the path to the xml and property files first so files in these directories are found first.
 # 2) Add the Boundary Event SDK jar
 # NOTE: There is an assumption that only one boundary-event-sdk jar file will be present in the distribution.
-SDK_CLASSPATH="$CONFIG_PATHS:${BOUNDARY_SDK_APP_DIR}/boundary-event-sdk-*.jar:${DEPENDENT_JARS}"
+SDK_CLASSPATH="$CONFIG_PATHS:${BOUNDARY_SDK_APP_DIR}/*:${DEPENDENT_JARS}"
 
 # Entry point class to start the Boundary Event SDK
 CLASS=com.boundary.sdk.event.BoundaryEventDaemon
@@ -39,7 +37,7 @@ LOG_ERR="&1"
 
 do_exec()
 {
-    jsvc -home "$JAVA_HOME" -cp "$SDK_CLASSPATH" -user "$USER" -server -Dboundary.application.context.uri="file:$BOUNDARY_SDK_ETC_DIR/event-application.xml" -outfile "$LOG_OUT" -errfile "$LOG_ERR" -pidfile "$PID" $1 "$CLASS"
+    $EXEC -home "$JAVA_HOME" -cp "$SDK_CLASSPATH" -user "$USER" -server -Dboundary.application.context.uri="file:$BOUNDARY_SDK_ETC_DIR/event-application.xml" -outfile "$LOG_OUT" -errfile "$LOG_ERR" -pidfile "$PID" $1 "$CLASS"
 }
 
 case "$1" in
