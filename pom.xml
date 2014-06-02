@@ -593,11 +593,6 @@
 			<artifactId>commons-daemon</artifactId>
 			<version>${commons-daemon-version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.boundary</groupId>
-			<artifactId>camel-ping</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
 <!--
 		<dependency>
 			<groupId>boundary.com</groupId>
