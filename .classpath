@@ -69,6 +69,6 @@
   <classpathentry kind="var" path="M2_REPO/commons-cli/commons-cli/1.2/commons-cli-1.2.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/syslog4j/syslog4j/0.9.30/syslog4j-0.9.30.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-daemon/commons-daemon/1.0.15/commons-daemon-1.0.15.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/boundary/camel-ping/0.1.0/camel-ping-0.1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/boundary/camel-service/0.1.0/camel-service-0.1.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/commons/commons-exec/1.2/commons-exec-1.2.jar"/>
 </classpath>
