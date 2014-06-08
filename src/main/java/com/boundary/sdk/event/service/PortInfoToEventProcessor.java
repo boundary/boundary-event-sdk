@@ -64,6 +64,9 @@ public class PortInfoToEventProcessor implements Processor {
 		// Add the hostname
 		e.getSource().setRef(info.getHost()).setType("host");
 		e.getProperties().put("hostname", info.getHost());
+		e.getProperties().put("port",info.getPort());
+		e.getProperties().put("port-status",info.getPortStatus());
+		e.getProperties().put("time-out", info.getTimeout());
 		e.addTag(info.getHost());
 		
 		// Add the message
@@ -77,19 +80,19 @@ public class PortInfoToEventProcessor implements Processor {
 			e.setStatus(Status.OPEN);
 		}
 		else {
-			e.setStatus(Status.CLOSED);
+			e.setStatus(Status.OK);
 		}
 		
 		// Set the uniqueness of the event by hostname, facility, and message.
 		// TBD: These fields need to be split out in a configuration file
 		e.addFingerprintField("hostname");
-		e.addFingerprintField("@title");
+		e.addFingerprintField("port");
 		
 		// Set the time at which the Syslog record was created
 		e.setCreatedAt(info.getTimestamp());
 
 		// Set Title
-		e.setTitle("PortInfo:" + info.getHost());
+		e.setTitle("Checking host: " + info.getHost() + " on port: " + info.getPort());
 		
 		// Set Sender
 		e.getSender().setRef("Port");
