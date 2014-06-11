@@ -66,6 +66,7 @@
   <classpathentry kind="var" path="M2_REPO/xerces/xercesImpl/2.8.0/xercesImpl-2.8.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/xalan/xalan/2.7.0/xalan-2.7.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-script/2.13.1/camel-script-2.13.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-stream/2.13.1/camel-stream-2.13.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-cli/commons-cli/1.2/commons-cli-1.2.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/syslog4j/syslog4j/0.9.30/syslog4j-0.9.30.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-daemon/commons-daemon/1.0.15/commons-daemon-1.0.15.jar"/>
