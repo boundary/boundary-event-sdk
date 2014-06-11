@@ -10,6 +10,8 @@
   <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-core/2.13.1/camel-core-2.13.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/sun/xml/bind/jaxb-impl/2.2.6/jaxb-impl-2.2.6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-eclipse/2.13.1/camel-eclipse-2.13.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/eclipse/equinox/common/3.3.0-v20070426/common-3.3.0-v20070426.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-spring/2.13.1/camel-spring-2.13.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-context/3.2.5.RELEASE/spring-context-3.2.5.RELEASE.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-aop/3.2.8.RELEASE/spring-aop-3.2.8.RELEASE.jar"/>
