@@ -51,7 +51,7 @@ These environment variables can be either set external or by setting directly in
 
      ```$ benv```
 
-### Stopping the Event Daemon
+### Starting the Event Daemon
 1. Issue the command:
 
      ```$ bin/beventd start```
