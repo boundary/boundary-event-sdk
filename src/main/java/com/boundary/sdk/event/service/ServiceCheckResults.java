@@ -18,10 +18,9 @@ public class ServiceCheckResults {
 	public String toString() {
 		StringBuffer s = new StringBuffer();
 		
-		for(ServiceTest test :list) {
+		for(ServiceTest<?> test :list) {
 			s.append(test.getName());
 		}
-		
 		return s.toString();
 	}
 }

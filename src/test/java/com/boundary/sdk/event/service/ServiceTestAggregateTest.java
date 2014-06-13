@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.spring.CamelSpringTestSupport;
@@ -20,6 +21,8 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.boundary.camel.component.ping.PingConfiguration;
+import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
+
 
 /**
  * @author davidg
@@ -64,19 +67,35 @@ public class ServiceTestAggregateTest extends CamelSpringTestSupport  {
 		
 		Map<String,Object> properties = new HashMap<String,Object>();
 		ServiceCheckRequest request = new ServiceCheckRequest();
-		properties.put("serviceCheckRequest", request.getRequestId());
+		properties.put(SERVICE_CHECK_REQUEST_ID, request.getRequestId());
 		PingConfiguration configuration = new PingConfiguration();
 		configuration.setHost("localhost");
-		request.addServiceTest(new ServiceTest<PingConfiguration>("test1",request.getRequestId(),configuration));
-		request.addServiceTest(new ServiceTest<PingConfiguration>("test2",request.getRequestId(),configuration));
-		request.addServiceTest(new ServiceTest<PingConfiguration>("test3",request.getRequestId(),configuration));
+		request.addServiceTest(new ServiceTest<PingConfiguration>("ping",request.getRequestId(),configuration));
+		request.addServiceTest(new ServiceTest<PingConfiguration>("ping",request.getRequestId(),configuration));
+		request.addServiceTest(new ServiceTest<PingConfiguration>("ping",request.getRequestId(),configuration));
 		
 		template.sendBodyAndHeaders("direct:service-check-request-in",request, properties);
 		
 		endPoint.assertIsSatisfied();
 	}
+	
+	private void sendServiceRequest() {
+		Map<String,Object> properties = new HashMap<String,Object>();
+		
+		ServiceCheckRequest request = new ServiceCheckRequest();
+		PingConfiguration configuration = new PingConfiguration();
+		configuration.setHost("localhost");
+		
+		properties.put(SERVICE_CHECK_REQUEST_ID,request.getRequestId());
+		properties.put(SERVICE_CHECK_REQUEST_INSTANCE,request);
+		
+		request.addServiceTest(new ServiceTest<PingConfiguration>("ping",request.getRequestId(),configuration));
+		request.addServiceTest(new ServiceTest<PingConfiguration>("ping",request.getRequestId(),configuration));
+		request.addServiceTest(new ServiceTest<PingConfiguration>("ping",request.getRequestId(),configuration));
+		
+		template.sendBodyAndHeaders("direct:service-check-request-in",request, properties);
+	}
 
-	@Ignore
 	@Test
 	public void testAggregate() throws InterruptedException {
 		MockEndpoint endPoint = getMockEndpoint("mock:service-check-aggregate-out");
@@ -84,17 +103,8 @@ public class ServiceTestAggregateTest extends CamelSpringTestSupport  {
 
 		endPoint.setExpectedMessageCount(1);
 		pingEndPoint.setExpectedMessageCount(3);
-		Map<String,Object> properties = new HashMap<String,Object>();
 		
-		ServiceCheckRequest request = new ServiceCheckRequest();
-		properties.put("serviceCheckRequest",request.getRequestId());
-		PingConfiguration configuration = new PingConfiguration();
-		configuration.setHost("localhost");
-		request.addServiceTest(new ServiceTest<PingConfiguration>("test1",request.getRequestId(),configuration));
-		request.addServiceTest(new ServiceTest<PingConfiguration>("test2",request.getRequestId(),configuration));
-		request.addServiceTest(new ServiceTest<PingConfiguration>("test3",request.getRequestId(),configuration));
-		
-		template.sendBodyAndHeaders("direct:service-check-request-in",request, properties);
+		sendServiceRequest();
 		
 		endPoint.assertIsSatisfied();
 		pingEndPoint.assertIsSatisfied();
@@ -114,6 +124,30 @@ public class ServiceTestAggregateTest extends CamelSpringTestSupport  {
 		
 		endPoint.assertIsSatisfied();
 	}
+	
+	@Ignore
+	@Test
+	public void testServiceCheckRouter() throws InterruptedException {
+		MockEndpoint endPoint = getMockEndpoint("mock:service-checks-router-out");
+		endPoint.setExpectedMessageCount(3);
+		
+		sendServiceRequest();
+		
+		//endPoint.assertIsSatisfied();
+	}
+	
+	@Ignore
+	@Test
+	public void testServiceCheckRoutePing() throws InterruptedException {
+		MockEndpoint endPoint = getMockEndpoint("mock:ping-out");
+		endPoint.setExpectedMessageCount(3);
+		endPoint.await(20, TimeUnit.SECONDS);
+		
+		sendServiceRequest();
+		
+		endPoint.assertIsSatisfied();
+	}
+
 
 	@Override
 	protected AbstractApplicationContext createApplicationContext() {

@@ -2,16 +2,19 @@ package com.boundary.sdk.event.service;
 
 import static org.junit.Assert.*;
 
+import org.apache.camel.component.mock.MockEndpoint;
+import org.apache.camel.test.junit4.CamelSpringTestSupport;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.context.support.AbstractApplicationContext;
 
 import com.boundary.camel.component.ping.PingConfiguration;
 import com.boundary.camel.component.port.PortConfiguration;
 
-public class ServiceCheckRouterTest {
+public class ServiceCheckRouterTest extends CamelSpringTestSupport {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -28,6 +31,11 @@ public class ServiceCheckRouterTest {
 	@After
 	public void tearDown() throws Exception {
 	}
+	
+	@Test
+	public void test() {
+		MockEndpoint mock = getMockEndpoint("mock:service-checks-router-out");
+	}
 
 	@Test
 	public void testGetEndPointsFromRequest() {
@@ -41,8 +49,14 @@ public class ServiceCheckRouterTest {
 		request.addServiceTest(pingTest);
 		request.addServiceTest(portTest);
 		
-		String endPoints = router.getEndPointsFromRequest(request);
-		
-		assertEquals("check test names","ping,port",endPoints);
+//		String endPoints = router.getEndPointsFromRequest(request);
+//		
+//		assertEquals("check test names","ping,port",endPoints);
+	}
+
+	@Override
+	protected AbstractApplicationContext createApplicationContext() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

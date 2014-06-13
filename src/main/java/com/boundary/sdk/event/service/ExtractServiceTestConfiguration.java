@@ -6,6 +6,8 @@ import org.apache.camel.Message;
 import com.boundary.camel.component.ping.PingConfiguration;
 import com.boundary.camel.component.port.PortConfiguration;
 
+import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
+
 public class ExtractServiceTestConfiguration {
 
 	public PingConfiguration getPingConfiguration(ServiceTest<PingConfiguration> serviceTest) {
@@ -22,7 +24,7 @@ public class ExtractServiceTestConfiguration {
 		ServiceTest<PortConfiguration> serviceTest = message.getBody(ServiceTest.class);
 		PortConfiguration configuration = serviceTest.getConfiguration();
 		
-		message.setHeader("serviceTest", serviceTest);
+		message.setHeader(SERVICE_TEST_INSTANCE, serviceTest);
 		message.setBody(configuration);
 	}
 	
@@ -36,7 +38,7 @@ public class ExtractServiceTestConfiguration {
 		ServiceTest<PingConfiguration> serviceTest = message.getBody(ServiceTest.class);
 		PingConfiguration configuration = serviceTest.getConfiguration();
 		
-		message.setHeader("serviceTest", serviceTest);
+		message.setHeader(SERVICE_TEST_INSTANCE, serviceTest);
 		message.setBody(configuration);
 	}
 }

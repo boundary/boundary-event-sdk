@@ -6,72 +6,96 @@
                    http://camel.apache.org/schema/spring
                    http://camel.apache.org/schema/spring/camel-spring.xsd">
 
+	<!-- Define our service test aggregator that receives Service Test configuration -->
 	<bean id="aggregator" class="com.boundary.sdk.event.service.ServiceCheckAggregate"/>
+	
+	<!-- Responsible for routing Service Test Configurations to their proper route -->
 	<bean id="router" class="com.boundary.sdk.event.service.ServiceCheckRouter"/>
+	
+	<!-- Extracts the specific service test configuration from a ServiceTest generic instance -->
+	<bean id="configurationProcessor" class="com.boundary.sdk.event.service.ExtractServiceTestConfiguration"/>
+	
+	<!-- Extracts the specific service test configuration from a ServiceTest generic instance -->
+<!-- 	<bean id="requestHeaders" class="com.boundary.sdk.event.service.SetServiceCheckHeaders"/>
+ -->	
 
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
-		<route id="service-check-request-split">
+		<route id="service-check-request-split" startupOrder="10">
+		
+			<!-- Receives messages with Service Requests -->
 			<from uri="direct:service-check-request-in"/>
-			<setHeader headerName ="serviceCheckRequest">
+			
+			<!-- We set a header so that we can correlate the Service Request and Service Tests -->
+			<setHeader headerName ="serviceRequestId">
 				<simple>${body.requestId}</simple>
 			</setHeader>
-			<log message="RequestId: ${headers.serviceCheckRequest}"/>
+			<setHeader headerName = "serviceRequest">
+				<simple>bodyAs(com.boundary.sdk.event.service.ServiceCheckRequest)</simple>
+			</setHeader>
+			<log message="RequestId: ${headers.serviceRequestId}"/>
 			<split parallelProcessing="true">
+			<!-- Split into multiple messages based on the Service Tests in the Service Request instance -->
 			<simple>${body.serviceTests}</simple >
 				<log message="Processing message[${property.CamelSplitIndex}]"/>
+				<log message="${headers}"/>
 				<to uri="mock:service-check-request-split"/>
+				<to uri="seda:service-checks-router"/>
 				<to uri="stream:out"/>
 			</split>
 		</route>
-
-		<route id="recipient-list-router">
-			<from uri ="direct:recipient-list-in"/>
-			<setHeader headerName ="serviceCheckEndpoints">
-				<method ref ="router" method ="getEndPointsFromRequest"/>
+		
+		<route id="dynamic-router" startupOrder="20">
+			<from uri="seda:service-checks-router"/>
+			<setHeader headerName="serviceTestName">
+				<simple>${body.name}</simple>
 			</setHeader>
-			<recipientList>
-				<header>serviceCheckEndpoints</header>
-			</recipientList >  
+			<log message="serviceCheck=${headers.serviceTestName},serviceCheckRequest=${headers.serviceCheckRequest}"/>
+			<to uri="mock:service-checks-router-out"/>
+			<choice>
+				<when>
+					<simple>${body.name} == "ping"</simple>
+					<to uri ="seda:ping-check"/>
+					<log message="Sending to ping-check"/>
+				</when>
+				<when>
+					<simple>${body.name} == "port"</simple>
+					<to uri ="seda:port-check"/>
+					<log message="Sending to port-check"/>
+				</when>
+			</choice>
 		</route>
 	
-		<route id ="port-check">
+		<route id ="port-check" startupOrder="100">
 			<from uri="seda:port-check"/>
+			<log message="${headers}"/>
+			<bean ref="configurationProcessor" method="extractPingConfiguration"/>
 			<to uri="port://tcp"/>
 			<to uri="mock:port-out"/>
 			<to uri="stream:out"/>
-			<to uri="direct:service-check-aggregate"/>
+			<to uri="seda:service-check-aggregate"/>
 		</route>
 		
-		<route id ="ping-check">
+		<route id ="ping-check" startupOrder="200">
 			<from uri="seda:ping-check"/>
+			<log message="${headers}"/>
+			<bean ref="configurationProcessor" method="extractPingConfiguration"/>
 			<to uri="ping://icmp"/>
 			<to uri="mock:ping-out"/>
 			<to uri="stream:out"/>
-			<to uri="direct:service-check-aggregate"/>
+			<to uri="seda:service-check-aggregate"/>
 		</route>
 		
-		<route id="service-check-aggregate">
-			<from uri="direct:service-check-aggregate"/>
+		<route id="service-check-aggregate" startupOrder="300">
+			<from uri="seda:service-check-aggregate"/>
+			<log message="${headers}"/>
 			<aggregate strategyRef="aggregator" completionSize="3">
 				<correlationExpression>
-					<simple>${headers.serviceCheckRequest}</simple>
+					<simple>${headers.serviceCheckRequestId}</simple>
 				</correlationExpression>
 				<to uri="mock:service-check-aggregate-out"/>
 				<to uri="stream:out"/>
 			</aggregate>
 		</route>
-		
 
-<!-- 		<route id="AGGREGATE-TEST-ROUTE">
-			<from uri="direct:in"/>
-			<aggregate strategyRef="aggregator" completionSize="3">
-				<correlationExpression>
-					<simple>${headers.request}</simple>
-				</correlationExpression>
-				<to uri="mock:out"/>
-				<to uri="stream:out"/>
-			</aggregate>
-		</route>
- -->		
 	</camelContext>
 </beans>

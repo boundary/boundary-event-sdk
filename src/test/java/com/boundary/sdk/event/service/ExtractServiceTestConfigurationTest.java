@@ -62,8 +62,8 @@ public class ExtractServiceTestConfigurationTest extends CamelTestSupport {
 				"port", request.getRequestId(), configuration);
 
 		Map<String, Object> properties = new HashMap<String, Object>();
-		properties.put(ServiceCheckPropertyNames.SERVICE_REQUEST_ID,request.getRequestId());
-		properties.put(ServiceCheckPropertyNames.SERVICE_REQUEST_INSTANCE,request);
+		properties.put(ServiceCheckPropertyNames.SERVICE_CHECK_REQUEST_ID,request.getRequestId());
+		properties.put(ServiceCheckPropertyNames.SERVICE_CHECK_REQUEST_INSTANCE,request);
 		properties.put(ServiceCheckPropertyNames.SERVICE_TEST_INSTANCE,serviceTest);
 		properties.put(ServiceCheckPropertyNames.SERVICE_TEST_NAME,"port");
 
@@ -76,7 +76,7 @@ public class ExtractServiceTestConfigurationTest extends CamelTestSupport {
 			Message message = e.getIn();
 			PortConfiguration config = message.getBody(PortConfiguration.class);
 			ServiceCheckRequest req = message.getHeader(
-					ServiceCheckPropertyNames.SERVICE_REQUEST_INSTANCE,ServiceCheckRequest.class);
+					ServiceCheckPropertyNames.SERVICE_CHECK_REQUEST_INSTANCE,ServiceCheckRequest.class);
 			ServiceTest<PortConfiguration> test = message.getHeader(
 					ServiceCheckPropertyNames.SERVICE_TEST_INSTANCE,ServiceTest.class);
 
@@ -103,8 +103,8 @@ public class ExtractServiceTestConfigurationTest extends CamelTestSupport {
 				"ping", request.getRequestId(), configuration);
 
 		Map<String, Object> properties = new HashMap<String, Object>();
-		properties.put(ServiceCheckPropertyNames.SERVICE_REQUEST_ID,request.getRequestId());
-		properties.put(ServiceCheckPropertyNames.SERVICE_REQUEST_INSTANCE,request);
+		properties.put(ServiceCheckPropertyNames.SERVICE_CHECK_REQUEST_ID,request.getRequestId());
+		properties.put(ServiceCheckPropertyNames.SERVICE_CHECK_REQUEST_INSTANCE,request);
 		properties.put(ServiceCheckPropertyNames.SERVICE_TEST_INSTANCE,serviceTest);
 		properties.put(ServiceCheckPropertyNames.SERVICE_TEST_NAME,"ping");
 
