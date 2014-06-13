@@ -6,15 +6,24 @@
            http://www.springframework.org/schema/beans/spring-beans.xsd
            http://camel.apache.org/schema/spring
            http://camel.apache.org/schema/spring/camel-spring.xsd">
-           	
+
 	<bean id="port-check-route" class="com.boundary.sdk.event.service.PortRouteBuilder">
-		<property name="routeId" value="PORT"/>
-		<property name="host" value="host"/>
-		<property name="port" value="5555"/>
-		<property name="toUri" value="mock:out"/>
+		<property name="routeId" value="PORT" />
+		<property name="host" value="localhost" />
+		<property name="port" value="5555" />
+		<property name="toUri" value="direct:marshalled" />
 	</bean>
-	
+
+
 	<camelContext xmlns="http://camel.apache.org/schema/spring">
 		<routeBuilder ref="port-check-route"/>
+		
+		<route id="unmarshall-event">
+		<from uri="direct:marshalled"/>
+    	<unmarshal>
+    		<serialization/>
+    	</unmarshal>
+		<to uri="mock:out"/>
+		</route>
 	</camelContext>
 </beans>

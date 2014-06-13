@@ -43,22 +43,14 @@ public class PortCheckTest extends CamelSpringTestSupport {
 		for (Exchange e : receivedExchanges) {
 			RawEvent event = e.getIn().getBody(RawEvent.class);
 
+			assertNotNull(event);
 			assertEquals("check severity",Severity.CRITICAL, event.getSeverity());
 			assertEquals("check status",Status.OPEN,event.getStatus());
-//			assertEquals("check host", HOST, info.getHost());
-//			assertEquals("check port", PORT, info.getPort());
-//			assertTrue(info.getPortStatus() == PortStatus.CONNECTED);
-//			assertEquals("check timeout", TIMEOUT, info.getTimeout());
-//			assertTrue(info.getStatus() == ServiceStatus.SUCCESS);
 		}
-
-
-		
 	}
 
 	@Override
 	protected AbstractApplicationContext createApplicationContext() {
-		return new ClassPathXmlApplicationContext(
-				"META-INF/port-test.xml");
+		return new ClassPathXmlApplicationContext("META-INF/port-test.xml");
 	}
 }

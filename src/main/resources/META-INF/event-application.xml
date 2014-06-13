@@ -55,6 +55,15 @@
 		<property name="license" value="#{systemEnvironment['BOUNDARY_MIB_LICENSE']}"/>
 		<property name="toUri" value="seda:boundary-event"/>
 	</bean>
+
+        <!-- This route allows checking for a port -->
+        <bean id="port-route" class="com.boundary.sdk.event.service.PortRouteBuilder">
+		<property name="routeId" value="PORT"/>
+		<property name="host" value="google.com"/>
+		<property name="port" value="80"/>
+		<property name="delay" value="60000"/>
+		<property name="toUri" value="seda:boundary-event"/>
+        </bean>
 	
 	<!-- This configuration associates the route builders with the Camel
 	     context which orchestrates the connection of routes, and sending/receiving
@@ -63,11 +72,12 @@
 	<camelContext xmlns="http://camel.apache.org/schema/spring">
 	
                 <routeBuilder ref="boundary-event-route"/>
-		<routeBuilder ref="syslog-route"/>
+		<!-- <routeBuilder ref="syslog-route"/> -->
               
 		<!-- DISABLED <routeBuilder ref="event-queue"/>-->
 		
    		<routeBuilder ref="snmp-route"/>
+   		<routeBuilder ref="port-route"/>
 
 	</camelContext>
 </beans>

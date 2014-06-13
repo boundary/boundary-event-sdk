@@ -1,0 +1,77 @@
+ <beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+                   http://www.springframework.org/schema/beans
+                   http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                   http://camel.apache.org/schema/spring
+                   http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<bean id="aggregator" class="com.boundary.sdk.event.service.ServiceCheckAggregate"/>
+	<bean id="router" class="com.boundary.sdk.event.service.ServiceCheckRouter"/>
+
+	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+		<route id="service-check-request-split">
+			<from uri="direct:service-check-request-in"/>
+			<setHeader headerName ="serviceCheckRequest">
+				<simple>${body.requestId}</simple>
+			</setHeader>
+			<log message="RequestId: ${headers.serviceCheckRequest}"/>
+			<split parallelProcessing="true">
+			<simple>${body.serviceTests}</simple >
+				<log message="Processing message[${property.CamelSplitIndex}]"/>
+				<to uri="mock:service-check-request-split"/>
+				<to uri="stream:out"/>
+			</split>
+		</route>
+
+		<route id="recipient-list-router">
+			<from uri ="direct:recipient-list-in"/>
+			<setHeader headerName ="serviceCheckEndpoints">
+				<method ref ="router" method ="getEndPointsFromRequest"/>
+			</setHeader>
+			<recipientList>
+				<header>serviceCheckEndpoints</header>
+			</recipientList >  
+		</route>
+	
+		<route id ="port-check">
+			<from uri="seda:port-check"/>
+			<to uri="port://tcp"/>
+			<to uri="mock:port-out"/>
+			<to uri="stream:out"/>
+			<to uri="direct:service-check-aggregate"/>
+		</route>
+		
+		<route id ="ping-check">
+			<from uri="seda:ping-check"/>
+			<to uri="ping://icmp"/>
+			<to uri="mock:ping-out"/>
+			<to uri="stream:out"/>
+			<to uri="direct:service-check-aggregate"/>
+		</route>
+		
+		<route id="service-check-aggregate">
+			<from uri="direct:service-check-aggregate"/>
+			<aggregate strategyRef="aggregator" completionSize="3">
+				<correlationExpression>
+					<simple>${headers.serviceCheckRequest}</simple>
+				</correlationExpression>
+				<to uri="mock:service-check-aggregate-out"/>
+				<to uri="stream:out"/>
+			</aggregate>
+		</route>
+		
+
+<!-- 		<route id="AGGREGATE-TEST-ROUTE">
+			<from uri="direct:in"/>
+			<aggregate strategyRef="aggregator" completionSize="3">
+				<correlationExpression>
+					<simple>${headers.request}</simple>
+				</correlationExpression>
+				<to uri="mock:out"/>
+				<to uri="stream:out"/>
+			</aggregate>
+		</route>
+ -->		
+	</camelContext>
+</beans>

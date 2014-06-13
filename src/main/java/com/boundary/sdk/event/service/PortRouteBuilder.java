@@ -18,7 +18,7 @@ public class PortRouteBuilder extends BoundaryRouteBuilder {
 	
 	private String host;
 	private int port;
-	private int delay;
+	private int delay = 5;
 	
 	public PortRouteBuilder() {
 		host = "localhost";
@@ -51,7 +51,9 @@ public class PortRouteBuilder extends BoundaryRouteBuilder {
 
 	@Override
 	public void configure() throws Exception {
-        from("port://" + getHost() + ":" + getPort() + "/tcp?delay=" + getDelay())
+		String uri = "port://" + getHost() + ":" + getPort() + "/tcp?delay=" + getDelay();
+		System.out.println("URI: " + uri);
+        from(uri)
         .process(new PortInfoToEventProcessor())
         .marshal().serialization()
         .to(getToUri());

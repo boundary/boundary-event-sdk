@@ -1,0 +1,8 @@
+<bean id="eclipseResolver" class="org.apache.camel.component.eclipse.EclipsePackageScanClassResolver"/>
+ 
+<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+  <route>
+    <from uri="seda:start"/>
+    <to uri="mock:result"/>
+  </route>
+</camelContext>

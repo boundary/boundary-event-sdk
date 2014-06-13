@@ -88,7 +88,7 @@ public class PingInfoToEventProcessor implements Processor {
 		e.addFingerprintField("@title");
 		
 		// Set the time at which the Syslog record was created
-//		e.setCreatedAt(sm.getTimestamp());
+		e.setCreatedAt(info.getTimestamp());
 
 		// Set Title
 		e.setTitle("PingStatus: " + info.getHost());

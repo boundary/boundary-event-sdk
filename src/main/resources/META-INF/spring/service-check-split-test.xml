@@ -1,0 +1,18 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+                   http://www.springframework.org/schema/beans
+                   http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                   http://camel.apache.org/schema/spring
+                   http://camel.apache.org/schema/spring/camel-spring.xsd">
+                   
+	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+		<route id="TEST-ROUTE">
+			<from uri="direct:event-test" />
+			<marshal>
+				<string/>
+			</marshal>
+			<to uri="file://?fileName=target/event-test.log" />
+		</route>
+	</camelContext>
+</beans>

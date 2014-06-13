@@ -16,14 +16,6 @@ import com.boundary.sdk.event.BoundaryRouteBuilder;
  */
 public class PingRouteBuilder extends BoundaryRouteBuilder {
 	
-	public enum CheckType {
-		PING,
-		SOCKET,
-		HTTP
-	};
-	
-	private CheckType checkType;
-	
 	private String ipAddress;
 	private int port;
 	private String url;
@@ -32,7 +24,6 @@ public class PingRouteBuilder extends BoundaryRouteBuilder {
 	 * 
 	 */
 	public PingRouteBuilder() {
-		checkType = CheckType.PING;
 	}
 	
 
