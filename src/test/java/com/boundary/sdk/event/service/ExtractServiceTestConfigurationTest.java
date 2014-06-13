@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.camel.Exchange;
+import org.apache.camel.Message;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.junit4.CamelTestSupport;
@@ -72,10 +73,19 @@ public class ExtractServiceTestConfigurationTest extends CamelTestSupport {
 		
 		List<Exchange> receivedExchanges = endPoint.getReceivedExchanges();
 		for (Exchange e : receivedExchanges) {
-			PortConfiguration config = e.getIn().getBody(PortConfiguration.class);
+			Message message = e.getIn();
+			PortConfiguration config = message.getBody(PortConfiguration.class);
+			ServiceCheckRequest req = message.getHeader(
+					ServiceCheckPropertyNames.SERVICE_REQUEST_INSTANCE,ServiceCheckRequest.class);
+			ServiceTest<PortConfiguration> test = message.getHeader(
+					ServiceCheckPropertyNames.SERVICE_TEST_INSTANCE,ServiceTest.class);
 
 			assertEquals("check host",HOST, config.getHost());
 			assertEquals("check port",PORT,config.getPort());
+			
+			assertEquals("check service request id",request.getRequestId(),req.getRequestId());
+			assertEquals("check service request id on service test",
+					serviceTest.getRequestId(),test.getRequestId());
 		}
 	}
 	
