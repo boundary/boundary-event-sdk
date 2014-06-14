@@ -21,6 +21,8 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.boundary.camel.component.ping.PingConfiguration;
+import com.boundary.camel.component.port.PortConfiguration;
+
 import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
 
 
@@ -60,6 +62,7 @@ public class ServiceTestAggregateTest extends CamelSpringTestSupport  {
 		super.tearDown();
 	}
 	
+	@Ignore
 	@Test
 	public void testSplitRequest() throws InterruptedException {
 		MockEndpoint endPoint = getMockEndpoint("mock:service-check-request-split");
@@ -80,34 +83,39 @@ public class ServiceTestAggregateTest extends CamelSpringTestSupport  {
 	}
 	
 	private void sendServiceRequest() {
-		Map<String,Object> properties = new HashMap<String,Object>();
 		
 		ServiceCheckRequest request = new ServiceCheckRequest();
-		PingConfiguration configuration = new PingConfiguration();
-		configuration.setHost("localhost");
+		PingConfiguration pingConfig1 = new PingConfiguration();
+		PingConfiguration pingConfig2 = new PingConfiguration();
+		PortConfiguration portConfig = new PortConfiguration();
 		
-		properties.put(SERVICE_CHECK_REQUEST_ID,request.getRequestId());
-		properties.put(SERVICE_CHECK_REQUEST_INSTANCE,request);
+		pingConfig1.setHost("localhost");
+		pingConfig2.setHost("google.com");
+		portConfig.setHost("google.com");
+		portConfig.setPort(80);
 		
-		request.addServiceTest(new ServiceTest<PingConfiguration>("ping",request.getRequestId(),configuration));
-		request.addServiceTest(new ServiceTest<PingConfiguration>("ping",request.getRequestId(),configuration));
-		request.addServiceTest(new ServiceTest<PingConfiguration>("ping",request.getRequestId(),configuration));
+		request.addServiceTest(new ServiceTest<PingConfiguration>("ping",request.getRequestId(),pingConfig1));
+		request.addServiceTest(new ServiceTest<PortConfiguration>("port",request.getRequestId(),portConfig));
+		request.addServiceTest(new ServiceTest<PingConfiguration>("ping",request.getRequestId(),pingConfig2));
 		
-		template.sendBodyAndHeaders("direct:service-check-request-in",request, properties);
+		template.sendBody("direct:service-check-request-in",request);
 	}
 
 	@Test
 	public void testAggregate() throws InterruptedException {
-		MockEndpoint endPoint = getMockEndpoint("mock:service-check-aggregate-out");
+		MockEndpoint endPoint = getMockEndpoint("mock:service-test-correlation-out");
 		MockEndpoint pingEndPoint = getMockEndpoint("mock:ping-out");
+		MockEndpoint portEndPoint = getMockEndpoint("mock:port-out");
 
 		endPoint.setExpectedMessageCount(1);
-		pingEndPoint.setExpectedMessageCount(3);
+		portEndPoint.setExpectedMessageCount(1);
+		pingEndPoint.setExpectedMessageCount(2);
 		
 		sendServiceRequest();
 		
 		endPoint.assertIsSatisfied();
 		pingEndPoint.assertIsSatisfied();
+		portEndPoint.assertIsSatisfied();
 	}
 	
 	@Ignore

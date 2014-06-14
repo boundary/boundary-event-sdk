@@ -26,13 +26,13 @@
 			<from uri="direct:service-check-request-in"/>
 			
 			<!-- We set a header so that we can correlate the Service Request and Service Tests -->
-			<setHeader headerName ="serviceRequestId">
+			<setHeader headerName ="serviceCheckRequestId">
 				<simple>${body.requestId}</simple>
 			</setHeader>
-			<setHeader headerName = "serviceRequest">
+			<setHeader headerName = "serviceCheckRequestInstance">
 				<simple>bodyAs(com.boundary.sdk.event.service.ServiceCheckRequest)</simple>
 			</setHeader>
-			<log message="RequestId: ${headers.serviceRequestId}"/>
+			<log message="RequestId: ${headers.serviceCheckRequestId}"/>
 			<split parallelProcessing="true">
 			<!-- Split into multiple messages based on the Service Tests in the Service Request instance -->
 			<simple>${body.serviceTests}</simple >
@@ -68,7 +68,7 @@
 		<route id ="port-check" startupOrder="100">
 			<from uri="seda:port-check"/>
 			<log message="${headers}"/>
-			<bean ref="configurationProcessor" method="extractPingConfiguration"/>
+			<bean ref="configurationProcessor" method="extractPortConfiguration"/>
 			<to uri="port://tcp"/>
 			<to uri="mock:port-out"/>
 			<to uri="stream:out"/>
@@ -92,9 +92,20 @@
 				<correlationExpression>
 					<simple>${headers.serviceCheckRequestId}</simple>
 				</correlationExpression>
+				<removeHeader headerName="serviceTestInstance"/>
+				<removeHeader headerName="serviceTestName"/>
+				<log message="${headers}"/>
 				<to uri="mock:service-check-aggregate-out"/>
 				<to uri="stream:out"/>
+				<to uri="seda:service-check-aggregate-out"/>
 			</aggregate>
+		</route>
+		
+		<route id="service-test-correlation" startupOrder="400">
+			<from uri="seda:service-check-aggregate-out"/>
+			<log message="${headers} : ${body}"/>
+			<to uri="mock:service-test-correlation-out"/>
+			<to uri="stream:out"/>
 		</route>
 
 	</camelContext>
