@@ -113,8 +113,8 @@
 		<boundary-sdk-rpm-initd-dir>/etc/init.d</boundary-sdk-rpm-initd-dir>
 
 		<!-- JAVA Versions -->
-		<source-java-version>1.7</source-java-version>
-		<target-java-version>1.7</target-java-version>
+		<source-java-version>1.8</source-java-version>
+		<target-java-version>1.8</target-java-version>
         </properties>
 	<build>
 		<plugins>

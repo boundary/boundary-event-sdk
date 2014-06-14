@@ -1,6 +1,6 @@
-#Tue Jun 10 10:09:50 PDT 2014
+#Sat Jun 14 12:51:08 PDT 2014
 org.eclipse.jdt.core.incompatibleJDKLevel=ignore
-org.eclipse.jdt.core.compiler.compliance=1.7
+org.eclipse.jdt.core.compiler.compliance=1.8
 org.eclipse.jdt.core.builder.duplicateResourceTask=warning
 org.eclipse.jdt.core.builder.recreateModifiedClassFileInOutputFolder=ignore
 org.eclipse.jdt.core.compiler.codegen.unusedLocal=preserve
@@ -17,9 +17,9 @@ org.eclipse.jdt.core.circularClasspath=error
 org.eclipse.jdt.core.compiler.debug.lineNumber=generate
 org.eclipse.jdt.core.compiler.problem.assertIdentifier=error
 org.eclipse.jdt.core.builder.invalidClasspath=abort
-org.eclipse.jdt.core.compiler.problem.forbiddenReference=warning
+org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.8
 org.eclipse.jdt.core.compiler.problem.enumIdentifier=error
-org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.7
+org.eclipse.jdt.core.compiler.problem.forbiddenReference=warning
+org.eclipse.jdt.core.compiler.source=1.8
 org.eclipse.jdt.core.incompleteClasspath=error
-org.eclipse.jdt.core.compiler.source=1.7
 org.eclipse.jdt.core.builder.cleanOutputFolder=clean
