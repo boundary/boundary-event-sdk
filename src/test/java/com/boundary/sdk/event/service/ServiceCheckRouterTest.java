@@ -8,6 +8,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.context.support.AbstractApplicationContext;
 
@@ -32,11 +33,13 @@ public class ServiceCheckRouterTest extends CamelSpringTestSupport {
 	public void tearDown() throws Exception {
 	}
 	
+	@Ignore
 	@Test
 	public void test() {
 		MockEndpoint mock = getMockEndpoint("mock:service-checks-router-out");
 	}
 
+	@Ignore
 	@Test
 	public void testGetEndPointsFromRequest() {
 		ServiceCheckRouter router = new ServiceCheckRouter();
