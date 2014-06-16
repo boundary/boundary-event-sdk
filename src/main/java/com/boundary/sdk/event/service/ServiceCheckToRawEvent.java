@@ -19,8 +19,10 @@ public class ServiceCheckToRawEvent {
 		Message message = exchange.getIn();
 		ServiceCheckRequest request = message.getHeader(SERVICE_CHECK_REQUEST_INSTANCE,ServiceCheckRequest.class);
 		ServiceCheckResults results = message.getBody(ServiceCheckResults.class);
+		
 		RawEvent event = new RawEvent();
-
+		
+		message.setBody(event);
 	}
 }
 

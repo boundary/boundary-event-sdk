@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ServiceCheckResults {
 	
-	List<ServiceTest> list = new ArrayList<ServiceTest>();
+	private List<ServiceTest<?>> list = new ArrayList<ServiceTest<?>>();
 
 	public ServiceCheckResults() {
 
@@ -13,6 +13,10 @@ public class ServiceCheckResults {
 
 	public void add(ServiceTest test) {
 		list.add(test);
+	}
+	
+	public List<ServiceTest<?>> getServiceTests() {
+		return this.list;
 	}
 	
 	public String toString() {

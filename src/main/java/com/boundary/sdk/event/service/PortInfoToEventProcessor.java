@@ -34,6 +34,10 @@ public class PortInfoToEventProcessor implements Processor {
 	
 	@Override
 	public void process(Exchange exchange) throws Exception {
+		portInfoToRawEvent(exchange);
+	}
+	
+	public void portInfoToRawEvent(Exchange exchange) throws Exception {
 		
 		LOG.debug("PROCESS");
 		Message message = exchange.getIn();
@@ -72,7 +76,7 @@ public class PortInfoToEventProcessor implements Processor {
 		// Add the message
 		e.setMessage(info.getMessage());
 		
-		// Map the syslog severity to Boundary event severity
+		// Map to the Service Status
 		Severity severity = info.getStatus() == ServiceStatus.FAIL ? Severity.CRITICAL : Severity.INFO;
 		e.setSeverity(severity);	
 

@@ -9,11 +9,13 @@ package com.boundary.sdk.event.service;
 public class ServiceTest<T> {
 	
 	private String name;
+	private String serviceName;
 	private T configuration;
 	private String requestId;
 	
-	public ServiceTest(String name,String requestId,T configuration) {
+	public ServiceTest(String name,String serviceName,String requestId,T configuration) {
 		this.name = name;
+		this.serviceName = serviceName;
 		this.requestId = requestId;
 		this.configuration = configuration;
 	}
@@ -38,5 +40,9 @@ public class ServiceTest<T> {
 		s.append(",configuration=" + configuration.toString());
 		s.append("]");
 		return s.toString();
+	}
+
+	public String getServiceName() {
+		return this.serviceName;
 	}
 }

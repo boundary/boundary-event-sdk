@@ -73,9 +73,9 @@ public class ServiceTestAggregateTest extends CamelSpringTestSupport  {
 		properties.put(SERVICE_CHECK_REQUEST_ID, request.getRequestId());
 		PingConfiguration configuration = new PingConfiguration();
 		configuration.setHost("localhost");
-		request.addServiceTest(new ServiceTest<PingConfiguration>("ping",request.getRequestId(),configuration));
-		request.addServiceTest(new ServiceTest<PingConfiguration>("ping",request.getRequestId(),configuration));
-		request.addServiceTest(new ServiceTest<PingConfiguration>("ping",request.getRequestId(),configuration));
+		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","localhost",request.getRequestId(),configuration));
+		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","localhost",request.getRequestId(),configuration));
+		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","localhost",request.getRequestId(),configuration));
 		
 		template.sendBodyAndHeaders("direct:service-check-request-in",request, properties);
 		
@@ -92,28 +92,30 @@ public class ServiceTestAggregateTest extends CamelSpringTestSupport  {
 		pingConfig1.setHost("localhost");
 		pingConfig2.setHost("google.com");
 		portConfig.setHost("google.com");
-		portConfig.setPort(80);
+		portConfig.setPort(81);
 		
-		request.addServiceTest(new ServiceTest<PingConfiguration>("ping",request.getRequestId(),pingConfig1));
-		request.addServiceTest(new ServiceTest<PortConfiguration>("port",request.getRequestId(),portConfig));
-		request.addServiceTest(new ServiceTest<PingConfiguration>("ping",request.getRequestId(),pingConfig2));
+		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","localhost",request.getRequestId(),pingConfig1));
+		request.addServiceTest(new ServiceTest<PortConfiguration>("port","Google Web Search",request.getRequestId(),portConfig));
+		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","Google Web Search",request.getRequestId(),pingConfig2));
 		
 		template.sendBody("direct:service-check-request-in",request);
 	}
 
 	@Test
 	public void testAggregate() throws InterruptedException {
-		MockEndpoint endPoint = getMockEndpoint("mock:service-test-correlation-out");
-		MockEndpoint pingEndPoint = getMockEndpoint("mock:ping-out");
-		MockEndpoint portEndPoint = getMockEndpoint("mock:port-out");
+//		MockEndpoint endPoint = getMockEndpoint("mock:service-test-correlation-out");
+		MockEndpoint pingEndPoint = getMockEndpoint("mock:ping-event-out");
+		MockEndpoint portEndPoint = getMockEndpoint("mock:port-event-out");
+		pingEndPoint.await(20, TimeUnit.SECONDS);
+		portEndPoint.await(20, TimeUnit.SECONDS);
 
-		endPoint.setExpectedMessageCount(1);
+//		endPoint.setExpectedMessageCount(1);
 		portEndPoint.setExpectedMessageCount(1);
 		pingEndPoint.setExpectedMessageCount(2);
 		
 		sendServiceRequest();
 		
-		endPoint.assertIsSatisfied();
+//		endPoint.assertIsSatisfied();
 		pingEndPoint.assertIsSatisfied();
 		portEndPoint.assertIsSatisfied();
 	}

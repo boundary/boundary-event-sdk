@@ -3,8 +3,7 @@
  */
 package com.boundary.sdk.event.service;
 
-import java.io.IOException;
-import java.util.Properties;
+import java.util.HashMap;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
@@ -18,6 +17,8 @@ import com.boundary.sdk.event.RawEvent;
 import com.boundary.sdk.event.Severity;
 import com.boundary.sdk.event.Source;
 import com.boundary.sdk.event.Status;
+
+import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
 
 /**
  * Responsible for translating a {@link SyslogMessage} to {@link RawEvent}.
@@ -34,16 +35,23 @@ public class PingInfoToEventProcessor implements Processor {
 	
 	@Override
 	public void process(Exchange exchange) throws Exception {
+		pingInfoToRawEvent(exchange);
+	}
+
+	public void pingInfoToRawEvent(Exchange exchange) throws Exception {
 		Message message = exchange.getIn();
 
-		// Extract SyslogMessage from the message body.
+		// Extract {@link PingInfo} from message body
 		PingInfo info = message.getBody(PingInfo.class);
+		
+		// Extract {@link ServiceTest} from messsage headers
+		ServiceTest<PingInfo> serviceTest = message.getHeader(SERVICE_TEST_INSTANCE, ServiceTest.class);
 
-		// Create new event to translate the syslog message to
+		// Create new event to translate the {@link PingInfo}
 		RawEvent event = new RawEvent();
 
 		// Delegate to member method call to perform the translation
-		pingStatusToEvent(info, event);
+		pingStatusToEvent(serviceTest,info,event);
 		
 		LOG.debug("RawEvent: " + event);
 
@@ -57,7 +65,7 @@ public class PingInfoToEventProcessor implements Processor {
 	 * @param sm
 	 * @param e
 	 */
-	private void pingStatusToEvent(PingInfo info, RawEvent e) {
+	private void pingStatusToEvent(ServiceTest<PingInfo> test,PingInfo info,RawEvent e) {
 		
 		// Add the hostname
 		Source s = e.getSource();
@@ -65,7 +73,15 @@ public class PingInfoToEventProcessor implements Processor {
 		assert host != null: "Host is null";
 		s.setRef(info.getHost()).setType("host");
 
-		e.getProperties().put("hostname", info.getHost());
+		HashMap<String,Object> p = e.getProperties();
+		p.put("hostname", info.getHost());
+		p.put("ping-status", info.getStatus());
+		p.put("rtt-avg",info.getRTTAvg());
+		p.put("rtt-max",info.getRTTMax());
+		p.put("rtt-min",info.getRTTMin());
+		p.put("rtt-mdev",info.getRTTMDev());
+		p.put("service-test", test.getName());
+		p.put("service", test.getServiceName());
 		e.addTag(info.getHost());
 		
 		// Add the message
@@ -85,13 +101,13 @@ public class PingInfoToEventProcessor implements Processor {
 		// Set the uniqueness of the event by hostname, facility, and message.
 		// TBD: These fields need to be split out in a configuration file
 		e.addFingerprintField("hostname");
-		e.addFingerprintField("@title");
+		e.addFingerprintField("@message");
 		
 		// Set the time at which the Syslog record was created
 		e.setCreatedAt(info.getTimestamp());
 
 		// Set Title
-		e.setTitle("PingStatus: " + info.getHost());
+		e.setTitle("Ping status for " + info.getHost());
 		
 		// Set Sender
 		e.getSender().setRef("Ping");

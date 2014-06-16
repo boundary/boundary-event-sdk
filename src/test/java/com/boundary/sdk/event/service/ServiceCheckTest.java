@@ -66,9 +66,9 @@ public class ServiceCheckTest extends CamelSpringTestSupport  {
 		PingConfiguration configuration = new PingConfiguration();;
 		
 		properties.put("request", "foo");
-		ServiceTest<PingConfiguration> test1 = new ServiceTest<PingConfiguration>("test1","999",configuration);
-		ServiceTest<PingConfiguration> test2 = new ServiceTest<PingConfiguration>("test2","999",configuration);
-		ServiceTest<PingConfiguration> test3 = new ServiceTest<PingConfiguration>("test3","999",configuration);
+		ServiceTest<PingConfiguration> test1 = new ServiceTest<PingConfiguration>("test1","localhost","999",configuration);
+		ServiceTest<PingConfiguration> test2 = new ServiceTest<PingConfiguration>("test2","localhost","999",configuration);
+		ServiceTest<PingConfiguration> test3 = new ServiceTest<PingConfiguration>("test3","localhost","999",configuration);
 
 		
 		template.sendBodyAndHeaders("direct:in",test1, properties);
