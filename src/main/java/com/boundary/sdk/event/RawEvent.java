@@ -493,11 +493,11 @@ public class RawEvent extends BaseEvent implements Serializable {
 		s.append(fingerprintFields == null ? "" : ",fingerprintFields: " + fingerprintFields.toString());
 		s.append(message == null ? "": ",message: " + message);
 		s.append(organizationId == null ? "": ",organizationId: " + organizationId);
-		s.append(properties == null ? "" : ",properties: " + properties);
+		s.append(properties == null ? "" : ",properties => " + properties);
 		s.append(receivedAt == null ? "" : ",receivedAt: " + receivedAt);
-		s.append(sender == null ? "" : ",sender: " + sender);
+		s.append(sender == null ? "" : ",sender => " + sender);
 		s.append(severity == null ? "" : ",severity: " + severity);
-		s.append(source == null ? "" : ",source: " + source);
+		s.append(source == null ? "" : ",source => " + source);
 		s.append(status == null ? "" : ",status: " + status);
 		s.append(tags == null ? "" : ",tags: " + tags.toString());
 		s.append(title == null ? "" : ",title: " + title);
