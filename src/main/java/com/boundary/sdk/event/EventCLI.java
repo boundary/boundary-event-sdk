@@ -138,7 +138,7 @@ public class EventCLI {
 			if (cmd.hasOption("h")) {
 				// automatically generate the help statement
 				HelpFormatter formatter = new HelpFormatter();
-				String cliName = System.getProperty("boundary.event.cliName","becli");
+				String cliName = System.getProperty("boundary.event.cliName","bevent");
 				formatter.printHelp(cliName, options);
 				exit = true;
 			}
