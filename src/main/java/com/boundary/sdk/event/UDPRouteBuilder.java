@@ -18,7 +18,7 @@ public abstract class UDPRouteBuilder extends BoundaryRouteBuilder {
 	/**
 	 * Sets the port to listen for socket messages
 	 * 
-	 * @param port
+	 * @param port Listening port
 	 */
 	public void setPort(int port) {
 		this.port = port;
@@ -36,7 +36,7 @@ public abstract class UDPRouteBuilder extends BoundaryRouteBuilder {
 	/**
 	 * Sets the host to contact
 	 * 
-	 * @param host
+	 * @param host Listening host
 	 */
 	public void setHost(String host) {
 		this.host = host;
@@ -44,6 +44,7 @@ public abstract class UDPRouteBuilder extends BoundaryRouteBuilder {
 	
 	/**
 	 * Gets the host used by this route builder.
+	 * @return {@link String}
 	 */
 	public String getHost() {
 		return this.host;

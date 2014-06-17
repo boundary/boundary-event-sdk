@@ -28,7 +28,7 @@ public class SocketPollerRouteBuilder extends UDPRouteBuilder {
 	
 	/**
 	 * 
-	 * @param cron
+	 * @param cron Quartz cron string
 	 */
 	public void setCron(String cron) {
 		

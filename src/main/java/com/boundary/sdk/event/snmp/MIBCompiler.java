@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Commandline tool to compile MIBs
+ * Command line tool to compile MIBs
  * 
  * @author davidg
  * 
@@ -63,7 +63,7 @@ public class MIBCompiler extends SmiSupport {
 	/**
 	 * Handles all the options passed to the command line.
 	 * 
-	 * @param args
+	 * @param args Command line arguments
 	 */
 	@SuppressWarnings("static-access")
 	public void handleCommandLineOptions(String[] args) {
@@ -122,7 +122,7 @@ public class MIBCompiler extends SmiSupport {
 	/**
 	 * Execute the compilation of the MIBs.
 	 * 
-	 * @param args
+	 * @param args Command line arguments
 	 */
 	public void execute(String[] args) {
 
@@ -139,8 +139,7 @@ public class MIBCompiler extends SmiSupport {
 	}
 
 	/**
-	 * @param args
-	 * @throws InterruptedException
+	 * @param args Command line arguments
 	 */
 
 	public static void main(String[] args) {

@@ -44,8 +44,8 @@ public class Source implements Serializable {
 	/**
 	 * Constructor that uses ref and type
 	 * 
-	 * @param ref
-	 * @param type
+	 * @param ref {@link String} Source reference
+	 * @param type {@link String} Source type
 	 */
 	public Source(String ref, String type) {
 		this(ref,type,"");
@@ -54,9 +54,9 @@ public class Source implements Serializable {
 	/**
 	 * Constructor
 	 * 
-	 * @param ref
-	 * @param type
-	 * @param name
+	 * @param ref {@link String} Source reference
+	 * @param type {@link String} Source type
+	 * @param name {@link String} Source name
 	 */
 	public Source(String ref,String type,String name) {
 		this(ref,type,name,new HashMap<String,Object>());
@@ -65,10 +65,10 @@ public class Source implements Serializable {
 	/**
 	 * Constructor
 	 * 
-	 * @param ref
-	 * @param type
-	 * @param name
-	 * @param properties
+	 * @param ref {@link String} Source reference
+	 * @param type {@link String} Source type
+	 * @param name {@link String} Source name
+	 * @param properties {@link String} Source properties
 	 */
 	public Source(String ref, String type, String name, Map<String,Object> properties) {
 //		this.ref = ref;
@@ -80,7 +80,7 @@ public class Source implements Serializable {
 	/**
 	 * Set the ref value
 	 * 
-	 * @param ref
+	 * @param ref {@link String} Source reference
 	 * @return {@link Source}
 	 */
 	public Source setRef(String ref) {
@@ -90,7 +90,7 @@ public class Source implements Serializable {
 	
 	/**
 	 * 
-	 * @return {@link Source}
+	 * @return {@link String}
 	 */
 	public String getRef() {
 		return this.ref;
@@ -98,7 +98,7 @@ public class Source implements Serializable {
 	
 	/**
 	 * Set the type of the source.
-	 * @param type
+	 * @param type {@link String} Source type
 	 * @return {@link Source}
 	 */
 	public Source setType(String type) {
@@ -109,7 +109,7 @@ public class Source implements Serializable {
 	/**
 	 * Get the type of this source.
 	 * 
-	 * @return {@link Source}
+	 * @return {@link String}
 	 */
 	public String getType() {
 		return this.type;
@@ -118,7 +118,7 @@ public class Source implements Serializable {
 	/**
 	 * Sets the name of this source
 	 * 
-	 * @param name
+	 * @param name {@link String} Source name
 	 * @return {@link Source}
 	 */
 	public Source setName(String name) {
@@ -154,7 +154,7 @@ public class Source implements Serializable {
 	
 	/**
 	 * Set the properties of the {@link RawEvent}
-	 * @param properties
+	 * @param properties {@link String} Source properties
 	 * @return {@link Source}
 	 */
 	public Source setProperties(LinkedHashMap<String,Object> properties) {
@@ -168,8 +168,8 @@ public class Source implements Serializable {
 	/**
 	 * Add a property to a {@link RawEvent}
 	 * 
-	 * @param key
-	 * @param value
+	 * @param key {@link String} Name of the property
+	 * @param value {@link Object} Value of the property
 	 * @return {@link Source}
 	 */
 	public Source addProperty(String key,Object value) {

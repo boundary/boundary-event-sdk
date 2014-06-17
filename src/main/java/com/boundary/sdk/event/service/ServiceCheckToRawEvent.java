@@ -13,7 +13,7 @@ public class ServiceCheckToRawEvent {
 
 	/**
 	 * 
-	 * @param exchange
+	 * @param exchange {@link Exchange} from a Camel route
 	 */
 	public void toEvent(Exchange exchange) {
 		Message message = exchange.getIn();

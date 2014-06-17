@@ -35,7 +35,7 @@ public class SNMPRouteBuilder extends UDPRouteBuilder {
 	 * Sets the path to the directory
 	 * to the compiled MIBs.
 	 * 
-	 * @param path
+	 * @param path File path to directory
 	 */
 	public void setMibRepository(String path) {
 		this.mibRepositoryPath = path;
@@ -54,7 +54,7 @@ public class SNMPRouteBuilder extends UDPRouteBuilder {
 	/**
 	 * Sets the SNMP4J-SMI license key
 	 * 
-	 * @param license
+	 * @param license {@link String} containing the license
 	 */
 	public void setLicense(String license) {
 		this.license = license;

@@ -17,7 +17,7 @@ public class ExtractServiceTestConfiguration {
 	/**
 	 * Extract the {@link PortConfiguration} from the {@link ServiceTest} and
 	 * set as header in {@link Message}
-	 * @param exchange
+	 * @param exchange {@link Exchange} from Camel route
 	 */
 	public void extractPortConfiguration(Exchange exchange) {
 		Message message = exchange.getIn();
@@ -31,7 +31,7 @@ public class ExtractServiceTestConfiguration {
 	/**
 	 * Extract the {@link PingConfiguration} from the {@link ServiceTest} and
 	 * set as header in {@link Message}
-	 * @param exchange
+	 * @param exchange {@link Exchange} from Camel route
 	 */
 	public void extractPingConfiguration(Exchange exchange) {
 		Message message = exchange.getIn();

@@ -56,7 +56,7 @@ public class BoundaryAPIRouteBuilder extends BoundaryRouteBuilder {
 	/**
 	 * Current value of the API key
 	 * 
-	 * @return String
+	 * @return {@link String}
 	 */
 	public String getApiKey() {
 		return this.apiKey;
@@ -65,7 +65,7 @@ public class BoundaryAPIRouteBuilder extends BoundaryRouteBuilder {
 	/**
 	 * Set the host to use for sending Boundary API requests
 	 * 
-	 * @param apiHost
+	 * @param apiHost Host where the Boundary API is running
 	 */
 	public void setApiHost(String apiHost) {
 		this.apiHost = apiHost;
@@ -74,7 +74,7 @@ public class BoundaryAPIRouteBuilder extends BoundaryRouteBuilder {
 	/**
 	 * Return the current Boundary API host
 	 * 
-	 * @return String
+	 * @return {@link String}
 	 */
 	public String getApiHost() {
 		return this.apiHost;

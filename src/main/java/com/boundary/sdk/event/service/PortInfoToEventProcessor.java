@@ -20,7 +20,7 @@ import com.boundary.sdk.event.Status;
 
 
 /**
- * Responsible for translating a {@link SyslogMessage} to {@link RawEvent}.
+ * Responsible for translating a {@link PortInfo} to {@link com.boundary.sdk.event.RawEvent}.
  * 
  * @author davidg
  * 

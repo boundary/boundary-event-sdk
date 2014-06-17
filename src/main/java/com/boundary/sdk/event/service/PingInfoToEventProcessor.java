@@ -21,7 +21,7 @@ import com.boundary.sdk.event.Status;
 import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
 
 /**
- * Responsible for translating a {@link SyslogMessage} to {@link RawEvent}.
+ * Responsible for translating a {@link PingInfo} to {@link com.boundary.sdk.event.RawEvent}.
  * 
  * @author davidg
  * 
@@ -60,10 +60,11 @@ public class PingInfoToEventProcessor implements Processor {
 	}
 
 	/**
-	 * Converts a {@link SyslogMessage} to {@link RawEvent}
+	 * Converts a {@link SyslogMessage} to {@link com.boundary.sdk.event.RawEvent}
 	 * 
-	 * @param sm
-	 * @param e
+	 * @param test {@link ServiceTest}
+	 * @param info {@link PingInfo}
+	 * @param e {@link RawEvent}
 	 */
 	private void pingStatusToEvent(ServiceTest<PingInfo> test,PingInfo info,RawEvent e) {
 		

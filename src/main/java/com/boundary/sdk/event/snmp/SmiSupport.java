@@ -59,7 +59,7 @@ public class SmiSupport {
 	 * calls to decode OIDs. We construct this behavior so that
 	 * in spring files we can specify null as the empty string.
 	 * 
-	 * @param license
+	 * @param license {@link String} containing the license for SNMP4J-SMI
 	 */
 	public void setLicense(String license) {
 		this.license = license == null || license.isEmpty() ? null : license;
@@ -68,7 +68,7 @@ public class SmiSupport {
 	
 	/**
 	 * Returns the SNMP4J-SMI license.
-	 * @return {@link String}
+	 * @return {@link String} containing the license
 	 */
 	public String getLicense() {
 		// If the license is null then translate to empty string.
@@ -189,7 +189,7 @@ public class SmiSupport {
 	/**
 	 * 
 	 * @param fname {@link String}
-	 * @throws IOException
+	 * @throws IOException Exception during compiling process
 	 */
 	public void compile(String fname) throws IOException {
 		//super(new File(fname));

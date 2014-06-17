@@ -73,12 +73,12 @@ public class BaseEvent {
 	}
 	
 	/**
-	 * Helper method that truncates a {@link LinkedHashMap} with keys of {@link String}
+	 * Helper method that truncates a {@link java.util.LinkedHashMap} with keys of {@link String}
 	 * and values of {@link Object} that are instances of {@link String}
 	 * to the maximum allowed by the Boundary Event API
 	 * 
-	 * @param prop {@LinkHashMap} that contains the {@link String}s to truncate.
-	 * @return {@link LinkedHashMap} with key {@link String} and value {@link Object}
+	 * @param prop {@link java.util.LinkedHashMap} that contains the {@link String}s to truncate.
+	 * @return {@link java.util.LinkedHashMap} with key {@link String} and value {@link Object}
 	 */
 	public static LinkedHashMap<String,Object> truncateToMaximumLength(LinkedHashMap<String,Object> prop) {
 		LinkedHashMap<String,Object> truncatedProp = new LinkedHashMap<String,Object>(prop.size());
