@@ -82,15 +82,16 @@ public class EventCLITest {
 	@Test
 	public void testFingerprintFields() throws ParseException {
 		ArrayList<String> fields = new ArrayList<String>();
-		args.add("@message");
-		args.add("foo");
+		fields.add("@message");
+		fields.add("foo");
+		fields.add("bar");
+		args.add("-f");
+		args.add("@message:foo:bar");
 
-		args.add("@message");
-		args.add("foo");
-		
 		process();
 		
-		//assertEquals()
+		ArrayList<String> extractedFields = event.getFingerprintFields();		
+		assertEquals("check fingerprint fields",fields,extractedFields);
 	}
 
 	@Test
@@ -113,6 +114,26 @@ public class EventCLITest {
 	}
 	
 	@Test
+	public void testSource() throws ParseException {
+		String expectedRef = "red";
+		String expectedType = "green";
+		String expectedName = "blue";
+		Source expectedSource = new Source();
+		expectedSource.setRef(expectedRef);
+		expectedSource.setType(expectedType);
+		expectedSource.setName(expectedName);
+		args.add("-u");
+		args.add(expectedRef + ":" + expectedType + ":" + expectedName);
+		
+		process();
+		
+		
+		assertEquals("check source ref",expectedSource.getRef(),event.getSource().getRef());
+		assertEquals("check source type",expectedSource.getType(),event.getSource().getType());
+		assertEquals("check source name",expectedSource.getName(),event.getSource().getName());
+	}
+	
+	@Test
 	public void testTitle() throws ParseException {
 		String expectedTitle = "Limelight";
 		args.add("-n");
@@ -122,5 +143,9 @@ public class EventCLITest {
 		
 		assertEquals("check title",expectedTitle,event.getTitle());
 	}
-
+	
+	@Test
+	public void testSendAnEvent() {
+		
+	}
 }

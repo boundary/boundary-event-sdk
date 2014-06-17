@@ -3,6 +3,7 @@ package com.boundary.sdk.event;
 import java.util.Date;
 
 import org.apache.camel.CamelContext;
+import org.apache.camel.ProducerTemplate;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -62,7 +63,7 @@ public class EventCLI {
 				.withLongOpt("created-at").create("z");
 		
 		optionFingerprintFields = OptionBuilder.withArgName("field-name").hasArg()
-				.hasArgs(2)
+				.hasArgs(16)
                 .withValueSeparator(':')
 				.withDescription("The fields of the event used to calculate the event fingerprint.")
 				.withLongOpt("fingerprint-fields").create("f");
@@ -81,22 +82,26 @@ public class EventCLI {
 				.withDescription("The timestamp the event was received (UTC).")
 				.withLongOpt("received-at").create("r");
 		
-		optionSender = OptionBuilder.withArgName("ref:type[:name]").hasArg()
+		optionSender = OptionBuilder.withArgName("ref[:type:name]")
 				.hasArgs(3)
                 .withValueSeparator(':')
 				.withDescription("Optional information about the sender of the event.")
 				.withLongOpt("sender").create("x");
 		
-		optionSeverity = OptionBuilder.withArgName("severity").hasArg()
+		optionSeverity = OptionBuilder.withArgName("INFO|WARN|ERROR|CRITICAL")
+				.hasArg()
 				.withDescription("Severity of the event which is one of INFO, WARN, ERROR, CRITICAL. Default is INFO.")
 				.withLongOpt("severity").create("y");
 
-		optionSource = OptionBuilder.withArgName("ref:type[:name]").hasArg()
-				.withDescription("The source of the event. The source is typically the hostname or ip address of the system this event refers to.")
-				.withLongOpt("status").create("u");
+		optionSource = OptionBuilder.withArgName("ref:[type:name]")
+				.hasArgs(3)
+				.withValueSeparator(':')
+				.withDescription("The source of the event. The source is typically the hostname or ip address of the system this event refers to.  If type is not provided it is assumed to be 'host'")
+				.withLongOpt("source").create("u");
 		
-		optionStatus = OptionBuilder.withArgName("status").hasArg()
-				.withDescription("One of OPEN, CLOSED, ACKNOWLEDGED, or OK.")
+		optionStatus = OptionBuilder.withArgName("OPEN|CLOSED|ACKNOWLEDGED|OK")
+				.hasArg()
+				.withDescription("One of OPEN, CLOSED, ACKNOWLEDGED, or OK. Default is OK")
 				.withLongOpt("status").create("w");
 		
 		optionTags = OptionBuilder.withArgName("tag1[:tag2][:tag3][:...]").hasArg()
@@ -148,14 +153,6 @@ public class EventCLI {
 		return this.event;
 	}
 	
-	public void createEvent() throws Exception {
-		CamelContext context = new DefaultCamelContext();
-		BoundaryEventRouteBuilder eventRouteBuilder = new BoundaryEventRouteBuilder();
-		eventRouteBuilder.setApiHost("api.boundary.com");
-		
-		context.addRoutes(eventRouteBuilder);
-
-	}
 	
 	protected void populateEvent() {
 		
@@ -164,6 +161,8 @@ public class EventCLI {
 //			event.setCreatedAt(new Date(createdAt));
 //		}
 		
+//		private Option optionFingerprintFields;
+		// Extract the fingerprint fields
 		String[] fingerprintFields = cmd.getOptionValues("f");
 		if (fingerprintFields != null) {
 			for (String s : fingerprintFields) {
@@ -171,14 +170,35 @@ public class EventCLI {
 			}
 		}
 		
-//		private Option optionFingerprintFields;
 //		private Option optionMessage;
+		String message = cmd.getOptionValue('m');
+		if (message != null) {
+			event.setMessage(message);
+		}
 //		private Option optionOrganizationId;
 //		private Option optionProperties;
 //		private Option optionReceivedAt;
 //		private Option optionSender;
 //		private Option optionSeverity;
 //		private Option optionSource;
+		
+		// Set the source
+		// @TODO support for properties for the source
+		String[] source = cmd.getOptionValues("u");
+		if (source != null) {
+			Source s = event.getSource();
+			if (source.length >= 1) {
+				s.setRef(source[0]);
+			}
+			if (source.length >= 2) {
+				s.setType(source[1]);
+			}
+			
+			if (source.length == 3) {
+				s.setName(source[2]);
+			}
+		}
+
 //		private Option optionStatus;
 //		private Option optionTags;
 		
@@ -198,25 +218,84 @@ public class EventCLI {
 		event.setTitle(title);
 	}
 	
-	private String execute() {
-		populateEvent();
+	public void setDebugEvent(RawEvent event) {
 		
-		options.getOptions();
-		// TODO Auto-generated method stub
+	}
+	
+	public void addEventRoute(CamelContext context) throws Exception {
+
+		BoundaryEventRouteBuilder eventRouteBuilder = new BoundaryEventRouteBuilder();
+		eventRouteBuilder.setApiHost("api.boundary.com");
+		eventRouteBuilder.setFromUri("direct:event");
+		eventRouteBuilder.setApiKey("Aqixh4Vt6j10d75Yg9zPrKvDLWc");
+		eventRouteBuilder.setOrgId("3ehRi7uZeeaTN12dErF5XOnRXjC");
+		eventRouteBuilder.setStartUpOrder(100);
+		eventRouteBuilder.setRouteId("EVENT-ROUTE");
+		
+		context.addRoutes(eventRouteBuilder);
+	}
+	
+	private class EventSourceRouteBuilder extends BoundaryRouteBuilder {
+
+		@Override
+		public void configure() throws Exception {
+			from("direct:source")
+			.id("SOURCE-ROUTE")
+			.log("SENDING EVENT")
+			.startupOrder(200)
+			.marshal().serialization()
+			.to("direct:event");
+		}
+	}
+	public void addSourceRoute(CamelContext context) throws Exception {
+		EventSourceRouteBuilder source = new EventSourceRouteBuilder();
+		
+		context.addRoutes(source);
+	}
+	
+
+	
+	public void createEvent() {
+
+		try {
+			CamelContext context = new DefaultCamelContext();
+			addEventRoute(context);
+			addSourceRoute(context);
+			context.start();
+
+			ProducerTemplate template = context.createProducerTemplate();
+
+			event.addFingerprintField("@title");
+			event.setTitle("Hello from the CLI");
+			event.getSource().setRef("localhost");
+			event.getSource().setType("host");
+
+			template.sendBody("direct:source", event);
+			
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+	}
+	
+	private String execute(String [] args) throws Exception {
+		
+		handleCommandlandArguments(args);
+		populateEvent();
+		createEvent();
+
 		return null;
 	}
 
 	public static void main(String[] args) {
-		EventCLI event = new EventCLI();
+		EventCLI cli = new EventCLI();
 
 		try {
-			event.handleCommandlandArguments(args);
-
-			String eventId = event.execute();
+			String eventId = cli.execute(args);
+			
 			if (eventId != null) {
 				System.out.println(eventId);
 			}
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
