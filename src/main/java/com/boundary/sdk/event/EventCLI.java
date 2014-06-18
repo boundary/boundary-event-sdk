@@ -1,8 +1,12 @@
 package com.boundary.sdk.event;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+
+import javax.xml.bind.DatatypeConverter;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
@@ -286,7 +290,7 @@ public class EventCLI {
 			}
 		} catch (ParseException e) {
 			usage();
-			e.printStackTrace();
+//			e.printStackTrace();
 			exit = true;
 		}
 		return exit;
@@ -297,12 +301,12 @@ public class EventCLI {
 	}
 	
 
-	private Date parseDateTime(String s) throws java.text.ParseException {
+	protected Date parseDateTime(String s) throws java.text.ParseException {
 		Date dt = null;
 		if (s != null) {
-			TimeZone UTC = TimeZone.getTimeZone("GMT");
-			DateFormat df = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.FULL);
-			dt = df.parse(s);
+			Calendar c = DatatypeConverter.parseDateTime(s);
+			c.setTimeZone(TimeZone.getTimeZone("GMT"));
+			dt = c.getTime();
 		}
 		return dt;
 	}
@@ -326,6 +330,13 @@ public class EventCLI {
 			for (String s : fingerprintFields) {
 				event.addFingerprintField(s);
 			}
+		}
+	}
+	
+	protected void extractOrganizationId() {
+		String orgId = cmd.getOptionValue(OPTION_ORG_ID);
+		if (orgId != null) {
+			event.setOrganizationId(orgId);
 		}
 	}
 	
@@ -362,6 +373,10 @@ public class EventCLI {
 	 */
 	private Source getSourceType(String [] strs) {
 		Source s = null;
+		LOG.debug("strs[0] = " + (strs != null && strs.length >= 1 ? strs[0] : ""));
+		LOG.debug("strs[1] = " + (strs != null && strs.length >= 2 ? strs[1] : ""));
+		LOG.debug("strs[2] = " + (strs != null && strs.length >= 2 ? strs[2] : ""));
+
 		// If have the string tokens and the cardinality is correct then
 		// extract the values and assign to the Source types
 		if (strs != null && strs.length >= 1 && strs.length <= 3) {
@@ -387,6 +402,7 @@ public class EventCLI {
 	 */
 	protected void extractSource() {
 		Source source = getSourceType(cmd.getOptionValues('u'));
+		LOG.debug("source = " + source);
 		// @TODO support for properties for the source
 		if (source != null) {
 			event.setSource(source);
@@ -409,7 +425,9 @@ public class EventCLI {
 	 */
 	protected void extractTitle() {
 		String title = cmd.getOptionValue("n");
-		event.setTitle(title);
+		if (title != null) {
+			event.setTitle(title);
+		}
 	}
 	
 	/**
@@ -420,6 +438,7 @@ public class EventCLI {
 	protected void configureEvent() throws java.text.ParseException {
 		extractCreatedAt();
 		extractFingerprintFields();
+		extractOrganizationId();
 		extractMessage();
 		extractReceivedAt();
 		extractSender();
@@ -483,15 +502,21 @@ public class EventCLI {
 		context.addRoutes(source);
 	}
 	
-	public void createEvent() {
+	/**
+	 * Sends an event to a route that hits the Boundary API.
+	 * 
+	 */
+	public void sendEvent() {
 		try {
-
 			// Create a producer template so that we can send an instance of RawEvent
 			// which ends up at the boundary API
 			ProducerTemplate template = context.createProducerTemplate();
-			template.sendBody("direct:source",event);
-			context.stop();
 			
+			// This blocks until the event is sent
+			template.sendBody("direct:source",event);
+			
+			// Stop the context and the routes associated with it.
+			context.stop();
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		}
@@ -519,13 +544,20 @@ public class EventCLI {
 	private String execute(String [] args) throws Exception {
 		// If there were no errors parsing the command line
 		// then proceed with configuring and sending the event
-		if (handleCommandlandArguments(args) == false) {
+		if (configure(args) == false) {
 			configureRoutes();
-			configureEvent();
-			createEvent();
+			sendEvent();
 		}
 		// @TODO: Return the event id created
 		return null;
+	}
+	
+	protected boolean configure(String [] args) throws Exception {
+		boolean result = handleCommandlandArguments(args);
+		if (result == false) {
+			configureEvent();
+		}
+		return result;
 	}
 
 	/**
