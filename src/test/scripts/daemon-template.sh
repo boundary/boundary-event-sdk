@@ -4,7 +4,7 @@
 # description: myapp daemon
 # processname: myapp
 
-DAEMON_PATH="/bin/plumgrid
+DAEMON_PATH="/bin/plumgrid"
 
 DAEMON=plumgrid
 DAEMONOPTS="-my opts"
