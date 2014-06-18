@@ -190,6 +190,7 @@
 				<configuration>
 					<descriptors>
 						<descriptor>src/main/assembly/default.xml</descriptor>
+						<descriptor>src/main/assembly/tools.xml</descriptor>
 					</descriptors>
 				</configuration>
 			</plugin>

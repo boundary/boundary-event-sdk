@@ -4,12 +4,12 @@
 # description: myapp daemon
 # processname: myapp
 
-DAEMON_PATH="/home/wes/Development/projects/myapp"
+DAEMON_PATH="/bin/plumgrid
 
-DAEMON=myapp
+DAEMON=plumgrid
 DAEMONOPTS="-my opts"
 
-NAME=myapp
+NAME=plumgrid
 DESC="My daemon description"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
@@ -28,13 +28,13 @@ start)
         fi
 ;;
 status)
-        printf "%-50s" "Checking $NAME..."
+#        printf "%-50s" "Checking $NAME..."
         if [ -f $PIDFILE ]; then
             PID=`cat $PIDFILE`
             if [ -z "`ps axf | grep ${PID} | grep -v grep`" ]; then
                 printf "%s\n" "Process dead but pidfile exists"
             else
-                echo "Running"
+                echo "$DAEMON start/running process $PID"
             fi
         else
             printf "%s\n" "Service not running"
