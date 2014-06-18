@@ -5,37 +5,13 @@
                    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
                    http://camel.apache.org/schema/spring
                    http://camel.apache.org/schema/spring/camel-spring.xsd">
-                   
-    <!-- Definition of the route that communicates with the Boundary API host -->
-	<bean id="boundary-event-route" class="com.boundary.sdk.event.BoundaryEventRouteBuilder">
-	
-		<property name="routeId" value="BOUNDARY-EVENT"/>
-		<!-- This route needs to start first and stop last so all routes
-		     then send events to the boundary event route need to be
-                     configured with a start order higher than 100
-		  -->
-		<property name="startUpOrder" value="1000"/>
-		<!-- TBD: Encryption of apiKey using Camel APIs -->
-		
-		<!-- Boundary organization ID and API key can obtained by logging into the web
-		     console. Organization ID and API key are located in the users settings
-		  -->
-		<!-- <property name="orgId" value="#{systemEnvironment['BOUNDARY_ORG_ID']}"/> -->
-		<property name="orgId" value="3ehRi7uZeeaTN12dErF5XOnRXjC"/>
-		
-		<!-- <property name="apiKey" value="#{systemEnvironment['BOUNDARY_API_KEY']}"/> -->
-		<property name="apiKey" value="AKT9X2clfla3LwU67FgFT3TjSTK"/>
-
-         <!-- The endpoint URI to listen for boundary events -->
-		<property name="fromUri" value="seda:boundary-event?concurrentConsumers=10"/>
-	</bean>
 
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
 	    <!-- <routeBuilder ref="boundary-event-route"/> -->
 		<route id="ssh-local-poll" startupOrder="10">
 			<!-- Receives messages with Service Requests -->
 			<from uri="direct:ssh-in"/>
-			<to id="SSH" uri="ssh://davidg:xxxx@localhost"/>
+			<to id="SSH" uri="ssh://xxxxx:yyyy@localhost"/>
 			<log message="${body}"/>
 			<to uri="mock:ssh-out"/>
 		</route>
