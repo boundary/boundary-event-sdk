@@ -55,10 +55,14 @@ public class EventCLITest {
 	public void tearDown() throws Exception {
 	}
 	
-	private void process() throws ParseException {
-		cli.handleCommandlandArguments(toArgs());
-		cli.populateEvent();
-		event = cli.getEvent();
+	private void process() {
+		try {
+			cli.handleCommandlandArguments(toArgs());
+			cli.configureEvent();
+			event = cli.getEvent();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private String [] toArgs() {
@@ -138,6 +142,8 @@ public class EventCLITest {
 		String expectedTitle = "Limelight";
 		args.add("-n");
 		args.add(expectedTitle);
+		args.add("-f");
+		args.add("@title");
 		
 		process();
 		

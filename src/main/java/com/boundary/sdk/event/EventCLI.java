@@ -1,6 +1,8 @@
 package com.boundary.sdk.event;
 
+import java.text.DateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
@@ -13,11 +15,34 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.boundary.sdk.event.syslog.SyslogMessageGenerator;
 
 public class EventCLI {
+	
+	private static Logger LOG = LoggerFactory.getLogger(EventCLI.class);
+	
+	public static final char OPTION_HELP = 'h';
+	public static final char OPTION_API_KEY = 'a';
+	public static final char OPTION_API_HOST = 'b';
+	public static final char OPTION_ORG_ID = 'o';
+	public static final char OPTION_CREATED_AT = 'z';
+	public static final char OPTION_FINGERPRINT_FIELDS = 'f';
+	public static final char OPTION_MESSAGE = 'm';
+	public static final char OPTION_PROPERTIES = 'p';
+	public static final char OPTION_RECEIVED_AT = 'r';
+	public static final char OPTION_SENDER = 'x';
+	public static final char OPTION_SEVERITY = 'y';
+	public static final char OPTION_SOURCE = 'u';
+	public static final char OPTION_STATUS = 'w';
+	public static final char OPTION_TAGS = 't';
+	public static final char OPTION_TITLE = 'n';
 
 	private Options options;
 
+	private Option optionHelp;
 	private Option optionApiKey;
 	private Option optionApiHost;
 	private Option optionCommand;
@@ -36,116 +61,233 @@ public class EventCLI {
 	
 	private RawEvent event;
 	private CommandLine cmd;
+	
+	private CamelContext context;
+	private BoundaryEventRouteBuilder eventRouteBuilder;
 
 	public EventCLI() {
 		// create Options object
 		options = new Options();
 		event = new RawEvent();
 	}
-
+	
+	private void usage() {
+		// automatically generate the help statement
+		HelpFormatter formatter = new HelpFormatter();
+		String cliName = System.getProperty("boundary.event.cliName","bevent");
+		formatter.printHelp(cliName, options);
+	}
+	
 	@SuppressWarnings("static-access")
-	protected boolean handleCommandlandArguments(String[] args) throws ParseException {
-		boolean exit = false;
-		
-		optionApiHost = OptionBuilder.withArgName("api_host").hasArg()
-				.withDescription("Boundary API Host. defaults to api.boundary.com").create("b");
-		optionCommand = OptionBuilder.withArgName("command").hasArg()
-				.withDescription("One of CREATE, UPDATE, OR DELETE. Default is CREATE.").create("c");
-		optionApiKey = OptionBuilder.withArgName("api_key").hasArg()
-				.withDescription("Boundary API Key").create("a");
-		optionApiKey.setLongOpt("api-key");
-		optionOrganizationId = OptionBuilder.withArgName("org_id").hasArg()
+	private void addApiHostOption() {
+		optionApiHost = OptionBuilder
+				.withArgName("api_host)")
+				.hasArg()
+				.withDescription("Boundary API Host. defaults to api.boundary.com")
+				.create(OPTION_API_HOST);
+		options.addOption(optionApiHost);
+	}
+	
+	@SuppressWarnings("static-access")
+	private void addCommandOption() {
+		optionCommand = OptionBuilder
+				.withArgName("command")
+				.hasArg()
+				.withDescription("One of CREATE, UPDATE, OR DELETE. Default is CREATE.")
+				.create("c");
+		options.addOption(optionCommand);
+	}
+	
+	@SuppressWarnings("static-access")
+	private void addApiKeyOption() {
+		optionApiKey = OptionBuilder
+				.withArgName("api_key")
+				.hasArg()
+				.withDescription("Boundary API Key")
+				.withLongOpt("api-key").create(OPTION_API_KEY);
+		options.addOption(optionApiKey);
+	}
+	
+	@SuppressWarnings("static-access")
+	private void addOrganizationIdOption() {
+		optionOrganizationId = OptionBuilder
+				.withArgName("org_id")
+				.hasArg()
 				.withDescription("Boundary organization Id")
-				.withLongOpt("org-id").create("o");
-		
-		optionCreatedAt = OptionBuilder.withArgName("yyyy-mm-dd HH-MM-SS").hasArg()
+				.withLongOpt("org-id")
+				.create(OPTION_ORG_ID);
+		options.addOption(optionOrganizationId);
+	}
+	
+	@SuppressWarnings("static-access")
+	private void addCreatedAtOption() {
+		optionCreatedAt = OptionBuilder
+				.withArgName("yyyy-mm-dd HH-MM-SS")
+				.hasArg()
 				.withDescription("Date and time of event creation (UTC)")
-				.withLongOpt("created-at").create("z");
-		
-		optionFingerprintFields = OptionBuilder.withArgName("field-name").hasArg()
+				.withLongOpt("created-at")
+				.create(OPTION_CREATED_AT);
+		options.addOption(optionCreatedAt);
+	}
+	
+	@SuppressWarnings("static-access")
+	private void addFingerprintFieldsOption() {
+		optionFingerprintFields = OptionBuilder
+				.withArgName("field-name")
+				.hasArg()
 				.hasArgs(16)
                 .withValueSeparator(':')
+                .isRequired()
 				.withDescription("The fields of the event used to calculate the event fingerprint.")
-				.withLongOpt("fingerprint-fields").create("f");
-		
-		optionMessage = OptionBuilder.withArgName("message").hasArg()
+				.withLongOpt("fingerprint-fields")
+				.create(OPTION_FINGERPRINT_FIELDS);
+		options.addOption(optionFingerprintFields);
+	}
+	
+	@SuppressWarnings("static-access")
+	private void addMessageOption() {
+		optionMessage = OptionBuilder
+				.withArgName("message")
+				.hasArg()
 				.withDescription("Additional description of the event")
-				.withLongOpt("message").create("m");
-		
-		optionProperties = OptionBuilder.withArgName("key:value[,key:value]").hasArg()
+				.withLongOpt("message")
+				.create(OPTION_MESSAGE);
+		options.addOption(optionMessage);
+	}
+	
+	@SuppressWarnings("static-access")
+	private void addPropertiesOption() {
+		optionProperties = OptionBuilder
+				.withArgName("key:value[,key:value]")
+				.hasArg()
 				.withDescription("Properties for the event.")
 				.hasArgs(2)
                 .withValueSeparator()
-				.withLongOpt("properties").create("p");
-		
+				.withLongOpt("properties").create(OPTION_PROPERTIES);
+		options.addOption(optionProperties);
+	}
+	
+	@SuppressWarnings("static-access")
+	private void addReceivedAtOption() {
 		optionReceivedAt = OptionBuilder.withArgName("yyyy-mm-dd HH-MM-SS").hasArg()
 				.withDescription("The timestamp the event was received (UTC).")
-				.withLongOpt("received-at").create("r");
-		
-		optionSender = OptionBuilder.withArgName("ref[:type:name]")
+				.withLongOpt("received-at").create(OPTION_RECEIVED_AT);
+		options.addOption(optionReceivedAt);
+	}
+	
+	@SuppressWarnings("static-access")
+	private void addSenderOption() {
+		optionSender = OptionBuilder
+				.withArgName("ref[:type:name]")
 				.hasArgs(3)
                 .withValueSeparator(':')
 				.withDescription("Optional information about the sender of the event.")
-				.withLongOpt("sender").create("x");
-		
-		optionSeverity = OptionBuilder.withArgName("INFO|WARN|ERROR|CRITICAL")
+				.withLongOpt("sender")
+				.create(OPTION_SENDER);
+		options.addOption(optionSender);
+	}
+	
+	@SuppressWarnings("static-access")
+	private void addSeverityOption() {
+		optionSeverity = OptionBuilder
+				.withArgName("INFO|WARN|ERROR|CRITICAL")
 				.hasArg()
 				.withDescription("Severity of the event which is one of INFO, WARN, ERROR, CRITICAL. Default is INFO.")
-				.withLongOpt("severity").create("y");
-
-		optionSource = OptionBuilder.withArgName("ref:[type:name]")
+				.withLongOpt("severity")
+				.create(OPTION_SEVERITY);
+		options.addOption(optionSeverity);
+	}
+	
+	@SuppressWarnings("static-access")
+	private void addSourceOption() {
+		optionSource = OptionBuilder
+				.withArgName("ref:[type:name]")
 				.hasArgs(3)
 				.withValueSeparator(':')
-				.withDescription("The source of the event. The source is typically the hostname or ip address of the system this event refers to.  If type is not provided it is assumed to be 'host'")
-				.withLongOpt("source").create("u");
-		
-		optionStatus = OptionBuilder.withArgName("OPEN|CLOSED|ACKNOWLEDGED|OK")
+				.withDescription("The source of the event. The source is typically the hostname or ip address of the system this event refers to. If type is not provided it is assumed to be 'host'")
+				.withLongOpt("source")
+				.create(OPTION_SOURCE);
+		options.addOption(optionSource);
+	}
+	
+	@SuppressWarnings("static-access")
+	private void addStatusOption() {
+		optionStatus = OptionBuilder
+				.withArgName("OPEN|CLOSED|ACKNOWLEDGED|OK")
 				.hasArg()
 				.withDescription("One of OPEN, CLOSED, ACKNOWLEDGED, or OK. Default is OK")
-				.withLongOpt("status").create("w");
-		
-		optionTags = OptionBuilder.withArgName("tag1[:tag2][:tag3][:...]").hasArg()
-				.withDescription("Tags used to provide a classification for events.")
-				.withLongOpt("tags").create("t");
-		
-		optionTitle = OptionBuilder.withArgName("title").hasArg()
-					.withDescription("Title of the event")
-					.withLongOpt("title").create("n");
-
-		// add h option
-		options.addOption("h", false, "Show help");
-
-		// Event options
-		options.addOption(optionApiHost);
-		options.addOption(optionApiKey);
-		options.addOption(optionCommand);
-		options.addOption(optionCreatedAt);
-		options.addOption(optionFingerprintFields);
-		options.addOption(optionMessage);
-		options.addOption(optionOrganizationId);
-		options.addOption(optionProperties);
-		options.addOption(optionReceivedAt);
-		options.addOption(optionSender);
-		options.addOption(optionSeverity);
-		options.addOption(optionSource);
+				.withLongOpt("status")
+				.create(OPTION_STATUS);
 		options.addOption(optionStatus);
-		options.addOption(optionTitle);
+	}
+	
+	@SuppressWarnings("static-access")
+	private void addTagOption() {
+		optionTags = OptionBuilder
+				.withArgName("tag1[:tag2][:tag3][:...]")
+				.hasArg()
+				.withDescription("Tags used to provide a classification for events.")
+				.withLongOpt("tags").create(OPTION_TAGS);
 		options.addOption(optionTags);
+	}
+	
+	@SuppressWarnings("static-access")
+	private void addTitleOption() {
+		optionTitle = OptionBuilder
+				.withArgName("title")
+				.hasArg()
+				.isRequired()
+				.withDescription("Title of the event")
+				.withLongOpt("title").create(OPTION_TITLE);
+		options.addOption(optionTitle);
+	}
+	
+	@SuppressWarnings("static-access")
+	private void addHelpOption() {
+		optionHelp = OptionBuilder
+				.withDescription("Shows help")
+				.withLongOpt("help").create(OPTION_HELP);
+		options.addOption(optionHelp);
+	}
 
+	/**
+	 * Configures all of the command line options handled by the Event CLI
+	 */
+	private void configureCommandLineOptions() {
+
+		addApiHostOption();
+		addCommandOption();
+		addApiKeyOption();
+		addOrganizationIdOption();
+		addCreatedAtOption();
+		addFingerprintFieldsOption();
+		addMessageOption();
+		addPropertiesOption();
+		addReceivedAtOption();
+		addSenderOption();
+		addSeverityOption();
+		addSourceOption();
+		addStatusOption();
+		addTagOption();
+		addTitleOption();
+		addHelpOption();
+	}
+	protected boolean handleCommandlandArguments(String[] args) throws ParseException {
+		boolean exit = false;
+		
+		configureCommandLineOptions();
+		
 		CommandLineParser parser = new BasicParser();
 		try {
 			cmd = parser.parse(options, args);
-			if (cmd.hasOption("h")) {
-				// automatically generate the help statement
-				HelpFormatter formatter = new HelpFormatter();
-				String cliName = System.getProperty("boundary.event.cliName","bevent");
-				formatter.printHelp(cliName, options);
+			if (cmd.hasOption(OPTION_HELP)) {
+				usage();
 				exit = true;
 			}
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			usage();
 			e.printStackTrace();
-			throw e;
+			exit = true;
 		}
 		return exit;
 	}
@@ -154,88 +296,175 @@ public class EventCLI {
 		return this.event;
 	}
 	
+
+	private Date parseDateTime(String s) throws java.text.ParseException {
+		Date dt = null;
+		if (s != null) {
+			TimeZone UTC = TimeZone.getTimeZone("GMT");
+			DateFormat df = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.FULL);
+			dt = df.parse(s);
+		}
+		return dt;
+	}
 	
-	protected void populateEvent() {
-		
-//		String createdAt = optionCreatedAt.getValue();
-//		if (createdAt.length() != 0) {
-//			event.setCreatedAt(new Date(createdAt));
-//		}
-		
-//		private Option optionFingerprintFields;
+	protected void extractCreatedAt() throws java.text.ParseException {
+		LOG.debug("extract createdAt");
+		String createdAt = optionCreatedAt.getValue();
+		event.setCreatedAt(parseDateTime(createdAt));
+	}
+	
+	protected void extractReceivedAt() throws java.text.ParseException {
+		String receivedAt = optionReceivedAt.getValue();
+		event.setReceivedAt(parseDateTime(receivedAt));
+	}
+	
+	protected void extractFingerprintFields() {
+		LOG.debug("extract fingerprintFields");
 		// Extract the fingerprint fields
-		String[] fingerprintFields = cmd.getOptionValues("f");
+		String[] fingerprintFields = cmd.getOptionValues(OPTION_FINGERPRINT_FIELDS);
 		if (fingerprintFields != null) {
 			for (String s : fingerprintFields) {
 				event.addFingerprintField(s);
 			}
 		}
-		
-//		private Option optionMessage;
+	}
+	
+	protected void extractMessage() {
 		String message = cmd.getOptionValue('m');
 		if (message != null) {
 			event.setMessage(message);
 		}
-//		private Option optionOrganizationId;
-//		private Option optionProperties;
-//		private Option optionReceivedAt;
-//		private Option optionSender;
-//		private Option optionSeverity;
-//		private Option optionSource;
-		
-		// Set the source
-		// @TODO support for properties for the source
-		String[] source = cmd.getOptionValues("u");
-		if (source != null) {
-			Source s = event.getSource();
-			if (source.length >= 1) {
-				s.setRef(source[0]);
-			}
-			if (source.length >= 2) {
-				s.setType(source[1]);
-			}
-			
-			if (source.length == 3) {
-				s.setName(source[2]);
-			}
-		}
-
-//		private Option optionStatus;
-//		private Option optionTags;
-		
-		String tags = cmd.getOptionValue("t");
-//		private Option optionTitle;
-		
-		String properties = cmd.getOptionValue("p");
+	}
+	
+	protected void extractProperties() {
+		String [] properties = cmd.getOptionValues('p');
 		if (properties != null) {
 			event.addProperty("","");
 		}
-		String orgId = cmd.getOptionValue("o");
-		if (orgId != null) {
-			event.setOrganizationId(orgId);
-		}
+	}
+	
+	protected void extractSeverity() {
+		String severity = cmd.getOptionValue('s');
+	}
+	
+	protected void extractStatus() {
 		
-		String title = cmd.getOptionValue("n","@message");
+	}
+	
+	protected void extractTags() {
+		String [] tags = cmd.getOptionValues('t');
+	}
+	
+	/**
+	 * Extracts the fields for the Source type.
+	 * @param strs Array of strings from the command line
+	 * @return {@link Source}
+	 */
+	private Source getSourceType(String [] strs) {
+		Source s = null;
+		// If have the string tokens and the cardinality is correct then
+		// extract the values and assign to the Source types
+		if (strs != null && strs.length >= 1 && strs.length <= 3) {
+			s = new Source();
+			if (strs.length >= 1) {
+				s.setRef(strs[0]);
+			}
+			if (strs.length >= 2) {
+				s.setType(strs[1]);
+			} else {
+				s.setType("host");
+			}
+			// Source name is in the last array value if present
+			if (strs.length == 3) {
+				s.setName(strs[2]);
+			}
+		}
+		return s;
+	}
+	
+	/**
+	 * Extract the source fields from the command line options
+	 */
+	protected void extractSource() {
+		Source source = getSourceType(cmd.getOptionValues('u'));
+		// @TODO support for properties for the source
+		if (source != null) {
+			event.setSource(source);
+		}
+	}
+	
+	/**
+	 * Extract the sender fields from the command line option
+	 */
+	protected void extractSender() {		
+		Source sender = getSourceType(cmd.getOptionValues('u'));
+		// @TODO support for properties for the source
+		if (sender != null) {
+			event.setSender(sender);
+		}
+	}
+	
+	/**
+	 * Extracts the title from the comman line option.
+	 */
+	protected void extractTitle() {
+		String title = cmd.getOptionValue("n");
 		event.setTitle(title);
 	}
 	
-	public void setDebugEvent(RawEvent event) {
-		
+	/**
+	 * Configures the event from the command line options.
+	 * 
+	 * @throws java.text.ParseException If there is an issue parsing the command line options
+	 */
+	protected void configureEvent() throws java.text.ParseException {
+		extractCreatedAt();
+		extractFingerprintFields();
+		extractMessage();
+		extractReceivedAt();
+		extractSender();
+		extractSeverity();
+		extractStatus();
+		extractTags();
+		extractSource();
+		extractProperties();
+		extractTitle();
 	}
 	
-	public void addEventRoute(CamelContext context) throws Exception {
-
-		BoundaryEventRouteBuilder eventRouteBuilder = new BoundaryEventRouteBuilder();
+	public void setDebugEvent() {
+		event.addFingerprintField("@title");
+		event.setTitle("Hello from the CLI");
+		event.getSource().setRef("localhost");
+		event.getSource().setType("host");
+	}
+	
+	protected void configureApiKey() {
+		String apiKey = cmd.getOptionValue('a');
+		eventRouteBuilder.setApiKey(apiKey);
+	}
+	
+	protected void configureOrgId() {
+		String orgId = cmd.getOptionValue('o');
+		if (orgId != null) {
+			eventRouteBuilder.setOrgId(orgId);
+		}
+	}
+	
+	protected void configureApiHost() {
 		eventRouteBuilder.setApiHost("api.boundary.com");
-		eventRouteBuilder.setFromUri("direct:event");
-		eventRouteBuilder.setApiKey("Aqixh4Vt6j10d75Yg9zPrKvDLWc");
-		eventRouteBuilder.setOrgId("3ehRi7uZeeaTN12dErF5XOnRXjC");
-		eventRouteBuilder.setStartUpOrder(100);
+	}
+
+	public void addEventRoute(CamelContext context) throws Exception {
+		eventRouteBuilder = new BoundaryEventRouteBuilder();
 		eventRouteBuilder.setRouteId("EVENT-ROUTE");
-		
+		eventRouteBuilder.setFromUri("direct:event");
+		eventRouteBuilder.setStartUpOrder(100);
+		configureApiKey();
+		configureOrgId();
 		context.addRoutes(eventRouteBuilder);
 	}
 	
+	// TODO: Elminate the need for this extra route
 	private class EventSourceRouteBuilder extends BoundaryRouteBuilder {
 
 		@Override
@@ -248,48 +477,64 @@ public class EventCLI {
 			.to("direct:event");
 		}
 	}
+	
 	public void addSourceRoute(CamelContext context) throws Exception {
 		EventSourceRouteBuilder source = new EventSourceRouteBuilder();
-		
 		context.addRoutes(source);
 	}
 	
-
-	
 	public void createEvent() {
-
 		try {
-			CamelContext context = new DefaultCamelContext();
-			addEventRoute(context);
-			addSourceRoute(context);
-			context.start();
 
+			// Create a producer template so that we can send an instance of RawEvent
+			// which ends up at the boundary API
 			ProducerTemplate template = context.createProducerTemplate();
-
-			event.addFingerprintField("@title");
-			event.setTitle("Hello from the CLI");
-			event.getSource().setRef("localhost");
-			event.getSource().setType("host");
-
-			template.sendBody("direct:source", event);
+			template.sendBody("direct:source",event);
+			context.stop();
 			
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		}
 	}
 	
-	private String execute(String [] args) throws Exception {
-		
-		handleCommandlandArguments(args);
-		populateEvent();
-		createEvent();
+	private void configureRoutes() throws Exception {
+		// Allocate a CamelContext that will contain our Routes
+		context = new DefaultCamelContext();
 
+		// Add the event route and route that serializes the RawEvent
+		addEventRoute(context);
+		addSourceRoute(context);
+
+		// Start the context which will in turn start the defined within the
+		// context.
+		context.start();
+	}
+	
+	/**
+	 * Handles the processing of command line options, configuring, and sending the events
+	 * @param args
+	 * @return
+	 * @throws Exception
+	 */
+	private String execute(String [] args) throws Exception {
+		// If there were no errors parsing the command line
+		// then proceed with configuring and sending the event
+		if (handleCommandlandArguments(args) == false) {
+			configureRoutes();
+			configureEvent();
+			createEvent();
+		}
+		// @TODO: Return the event id created
 		return null;
 	}
 
+	/**
+	 * Main entry point of the Event CLI.
+	 * 
+	 * @param args Command line arguments
+	 */
 	public static void main(String[] args) {
 		EventCLI cli = new EventCLI();
-
 		try {
 			String eventId = cli.execute(args);
 			
