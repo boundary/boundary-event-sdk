@@ -5,12 +5,21 @@ package com.boundary.sdk.event.service;
 
 import static org.junit.Assert.*;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.spring.CamelSpringTestSupport;
+import org.apache.camel.Exchange;
+import org.apache.camel.Message;
 import org.apache.camel.ProducerTemplate;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -60,14 +69,31 @@ public class SSHTest extends CamelSpringTestSupport  {
 	}
 	
 	@Test
-	public void testSSH() throws InterruptedException {
+	public void testSSH() throws InterruptedException, IOException {
 		MockEndpoint endPoint = getMockEndpoint("mock:ssh-out");
 		endPoint.setExpectedMessageCount(1);
 		
-		String cmd = "date";
+		String cmd = "status plumgrid";
 		template.sendBody("direct:ssh-in",cmd);
-				
+		
 		endPoint.assertIsSatisfied();
+		
+		List<Exchange> list = endPoint.getExchanges();
+		
+		for (Exchange x: list) {
+			Message m = x.getIn();
+			InputStream out = m.getBody(InputStream.class);
+			BufferedReader bufferedReader = null;
+
+			bufferedReader = new BufferedReader(new InputStreamReader(out));
+			List<String> lines = new ArrayList<String>();
+			
+			String line = null;
+			while ((line = bufferedReader.readLine()) != null) {
+				System.out.println(line);
+				lines.add(line);
+			}
+		}
 	}
 	
 	@Override

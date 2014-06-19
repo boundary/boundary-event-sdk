@@ -35,9 +35,16 @@ LOG_ERR=${BOUNDARY_SDK_LOG_DIR}/beventd.err.log
 # Redirect standard error into standard out
 LOG_ERR="&1"
 
+if [ -z "$BOUNDARY_SDK_CONFIG_FILE" ]
+then
+  CONFIGURATION_FILE="$BOUNDARY_SDK_CONFIG_FILE"
+else
+  CONFIGURATION_FILE="$BOUNDARY_SDK_ETC_DIR/event-application.xml"
+fi
+
 do_exec()
 {
-    $EXEC -home "$JAVA_HOME" -cp "$SDK_CLASSPATH" -user "$USER" -server -Dboundary.application.context.uri="file:$BOUNDARY_SDK_ETC_DIR/event-application.xml" -outfile "$LOG_OUT" -errfile "$LOG_ERR" -pidfile "$PID" $1 "$CLASS"
+    $EXEC -home "$JAVA_HOME" -cp "$SDK_CLASSPATH" -user "$USER" -server -Dboundary.application.context.uri="file:$CONFIGURATION_FILE" -outfile "$LOG_OUT" -errfile "$LOG_ERR" -pidfile "$PID" $1 "$CLASS"
 }
 
 case "$1" in

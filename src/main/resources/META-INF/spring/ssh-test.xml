@@ -11,7 +11,7 @@
 		<route id="ssh-local-poll" startupOrder="10">
 			<!-- Receives messages with Service Requests -->
 			<from uri="direct:ssh-in"/>
-			<to id="SSH" uri="ssh://xxxxx:yyyy@localhost"/>
+			<to id="SSH" uri="ssh://vagrant:Lerma$20@192.168.1.131"/>
 			<log message="${body}"/>
 			<to uri="mock:ssh-out"/>
 		</route>
