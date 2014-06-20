@@ -38,5 +38,13 @@ public final class InputStreamConverter {
 		
 		return lines;
 	}
+	
+	@Converter static String toString(List<String> list) {
+		StringBuffer sb = new StringBuffer();
+		for (String s :list) {
+			sb.append(s);
+		}
+		return sb.toString();
+	}
 
 }
