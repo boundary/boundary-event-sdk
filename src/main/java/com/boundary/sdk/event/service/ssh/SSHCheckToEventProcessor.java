@@ -48,6 +48,7 @@ public class SSHCheckToEventProcessor implements Processor {
 		event.setTitle("CHANGED");
 
 		event.addFingerprintField("service-name");
+		event.addFingerprintField("host");
 		
 		// Service Tests are always have a status of OK
 		event.setStatus(Status.OK);
@@ -60,6 +61,7 @@ public class SSHCheckToEventProcessor implements Processor {
 		event.addProperty("expected-output",expectedOutput);
 		event.addProperty("output", message.getBody().toString());
 		event.addProperty("service-name",serviceTest.getServiceName());
+		event.addProperty("host",serviceTestConfig.getHost());
 		
 		LOG.info(event.toString());
 		

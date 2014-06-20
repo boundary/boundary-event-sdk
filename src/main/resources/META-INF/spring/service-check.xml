@@ -51,8 +51,9 @@
 	<bean id="sshTests" class="com.boundary.sdk.event.service.ssh.SendSSHServiceTests">
 		<property name="serviceName" value="SDN Controller"/>
 		<property name="serviceTestName" value="Check SDN Controller plumgrid"/>
-		<property name="command" value="echo plumgrid start/running, process"/>
+		<property name="command" value="sudo status plumgrid"/>
 		<property name="expectedOutput" value="plumgrid start/running, process"/>
+		<property name="host" value="director-denali-1"/>
 	</bean>
 	
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
