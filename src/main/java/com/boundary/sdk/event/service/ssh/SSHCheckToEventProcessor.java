@@ -5,6 +5,8 @@ import java.util.Date;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.boundary.camel.component.ssh.SshxConfiguration;
 import com.boundary.sdk.event.RawEvent;
@@ -15,10 +17,11 @@ import static com.boundary.sdk.event.service.QuartzHeaderNames.*;
 import static com.boundary.sdk.event.util.BoundaryHeaderNames.*;
 
 import com.boundary.sdk.event.service.ServiceTest;
+import com.boundary.sdk.event.snmp.MIBCompilerLogger;
 
 public class SSHCheckToEventProcessor implements Processor {
-
-	private static final String QUARTZ_HEADER_FIRE_TIME = null;
+	
+	private static Logger LOG = LoggerFactory.getLogger(SSHCheckToEventProcessor.class);
 
 	public SSHCheckToEventProcessor() {
 
@@ -42,16 +45,23 @@ public class SSHCheckToEventProcessor implements Processor {
 		event.getSource().setType("host");
 		
 		event.setTitle(serviceTest.getServiceName() + " - " + serviceTest.getName());
+		event.setTitle("CHANGED");
+
 		event.addFingerprintField("service-name");
 		
 		// Service Tests are always have a status of OK
 		event.setStatus(Status.OK);
 		
-		//
+		event.addTag("FOOBAR");
+		event.addTag("NEW");
+		
+		// Add the required properties
 		event.addProperty("command",serviceTestConfig.getCommand());
 		event.addProperty("expected-output",expectedOutput);
-		event.addProperty("output", message.getBody());
+		event.addProperty("output", message.getBody().toString());
 		event.addProperty("service-name",serviceTest.getServiceName());
+		
+		LOG.info(event.toString());
 		
 		// Set the severity base on the expected output 
 		if (output.matches(expectedOutput)) {
@@ -63,9 +73,4 @@ public class SSHCheckToEventProcessor implements Processor {
 		
 		message.setBody(event);
 	}
-	
-	public void process() {
-		
-	}
-
 }

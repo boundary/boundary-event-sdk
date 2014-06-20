@@ -6,9 +6,6 @@
                    http://camel.apache.org/schema/spring
                    http://camel.apache.org/schema/spring/camel-spring.xsd">
                    
-
-
-      
     <!-- Definition of the route that communicates with the Boundary API host -->
 	<bean id="boundary-event-route" class="com.boundary.sdk.event.BoundaryEventRouteBuilder">
 	
@@ -27,7 +24,7 @@
 		<property name="orgId" value="3ehRi7uZeeaTN12dErF5XOnRXjC"/>
 		
 		<!-- <property name="apiKey" value="#{systemEnvironment['BOUNDARY_API_KEY']}"/> -->
-		<property name="apiKey" value=""/>
+		<property name="apiKey" value="FORXHJOLgKhRCZsJwxKEBEFzNNG"/>
 
          <!-- The endpoint URI to listen for boundary events -->
 		<property name="fromUri" value="seda:boundary-event?concurrentConsumers=10"/>
@@ -42,9 +39,12 @@
 	<!-- Extracts the specific service test configuration from a ServiceTest generic instance -->
 	<bean id="configurationProcessor" class="com.boundary.sdk.event.service.ExtractServiceTestConfiguration"/>
 	
-	<bean id="ping-to-event" class="com.boundary.sdk.event.service.PingInfoToEventProcessor"/>
 	
+	<!-- Beans to convert service tests to Boundary RawEvents -->
+	<bean id="ping-to-event" class="com.boundary.sdk.event.service.PingInfoToEventProcessor"/>
 	<bean id="port-to-event" class="com.boundary.sdk.event.service.PortInfoToEventProcessor"/>
+	<bean id="ssh-to-event" class="com.boundary.sdk.event.service.ssh.SSHCheckToEventProcessor"/>
+	
 	
 	
 	<!-- Plumgrid - plumgrid SSH test -->
@@ -56,8 +56,8 @@
 	</bean>
 	
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
-		<propertyPlaceholder id="properties" location="classpath:META-INF/spring/service-check.properties"/>
 	
+		<propertyPlaceholder id="properties" location="classpath:META-INF/spring/service-check.properties"/>
 	
 		<routeBuilder ref="boundary-event-route"/>
 	
@@ -74,17 +74,6 @@
 		<route id="plumgrid-process-check" startupOrder="200">
 			<from uri="quartz://boundary/plumgrid?cron={{plumgrid.cron}}"/>
 			<bean ref="sshTests"/>
-			
-<!-- 			<setBody>
-				<simple>echo plumgrid start/running, process</simple>
-			</setBody>
-			<setHeader headerName="SSHExpectedOutput">
-				<simple>plumgrid start/running, process</simple>
-			</setHeader>
-			<setHeader headerName="BoundaryServiceName"/>
-				<simple>SDN Controller</simple>
-			<setHeader/> -->
-			
 			<to ref="plumgrid-host-ssh-in"/>
 		</route>
 				
@@ -96,7 +85,7 @@
 			<log message="${headers}"/>
 			<log message="${body}"/>
  			<to uri="mock:ssh-out"/>
- 			<to ref="plumgrid-host-ssh-out"/>
+ 			<to ref="event-creator-in"/>
  		</route>
  		
  		<!--
@@ -113,10 +102,13 @@
  		-->
  		<route id="SSH-TO-EVENT" startupOrder="2020">
  			<from ref="event-creator-in"/>
+ 			<bean ref="ssh-to-event" method="process"/>
 			<log message="EVENT PROCESSOR"/>
-			<to ref="event-creator-out"/>
+			<marshal>
+				<serialization/>
+			</marshal>
+			<to ref="boundary-event"/>
  		</route>
-		
 	
 <!-- 		<route id="service-check-request-split" startupOrder="10">
 		
