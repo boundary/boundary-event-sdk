@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.spring.CamelSpringTestSupport;
@@ -57,25 +58,12 @@ public class ServiceCheckTest extends CamelSpringTestSupport  {
 		super.tearDown();
 	}
 
-	@Ignore("Failed test that may not be relevant anymore")
 	@Test
-	public void test() throws InterruptedException {
-		MockEndpoint endPoint = getMockEndpoint("mock:out");
-
-		endPoint.setExpectedMessageCount(3);
-		Map<String,Object> properties = new HashMap<String,Object>();
-		PingConfiguration configuration = new PingConfiguration();;
-		
-		properties.put("request", "foo");
-		ServiceTest<PingConfiguration> test1 = new ServiceTest<PingConfiguration>("test1","localhost","999",configuration);
-		ServiceTest<PingConfiguration> test2 = new ServiceTest<PingConfiguration>("test2","localhost","999",configuration);
-		ServiceTest<PingConfiguration> test3 = new ServiceTest<PingConfiguration>("test3","localhost","999",configuration);
-
-		
-		template.sendBodyAndHeaders("direct:in",test1, properties);
-		template.sendBodyAndHeaders("direct:in",test2, properties);
-		template.sendBodyAndHeaders("direct:in",test3, properties);
-		
+	public void testSimple() throws InterruptedException {
+		MockEndpoint endPoint = getMockEndpoint("mock:ssh-out");
+		endPoint.setMinimumExpectedMessageCount(1);
+		endPoint.await(10, TimeUnit.SECONDS);
+				
 		endPoint.assertIsSatisfied();
 	}
 
@@ -83,5 +71,4 @@ public class ServiceCheckTest extends CamelSpringTestSupport  {
 	protected AbstractApplicationContext createApplicationContext() {
 		return new ClassPathXmlApplicationContext("META-INF/spring/service-check.xml");
 	}
-
 }

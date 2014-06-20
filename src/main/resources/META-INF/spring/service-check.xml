@@ -6,6 +6,9 @@
                    http://camel.apache.org/schema/spring
                    http://camel.apache.org/schema/spring/camel-spring.xsd">
                    
+
+
+      
     <!-- Definition of the route that communicates with the Boundary API host -->
 	<bean id="boundary-event-route" class="com.boundary.sdk.event.BoundaryEventRouteBuilder">
 	
@@ -14,7 +17,7 @@
 		     then send events to the boundary event route need to be
                      configured with a start order higher than 100
 		  -->
-		<property name="startUpOrder" value="1000"/>
+		<property name="startUpOrder" value="100"/>
 		<!-- TBD: Encryption of apiKey using Camel APIs -->
 		
 		<!-- Boundary organization ID and API key can obtained by logging into the web
@@ -44,25 +47,83 @@
 	<bean id="port-to-event" class="com.boundary.sdk.event.service.PortInfoToEventProcessor"/>
 	
 	
-	<!-- Handles the processing of service checks to raw events	 -->
-<!-- 	<bean id="correlationProcessor" class="com.boundary.sdk.event.service.ServiceCheckToRawEvent"/> -->
+	<!-- Plumgrid - plumgrid SSH test -->
+	<bean id="sshTests" class="com.boundary.sdk.event.service.ssh.SendSSHServiceTests">
+		<property name="serviceName" value="SDN Controller"/>
+		<property name="serviceTestName" value="Check SDN Controller plumgrid"/>
+		<property name="command" value="echo plumgrid start/running, process"/>
+		<property name="expectedOutput" value="plumgrid start/running, process"/>
+	</bean>
 	
-	<!-- Extracts the specific service test configuration from a ServiceTest generic instance -->
-<!-- 	<bean id="requestHeaders" class="com.boundary.sdk.event.service.SetServiceCheckHeaders"/>  -->	
-
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
-	    <routeBuilder ref="boundary-event-route"/>
+		<propertyPlaceholder id="properties" location="classpath:META-INF/spring/service-check.properties"/>
 	
-		<endpoint id ="ping-event-out" uri ="mock:ping-event-out"/>
+	
+		<routeBuilder ref="boundary-event-route"/>
+	
+		<endpoint id ="plumgrid" uri ="ssh://{{plumgrid.user}}:{{plumgrid.password}}@{{plumgrid.host}}"/>
 		<endpoint id ="port-event-out" uri ="mock:port-event-out"/>
 		<endpoint id ="boundary-event" uri ="seda:boundary-event"/>
-	
-		<route id="service-check-request-split" startupOrder="10">
+		<endpoint id ="plumgrid-host-ssh-in" uri = "direct:plumgrid-host-ssh-out"/>
+		<endpoint id ="plumgrid-host-ssh-out" uri = "direct:plumgrid-host-ssh-out"/>
+		<endpoint id ="event-creator-in" uri = "direct:event-creator-in"/>
 		
-			<!-- Receives messages with Service Requests -->
+<!-- 		<endpoint id ="event-creator-out" uri = "seda:boundary-event"/> -->
+		<endpoint id ="event-creator-out" uri = "mock:event-out"/>
+		
+		<route id="plumgrid-process-check" startupOrder="200">
+			<from uri="quartz://boundary/plumgrid?cron={{plumgrid.cron}}"/>
+			<bean ref="sshTests"/>
+			
+<!-- 			<setBody>
+				<simple>echo plumgrid start/running, process</simple>
+			</setBody>
+			<setHeader headerName="SSHExpectedOutput">
+				<simple>plumgrid start/running, process</simple>
+			</setHeader>
+			<setHeader headerName="BoundaryServiceName"/>
+				<simple>SDN Controller</simple>
+			<setHeader/> -->
+			
+			<to ref="plumgrid-host-ssh-in"/>
+		</route>
+				
+		<route id="PLUMGRID-SSH" startupOrder="2010">
+			<from ref="plumgrid-host-ssh-in"/>
+			<!-- Have a timer fire every minute -->
+			<log message="Running command: ${body} on host: {{plumgrid.host}}"/>
+			<to id="PLUMGRID-SSH" uri="ssh://{{plumgrid.user}}:{{plumgrid.password}}@{{plumgrid.host}}"/>
+			<log message="${headers}"/>
+			<log message="${body}"/>
+ 			<to uri="mock:ssh-out"/>
+ 			<to ref="plumgrid-host-ssh-out"/>
+ 		</route>
+ 		
+ 		<!--
+ 		This route is responsible for creating
+ 		an event to send to the boundary event route from an SSH check.
+ 		
+ 		The following is assumed to be in Exchange
+ 		    body => is a String with standard output from the SSH execution
+ 		    header.SSHExpectedOutput => String to compare to output in the body
+ 		    header.CamelSshStderr => InputStream of the standard error
+ 		    header.CamelSshExitValue => Contains exit code from the SSH command
+ 		    header.triggerName => Name of the trigger that sent this SSH check. Make this the service.
+ 		    header.fireTime => Time the triggers was sent
+ 		-->
+ 		<route id="SSH-TO-EVENT" startupOrder="2020">
+ 			<from ref="event-creator-in"/>
+			<log message="EVENT PROCESSOR"/>
+			<to ref="event-creator-out"/>
+ 		</route>
+		
+	
+<!-- 		<route id="service-check-request-split" startupOrder="10">
+		
+			Receives messages with Service Requests
 			<from uri="direct:service-check-request-in"/>
 			
-			<!-- We set a header so that we can correlate the Service Request and Service Tests -->
+			We set a header so that we can correlate the Service Request and Service Tests
 			<setHeader headerName ="serviceCheckRequestId">
 				<simple>${body.requestId}</simple>
 			</setHeader>
@@ -71,7 +132,7 @@
 			</setHeader>
 			<log message="RequestId: ${headers.serviceCheckRequestId}"/>
 			<split parallelProcessing="true">
-			<!-- Split into multiple messages based on the Service Tests in the Service Request instance -->
+			Split into multiple messages based on the Service Tests in the Service Request instance
 			<simple>${body.serviceTests}</simple >
 				<log message="Processing message[${property.CamelSplitIndex}]"/>
 				<log message="${headers}"/>
@@ -145,7 +206,7 @@
 				<to uri="stream:out"/>
 				<to uri="seda:service-check-aggregate-out"/>
 			</aggregate>
-		</route>
+		</route> -->
 <!-- 		
 		<route id="service-test-correlation" startupOrder="400">
 			<from uri="seda:service-check-aggregate-out"/>
@@ -156,4 +217,12 @@
 		</route>
  -->
 	</camelContext>
+	
+	
+		<!--  Handles the processing of service checks to raw events -->
+<!-- 	<bean id="correlationProcessor" class="com.boundary.sdk.event.service.ServiceCheckToRawEvent"/>
+ -->	
+	<!-- Extracts the specific service test configuration from a ServiceTest generic instance -->
+<!-- 	<bean id="requestHeaders" class="com.boundary.sdk.event.service.SetServiceCheckHeaders"/> 	
+ -->
 </beans>

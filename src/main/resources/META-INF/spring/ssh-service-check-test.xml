@@ -5,14 +5,18 @@
                    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
                    http://camel.apache.org/schema/spring
                    http://camel.apache.org/schema/spring/camel-spring.xsd">
-
+                   
+    <bean id="ssh-to-event-processor" class="com.boundary.sdk.event.service.ssh.SSHCheckToEventProcessor"/>
+   
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
-		<route id="ssh-local-poll" startupOrder="10">
-			<!-- Have a timer fire every minute -->
-			<from uri="quartz://timerName?cron=0+0/1 * * * ?"/>
-			<to id="SSH" uri="ssh://{{plumgrid.user}}:Lerma$20@192.168.1.131"/>
+		<route id="SSH-TO-EVENT-TEST">
+			<from uri="direct:in"/>
 			<log message="${body}"/>
-			<to uri="mock:ssh-out"/>
+			<log message="${headers}"/>
+			<bean ref="ssh-to-event-processor"/>
+			<log message="${body}"/>
+			<log message="${headers}"/>
+			<to uri="mock:out"/>
 		</route>
 	</camelContext>
 </beans>
