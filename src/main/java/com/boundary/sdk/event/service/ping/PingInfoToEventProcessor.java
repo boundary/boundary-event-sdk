@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.boundary.sdk.event.service;
+package com.boundary.sdk.event.service.ping;
 
 import java.util.HashMap;
 
@@ -17,6 +17,7 @@ import com.boundary.sdk.event.RawEvent;
 import com.boundary.sdk.event.Severity;
 import com.boundary.sdk.event.Source;
 import com.boundary.sdk.event.Status;
+import com.boundary.sdk.event.service.ServiceTest;
 
 import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
 

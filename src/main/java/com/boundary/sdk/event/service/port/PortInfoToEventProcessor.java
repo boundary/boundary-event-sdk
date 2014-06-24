@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.boundary.sdk.event.service;
+package com.boundary.sdk.event.service.port;
 
 import java.io.IOException;
 import java.util.Properties;

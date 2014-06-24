@@ -6,7 +6,7 @@
  * <li>HTTP - Makes an HTTP(S) request
  * </ol>
  */
-package com.boundary.sdk.event.service;
+package com.boundary.sdk.event.service.ping;
 
 import com.boundary.sdk.event.BoundaryRouteBuilder;
 
