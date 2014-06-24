@@ -1,6 +1,14 @@
 package com.boundary.sdk.event.service.ssh;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
@@ -30,8 +38,11 @@ public class SSHCheckToEventProcessor implements Processor {
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		Message message = exchange.getIn();
-		String output = message.getBody(String.class);
 		String expectedOutput = message.getHeader(SshHeaderNames.SSH_HEADER_EXPECTED_OUTPUT,String.class);
+		
+//		ByteArrayInputStream inputStream = message.getBody(ByteArrayInputStream.class);
+//		String output = getOutputString(inputStream);
+		
 		String triggerName = message.getHeader(QUARTZ_HEADER_TRIGGER_NAME,String.class);
 		//String createdAtDate = message.getHeader(QUARTZ_HEADER_FIRE_TIME,String.class);
 		String testName = message.getHeader(BOUNDARY_SERVICE_NAME,String.class);
@@ -45,7 +56,6 @@ public class SSHCheckToEventProcessor implements Processor {
 		event.getSource().setType("host");
 		
 		event.setTitle(serviceTest.getServiceName() + " - " + serviceTest.getName());
-		event.setTitle("CHANGED");
 
 		event.addFingerprintField("service-name");
 		event.addFingerprintField("host");
@@ -53,26 +63,65 @@ public class SSHCheckToEventProcessor implements Processor {
 		// Service Tests are always have a status of OK
 		event.setStatus(Status.OK);
 		
-		event.addTag("FOOBAR");
-		event.addTag("NEW");
-		
 		// Add the required properties
 		event.addProperty("command",serviceTestConfig.getCommand());
 		event.addProperty("expected-output",expectedOutput);
-		event.addProperty("output", message.getBody().toString());
+		String output = message.getBody(String.class);
+		event.addProperty("output",output);
 		event.addProperty("service-name",serviceTest.getServiceName());
 		event.addProperty("host",serviceTestConfig.getHost());
 		
-		LOG.info(event.toString());
+		event.addTag(serviceTest.getServiceName());
 		
+		LOG.info(event.toString());
+		LOG.info(expectedOutput);
 		// Set the severity base on the expected output 
 		if (output.matches(expectedOutput)) {
 			event.setSeverity(Severity.INFO);
+			event.setMessage("Received expected output");
 		}
 		else {
 			event.setSeverity(Severity.WARN);
+			event.setMessage("Received unexpected output");
 		}
 		
 		message.setBody(event);
+	}
+	
+	private String getOutputString(ByteArrayInputStream inputStream) {
+		StringBuffer sb = new StringBuffer();
+		List<String> lines = getOutputToList(inputStream);
+		
+		for (String line : lines) {
+			sb.append(line);
+		}
+		
+		return sb.toString();
+	}
+	
+	
+	private List<String> getOutputToList(ByteArrayInputStream inputStream) {
+		List<String> lines = new ArrayList<String>();
+	
+		BufferedReader bufferedReader = null;
+		try {
+			bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+			String line = null;
+			while ((line = bufferedReader.readLine()) != null) {
+				lines.add(line);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (inputStream != null) {
+					inputStream.close();
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+
+		return lines;
 	}
 }
