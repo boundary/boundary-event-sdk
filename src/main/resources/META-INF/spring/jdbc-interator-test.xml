@@ -1,0 +1,32 @@
+ <beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+                   http://www.springframework.org/schema/beans
+                   http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                   http://camel.apache.org/schema/spring
+                   http://camel.apache.org/schema/spring/camel-spring.xsd">
+                   
+
+
+	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+		<route id="jdbc-interator" startupOrder="10">
+			<from uri="direct:sql-in"/>
+			<to id="SSH" uri="ssh://{{plumgrid.user}}:Lerma$20@192.168.1.131"/>
+			<log message="${body}"/>
+			<to uri="mock:ssh-out"/>
+		</route>
+		
+		   		<from uri="direct:service-db-in"/>
+    		<setBody><simple>SELECT id,name FROM v_service_checks</simple></setBody>
+    		<to uri="jdbc:service-db-datasource?outputType=SelectList"/>
+    		<convertBodyTo type="java.util.Iterator"/>
+    		<split>
+    			<simple>${body}</simple>
+    		</split>
+       		<bean ref="service-db-processor" method="process"/>
+       		<to uri="direct:service-check-request-in"/>
+       		<to uri="mock:service-db-out"/>
+        </route>
+		
+	</camelContext>
+</beans>
