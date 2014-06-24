@@ -92,6 +92,7 @@
 		<maven-pdf-plugin-version>1.2</maven-pdf-plugin-version>
 		<maven-site-plugin-version>3.3</maven-site-plugin-version>
 		<maven-project-info-reports-plugin-version>2.7</maven-project-info-reports-plugin-version>
+		<mysql-connector-java-version>5.1.31</mysql-connector-java-version>
 		<rpm-maven-plugin-version>2.0.1</rpm-maven-plugin-version>
 		<slf4j-api-version>1.7.7</slf4j-api-version>
 		<slf4j-log4j12-version>1.7.7</slf4j-log4j12-version>
@@ -622,6 +623,26 @@
 			<groupId>commons-daemon</groupId>
 			<artifactId>commons-daemon</artifactId>
 			<version>${commons-daemon-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jdbc</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-xstream</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql-connector-java-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.boundary</groupId>
