@@ -34,11 +34,6 @@ public class SendSSHServiceTestsTest extends CamelSpringTestSupport {
 	public void tearDown() throws Exception {
 	}
 
-	@Test
-	public void testProcess() {
-		
-		fail("Not yet implemented");
-	}
 
 	@Test
 	public void testSetTestName() {
