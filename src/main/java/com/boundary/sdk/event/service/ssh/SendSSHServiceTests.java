@@ -17,7 +17,16 @@ public class SendSSHServiceTests implements Processor {
 	private String serviceName;
 	private String requestId;
 	private String expectedOutput;
+	private String serviceTestType;
 	
+	public String getServiceTestType() {
+		return serviceTestType;
+	}
+
+	public void setServiceTestType(String serviceTestType) {
+		this.serviceTestType = serviceTestType;
+	}
+
 	public SendSSHServiceTests() {
 		configuration = new SshxConfiguration();
 		
