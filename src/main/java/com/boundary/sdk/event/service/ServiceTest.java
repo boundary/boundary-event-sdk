@@ -12,6 +12,7 @@ public class ServiceTest<T> {
 	private String serviceName;
 	private T configuration;
 	private String requestId;
+	private String serviceTestType;
 	
 	public ServiceTest(String name,String serviceName,String requestId,T configuration) {
 		this.name = name;
@@ -44,5 +45,13 @@ public class ServiceTest<T> {
 
 	public String getServiceName() {
 		return this.serviceName;
+	}
+	
+	public String getServiceTestType() {
+		return serviceTestType;
+	}
+
+	public void setServiceTestType(String serviceTestType) {
+		this.serviceTestType = serviceTestType;
 	}
 }
