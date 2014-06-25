@@ -1,6 +1,7 @@
 package com.boundary.sdk.event;
 
 import org.apache.camel.Exchange;
+import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.http.AuthMethod;
 import org.apache.camel.component.http.HttpComponent;
@@ -8,6 +9,7 @@ import org.apache.camel.component.http.HttpConfiguration;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import static org.apache.camel.LoggingLevel.*;
 
 /**
  * {@link RouteBuilder} for sending events to Boundary. Accepts serialized {@link RawEvent}
@@ -108,13 +110,14 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 			.routeId(routeId)
 			.unmarshal().serialization()
 			.marshal().json(JsonLibrary.Jackson)
-			.to("log:com.boundary.sdk.BoundaryEventRoute?level=DEBUG&showBody=true")
+			.log(INFO,"RawEvent: ${body}")
 			.setHeader(Exchange.ACCEPT_CONTENT_TYPE, constant("application/json"))
 			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
 			.setHeader(Exchange.HTTP_METHOD, constant("POST"))
-			.to("log:com.boundary.sdk.event.BoundaryEventRouteBuilder?level=DEBUG&groupInterval=60000&groupDelay=60000&groupActiveOnly=false")
+			.to("log:com.boundary.sdk.event.BoundaryEventRouteBuilder?level=INFO&groupInterval=60000&groupDelay=60000&groupActiveOnly=false")
 			.to(url.toString())
-			.to("log:com.boundary.sdk.event.BoundaryEventRouteBuilder?level=INFO&showHeaders=true&multiline=true")
+			.log(DEBUG,"HTTP Method: ${headers.CamelHttpMethod},AcceptContentType={headers.CamelAcceptContentType}")
+			.log(INFO,"HTTP Response Code: ${headers.CamelHttpResponseCode},Location: ${headers.Location}")
 			;
 	}
 }
