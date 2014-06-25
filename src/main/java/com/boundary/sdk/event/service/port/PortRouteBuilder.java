@@ -12,7 +12,7 @@ import com.boundary.camel.component.ping.PingInfo;
 import com.boundary.sdk.event.BoundaryRouteBuilder;
 import com.boundary.sdk.event.service.ServiceCheckRequest;
 import com.boundary.sdk.event.service.ServiceTest;
-import static com.boundary.sdk.event.util.BoundaryHeaderNames.*;
+import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
 
 /**
  * @author davidg
@@ -61,7 +61,7 @@ public class PortRouteBuilder extends BoundaryRouteBuilder {
 		String uri = "port://" + getHost() + ":" + getPort() + "/tcp?delay=" + getDelay();
 		System.out.println("URI: " + uri);
         from(uri)
-        .setHeader(BOUNDARY_SERVICE_TEST).constant(serviceTest)
+        .setHeader(SERVICE_TEST_INSTANCE).constant(serviceTest)
         .process(new PortInfoToEventProcessor())
         .marshal().serialization()
         .to(getToUri());

@@ -25,10 +25,10 @@ import com.boundary.sdk.event.service.ServiceTest;
 import com.boundary.sdk.event.service.ssh.SSHCheckToEventProcessor;
 
 import static com.boundary.sdk.event.service.ssh.SshHeaderNames.*;
-import static com.boundary.sdk.event.service.QuartzHeaderNames.*;
-import static com.boundary.sdk.event.util.BoundaryHeaderNames.*;
+// import static com.boundary.sdk.event.service.QuartzHeaderNames.*;
+import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
 
-import com.boundary.sdk.event.util.BoundaryHeaderNames;
+// import com.boundary.sdk.event.util.BoundaryHeaderNames;
 import com.boundary.camel.component.ssh.SshxConfiguration;
 
 public class SSHCheckToEventProcessorTest extends CamelSpringTestSupport  {
@@ -72,11 +72,7 @@ public class SSHCheckToEventProcessorTest extends CamelSpringTestSupport  {
 				new ServiceTest<SshxConfiguration>(testName,"ssh",serviceName,request.getRequestId(),config);
 		
 		Map<String,Object> properties = new HashMap<String,Object>();
-		properties.put(BoundaryHeaderNames.BOUNDARY_SERVICE_NAME,serviceName);
-		properties.put(SSH_HEADER_EXPECTED_OUTPUT, expectedOutput);
-		properties.put(QUARTZ_HEADER_TRIGGER_NAME,triggerName);
-		properties.put(QUARTZ_HEADER_FIRE_TIME,fireTime);
-		properties.put(BOUNDARY_SERVICE_TEST, serviceTest);
+		properties.put(SERVICE_TEST_INSTANCE, serviceTest);
 		
 		template.sendBodyAndHeaders("direct:in",output,properties);
 		

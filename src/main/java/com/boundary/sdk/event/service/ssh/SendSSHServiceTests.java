@@ -9,7 +9,7 @@ import org.apache.camel.Processor;
 import com.boundary.camel.component.ssh.SshxConfiguration;
 import com.boundary.sdk.event.service.ServiceCheckRequest;
 import com.boundary.sdk.event.service.ServiceTest;
-import static com.boundary.sdk.event.util.BoundaryHeaderNames.*;
+import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
 
 public class SendSSHServiceTests implements Processor {
 	private SshxConfiguration configuration;
@@ -44,9 +44,7 @@ public class SendSSHServiceTests implements Processor {
 		
 		// Set the body to the command
 		message.setBody(getCommand());
-		message.setHeader(SSH_HEADER_EXPECTED_OUTPUT,getExpectedOutput());
-		message.setHeader(BOUNDARY_SERVICE_NAME,getServiceName());
-		message.setHeader(BOUNDARY_SERVICE_TEST,serviceTest);
+		message.setHeader(SERVICE_TEST_INSTANCE,serviceTest);
 	}
 
 	public String getServiceTestName() {
