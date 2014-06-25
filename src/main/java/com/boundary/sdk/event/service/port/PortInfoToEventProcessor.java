@@ -87,13 +87,27 @@ public class PortInfoToEventProcessor implements Processor {
 		
 		event.addTag(serviceName);
 		event.addTag(hostname);
+		int port = info.getPort();
 		
-		// Add the message
-		event.setMessage(info.getMessage());
-		
+		// Set the Severity and Message based on the results
+		// of the service test
+		if (info.getStatus() == ServiceStatus.FAIL) {
+			event.setTitle(serviceName + " - " + port + " on " + hostname + " is OFFLINE");
+			event.setMessage("Failed to connect the port, reason: " + info.getMessage());
+			event.setSeverity(Severity.WARN);
+			event.setStatus(Status.OPEN);
+		}
+		else {;
+			event.setTitle(serviceName + " - " + port + " on " + hostname + " is ONLINE");
+			event.setMessage("Successfully connected to " + port);
+			event.setSeverity(Severity.INFO);
+			event.setStatus(Status.CLOSED);
+		}
+
+
 		// Map to the Service Status
 		Severity severity = info.getStatus() == ServiceStatus.FAIL ? Severity.CRITICAL : Severity.INFO;
-		event.setSeverity(severity);	
+	
 
 		if (event.getSeverity() != Severity.INFO) {
 			event.setStatus(Status.OPEN);
@@ -103,8 +117,8 @@ public class PortInfoToEventProcessor implements Processor {
 		}
 		
 		event.addFingerprintField("service");
+		event.addFingerprintField("service-test");
 		event.addFingerprintField("hostname");
-		event.addFingerprintField("");
 		
 		// Set the time at which the Syslog record was created
 		event.setCreatedAt(info.getTimestamp());

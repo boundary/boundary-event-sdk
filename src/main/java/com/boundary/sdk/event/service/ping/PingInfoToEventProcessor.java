@@ -76,6 +76,7 @@ public class PingInfoToEventProcessor implements Processor {
 		s.setRef(info.getHost()).setType("host");
 
 		String hostname = info.getHost();
+		String serviceName = serviceTest.getServiceName();
 		event.addProperty("hostname",hostname);
 		event.addProperty("ping-status", info.getStatus());
 		event.addProperty("rtt-avg",info.getRTTAvg());
@@ -84,30 +85,25 @@ public class PingInfoToEventProcessor implements Processor {
 		event.addProperty("rtt-mdev",info.getRTTMDev());
 		event.addProperty("service-test", serviceTest.getName());
 		event.addProperty("service-test-type",serviceTest.getServiceTestType());
-		event.addProperty("service", serviceTest.getServiceName());
+		event.addProperty("service",serviceName);
 		
 		event.addTag(info.getHost());
-		event.addTag(serviceTest.getServiceName());
+		event.addTag(serviceName);
+
 		
 		// Set the Severity and Message based on the results
 		// of the service test
 		if (info.getStatus() == ServiceStatus.FAIL) {
-			event.setTitle("Ping failed to: " + hostname);
-			event.setMessage(info.getMessage());
+			event.setTitle(serviceName + " - " + hostname + " is DOWN");
+			event.setMessage("Ping failed to: " + hostname + ", reason: " + info.getMessage());
 			event.setSeverity(Severity.WARN);
+			event.setStatus(Status.OPEN);
 		}
 		else {
-			event.setTitle("Ping succeeded to " + hostname);
+			event.setTitle(serviceName + " - " + hostname + " is UP");
 			event.setMessage("Ping succeeded to: " + hostname);
 			event.setSeverity(Severity.INFO);
-		}
-		
-		// Set the event status based on Severity of the Raw Event
-		if (event.getSeverity() == Severity.INFO) {
 			event.setStatus(Status.CLOSED);
-		}
-		else {
-			event.setStatus(Status.OPEN);
 		}
 		
 		event.addFingerprintField("service");
