@@ -1,3 +1,5 @@
 #!/bin/bash
 
 mvn -q exec:java -Dexec.mainClass="com.boundary.sdk.event.EventApplication" -Dexec.args="$1" -Dboundary.application.context.uri="classpath:META-INF/spring/service-check.xml"
+#mvn -q  camel:run -DapplicationContextUri="classpath:META-INF/spring/service-check.xml"
+#exec:java -Dexec.mainClass="com.boundary.sdk.event.EventApplication" -Dexec.args="$1" -Dboundary.application.context.uri="classpath:META-INF/spring/service-check.xml"
