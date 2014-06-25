@@ -42,4 +42,14 @@ public class ServiceCheckRequest {
 	public List<ServiceTest<?>> getServiceTests() {
 		return this.serviceTests;
 	}
+	
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("requestId: " + getRequestId());
+		//sb.append(",serviceName: " + getServiceName());
+		for (ServiceTest<?> test : getServiceTests()) {
+			sb.append(",serviceTest: " + test);
+		}
+		return sb.toString();
+	}
 }
