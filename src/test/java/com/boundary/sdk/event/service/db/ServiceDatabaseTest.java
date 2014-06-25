@@ -62,13 +62,12 @@ public class ServiceDatabaseTest extends CamelSpringTestSupport  {
 		super.tearDown();
 	}
 	
-
-
 	@Test
 	public void testDatabase() throws InterruptedException {
 		MockEndpoint endPoint = getMockEndpoint("mock:service-db-out");
 		endPoint.setExpectedMessageCount(1);
 
+		endPoint.await(60, TimeUnit.SECONDS);
 		endPoint.assertIsSatisfied();
 	}
 	
