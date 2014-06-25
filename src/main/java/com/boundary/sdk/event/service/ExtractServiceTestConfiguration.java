@@ -54,6 +54,10 @@ public class ExtractServiceTestConfiguration {
 		SshxConfiguration configuration = serviceTest.getConfiguration();
 		
 		message.setHeader(SERVICE_TEST_INSTANCE, serviceTest);
+		// TODO: Set the host header to the host name so we can route to the correct SSH
+		//       end point. Once there is a SSH component that can handle being a producer then
+		//       this work around can be eliminated
+		message.setHeader("host",configuration.getHost());
 		message.setBody(configuration);
 	}
 }
