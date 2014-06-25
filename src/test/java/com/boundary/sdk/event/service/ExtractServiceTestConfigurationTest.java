@@ -59,7 +59,7 @@ public class ExtractServiceTestConfigurationTest extends CamelTestSupport {
 		configuration.setHost(HOST);
 		configuration.setPort(PORT);
 		ServiceTest<PortConfiguration> serviceTest = new ServiceTest<PortConfiguration>(
-				"port", "localhost", request.getRequestId(), configuration);
+				"port","port","localhost", request.getRequestId(), configuration);
 
 		Map<String, Object> properties = new HashMap<String, Object>();
 		properties.put(ServiceCheckPropertyNames.SERVICE_CHECK_REQUEST_ID,request.getRequestId());
@@ -100,7 +100,7 @@ public class ExtractServiceTestConfigurationTest extends CamelTestSupport {
 		PingConfiguration configuration = new PingConfiguration();
 		configuration.setHost(HOST);
 		ServiceTest<PingConfiguration> serviceTest = new ServiceTest<PingConfiguration>(
-				"ping", "localhost", request.getRequestId(), configuration);
+				"ping", "ping","localhost", request.getRequestId(), configuration);
 
 		Map<String, Object> properties = new HashMap<String, Object>();
 		properties.put(ServiceCheckPropertyNames.SERVICE_CHECK_REQUEST_ID,request.getRequestId());

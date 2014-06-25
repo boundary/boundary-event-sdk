@@ -67,7 +67,7 @@ public class SSHCheckToEventProcessorTest extends CamelSpringTestSupport  {
 		SshxConfiguration config = new SshxConfiguration();
 		config.setHost(hostName);
 		ServiceTest<SshxConfiguration> serviceTest =
-				new ServiceTest<SshxConfiguration>(testName,serviceName,request.getRequestId(),config);
+				new ServiceTest<SshxConfiguration>(testName,"ssh",serviceName,request.getRequestId(),config);
 		
 		Map<String,Object> properties = new HashMap<String,Object>();
 		properties.put(BoundaryHeaderNames.BOUNDARY_SERVICE_NAME,serviceName);

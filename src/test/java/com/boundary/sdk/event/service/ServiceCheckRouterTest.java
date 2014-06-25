@@ -46,8 +46,8 @@ public class ServiceCheckRouterTest extends CamelSpringTestSupport {
 		ServiceCheckRequest request = new ServiceCheckRequest();
 		PingConfiguration pingConfiguration = new PingConfiguration();
 		PortConfiguration portConfiguration = new PortConfiguration();
-		ServiceTest<PingConfiguration> pingTest = new ServiceTest<PingConfiguration>("ping","localhost",request.getRequestId(),pingConfiguration);
-		ServiceTest<PortConfiguration> portTest = new ServiceTest<PortConfiguration>("port","localhost",request.getRequestId(),portConfiguration);
+		ServiceTest<PingConfiguration> pingTest = new ServiceTest<PingConfiguration>("ping","ping","localhost",request.getRequestId(),pingConfiguration);
+		ServiceTest<PortConfiguration> portTest = new ServiceTest<PortConfiguration>("port","port","localhost",request.getRequestId(),portConfiguration);
 		
 		request.addServiceTest(pingTest);
 		request.addServiceTest(portTest);

@@ -73,9 +73,9 @@ public class ServiceTestAggregateTest extends CamelSpringTestSupport  {
 		properties.put(SERVICE_CHECK_REQUEST_ID, request.getRequestId());
 		PingConfiguration configuration = new PingConfiguration();
 		configuration.setHost("localhost");
-		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","localhost",request.getRequestId(),configuration));
-		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","localhost",request.getRequestId(),configuration));
-		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","localhost",request.getRequestId(),configuration));
+		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","ping","localhost",request.getRequestId(),configuration));
+		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","ping","localhost",request.getRequestId(),configuration));
+		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","ping","localhost",request.getRequestId(),configuration));
 		
 		template.sendBodyAndHeaders("direct:service-check-request-in",request, properties);
 		
@@ -94,9 +94,9 @@ public class ServiceTestAggregateTest extends CamelSpringTestSupport  {
 		portConfig.setHost("google.com");
 		portConfig.setPort(81);
 		
-		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","localhost",request.getRequestId(),pingConfig1));
-		request.addServiceTest(new ServiceTest<PortConfiguration>("port","Google Web Search",request.getRequestId(),portConfig));
-		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","Google Web Search",request.getRequestId(),pingConfig2));
+		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","ping","localhost",request.getRequestId(),pingConfig1));
+		request.addServiceTest(new ServiceTest<PortConfiguration>("port","port","Google Web Search",request.getRequestId(),portConfig));
+		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","ping","Google Web Search",request.getRequestId(),pingConfig2));
 		
 		template.sendBody("direct:service-check-request-in",request);
 	}
