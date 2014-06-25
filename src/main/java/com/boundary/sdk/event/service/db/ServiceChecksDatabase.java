@@ -26,6 +26,7 @@ public class ServiceChecksDatabase implements Processor {
 	public ServiceChecksDatabase() {
 		// TODO Auto-generated constructor stub
 	}
+	
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
@@ -42,21 +43,33 @@ public class ServiceChecksDatabase implements Processor {
 		SshxConfiguration plumgridProcessTest = new SshxConfiguration();
 		plumgridProcessTest.setHost(sdnDirectorHost);
 		plumgridProcessTest.setCommand("status plumgrid");
-		plumgridProcessTest.setExpectedOutput("^plumgrid start/running, process\\s\\d+");
+		plumgridProcessTest.setExpectedOutput("^plumgrid start/running, process\\s\\d+\n");
+		
+		SshxConfiguration plumgridSalProcessTest = new SshxConfiguration();
+		plumgridSalProcessTest.setHost(sdnDirectorHost);
+		plumgridSalProcessTest.setCommand("status plumgrid-sal");
+		plumgridSalProcessTest.setExpectedOutput("^plumgrid-sal start/running, process\\s\\d+\n");
 
+		SshxConfiguration nginxProcessTest = new SshxConfiguration();
+		nginxProcessTest.setHost(sdnDirectorHost);
+		nginxProcessTest.setCommand("status nginx");
+		nginxProcessTest.setExpectedOutput("^nginx start/running, process\\s\\d+\n");
 
 		ServiceTest<PingConfiguration> pingSDNDirector = new ServiceTest<PingConfiguration>(
 				"Ping SDN Director Host","ping","SDN Director",request.getRequestId(),sdnDirectorPingTest);
 		request.addServiceTest(pingSDNDirector);
 		
-		ServiceTest<SshxConfiguration> sshPlumgridProcess = new ServiceTest<SshxConfiguration>("Check plumgrid process status",
-				"ssh","SDN Director",request.getRequestId(),plumgridProcessTest);
+		ServiceTest<SshxConfiguration> sshPlumgridProcess = new ServiceTest<SshxConfiguration>(
+				"Check plumgrid process status","ssh","SDN Director",request.getRequestId(),plumgridProcessTest);
 		request.addServiceTest(sshPlumgridProcess);
 		
-//		ServiceTest<PortConfiguration> portTest = new ServiceTest<PortConfiguration>("Check port on SDN Director","port","SDN Director",request.getRequestId(),portConfig);
-//		request.addServiceTest(portTest);
-//		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","Google Web Search",request.getRequestId(),pingConfig2));
+		ServiceTest<SshxConfiguration> sshPlumgridSalProcess = new ServiceTest<SshxConfiguration>(
+				"Check plumgrid-sal process status","ssh","SDN Director",request.getRequestId(),plumgridProcessTest);
+		request.addServiceTest(sshPlumgridSalProcess);
 		
+		ServiceTest<SshxConfiguration> sshNginxProcess = new ServiceTest<SshxConfiguration>(
+				"Check nginx process status","ssh","SDN Director",request.getRequestId(),plumgridProcessTest);
+		request.addServiceTest(sshNginxProcess);
 
 		message.setBody(request);
 	}
