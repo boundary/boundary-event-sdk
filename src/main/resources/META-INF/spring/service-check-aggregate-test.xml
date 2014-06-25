@@ -39,9 +39,9 @@
 	<!-- Extracts the specific service test configuration from a ServiceTest generic instance -->
 	<bean id="configurationProcessor" class="com.boundary.sdk.event.service.ExtractServiceTestConfiguration"/>
 	
-	<bean id="ping-to-event" class="com.boundary.sdk.event.service.PingInfoToEventProcessor"/>
+	<bean id="ping-to-event" class="com.boundary.sdk.event.service.ping.PingInfoToEventProcessor"/>
 	
-	<bean id="port-to-event" class="com.boundary.sdk.event.service.PortInfoToEventProcessor"/>
+	<bean id="port-to-event" class="com.boundary.sdk.event.service.port.PortInfoToEventProcessor"/>
 	
 	
 	<!-- Handles the processing of service checks to raw events	 -->
