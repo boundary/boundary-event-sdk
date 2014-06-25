@@ -22,11 +22,11 @@
 		<!-- Boundary organization ID and API key can obtained by logging into the web
 		     console. Organization ID and API key are located in the users settings
 		  -->
-		<!-- <property name="orgId" value="#{systemEnvironment['BOUNDARY_ORG_ID']}"/> -->
-		<property name="orgId" value="3ehRi7uZeeaTN12dErF5XOnRXjC"/>
+		<property name="orgId" value="#{systemEnvironment['BOUNDARY_ORG_ID']}"/>
+		<!-- <property name="orgId" value=""/> -->
 		
-		<!-- <property name="apiKey" value="#{systemEnvironment['BOUNDARY_API_KEY']}"/> -->
-		<property name="apiKey" value="FORXHJOLgKhRCZsJwxKEBEFzNNG"/>
+		<property name="apiKey" value="#{systemEnvironment['BOUNDARY_API_KEY']}"/>
+		<!-- <property name="apiKey" value=""/> -->
 
          <!-- The endpoint URI to listen for boundary events -->
 		<property name="fromUri" value="seda:boundary-event?concurrentConsumers=10"/>
