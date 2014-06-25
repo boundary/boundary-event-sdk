@@ -57,7 +57,7 @@ public class PortRouteBuilder extends BoundaryRouteBuilder {
 	public void configure() throws Exception {
 		ServiceCheckRequest request = new ServiceCheckRequest();
 		PingInfo info = new PingInfo();
-		ServiceTest<PingInfo> serviceTest = new ServiceTest<PingInfo>("Sample Ping Test","Ping Test",request.getRequestId(),info);
+		ServiceTest<PingInfo> serviceTest = new ServiceTest<PingInfo>("Sample Ping Test","ping","Ping Test",request.getRequestId(),info);
 		String uri = "port://" + getHost() + ":" + getPort() + "/tcp?delay=" + getDelay();
 		System.out.println("URI: " + uri);
         from(uri)

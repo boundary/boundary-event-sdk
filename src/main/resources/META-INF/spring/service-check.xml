@@ -43,19 +43,32 @@
 	
 	
 	<!-- Beans to convert service tests to Boundary RawEvents -->
-	<bean id="ping-to-event" class="com.boundary.sdk.event.service.PingInfoToEventProcessor"/>
-	<bean id="port-to-event" class="com.boundary.sdk.event.service.PortInfoToEventProcessor"/>
+	<bean id="ping-to-event" class="com.boundary.sdk.event.service.ping.PingInfoToEventProcessor"/>
+	<bean id="port-to-event" class="com.boundary.sdk.event.service.port.PortInfoToEventProcessor"/>
 	<bean id="ssh-to-event" class="com.boundary.sdk.event.service.ssh.SSHCheckToEventProcessor"/>
 	
 	
 	<!-- Plumgrid - plumgrid SSH test -->
 	<bean id="sshTests" class="com.boundary.sdk.event.service.ssh.SendSSHServiceTests">
-		<property name="serviceName" value="SDN Controller"/>
+		<property name="serviceName" value="SDN Director"/>
 		<property name="serviceTestName" value="Check SDN Controller plumgrid"/>
+		<property name="serviceTestType" value="SSH"/>
 		<property name="command" value="sudo status plumgrid"/>
-		<property name="expectedOutput" value="plumgrid start/running, process"/>
+		<property name="expectedOutput" value="^plumgrid start/running, process\\s+(\\d+)\n"/>
 		<property name="host" value="director-denali-1"/>
 	</bean>
+	
+	<bean id="service-db-datasource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/services" />
+		<property name="username" value="boundary" />
+		<property name="password" value="boundary" />
+	</bean>
+	
+	<bean id="service-db-processor" class="com.boundary.sdk.event.service.db.ServiceChecksDatabase"/>
+	<bean id="service-check-configuration-query" class="com.boundary.sdk.event.service.db.ServiceCheckQuery"/>
+	
+	<bean id="select-list-to-iterator" class="com.boundary.sdk.event.util.SelectListConverter"/>
 	
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
 	
@@ -69,11 +82,8 @@
 		<endpoint id ="plumgrid-host-ssh-in" uri = "direct:plumgrid-host-ssh-out"/>
 		<endpoint id ="plumgrid-host-ssh-out" uri = "direct:plumgrid-host-ssh-out"/>
 		<endpoint id ="ssh-to-event-in" uri = "direct:ssh-to-event-in"/>
-		
-<!-- 		<endpoint id ="event-creator-out" uri = "seda:boundary-event"/> -->
 		<endpoint id ="event-creator-out" uri = "mock:event-out"/>
 		
- 		
  		<!--
  		This route is responsible for creating
  		an event to send to the boundary event route from an SSH check.
@@ -86,8 +96,40 @@
  		    header.triggerName => Name of the trigger that sent this SSH check. Make this the service.
  		    header.fireTime => Time the triggers was sent
  		-->
- 	
- 		<route id="service-check-request-split" startupOrder="300">
+ 		
+ 		<!-- 
+ 		Polls on a regular basis dependent on property value "service.checks.cron".
+ 		 -->
+ 		<route id="SERVICE-CHECK-POLLER" startupOrder="420">
+			<from uri="quartz://boundary/service?cron={{service.checks.cron}}"/>
+			<log message="Polling for new Service Checks"/>
+			<to uri="direct:service-db-in"/>
+		</route>
+		
+		<route id="SERVICE-CHECKS" startupOrder="400">
+    		<from uri="direct:service-db-in"/>
+    		<setBody>
+    			<simple>SELECT serviceCheckId FROM v_service_checks GROUP BY 1</simple>
+    		</setBody>
+    		<to uri="jdbc:service-db-datasource?outputType=SelectList"/>
+    		<split>
+    			<simple>${body}</simple>
+    			<log loggingLevel="DEBUG" message="${body}"/>
+    			<to uri="direct:service-tests"/>
+    		</split>
+        </route>
+        
+        <route id="SERVICE-CHECK-CONFIGURATION" startupOrder="390">
+        	<from uri="direct:service-tests"/>
+        	<bean ref="service-check-configuration-query" method="process"/>
+        	<to uri="jdbc:service-db-datasource?outputType=SelectList"/>
+        	<bean ref="service-db-processor" method="process"/>
+    		<log loggingLevel="INFO" message="ServiceCheck: ${body}"/>
+    		<to uri="mock:service-db-out"/>
+       		<to uri="direct:service-check-request-in"/>
+        </route>
+ 		
+ 		<route id="SERVICE-REQUEST-CHECK-DISTRIBUTE" startupOrder="300">
 		
 			<!--  Receives messages with Service Requests  -->
 			<from uri="direct:service-check-request-in"/>
@@ -96,42 +138,43 @@
 			<setHeader headerName ="serviceCheckRequestId">
 				<simple>${body.requestId}</simple>
 			</setHeader>
+			
+			<!--
+			Set the request instance on a header so we can get
+			the original request in later Exchanges
+			-->
 			<setHeader headerName = "serviceCheckRequestInstance">
 				<simple>bodyAs(com.boundary.sdk.event.service.ServiceCheckRequest)</simple>
 			</setHeader>
-			<log message="RequestId: ${headers.serviceCheckRequestId}"/>
+			<log loggingLevel="INFO" message="REQUEST-ID ${headers.serviceCheckRequestId}"/>
 			<split parallelProcessing="true">
 			<!--  Split into multiple messages based on the Service Tests in the Service Request instance -->
 			<simple>${body.serviceTests}</simple >
-				<log message="Processing message[${property.CamelSplitIndex}]"/>
-				<log message="${headers}"/>
+				<log loggingLevel="DEBUG" message="Processing message[${property.CamelSplitIndex}]"/>
+				<log loggingLevel="DEBUG" message="${headers}"/>
 				<to uri="mock:service-check-request-split"/>
 				<to uri="seda:service-checks-router"/>
-				<to uri="stream:out"/>
 			</split>
 		</route>
 		
-		<route id="dynamic-router" startupOrder="210">
+		<route id="SERVICE-TEST-ROUTER" startupOrder="210">
 			<from uri="seda:service-checks-router"/>
-			<setHeader headerName="serviceTestName">
-				<simple>${body.name}</simple>
-			</setHeader>
-			<log message="serviceCheck=${headers.serviceTestName},serviceCheckRequest=${headers.serviceCheckRequest}"/>
+			<log loggingLevel="INFO" message="serviceTest=${body}"/>
 			<to uri="mock:service-checks-router-out"/>
 			<choice>
 				<when>
-					<simple>${body.name} == "ping"</simple>
+					<simple>${body.serviceTestType} == "ping"</simple>
 					<to uri ="seda:ping-check"/>
-					<log message="Sending to ping-check"/>
+					<log loggingLevel="DEBUG" message="Sending to ping-check"/>
 				</when>
 				<when>
-					<simple>${body.name} == "port"</simple>
+					<simple>${body.serviceTestType} == "port"</simple>
 					<to uri ="seda:port-check"/>
-					<log message="Sending to port-check"/>
+					<log loggingLevel="DEBUG" message="Sending to port-check"/>
 				</when>
 				<when>
-					<simple>{$body.name}</simple>
-					<log message="Sending to ssh-check"/>
+					<simple>{$body.serviceTestType} == "ssh"</simple>
+					<log loggingLevel="DEBUG" message="Sending to ssh-check"/>
 					<to uri = "seda:ssh-check"/>
 				</when>
 				<otherwise>
@@ -139,70 +182,74 @@
 			</choice>
 		</route>
 	
-		<route id ="port-check" startupOrder="150">
+		<route id ="PORT-CHECK" startupOrder="150">
 			<from uri="seda:port-check"/>
-			<log message="${headers}"/>
+			<log loggingLevel="DEBUG" message="${headers}"/>
 			<bean ref="configurationProcessor" method="extractPortConfiguration"/>
 			<to uri="port://tcp"/>
 			<to uri="mock:port-out"/>
 			<bean ref="port-to-event" method="portInfoToRawEvent"/>
 			<to uri="mock:port-event-out"/>
-			<to uri="stream:out"/>
 			<marshal>
 				<serialization/>
 			</marshal>
 			<to ref="boundary-event"/>
 		</route>
 		
-		<route id ="ping-check" startupOrder="160">
+		<route id ="PING-CHECK" startupOrder="160">
 			<from uri="seda:ping-check"/>
-			<log message="${headers}"/>
+			<log loggingLevel="DEBUG" message="${headers}"/>
 			<bean ref="configurationProcessor" method="extractPingConfiguration"/>
 			<to uri="ping://icmp"/>
 			<bean ref="ping-to-event" method="pingInfoToRawEvent"/>
 			<to uri="mock:ping-event-out"/>
-			<to uri="stream:out"/>
 			<marshal>
 				<serialization/>
 			</marshal>
 			<to ref="boundary-event"/>
 		</route>
 		
-		<route id="plumgrid-process-check" startupOrder="190">
+		
+<!-- SSH-CHECKS ROUTES -->
+		
+		<!-- Timer that drives the SSH-CHECK testing -->
+		<route id="PLUMGRID-PROCESS-POLLER" startupOrder="190" autoStartup="false">
 			<from uri="quartz://boundary/plumgrid?cron={{plumgrid.cron}}"/>
 			<bean ref="sshTests"/>
 			<to ref="plumgrid-host-ssh-in"/>
 		</route>
 				
+		<!--  Specifically handles the Plumgrid Controller -->
 		<route id="PLUMGRID-SSH" startupOrder="180">
 			<from ref="plumgrid-host-ssh-in"/>
 			<!-- Have a timer fire every minute -->
 			<log message="Running command: ${body} on host: {{plumgrid.host}}"/>
 			<to id="PLUMGRID-SSH" uri="ssh://{{plumgrid.user}}:{{plumgrid.password}}@{{plumgrid.host}}"/>
-			<log message="${headers}"/>
-			<log message="${body}"/>
+			<convertBodyTo type="java.lang.String"/>
+			<log loggingLevel="DEBUG" message="${headers}"/>
+			<log loggingLevel="DEBUG" message="${body}"/>
  			<to uri="mock:ssh-out"/>
  			<to ref="ssh-to-event-in"/>
  		</route>
  		
+ <!--  COMMON SSH-CHECKS ROUTES -->
+ 		
  		<route id="SSH-TO-EVENT" startupOrder="170">
  			<from ref="ssh-to-event-in"/>
  			<bean ref="ssh-to-event" method="process"/>
-			<log message="EVENT PROCESSOR"/>
+			<log loggingLevel="DEBUG" message="EVENT PROCESSOR"/>
 			<marshal>
 				<serialization/>
 			</marshal>
 			<to ref="boundary-event"/>
  		</route>
- 		
-		
 		
 <!-- This needs to be routed a some point based on service to
      a specific SSH check since the Camel SSH component is not able
      to receive the host configuration as a producer. Ultimate this
      will be resolved once we derive a new component that removes
      the host configuration limitation -->
-		<route id="ssh-check" startupOrder="200">
+		<route id="SSH-CHECK" startupOrder="200">
 			<from uri="seda:ssh-check"/>
 			<to ref="plumgrid-host-ssh-in"/>
 <!--
@@ -236,7 +283,6 @@
 				<removeHeader headerName="serviceTestName"/>
 				<log message="${headers}"/>
 				<to uri="mock:service-check-aggregate-out"/>
-				<to uri="stream:out"/>
 				<to uri="seda:service-check-aggregate-out"/>
 			</aggregate>
 		</route>

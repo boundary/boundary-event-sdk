@@ -8,35 +8,32 @@ import java.util.Map;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.boundary.camel.component.ping.PingConfiguration;
 import com.boundary.camel.component.port.PortConfiguration;
+import com.boundary.sdk.event.BoundaryEventRouteBuilder;
 import com.boundary.sdk.event.service.ServiceCheckRequest;
 import com.boundary.sdk.event.service.ServiceTest;
 
 public class ServiceChecksDatabase implements Processor {
+	
+	private static Logger LOG = LoggerFactory.getLogger(ServiceChecksDatabase.class);
+
 
 	public ServiceChecksDatabase() {
 		// TODO Auto-generated constructor stub
 	}
-	
-//	private Map<String,List<Object>> groupByCheckId(List<Map<String,Object>> list) {
-//		Map<String,List<Object>> map = new HashMap<String,List<Object>>();
-//		
-//		for (Map<String,Object> m : list) {
-//			map.put(m.getKey(), value)
-//		}
-//		return map;
-//	}
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		Message message = exchange.getIn();
-		//List<Map<String, Object>> list = message.getBody(List.class);
-//		for (Map<String,Object> row : list) {
-//			System.out.println(row);
-//		}
-//		
+		List<Map<String, Object>> list = message.getBody(List.class);
+		for (Map<String,Object> row : list) {
+			LOG.info(row.toString());
+		}
+		
 		//ListIterator <Map<String,Object>> i = list.listIterator();
 		
 		
@@ -55,12 +52,10 @@ public class ServiceChecksDatabase implements Processor {
 //		pingConfig2.setHost("google.com");
 		portConfig.setHost("184.169.202.188");
 		portConfig.setPort(10010);
-		
-		ServiceTest<PingConfiguration> serviceTest = new ServiceTest<PingConfiguration>("ping","Ping 184.169.202.188",request.getRequestId(),pingConfig1);
-		serviceTest.setServiceTestType("ping");
+
+		ServiceTest<PingConfiguration> serviceTest = new ServiceTest<PingConfiguration>("Ping AWS Node","ping","AWS Test Node",request.getRequestId(),pingConfig1);
 		request.addServiceTest(serviceTest);
-		ServiceTest<PortConfiguration> portTest = new ServiceTest<PortConfiguration>("port","Check plumgrid port",request.getRequestId(),portConfig);
-		portTest.setServiceTestType("port");
+		ServiceTest<PortConfiguration> portTest = new ServiceTest<PortConfiguration>("Check port on SDN Directory","port","SDN Director",request.getRequestId(),portConfig);
 		request.addServiceTest(portTest);
 //		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","Google Web Search",request.getRequestId(),pingConfig2));
 		

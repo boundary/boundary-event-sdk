@@ -40,7 +40,7 @@ public class SendSSHServiceTests implements Processor {
 		Message message = exchange.getIn();
 
 		ServiceTest<SshxConfiguration> serviceTest =
-				new ServiceTest<SshxConfiguration>(getServiceTestName(),getServiceName(),getRequestId(),configuration);
+				new ServiceTest<SshxConfiguration>(getServiceTestName(),"ssh",getServiceName(),getRequestId(),configuration);
 		
 		// Set the body to the command
 		message.setBody(getCommand());

@@ -14,8 +14,14 @@ public class ServiceTest<T> {
 	private String requestId;
 	private String serviceTestType;
 	
-	public ServiceTest(String name,String serviceName,String requestId,T configuration) {
+	public ServiceTest(
+			String name,
+			String serviceTestType,
+			String serviceName,
+			String requestId,
+			T configuration) {
 		this.name = name;
+		this.serviceTestType = serviceTestType;
 		this.serviceName = serviceName;
 		this.requestId = requestId;
 		this.configuration = configuration;
@@ -37,6 +43,7 @@ public class ServiceTest<T> {
 		StringBuffer s = new StringBuffer();
 		s.append("[");
 		s.append("name=" + getName());
+		s.append(",serviceType=" + getServiceTestType());
 		s.append(",requestId=" + getRequestId());
 		s.append(",configuration=" + configuration.toString());
 		s.append("]");
@@ -51,7 +58,7 @@ public class ServiceTest<T> {
 		return serviceTestType;
 	}
 
-	public void setServiceTestType(String serviceTestType) {
-		this.serviceTestType = serviceTestType;
-	}
+//	public void setServiceTestType(String serviceTestType) {
+//		this.serviceTestType = serviceTestType;
+//	}
 }
