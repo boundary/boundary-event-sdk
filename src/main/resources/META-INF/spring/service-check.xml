@@ -256,6 +256,7 @@
  		
  		<route id="SSH-TO-EVENT" startupOrder="175">
  			<from ref="ssh-to-event-in"/>
+ 			<log message="headers: ${headers}"/>
  			<bean ref="ssh-to-event" method="process"/>
 			<log loggingLevel="DEBUG" message="EVENT PROCESSOR"/>
 			<marshal>
