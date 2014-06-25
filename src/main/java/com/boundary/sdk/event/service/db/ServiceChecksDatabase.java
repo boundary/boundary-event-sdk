@@ -32,10 +32,7 @@ public class ServiceChecksDatabase implements Processor {
 		List<Map<String, Object>> list = message.getBody(List.class);
 		for (Map<String,Object> row : list) {
 			LOG.info(row.toString());
-		}
-		
-		//ListIterator <Map<String,Object>> i = list.listIterator();
-		
+		}		
 		
 //		{serviceId=1, serviceName=SDN Director, serviceCheckName=SDN Director Service Check, serviceTestId=1, serviceTestName=Check SDN Director host status, serviceTypeName=ping, serviceTypeTableName=t_ping_config, configId=1}
 //		{serviceId=1, serviceName=SDN Director, serviceCheckName=SDN Director Service Check, serviceTestId=2, serviceTestName=Check plumgrid process status, serviceTypeName=ssh, serviceTypeTableName=t_port_config, configId=1}
@@ -44,21 +41,23 @@ public class ServiceChecksDatabase implements Processor {
 
 		
 		ServiceCheckRequest request = new ServiceCheckRequest();
-		PingConfiguration pingConfig1 = new PingConfiguration();
+		PingConfiguration sdnDirector = new PingConfiguration();
 //		PingConfiguration pingConfig2 = new PingConfiguration();
-		PortConfiguration portConfig = new PortConfiguration();
+//		PortConfiguration portConfig = new PortConfiguration();
 		
-		pingConfig1.setHost("184.169.202.188");
+		sdnDirector.setHost("192.168.137.11");
 //		pingConfig2.setHost("google.com");
-		portConfig.setHost("184.169.202.188");
-		portConfig.setPort(10010);
+//		portConfig.setHost("184.169.202.188");
+//		portConfig.setPort(10010);
 
-		ServiceTest<PingConfiguration> serviceTest = new ServiceTest<PingConfiguration>("Ping AWS Node","ping","AWS Test Node",request.getRequestId(),pingConfig1);
-		request.addServiceTest(serviceTest);
-		ServiceTest<PortConfiguration> portTest = new ServiceTest<PortConfiguration>("Check port on SDN Directory","port","SDN Director",request.getRequestId(),portConfig);
-		request.addServiceTest(portTest);
+		ServiceTest<PingConfiguration> pingSDNDirector = new ServiceTest<PingConfiguration>("Ping SDN Director Host","ping","SDN Director",request.getRequestId(),sdnDirector);
+		request.addServiceTest(pingSDNDirector);
+		
+//		ServiceTest<PortConfiguration> portTest = new ServiceTest<PortConfiguration>("Check port on SDN Director","port","SDN Director",request.getRequestId(),portConfig);
+//		request.addServiceTest(portTest);
 //		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","Google Web Search",request.getRequestId(),pingConfig2));
 		
+
 		message.setBody(request);
 	}
 }
