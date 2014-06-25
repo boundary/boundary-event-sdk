@@ -3,6 +3,8 @@
  */
 package com.boundary.sdk.event.service.port;
 
+import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.SERVICE_TEST_INSTANCE;
+
 import java.io.IOException;
 import java.util.Properties;
 
@@ -13,10 +15,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.boundary.camel.component.common.ServiceStatus;
+import com.boundary.camel.component.ping.PingInfo;
 import com.boundary.camel.component.port.PortInfo;
 import com.boundary.sdk.event.RawEvent;
 import com.boundary.sdk.event.Severity;
 import com.boundary.sdk.event.Status;
+import com.boundary.sdk.event.service.ServiceTest;
 
 
 /**
@@ -43,18 +47,21 @@ public class PortInfoToEventProcessor implements Processor {
 		Message message = exchange.getIn();
 
 		// Extract SyslogMessage from the message body.
-		PortInfo status = message.getBody(PortInfo.class);
+		PortInfo info = message.getBody(PortInfo.class);
+		
+		// Extract {@link ServiceTest} from message headers
+		ServiceTest<PortInfo> serviceTest = message.getHeader(SERVICE_TEST_INSTANCE, ServiceTest.class);
 
 		// Create new event to translate the syslog message to
 		RawEvent event = new RawEvent();
 
 		// Delegate to member method call to perform the translation
-		portInfoToEvent(status, event);
+		portInfoToEvent(serviceTest,info,event);
 		
 		LOG.debug("RawEvent: " + event);
 
 		// Set the message body to the RawEvent
-		message.setBody(event, RawEvent.class);
+		message.setBody(event);
 	}
 
 	/**
@@ -63,43 +70,50 @@ public class PortInfoToEventProcessor implements Processor {
 	 * @param sm
 	 * @param e
 	 */
-	private void portInfoToEvent(PortInfo info, RawEvent e) {
+	private void portInfoToEvent(ServiceTest<PortInfo> serviceTest,PortInfo info, RawEvent event) {
 		
 		// Add the hostname
-		e.getSource().setRef(info.getHost()).setType("host");
-		e.getProperties().put("hostname", info.getHost());
-		e.getProperties().put("port",info.getPort());
-		e.getProperties().put("port-status",info.getPortStatus());
-		e.getProperties().put("time-out", info.getTimeout());
-		e.addTag(info.getHost());
+		String hostname = info.getHost();
+		String serviceName = serviceTest.getServiceName();
+		
+		event.getSource().setRef(hostname).setType("host");
+		event.addProperty("hostname",hostname);
+		event.addProperty("port",info.getPort());
+		event.addProperty("port-status",info.getPortStatus());
+		event.addProperty("time-out", info.getTimeout());
+		event.addProperty("service-test", serviceTest.getName());
+		event.addProperty("service", serviceName);
+		
+		event.addTag(serviceName);
+		event.addTag(hostname);
 		
 		// Add the message
-		e.setMessage(info.getMessage());
+		event.setMessage(info.getMessage());
 		
 		// Map to the Service Status
 		Severity severity = info.getStatus() == ServiceStatus.FAIL ? Severity.CRITICAL : Severity.INFO;
-		e.setSeverity(severity);	
+		event.setSeverity(severity);	
 
-		if (e.getSeverity() != Severity.INFO) {
-			e.setStatus(Status.OPEN);
+		if (event.getSeverity() != Severity.INFO) {
+			event.setStatus(Status.OPEN);
 		}
 		else {
-			e.setStatus(Status.OK);
+			event.setStatus(Status.OK);
 		}
 		
 		// Set the uniqueness of the event by hostname, facility, and message.
 		// TBD: These fields need to be split out in a configuration file
-		e.addFingerprintField("hostname");
-		e.addFingerprintField("port");
+		event.addFingerprintField("hostname");
+		event.addFingerprintField("port");
 		
 		// Set the time at which the Syslog record was created
-		e.setCreatedAt(info.getTimestamp());
+		event.setCreatedAt(info.getTimestamp());
 
 		// Set Title
-		e.setTitle("Checking host: " + info.getHost() + " on port: " + info.getPort());
+		event.setTitle("Checking host: " + info.getHost() + " on port: " + info.getPort());
 		
 		// Set Sender
-		e.getSender().setRef("Port");
-		e.getSender().setType("Boundary Event SDK");
+		event.getSender().setRef("Service Health Check");
+		event.getSender().setType("Boundary Event SDK");
 	}
 }

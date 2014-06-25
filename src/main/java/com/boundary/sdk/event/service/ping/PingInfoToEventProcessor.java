@@ -63,56 +63,61 @@ public class PingInfoToEventProcessor implements Processor {
 	/**
 	 * Converts a {@link SyslogMessage} to {@link com.boundary.sdk.event.RawEvent}
 	 * 
-	 * @param test {@link ServiceTest}
+	 * @param serviceTest {@link ServiceTest}
 	 * @param info {@link PingInfo}
 	 * @param e {@link RawEvent}
 	 */
-	private void pingStatusToEvent(ServiceTest<PingInfo> test,PingInfo info,RawEvent e) {
+	private void pingStatusToEvent(ServiceTest<PingInfo> serviceTest,PingInfo info,RawEvent event) {
 		
 		// Add the hostname
-		Source s = e.getSource();
+		Source s = event.getSource();
 		String host = info.getHost();
 		assert host != null: "Host is null";
 		s.setRef(info.getHost()).setType("host");
 
-		HashMap<String,Object> p = e.getProperties();
-		p.put("hostname", info.getHost());
-		p.put("ping-status", info.getStatus());
-		p.put("rtt-avg",info.getRTTAvg());
-		p.put("rtt-max",info.getRTTMax());
-		p.put("rtt-min",info.getRTTMin());
-		p.put("rtt-mdev",info.getRTTMDev());
-		p.put("service-test", test.getName());
-		p.put("service", test.getServiceName());
-		e.addTag(info.getHost());
+		String hostname = info.getHost();
+		event.addProperty("hostname",hostname);
+		event.addProperty("ping-status", info.getStatus());
+		event.addProperty("rtt-avg",info.getRTTAvg());
+		event.addProperty("rtt-max",info.getRTTMax());
+		event.addProperty("rtt-min",info.getRTTMin());
+		event.addProperty("rtt-mdev",info.getRTTMDev());
+		event.addProperty("service-test", serviceTest.getName());
+		event.addProperty("service", serviceTest.getServiceName());
 		
-		// Add the message
-		e.setMessage(info.getMessage());
+		event.addTag(info.getHost());
+		event.addTag(serviceTest.getServiceName());
 		
-		// Map the syslog severity to Boundary event severity
-		Severity severity = info.getStatus() == ServiceStatus.FAIL ? Severity.CRITICAL : Severity.INFO;
-		e.setSeverity(severity);	
-
-		if (e.getSeverity() != Severity.INFO) {
-			e.setStatus(Status.OPEN);
+		// Set the Severity and Message based on the results
+		// of the service test
+		if (info.getStatus() == ServiceStatus.FAIL) {
+			event.setTitle("Ping failed to: " + hostname);
+			event.setMessage(info.getMessage());
+			event.setSeverity(Severity.WARN);
 		}
 		else {
-			e.setStatus(Status.CLOSED);
+			event.setMessage("Ping succeeded to: " + hostname);
+			event.setSeverity(Severity.INFO);
+		}
+		
+		// Set the event status based on Severity of the Raw Event
+		if (event.getSeverity() == Severity.INFO) {
+			event.setStatus(Status.CLOSED);
+		}
+		else {
+			event.setStatus(Status.OPEN);
 		}
 		
 		// Set the uniqueness of the event by hostname, facility, and message.
 		// TBD: These fields need to be split out in a configuration file
-		e.addFingerprintField("hostname");
-		e.addFingerprintField("@message");
+		event.addFingerprintField("hostname");
+		event.addFingerprintField("service");
 		
-		// Set the time at which the Syslog record was created
-		e.setCreatedAt(info.getTimestamp());
+		// Set the creation time based on time stamp from the Ping command
+		event.setCreatedAt(info.getTimestamp());
 
-		// Set Title
-		e.setTitle("Ping status for " + info.getHost());
-		
 		// Set Sender
-		e.getSender().setRef("Ping");
-		e.getSender().setType("Boundary Event SDK");
+		event.getSender().setRef("Service Health Check");
+		event.getSender().setType("Boundary Event SDK");
 	}
 }

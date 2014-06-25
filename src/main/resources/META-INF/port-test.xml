@@ -7,13 +7,12 @@
            http://camel.apache.org/schema/spring
            http://camel.apache.org/schema/spring/camel-spring.xsd">
 
-	<bean id="port-check-route" class="com.boundary.sdk.event.service.PortRouteBuilder">
+	<bean id="port-check-route" class="com.boundary.sdk.event.service.port.PortRouteBuilder">
 		<property name="routeId" value="PORT" />
 		<property name="host" value="localhost" />
 		<property name="port" value="5555" />
 		<property name="toUri" value="direct:marshalled" />
 	</bean>
-
 
 	<camelContext xmlns="http://camel.apache.org/schema/spring">
 		<routeBuilder ref="port-check-route"/>

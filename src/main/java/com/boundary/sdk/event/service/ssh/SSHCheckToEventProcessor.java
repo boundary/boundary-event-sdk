@@ -16,7 +16,9 @@ import org.apache.camel.Processor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.boundary.camel.component.ping.PingInfo;
 import com.boundary.camel.component.ssh.SshxConfiguration;
+import com.boundary.camel.component.ssh.SshxInfo;
 import com.boundary.sdk.event.RawEvent;
 import com.boundary.sdk.event.Severity;
 import com.boundary.sdk.event.Status;
@@ -38,55 +40,78 @@ public class SSHCheckToEventProcessor implements Processor {
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		Message message = exchange.getIn();
+		
+		String output = message.getBody(String.class);
 		String expectedOutput = message.getHeader(SshHeaderNames.SSH_HEADER_EXPECTED_OUTPUT,String.class);
-		
-//		ByteArrayInputStream inputStream = message.getBody(ByteArrayInputStream.class);
-//		String output = getOutputString(inputStream);
-		
-		String triggerName = message.getHeader(QUARTZ_HEADER_TRIGGER_NAME,String.class);
-		//String createdAtDate = message.getHeader(QUARTZ_HEADER_FIRE_TIME,String.class);
+
 		String testName = message.getHeader(BOUNDARY_SERVICE_NAME,String.class);
 		ServiceTest<SshxConfiguration> serviceTest = message.getHeader(BOUNDARY_SERVICE_TEST,ServiceTest.class);
 		SshxConfiguration serviceTestConfig = serviceTest.getConfiguration();
-		//message.setHeader("created-at-date", createdAtDate);
+		
+		//
+		// Create the RawEvent and populate with values
+		//
 		
 		RawEvent event = new RawEvent();
 		
+		// Set the creation to now!
+		event.setCreatedAt(new Date());
+		
+		// Host gets set from the host we ran the SSH against.
 		event.getSource().setRef(serviceTestConfig.getHost());
 		event.getSource().setType("host");
 		
-		event.setTitle(serviceTest.getServiceName() + " - " + serviceTest.getName());
 
-		event.addFingerprintField("service-name");
-		event.addFingerprintField("host");
-		
-		// Service Tests are always have a status of OK
-		event.setStatus(Status.OK);
+		// Define the uniqueness of the event based on the service and the host that was tested.
+		event.addFingerprintField("service");
+		event.addFingerprintField("hostname");
 		
 		// Add the required properties
+		String hostname = serviceTestConfig.getHost();
+		String serviceName = serviceTest.getServiceName();
 		event.addProperty("command",serviceTestConfig.getCommand());
 		event.addProperty("expected-output",expectedOutput);
-		String output = message.getBody(String.class);
 		event.addProperty("output",output);
-		event.addProperty("service-name",serviceTest.getServiceName());
-		event.addProperty("host",serviceTestConfig.getHost());
+		event.addProperty("service-test",serviceTest.getName());
+		event.addProperty("service",serviceName);
+		event.addProperty("hostname",hostname);
+		event.addProperty("time-out",serviceTestConfig.getTimeout());
 		
+		// Tag the service that was tested
 		event.addTag(serviceTest.getServiceName());
+		event.addTag(hostname);
 		
-		LOG.info(event.toString());
-		LOG.info(expectedOutput);
-		// Set the severity base on the expected output 
+		// Generate our title of the event
+		// TODO: Service test provides a template from the available data??
+		event.setTitle(serviceName + " - " + serviceTest.getName());
+
+		
+		// Set Severity, Status, and Message of the event based on the matching of expected output
 		if (output.matches(expectedOutput)) {
 			event.setSeverity(Severity.INFO);
-			event.setMessage("Received expected output");
+			event.setStatus(Status.CLOSED);
+			event.setMessage("Received expected output: " + expectedOutput);
+			
 		}
 		else {
 			event.setSeverity(Severity.WARN);
+			event.setStatus(Status.CLOSED);
 			event.setMessage("Received unexpected output");
 		}
 		
+		// Set Sender
+		event.getSender().setRef("Service Health Check");
+		event.getSender().setType("Boundary Event SDK");
+		
+		LOG.debug("RawEvent: " + event);
+		
 		message.setBody(event);
 	}
+	
+	private void sshStatusToEvent(ServiceTest<SshxInfo> serviceTest,SshxInfo info,RawEvent event) {
+
+	}
+
 	
 	private String getOutputString(ByteArrayInputStream inputStream) {
 		StringBuffer sb = new StringBuffer();
@@ -98,7 +123,6 @@ public class SSHCheckToEventProcessor implements Processor {
 		
 		return sb.toString();
 	}
-	
 	
 	private List<String> getOutputToList(ByteArrayInputStream inputStream) {
 		List<String> lines = new ArrayList<String>();
