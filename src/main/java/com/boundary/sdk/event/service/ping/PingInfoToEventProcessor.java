@@ -83,6 +83,7 @@ public class PingInfoToEventProcessor implements Processor {
 		event.addProperty("rtt-min",info.getRTTMin());
 		event.addProperty("rtt-mdev",info.getRTTMDev());
 		event.addProperty("service-test", serviceTest.getName());
+		event.addProperty("service-test-type",serviceTest.getServiceTestType());
 		event.addProperty("service", serviceTest.getServiceName());
 		
 		event.addTag(info.getHost());
@@ -109,11 +110,10 @@ public class PingInfoToEventProcessor implements Processor {
 			event.setStatus(Status.OPEN);
 		}
 		
-		// Set the uniqueness of the event by hostname, facility, and message.
-		// TBD: These fields need to be split out in a configuration file
-		event.addFingerprintField("hostname");
 		event.addFingerprintField("service");
-		
+		event.addFingerprintField("service-test");
+		event.addFingerprintField("hostname");
+
 		// Set the creation time based on time stamp from the Ping command
 		event.setCreatedAt(info.getTimestamp());
 

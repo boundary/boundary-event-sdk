@@ -82,6 +82,7 @@ public class PortInfoToEventProcessor implements Processor {
 		event.addProperty("port-status",info.getPortStatus());
 		event.addProperty("time-out", info.getTimeout());
 		event.addProperty("service-test", serviceTest.getName());
+		event.addProperty("service-test-type",serviceTest.getServiceTestType());
 		event.addProperty("service", serviceName);
 		
 		event.addTag(serviceName);
@@ -101,10 +102,9 @@ public class PortInfoToEventProcessor implements Processor {
 			event.setStatus(Status.OK);
 		}
 		
-		// Set the uniqueness of the event by hostname, facility, and message.
-		// TBD: These fields need to be split out in a configuration file
+		event.addFingerprintField("service");
 		event.addFingerprintField("hostname");
-		event.addFingerprintField("port");
+		event.addFingerprintField("");
 		
 		// Set the time at which the Syslog record was created
 		event.setCreatedAt(info.getTimestamp());

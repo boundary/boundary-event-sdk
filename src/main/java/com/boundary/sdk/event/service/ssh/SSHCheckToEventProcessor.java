@@ -23,8 +23,7 @@ import com.boundary.sdk.event.RawEvent;
 import com.boundary.sdk.event.Severity;
 import com.boundary.sdk.event.Status;
 
-import static com.boundary.sdk.event.service.QuartzHeaderNames.*;
-import static com.boundary.sdk.event.util.BoundaryHeaderNames.*;
+import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
 
 import com.boundary.sdk.event.service.ServiceTest;
 import com.boundary.sdk.event.snmp.MIBCompilerLogger;
@@ -43,11 +42,11 @@ public class SSHCheckToEventProcessor implements Processor {
 		
 		String output = message.getBody(String.class);
 
-		String testName = message.getHeader(BOUNDARY_SERVICE_NAME,String.class);
-		ServiceTest<SshxConfiguration> serviceTest = message.getHeader(BOUNDARY_SERVICE_TEST,ServiceTest.class);
+
+		ServiceTest<SshxConfiguration> serviceTest = message.getHeader(SERVICE_TEST_INSTANCE,ServiceTest.class);
 		SshxConfiguration configuration = serviceTest.getConfiguration();
 		
-		String expectedOutput = configuration.getExpectedOutput();
+
 
 		//
 		// Create the RawEvent and populate with values
@@ -63,17 +62,19 @@ public class SSHCheckToEventProcessor implements Processor {
 		event.getSource().setType("host");
 		
 
-		// Define the uniqueness of the event based on the service and the host that was tested.
 		event.addFingerprintField("service");
+		event.addFingerprintField("service-test");
 		event.addFingerprintField("hostname");
 		
 		// Add the required properties
 		String hostname = configuration.getHost();
+		String expectedOutput = configuration.getExpectedOutput();
 		String serviceName = serviceTest.getServiceName();
 		event.addProperty("command",configuration.getCommand());
 		event.addProperty("expected-output",expectedOutput);
 		event.addProperty("output",output);
 		event.addProperty("service-test",serviceTest.getName());
+		event.addProperty("service-test-type",serviceTest.getServiceTestType());
 		event.addProperty("service",serviceName);
 		event.addProperty("hostname",hostname);
 		event.addProperty("time-out",configuration.getTimeout());
@@ -95,7 +96,7 @@ public class SSHCheckToEventProcessor implements Processor {
 		}
 		else {
 			event.setSeverity(Severity.WARN);
-			event.setStatus(Status.CLOSED);
+			event.setStatus(Status.OPEN);
 			event.setMessage("Received unexpected output");
 		}
 		
