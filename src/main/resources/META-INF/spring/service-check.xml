@@ -173,7 +173,7 @@
 					<log loggingLevel="INFO" message="Sending to port-check"/>
 				</when>
 				<when>
-					<simple>{$body.serviceTestType} == "ssh"</simple>
+					<simple>${body.serviceTestType} == "ssh"</simple>
 					<log loggingLevel="INFO" message="Sending to ssh-check"/>
 					<to uri="seda:ssh-check"/>
 				</when>
@@ -221,6 +221,7 @@
 			<setBody>
 				<simple>${body.command}</simple>
 			</setBody>
+			<log message="command: ${body}"/>
 			<choice>
 				<when>
 					<simple>${header.host} == "{{sdn.director.ssh.host}}"</simple>
