@@ -7,10 +7,13 @@
                    http://camel.apache.org/schema/spring/camel-spring.xsd">
 
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+	
+		<propertyPlaceholder id="properties" location="classpath:META-INF/spring/service-check.properties"/>
+	
 		<route id="ssh-local-poll" startupOrder="10">
 			<!-- Have a timer fire every minute -->
 			<from uri="quartz://timerName?cron=0+0/1 * * * ?"/>
-			<to id="SSH" uri="ssh://{{plumgrid.user}}:Lerma$20@192.168.1.131"/>
+			<to id="SSH" uri="ssh://davidg:Lerma$49@localhost"/>
 			<log message="${body}"/>
 			<to uri="mock:ssh-out"/>
 		</route>
