@@ -174,7 +174,7 @@
 				</when>
 				<when>
 					<simple>{$body.serviceTestType} == "ssh"</simple>
-					<log loggingLevel=""INFO"" message="Sending to ssh-check"/>
+					<log loggingLevel="INFO" message="Sending to ssh-check"/>
 					<to uri="seda:ssh-check"/>
 				</when>
 				<otherwise>
@@ -215,7 +215,7 @@
              the host configuration limitation
      	-->
 		<route id="SSH-CHECK" startupOrder="170">
-			<from uri="seda:ping-check"/>
+			<from uri="seda:ssh-check"/>
 			<log loggingLevel="DEBUG" message="${headers}"/>
 			<bean ref="configurationProcessor" method="extractSshConfiguration"/>
 			<setBody>
@@ -253,7 +253,7 @@
  		
  <!--  COMMON SSH-CHECKS ROUTES -->
  		
- 		<route id="SSH-TO-EVENT" startupOrder="170">
+ 		<route id="SSH-TO-EVENT" startupOrder="175">
  			<from ref="ssh-to-event-in"/>
  			<bean ref="ssh-to-event" method="process"/>
 			<log loggingLevel="DEBUG" message="EVENT PROCESSOR"/>
