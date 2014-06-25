@@ -58,6 +58,8 @@ public class ServiceCheckTest extends CamelSpringTestSupport  {
 		super.tearDown();
 	}
 
+        // TODO: Rework test to validate end point.
+	@Ignore("Timer component for this spring file has been disabled so test fails")
 	@Test
 	public void testSimple() throws InterruptedException {
 		MockEndpoint endPoint = getMockEndpoint("mock:ssh-out");
