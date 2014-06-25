@@ -42,12 +42,13 @@ public class SSHCheckToEventProcessor implements Processor {
 		Message message = exchange.getIn();
 		
 		String output = message.getBody(String.class);
-		String expectedOutput = message.getHeader(SshHeaderNames.SSH_HEADER_EXPECTED_OUTPUT,String.class);
 
 		String testName = message.getHeader(BOUNDARY_SERVICE_NAME,String.class);
 		ServiceTest<SshxConfiguration> serviceTest = message.getHeader(BOUNDARY_SERVICE_TEST,ServiceTest.class);
-		SshxConfiguration serviceTestConfig = serviceTest.getConfiguration();
+		SshxConfiguration configuration = serviceTest.getConfiguration();
 		
+		String expectedOutput = configuration.getExpectedOutput();
+
 		//
 		// Create the RawEvent and populate with values
 		//
@@ -58,7 +59,7 @@ public class SSHCheckToEventProcessor implements Processor {
 		event.setCreatedAt(new Date());
 		
 		// Host gets set from the host we ran the SSH against.
-		event.getSource().setRef(serviceTestConfig.getHost());
+		event.getSource().setRef(configuration.getHost());
 		event.getSource().setType("host");
 		
 
@@ -67,15 +68,15 @@ public class SSHCheckToEventProcessor implements Processor {
 		event.addFingerprintField("hostname");
 		
 		// Add the required properties
-		String hostname = serviceTestConfig.getHost();
+		String hostname = configuration.getHost();
 		String serviceName = serviceTest.getServiceName();
-		event.addProperty("command",serviceTestConfig.getCommand());
+		event.addProperty("command",configuration.getCommand());
 		event.addProperty("expected-output",expectedOutput);
 		event.addProperty("output",output);
 		event.addProperty("service-test",serviceTest.getName());
 		event.addProperty("service",serviceName);
 		event.addProperty("hostname",hostname);
-		event.addProperty("time-out",serviceTestConfig.getTimeout());
+		event.addProperty("time-out",configuration.getTimeout());
 		
 		// Tag the service that was tested
 		event.addTag(serviceTest.getServiceName());
@@ -91,7 +92,6 @@ public class SSHCheckToEventProcessor implements Processor {
 			event.setSeverity(Severity.INFO);
 			event.setStatus(Status.CLOSED);
 			event.setMessage("Received expected output: " + expectedOutput);
-			
 		}
 		else {
 			event.setSeverity(Severity.WARN);

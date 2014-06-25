@@ -165,17 +165,17 @@
 				<when>
 					<simple>${body.serviceTestType} == "ping"</simple>
 					<to uri ="seda:ping-check"/>
-					<log loggingLevel="DEBUG" message="Sending to ping-check"/>
+					<log loggingLevel="INFO" message="Sending to ping-check"/>
 				</when>
 				<when>
 					<simple>${body.serviceTestType} == "port"</simple>
 					<to uri ="seda:port-check"/>
-					<log loggingLevel="DEBUG" message="Sending to port-check"/>
+					<log loggingLevel="INFO" message="Sending to port-check"/>
 				</when>
 				<when>
 					<simple>{$body.serviceTestType} == "ssh"</simple>
-					<log loggingLevel="DEBUG" message="Sending to ssh-check"/>
-					<to uri = "seda:ssh-check"/>
+					<log loggingLevel=""INFO"" message="Sending to ssh-check"/>
+					<to uri="seda:ssh-check"/>
 				</when>
 				<otherwise>
 				</otherwise>
@@ -208,26 +208,45 @@
 			</marshal>
 			<to ref="boundary-event"/>
 		</route>
-		
+		<!-- This needs to be routed a some point based on service to
+             a specific SSH check since the Camel SSH component is not able
+             to receive the host configuration as a producer. Ultimate this
+             will be resolved once we derive a new component that removes
+             the host configuration limitation
+     	-->
+		<route id="SSH-CHECK" startupOrder="170">
+			<from uri="seda:ping-check"/>
+			<log loggingLevel="DEBUG" message="${headers}"/>
+			<bean ref="configurationProcessor" method="extractSshConfiguration"/>
+			<setBody>
+				<simple>${body.command}</simple>
+			</setBody>
+			<choice>
+				<when>
+					<simple>${header.host} == "{{sdn.director.ssh.host}}"</simple>
+					<to uri ="seda:sdn-director-host-ssh"/>
+				</when>
+				<otherwise>
+					<log loggingLevel="ERROR" message="DID NOT ROUTE SSH SERVICE CHECK - UPDATE CONFIGURATION"/>
+		        </otherwise>
+		      </choice>
+		</route>
 		
 <!-- SSH-CHECKS ROUTES -->
 		
 		<!-- Timer that drives the SSH-CHECK testing -->
-		<route id="PLUMGRID-PROCESS-POLLER" startupOrder="190" autoStartup="false">
+<!-- 		<route id="PLUMGRID-PROCESS-POLLER" startupOrder="190" autoStartup="false">
 			<from uri="quartz://boundary/plumgrid?cron={{plumgrid.cron}}"/>
 			<bean ref="sshTests"/>
 			<to ref="plumgrid-host-ssh-in"/>
-		</route>
+		</route> -->
 				
 		<!--  Specifically handles the Plumgrid Controller -->
-		<route id="PLUMGRID-SSH" startupOrder="180">
-			<from ref="plumgrid-host-ssh-in"/>
-			<!-- Have a timer fire every minute -->
+		<route id="SDN-DIRECTOR-SSH" startupOrder="180">
+			<from uri="seda:sdn-director-host-ssh"/>
 			<log message="Running command: ${body} on host: {{plumgrid.host}}"/>
-			<to id="PLUMGRID-SSH" uri="ssh://{{plumgrid.user}}:{{plumgrid.password}}@{{plumgrid.host}}"/>
+			<to uri="ssh://{{plumgrid.user}}:{{plumgrid.password}}@{{plumgrid.host}}"/>
 			<convertBodyTo type="java.lang.String"/>
-			<log loggingLevel="DEBUG" message="${headers}"/>
-			<log loggingLevel="DEBUG" message="${body}"/>
  			<to uri="mock:ssh-out"/>
  			<to ref="ssh-to-event-in"/>
  		</route>
@@ -243,28 +262,6 @@
 			</marshal>
 			<to ref="boundary-event"/>
  		</route>
-		
-<!-- This needs to be routed a some point based on service to
-     a specific SSH check since the Camel SSH component is not able
-     to receive the host configuration as a producer. Ultimate this
-     will be resolved once we derive a new component that removes
-     the host configuration limitation -->
-		<route id="SSH-CHECK" startupOrder="200">
-			<from uri="seda:ssh-check"/>
-			<to ref="plumgrid-host-ssh-in"/>
-<!--
-			<choice>
-				<when>
-					Plumgrid Director
-					<simple></simple>
-					<to uri=""
-				</when>
-				<otherwise>
-					<log message="SSH-CHECK NOT ROUTED!"
-				</otherwise>
-			</choice>
- -->
-		</route>
 		
 	</camelContext>
 	

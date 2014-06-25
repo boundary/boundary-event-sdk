@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.boundary.camel.component.ping.PingConfiguration;
 import com.boundary.camel.component.port.PortConfiguration;
+import com.boundary.camel.component.ssh.SshxConfiguration;
 import com.boundary.sdk.event.BoundaryEventRouteBuilder;
 import com.boundary.sdk.event.service.ServiceCheckRequest;
 import com.boundary.sdk.event.service.ServiceTest;
@@ -33,25 +34,23 @@ public class ServiceChecksDatabase implements Processor {
 		for (Map<String,Object> row : list) {
 			LOG.info(row.toString());
 		}		
-		
-//		{serviceId=1, serviceName=SDN Director, serviceCheckName=SDN Director Service Check, serviceTestId=1, serviceTestName=Check SDN Director host status, serviceTypeName=ping, serviceTypeTableName=t_ping_config, configId=1}
-//		{serviceId=1, serviceName=SDN Director, serviceCheckName=SDN Director Service Check, serviceTestId=2, serviceTestName=Check plumgrid process status, serviceTypeName=ssh, serviceTypeTableName=t_port_config, configId=1}
-//		{serviceId=1, serviceName=SDN Director, serviceCheckName=SDN Director Service Check, serviceTestId=3, serviceTestName=Check plumgrid-sal process status, serviceTypeName=ssh, serviceTypeTableName=t_port_config, configId=2}
-//		{serviceId=1, serviceName=SDN Director, serviceCheckName=SDN Director Service Check, serviceTestId=4, serviceTestName=Check nginx process status, serviceTypeName=ssh, serviceTypeTableName=t_port_config, configId=3}
-
-		
+		String sdnDirectorHost = "192.168.137.11";
 		ServiceCheckRequest request = new ServiceCheckRequest();
-		PingConfiguration sdnDirector = new PingConfiguration();
-//		PingConfiguration pingConfig2 = new PingConfiguration();
-//		PortConfiguration portConfig = new PortConfiguration();
+		PingConfiguration sdnDirectorPingTest = new PingConfiguration();
+		sdnDirectorPingTest.setHost(sdnDirectorHost);
 		
-		sdnDirector.setHost("192.168.137.11");
-//		pingConfig2.setHost("google.com");
-//		portConfig.setHost("184.169.202.188");
-//		portConfig.setPort(10010);
+		SshxConfiguration plumgridProcessTest = new SshxConfiguration();
+		plumgridProcessTest.setHost(sdnDirectorHost);
+		plumgridProcessTest.setCommand("status plumgrid");
+		plumgridProcessTest.setExpectedOutput("^plumgrid start/running, process\\s\\d+");
 
-		ServiceTest<PingConfiguration> pingSDNDirector = new ServiceTest<PingConfiguration>("Ping SDN Director Host","ping","SDN Director",request.getRequestId(),sdnDirector);
+
+		ServiceTest<PingConfiguration> pingSDNDirector = new ServiceTest<PingConfiguration>(
+				"Ping SDN Director Host","ping","SDN Director",request.getRequestId(),sdnDirectorPingTest);
 		request.addServiceTest(pingSDNDirector);
+		
+		ServiceTest<SshxConfiguration> sshPlumgridProcess = new ServiceTest<SshxConfiguration>("Check plumgrid process status",
+				"ssh","SDN Director",request.getRequestId(),plumgridProcessTest);
 		
 //		ServiceTest<PortConfiguration> portTest = new ServiceTest<PortConfiguration>("Check port on SDN Director","port","SDN Director",request.getRequestId(),portConfig);
 //		request.addServiceTest(portTest);
