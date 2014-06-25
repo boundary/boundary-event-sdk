@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.boundary.sdk.event.service;
+package com.boundary.sdk.event.service.ssh;
 
 import static org.junit.Assert.*;
 
@@ -68,12 +68,14 @@ public class SSHTest extends CamelSpringTestSupport  {
 		super.tearDown();
 	}
 	
+	// TODO: Create a mock SSH to test these independent of the host we are running on
+	@Ignore("UNABLE TO RUN WITHOUT STANDARD SSH MOCK OBJECT")
 	@Test
 	public void testSSH() throws InterruptedException, IOException {
 		MockEndpoint endPoint = getMockEndpoint("mock:ssh-out");
 		endPoint.setExpectedMessageCount(1);
 		
-		String cmd = "status plumgrid";
+		String cmd = "ls -l";
 		template.sendBody("direct:ssh-in",cmd);
 		
 		endPoint.assertIsSatisfied();
