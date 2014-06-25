@@ -96,6 +96,7 @@ public class PingInfoToEventProcessor implements Processor {
 			event.setSeverity(Severity.WARN);
 		}
 		else {
+			event.setTitle("Ping succeeded to " + hostname);
 			event.setMessage("Ping succeeded to: " + hostname);
 			event.setSeverity(Severity.INFO);
 		}
