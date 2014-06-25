@@ -86,7 +86,7 @@ public class SSHCheckToEventProcessorTest extends CamelSpringTestSupport  {
 			assertNotNull(event);
 			assertEquals("check source ref",hostName,event.getSource().getRef());
 			assertEquals("check severity",Severity.INFO, event.getSeverity());
-			assertEquals("check status",Status.OK,event.getStatus());
+			assertEquals("check status",Status.CLOSED,event.getStatus());
 		}
 	}
 
