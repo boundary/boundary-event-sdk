@@ -36,9 +36,15 @@ public class ServiceChecksDatabase implements Processor {
 			LOG.info(row.toString());
 		}		
 		String sdnDirectorHost = "192.168.137.11";
+		String sdnDirectorName = "SDN Director";
 		ServiceCheckRequest request = new ServiceCheckRequest();
+		
 		PingConfiguration sdnDirectorPingTest = new PingConfiguration();
 		sdnDirectorPingTest.setHost(sdnDirectorHost);
+		
+		PortConfiguration sdnDirectorPortTest8080 = new PortConfiguration();
+		sdnDirectorPortTest8080.setHost(sdnDirectorHost);
+		sdnDirectorPortTest8080.setPort(8080);
 		
 		SshxConfiguration plumgridProcessTest = new SshxConfiguration();
 		plumgridProcessTest.setHost(sdnDirectorHost);
@@ -56,19 +62,23 @@ public class ServiceChecksDatabase implements Processor {
 		nginxProcessTest.setExpectedOutput("^nginx start/running, process\\s\\d+\n");
 
 		ServiceTest<PingConfiguration> pingSDNDirector = new ServiceTest<PingConfiguration>(
-				"Ping SDN Director Host","ping","SDN Director",request.getRequestId(),sdnDirectorPingTest);
+				"host status","ping",sdnDirectorName,request.getRequestId(),sdnDirectorPingTest);
 		request.addServiceTest(pingSDNDirector);
 		
+		ServiceTest<PortConfiguration> portSDNDirector8080 = new ServiceTest<PortConfiguration>(
+				"8080 port status","port",sdnDirectorName,request.getRequestId(),sdnDirectorPortTest8080);
+		request.addServiceTest(portSDNDirector8080);
+		
 		ServiceTest<SshxConfiguration> sshPlumgridProcess = new ServiceTest<SshxConfiguration>(
-				"Check plumgrid process status","ssh","SDN Director",request.getRequestId(),plumgridProcessTest);
+				"plumgrid process status","ssh",sdnDirectorName,request.getRequestId(),plumgridProcessTest);
 		request.addServiceTest(sshPlumgridProcess);
 		
 		ServiceTest<SshxConfiguration> sshPlumgridSalProcess = new ServiceTest<SshxConfiguration>(
-				"Check plumgrid-sal process status","ssh","SDN Director",request.getRequestId(),plumgridProcessTest);
+				"plumgrid-sal process status","ssh",sdnDirectorName,request.getRequestId(),plumgridProcessTest);
 		request.addServiceTest(sshPlumgridSalProcess);
 		
 		ServiceTest<SshxConfiguration> sshNginxProcess = new ServiceTest<SshxConfiguration>(
-				"Check nginx process status","ssh","SDN Director",request.getRequestId(),plumgridProcessTest);
+				"nginx process status","ssh",sdnDirectorName,request.getRequestId(),plumgridProcessTest);
 		request.addServiceTest(sshNginxProcess);
 
 		message.setBody(request);
