@@ -71,8 +71,7 @@ public class PortInfoToEventProcessor implements Processor {
 	 * @param e
 	 */
 	private void portInfoToEvent(ServiceTest<PortInfo> serviceTest,PortInfo info, RawEvent event) {
-		
-		// Add the hostname
+
 		String hostname = info.getHost();
 		String serviceName = serviceTest.getServiceName();
 		
@@ -92,28 +91,16 @@ public class PortInfoToEventProcessor implements Processor {
 		// Set the Severity and Message based on the results
 		// of the service test
 		if (info.getStatus() == ServiceStatus.FAIL) {
-			event.setTitle(serviceName + " - " + port + " on " + hostname + " is OFFLINE");
+			event.setTitle(serviceName + " - " + hostname + ":" + port + " is OFFLINE");
 			event.setMessage("Failed to connect the port, reason: " + info.getMessage());
 			event.setSeverity(Severity.WARN);
 			event.setStatus(Status.OPEN);
 		}
-		else {;
-			event.setTitle(serviceName + " - " + port + " on " + hostname + " is ONLINE");
-			event.setMessage("Successfully connected to " + port);
+		else {
+			event.setTitle(serviceName + " - " + hostname + ":" + port + " is ONLINE");
+			event.setMessage("Connected to port " + port + " on " + hostname);
 			event.setSeverity(Severity.INFO);
 			event.setStatus(Status.CLOSED);
-		}
-
-
-		// Map to the Service Status
-		Severity severity = info.getStatus() == ServiceStatus.FAIL ? Severity.CRITICAL : Severity.INFO;
-	
-
-		if (event.getSeverity() != Severity.INFO) {
-			event.setStatus(Status.OPEN);
-		}
-		else {
-			event.setStatus(Status.OK);
 		}
 		
 		event.addFingerprintField("service");
@@ -122,9 +109,6 @@ public class PortInfoToEventProcessor implements Processor {
 		
 		// Set the time at which the Syslog record was created
 		event.setCreatedAt(info.getTimestamp());
-
-		// Set Title
-		event.setTitle("Checking host: " + info.getHost() + " on port: " + info.getPort());
 		
 		// Set Sender
 		event.getSender().setRef("Service Health Check");
