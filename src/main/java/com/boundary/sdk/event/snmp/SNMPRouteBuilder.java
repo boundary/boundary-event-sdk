@@ -74,10 +74,7 @@ public class SNMPRouteBuilder extends UDPRouteBuilder {
 	 */
 	@Override
 	public void configure() {
-		// TBD, verify if I have to provide host property
-		// TBD, Should the trap listener be bound to port 0.0.0.0??
-		// TBD, Support of TCP??
-		String uri = "snmp:127.0.0.1:" + this.port + "?protocol=udp&type=TRAP";
+		String uri = "snmp:0.0.0.0:" + this.port + "?protocol=udp&type=TRAP";
 		from(uri)
 		.startupOrder(startUpOrder)
 		.routeId(this.routeId)
