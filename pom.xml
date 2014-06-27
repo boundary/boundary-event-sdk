@@ -6,7 +6,7 @@
 	<groupId>com.boundary</groupId>
 	<artifactId>boundary-event-sdk</artifactId>
 	<packaging>jar</packaging>
-	<version>00.01.00</version>
+	<version>00.01.01</version>
 
 	<name>boundary-event-sdk</name>
 	<description>Boundary Event SDK enables the rapid integration of foreign events into the Boundary monitoring platform</description>
