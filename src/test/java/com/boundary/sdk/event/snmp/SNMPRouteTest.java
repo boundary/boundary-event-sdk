@@ -44,6 +44,17 @@ public class SNMPRouteTest {
 	@After
 	public void tearDown() throws Exception {
 	}
+
+        /**
+         *
+         */
+        @Test
+        public void testBindAddress() {
+            String expectedBindAddress = "1.2.3.4";
+	    SNMPRouteBuilder builder = new SNMPRouteBuilder();
+            builder.setBindAddress(expectedBindAddress);
+            assertEquals("check bind address",expectedBindAddress,builder.getBindAddress());
+        }
 	
 	@Test
 	public void testMibRepository() {

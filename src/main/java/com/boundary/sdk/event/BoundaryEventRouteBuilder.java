@@ -21,6 +21,7 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	private static Logger LOG = LoggerFactory.getLogger(BoundaryEventRouteBuilder.class);
 
 	private String apiHost;
+	private int apiPort;
 	private String orgId;
 	private String apiKey;
 
@@ -29,6 +30,7 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	 */
 	public BoundaryEventRouteBuilder() {
 		this.apiHost = "api.boundary.com";
+		this.apiPort = 443;
 		this.orgId = "";
 		this.apiKey = "";
 		this.fromUri = "direct:boundary-event";
@@ -79,6 +81,26 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	public String getApiHost() {
 		return this.apiHost;
 	}
+
+	/**
+	 * Set the port to use for sending Boundary API requests
+	 * 
+	 * @param apiPort
+	 */
+	public void setApiPort(int apiPort) {
+		this.apiPort = apiPort;
+	}
+	
+	/**
+	 * Set the port to use for sending Boundary API requests
+	 * 
+	 * @return int
+	 */
+	public int getApiPort() {
+		return this.apiPort;
+	}
+		
+	
 		
 	
 	/**
@@ -90,7 +112,7 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	public void configure() {
 		
 		// Create the URL used to send events
-		String url = "https://" + apiHost + "/" + orgId + "/" + "events";
+		String url = "https://" + apiHost + ":" + apiPort + "/" + orgId + "/" + "events";
 		
 		LOG.info("boundary event api url: " + url);
 		
