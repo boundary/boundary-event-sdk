@@ -64,4 +64,11 @@ public class BoundaryEventRouteBuilderTest {
 		assertEquals("Check fromUri",expectedFromUri,route.getFromUri());
 	}
 
+	@Test
+	public void testApiPort() {
+		int expectedApiPort = 8888;
+		route.setApiPort(expectedApiPort);
+		assertEquals("Check api port",expectedApiPort,route.getApiPort());
+	}
+
 }
