@@ -74,7 +74,7 @@ public class SNMPRouteBuilder extends UDPRouteBuilder {
 	 */
 	@Override
 	public void configure() {
-		String uri = "snmp:0.0.0.0:" + this.port + "?protocol=udp&type=TRAP";
+		String uri = "snmp:" + getBindAddress() + ":" + getPort() + "?protocol=udp&type=TRAP";
 		from(uri)
 		.startupOrder(startUpOrder)
 		.routeId(this.routeId)
