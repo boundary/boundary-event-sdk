@@ -111,7 +111,7 @@ public class SNMPToEventProcessor implements Processor {
 		event.setSeverity(Severity.WARN);
 		
 		// SOURCE
-		event.getSource().setRef(hostname).setType("hostname");
+		event.getSource().setRef(hostname).setType("host");
 		
 		//STATUS - TBD: Depends on trap fields?
 		event.setStatus(Status.OPEN);
@@ -173,7 +173,7 @@ public class SNMPToEventProcessor implements Processor {
 		event.setSeverity(Severity.WARN);
 
 		// SOURCE
-		event.getSource().setRef(hostname).setType("hostname");
+		event.getSource().setRef(hostname).setType("host");
 		
 		//STATUS - TBD: Set status based on severity??
 		event.setStatus(Status.OPEN);
