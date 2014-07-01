@@ -84,7 +84,7 @@ public class SNMPToEventProcessor implements Processor {
 		String hostname = getPeerAddress(message);
 
 		// CREATED_AT - Set from timestamp on the PDU
-        event.setCreatedAt(new Date(v1pdu.getTimestamp()));
+        event.setCreatedAt(new Date());
 		
 		// FINGERPRINT_FIELDS
 		event.addFingerprintField(HOSTNAME_PROPERTY_NAME);
