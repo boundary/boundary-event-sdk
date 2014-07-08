@@ -31,7 +31,7 @@ Boundary SDK requires the following the environment variables be set prior to ru
 * `BOUNDARY_API_KEY` - Boundary API Key
 * `BOUNDARY_ORG_ID` - Boundary Organization ID
 
-with the following variables specific to the [Syslog event adapter](adapters/syslog.html):
+with the following variables specific to the SNMP Trap Adapter:
 
 * `BOUNDARY_MIB_REPOSITORY` - Stores the compiled MIBs for SNMP trap adapter
 * `BOUNDARY_MIB_LICENSE` - License string for SNMP4J-SMI

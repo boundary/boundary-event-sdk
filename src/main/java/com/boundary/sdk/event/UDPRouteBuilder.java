@@ -10,9 +10,10 @@ package com.boundary.sdk.event;
 public abstract class UDPRouteBuilder extends BoundaryRouteBuilder {
 	
 	protected int port;
-	protected String host;
+	protected String bindAddress;
 
 	public UDPRouteBuilder() {
+	   bindAddress = "0.0.0.0";
 	}
 	
 	/**
@@ -36,17 +37,17 @@ public abstract class UDPRouteBuilder extends BoundaryRouteBuilder {
 	/**
 	 * Sets the host to contact
 	 * 
-	 * @param host Listening host
+	 * @param bindAddress
 	 */
-	public void setHost(String host) {
-		this.host = host;
+	public void setBindAddress(String bindAddress) {
+		this.bindAddress = bindAddress;
 	}
 	
 	/**
 	 * Gets the host used by this route builder.
-	 * @return {@link String}
+         * @return String
 	 */
-	public String getHost() {
-		return this.host;
+	public String getBindAddress() {
+		return this.bindAddress;
 	}
 }

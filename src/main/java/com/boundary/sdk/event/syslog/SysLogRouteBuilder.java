@@ -7,7 +7,12 @@ import org.apache.camel.component.syslog.Rfc3164SyslogDataFormat;
 import com.boundary.sdk.event.BoundaryRouteBuilder;
 import com.boundary.sdk.event.UDPRouteBuilder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class SysLogRouteBuilder extends UDPRouteBuilder {
+
+	private static Logger LOG = LoggerFactory.getLogger(SysLogRouteBuilder.class);
 	
 	private final String DEFAULT_SYSLOG_ROUTE_NAME="SYSLOG-ROUTE";
 	private final int DEFAULT_SYSLOG_PORT = 1514;
@@ -27,8 +32,7 @@ public class SysLogRouteBuilder extends UDPRouteBuilder {
 	 */
 	@Override
 	public void configure() {
-		String uri = "netty:udp://127.0.0.1:" + port + "?sync=false&allowDefaultCodec=false";
-
+		String uri = "netty:udp://"+ getBindAddress() + ":" + getPort() + "?sync=false&allowDefaultCodec=false";
         DataFormat syslogDataFormat = new Rfc3164SyslogDataFormat();
 		RouteDefinition routeDefinition = from(uri);
 		
