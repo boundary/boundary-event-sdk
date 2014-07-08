@@ -9,8 +9,5 @@ See the [user guide](https://github.com/boundary/boundary-event-sdk/blob/master/
 
 Specific configuration details for the adapters are found [here](https://github.com/boundary/boundary-event-sdk/blob/master/src/site/markdown/adapters/index.md)
 
-Pre-Build distributions for CentOS can be found [here](https://github.com/boundary/boundary-event-sdk/tree/master/dist/00.01.00).
-
-Release notes can be found [here](https://github.com/boundary/boundary-event-sdk/blob/master/src/site/markdown/downloads/00.01.00/index.html)
-
+Pre-Build distributions for CentOS can be found [here](https://github.com/boundary/boundary-event-sdk/releases)
 
