@@ -51,6 +51,7 @@
   <classpathentry kind="var" path="M2_REPO/org/apache/servicemix/bundles/org.apache.servicemix.bundles.snmp4j/2.2.5_1/org.apache.servicemix.bundles.snmp4j-2.2.5_1.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-netty/2.13.1/camel-netty-2.13.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-pool/commons-pool/1.6/commons-pool-1.6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-mina/2.13.1/camel-mina-2.13.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-syslog/2.13.1/camel-syslog-2.13.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-jms/2.13.1/camel-jms-2.13.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-jms/3.2.8.RELEASE/spring-jms-3.2.8.RELEASE.jar"/>
@@ -88,6 +89,5 @@
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-jdbc/3.2.5.RELEASE/spring-jdbc-3.2.5.RELEASE.jar"/>
   <classpathentry kind="var" path="M2_REPO/mysql/mysql-connector-java/5.1.31/mysql-connector-java-5.1.31.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/boundary/camel-service/0.3.0/camel-service-0.3.0.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-mina/2.13.1/camel-mina-2.13.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/commons/commons-exec/1.2/commons-exec-1.2.jar"/>
 </classpath>
