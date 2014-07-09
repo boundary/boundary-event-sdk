@@ -35,9 +35,9 @@ public abstract class UDPRouteBuilder extends BoundaryRouteBuilder {
 	}
 	
 	/**
-	 * Sets the host to contact
+	 * Sets the address to bind the listening port
 	 * 
-	 * @param bindAddress
+	 * @param bindAddress Address to bind the socket
 	 */
 	public void setBindAddress(String bindAddress) {
 		this.bindAddress = bindAddress;
@@ -45,7 +45,7 @@ public abstract class UDPRouteBuilder extends BoundaryRouteBuilder {
 	
 	/**
 	 * Gets the host used by this route builder.
-         * @return String
+     * @return {@link String}
 	 */
 	public String getBindAddress() {
 		return this.bindAddress;

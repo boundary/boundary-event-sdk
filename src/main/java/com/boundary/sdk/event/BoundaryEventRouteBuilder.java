@@ -1,7 +1,6 @@
 package com.boundary.sdk.event;
 
 import org.apache.camel.Exchange;
-import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.http.AuthMethod;
 import org.apache.camel.component.http.HttpComponent;
@@ -78,7 +77,7 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	/**
 	 * Return the current Boundary API host
 	 * 
-	 * @return String
+	 * @return {@link String}
 	 */
 	public String getApiHost() {
 		return this.apiHost;
@@ -87,7 +86,7 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	/**
 	 * Set the port to use for sending Boundary API requests
 	 * 
-	 * @param apiPort
+	 * @param apiPort Port to send Boundary API requests
 	 */
 	public void setApiPort(int apiPort) {
 		this.apiPort = apiPort;
@@ -96,14 +95,11 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	/**
 	 * Set the port to use for sending Boundary API requests
 	 * 
-	 * @return int
+	 * @return int Gets the port used to send Boundary API requests
 	 */
 	public int getApiPort() {
 		return this.apiPort;
 	}
-		
-	
-		
 	
 	/**
 	 * Configures the Camel route that receives {@link RawEvent}
