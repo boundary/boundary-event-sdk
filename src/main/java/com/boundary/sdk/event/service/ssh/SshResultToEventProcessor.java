@@ -23,11 +23,11 @@ import com.boundary.sdk.event.Severity;
 import com.boundary.sdk.event.Status;
 import com.boundary.sdk.event.service.ServiceTest;
 
-public class SSHCheckToEventProcessor implements Processor {
+public class SshResultToEventProcessor implements Processor {
 	
-	private static Logger LOG = LoggerFactory.getLogger(SSHCheckToEventProcessor.class);
+	private static Logger LOG = LoggerFactory.getLogger(SshResultToEventProcessor.class);
 
-	public SSHCheckToEventProcessor() {
+	public SshResultToEventProcessor() {
 
 	}
 

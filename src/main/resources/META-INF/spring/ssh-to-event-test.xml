@@ -6,7 +6,7 @@
                    http://camel.apache.org/schema/spring
                    http://camel.apache.org/schema/spring/camel-spring.xsd">
                    
-    <bean id="ssh-to-event-processor" class="com.boundary.sdk.event.service.ssh.SSHCheckToEventProcessor"/>
+    <bean id="ssh-to-event-processor" class="com.boundary.sdk.event.service.ssh.SshResultToEventProcessor"/>
    
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
 		<route id="SSH-TO-EVENT-TEST">
