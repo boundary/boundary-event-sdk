@@ -58,6 +58,7 @@ public class ServiceChecksDatabase implements Processor {
 		SshxConfiguration plumgridProcessTest = new SshxConfiguration();
 		plumgridProcessTest.setHost(sdnDirectorHost);
 		plumgridProcessTest.setCommand("status plumgrid");
+		plumgridProcessTest.setTimeout(10000);
 		
 		SshxServiceModel plumgridProcessModel = new SshxServiceModel();
 		plumgridProcessModel.setExpectedOutput("^plumgrid start/running, process\\s\\d+\n");
@@ -67,6 +68,7 @@ public class ServiceChecksDatabase implements Processor {
 		SshxConfiguration plumgridSalProcessTest = new SshxConfiguration();
 		plumgridSalProcessTest.setHost(sdnDirectorHost);
 		plumgridSalProcessTest.setCommand("status plumgrid-sal");
+		plumgridSalProcessTest.setTimeout(10000);
 		
 		SshxServiceModel plumgridSalProcessTestModel = new SshxServiceModel();
 		plumgridSalProcessTestModel.setExpectedOutput("^plumgrid-sal start/running, process\\s\\d+\n");
@@ -76,6 +78,7 @@ public class ServiceChecksDatabase implements Processor {
 		SshxConfiguration nginxProcessTest = new SshxConfiguration();
 		nginxProcessTest.setHost(sdnDirectorHost);
 		nginxProcessTest.setCommand("status nginx");
+		plumgridSalProcessTest.setTimeout(10000);
 		
 		SshxServiceModel nginxProcessModel = new SshxServiceModel();
 		nginxProcessModel.setExpectedOutput("^nginx start/running, process\\s\\d+\n");
