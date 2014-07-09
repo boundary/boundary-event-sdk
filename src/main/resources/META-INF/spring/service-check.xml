@@ -217,7 +217,7 @@
 		<route id="SSH-CHECK" startupOrder="170">
 			<from uri="seda:ssh-check"/>
 			<log loggingLevel="DEBUG" message="${headers}"/>
-			<bean ref="configurationProcessor" method="extractSshConfiguration"/>
+			<bean ref="configurationProcessor" method="extractSshxConfiguration"/>
 			<setBody>
 				<simple>${body.command}</simple>
 			</setBody>
