@@ -1,12 +1,13 @@
 package com.boundary.sdk.event.service.ssh;
 
+import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.SERVICE_TEST_INSTANCE;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.spring.CamelSpringTestSupport;
 import org.junit.After;
@@ -17,23 +18,14 @@ import org.junit.Test;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.boundary.camel.component.ssh.SshxConfiguration;
 import com.boundary.sdk.event.RawEvent;
 import com.boundary.sdk.event.Severity;
 import com.boundary.sdk.event.Status;
 import com.boundary.sdk.event.service.ServiceCheckRequest;
 import com.boundary.sdk.event.service.ServiceTest;
-import com.boundary.sdk.event.service.ssh.SSHCheckToEventProcessor;
-
-import static com.boundary.sdk.event.service.ssh.SshHeaderNames.*;
-// import static com.boundary.sdk.event.service.QuartzHeaderNames.*;
-import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
-
-// import com.boundary.sdk.event.util.BoundaryHeaderNames;
-import com.boundary.camel.component.ssh.SshxConfiguration;
 
 public class SSHCheckToEventProcessorTest extends CamelSpringTestSupport  {
-
-
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -65,11 +57,12 @@ public class SSHCheckToEventProcessorTest extends CamelSpringTestSupport  {
 		String fireTime = new Date().toString();;
 		ServiceCheckRequest request = new ServiceCheckRequest();
 		SshxConfiguration config = new SshxConfiguration();
+		SshxServiceModel model = new SshxServiceModel();
 		config.setHost(hostName);
 		config.setCommand("echo " + output);
-		config.setExpectedOutput(output);
-		ServiceTest<SshxConfiguration> serviceTest =
-				new ServiceTest<SshxConfiguration>(testName,"ssh",serviceName,request.getRequestId(),config);
+		model.setExpectedOutput(output);
+		ServiceTest<SshxConfiguration,SshxServiceModel> serviceTest = new ServiceTest<SshxConfiguration,SshxServiceModel>(
+				testName,"ssh",serviceName,request.getRequestId(),config,model);
 		
 		Map<String,Object> properties = new HashMap<String,Object>();
 		properties.put(SERVICE_TEST_INSTANCE, serviceTest);

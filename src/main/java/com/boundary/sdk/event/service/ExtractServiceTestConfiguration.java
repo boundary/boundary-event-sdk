@@ -6,12 +6,15 @@ import org.apache.camel.Message;
 import com.boundary.camel.component.ping.PingConfiguration;
 import com.boundary.camel.component.port.PortConfiguration;
 import com.boundary.camel.component.ssh.SshxConfiguration;
+import com.boundary.sdk.event.service.db.PingServiceModel;
+import com.boundary.sdk.event.service.db.PortServiceModel;
+import com.boundary.sdk.event.service.ssh.SshxServiceModel;
 
 import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
 
 public class ExtractServiceTestConfiguration {
 
-	public PingConfiguration getPingConfiguration(ServiceTest<PingConfiguration> serviceTest) {
+	public PingConfiguration getPingConfiguration(ServiceTest<PingConfiguration,PingServiceModel> serviceTest) {
 		return serviceTest.getConfiguration();
 	}
 	
@@ -22,7 +25,7 @@ public class ExtractServiceTestConfiguration {
 	 */
 	public void extractPortConfiguration(Exchange exchange) {
 		Message message = exchange.getIn();
-		ServiceTest<PortConfiguration> serviceTest = message.getBody(ServiceTest.class);
+		ServiceTest<PortConfiguration,PortServiceModel> serviceTest = message.getBody(ServiceTest.class);
 		PortConfiguration configuration = serviceTest.getConfiguration();
 		
 		message.setHeader(SERVICE_TEST_INSTANCE, serviceTest);
@@ -36,7 +39,7 @@ public class ExtractServiceTestConfiguration {
 	 */
 	public void extractPingConfiguration(Exchange exchange) {
 		Message message = exchange.getIn();
-		ServiceTest<PingConfiguration> serviceTest = message.getBody(ServiceTest.class);
+		ServiceTest<PingConfiguration,PortServiceModel> serviceTest = message.getBody(ServiceTest.class);
 		PingConfiguration configuration = serviceTest.getConfiguration();
 		
 		message.setHeader(SERVICE_TEST_INSTANCE, serviceTest);
@@ -48,9 +51,9 @@ public class ExtractServiceTestConfiguration {
 	 * set as header in {@link Message}
 	 * @param exchange {@link Exchange} from Camel route
 	 */
-	public void extractSshConfiguration(Exchange exchange) {
+	public void extractSshxConfiguration(Exchange exchange) {
 		Message message = exchange.getIn();
-		ServiceTest<SshxConfiguration> serviceTest = message.getBody(ServiceTest.class);
+		ServiceTest<SshxConfiguration,SshxServiceModel> serviceTest = message.getBody(ServiceTest.class);
 		SshxConfiguration configuration = serviceTest.getConfiguration();
 		
 		message.setHeader(SERVICE_TEST_INSTANCE, serviceTest);

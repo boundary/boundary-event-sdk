@@ -19,10 +19,12 @@ import org.junit.Test;
 
 import com.boundary.camel.component.common.ServiceStatus;
 import com.boundary.camel.component.ping.PingConfiguration;
-import com.boundary.camel.component.ping.PingInfo;
+import com.boundary.camel.component.ping.PingResult;
 import com.boundary.camel.component.port.PortConfiguration;
-import com.boundary.camel.component.port.PortInfo;
+import com.boundary.camel.component.port.PortResult;
 import com.boundary.camel.component.port.PortStatus;
+import com.boundary.sdk.event.service.db.PingServiceModel;
+import com.boundary.sdk.event.service.db.PortServiceModel;
 
 public class ExtractServiceTestConfigurationTest extends CamelTestSupport {
 	
@@ -56,10 +58,11 @@ public class ExtractServiceTestConfigurationTest extends CamelTestSupport {
 		ServiceCheckRequest request = new ServiceCheckRequest();
 
 		PortConfiguration configuration = new PortConfiguration();
+		PortServiceModel model = new PortServiceModel();
 		configuration.setHost(HOST);
 		configuration.setPort(PORT);
-		ServiceTest<PortConfiguration> serviceTest = new ServiceTest<PortConfiguration>(
-				"port","port","localhost", request.getRequestId(), configuration);
+		ServiceTest<PortConfiguration,PortServiceModel> serviceTest = new ServiceTest<PortConfiguration,PortServiceModel>(
+				"port","port","localhost", request.getRequestId(),configuration,model);
 
 		Map<String, Object> properties = new HashMap<String, Object>();
 		properties.put(ServiceCheckPropertyNames.SERVICE_CHECK_REQUEST_ID,request.getRequestId());
@@ -77,7 +80,7 @@ public class ExtractServiceTestConfigurationTest extends CamelTestSupport {
 			PortConfiguration config = message.getBody(PortConfiguration.class);
 			ServiceCheckRequest req = message.getHeader(
 					ServiceCheckPropertyNames.SERVICE_CHECK_REQUEST_INSTANCE,ServiceCheckRequest.class);
-			ServiceTest<PortConfiguration> test = message.getHeader(
+			ServiceTest<PortConfiguration,PortServiceModel> test = message.getHeader(
 					ServiceCheckPropertyNames.SERVICE_TEST_INSTANCE,ServiceTest.class);
 
 			assertEquals("check host",HOST, config.getHost());
@@ -98,9 +101,10 @@ public class ExtractServiceTestConfigurationTest extends CamelTestSupport {
 		ServiceCheckRequest request = new ServiceCheckRequest();
 
 		PingConfiguration configuration = new PingConfiguration();
+		PingServiceModel model = new PingServiceModel();
 		configuration.setHost(HOST);
-		ServiceTest<PingConfiguration> serviceTest = new ServiceTest<PingConfiguration>(
-				"ping", "ping","localhost", request.getRequestId(), configuration);
+		ServiceTest<PingConfiguration,PingServiceModel> serviceTest = new ServiceTest<PingConfiguration,PingServiceModel>(
+				"ping", "ping","localhost", request.getRequestId(), configuration,model);
 
 		Map<String, Object> properties = new HashMap<String, Object>();
 		properties.put(ServiceCheckPropertyNames.SERVICE_CHECK_REQUEST_ID,request.getRequestId());
@@ -135,7 +139,11 @@ public class ExtractServiceTestConfigurationTest extends CamelTestSupport {
 				.log("ServiceTest: ${body}")
 				.bean(new ExtractServiceTestConfiguration(), "extractPortConfiguration")
 				.to("mock:port-service-test-out");
-
+				
+				from("direct:ssh-service-test-in")
+				.log("ServiceTest: ${body}")
+				.bean(new ExtractServiceTestConfiguration(), "extractSshxConfiguration")
+				.to("mock:ssh-service-test-out");
 			}
 		};
 	}

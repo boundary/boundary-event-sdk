@@ -1,16 +1,19 @@
 package com.boundary.sdk.event.service;
 
+import com.boundary.sdk.event.service.ssh.SshxServiceModel;
+
 /**
  * Represents an individual test of a service.
  * 
  * @author davidg
  *
  */
-public class ServiceTest<T> {
+public class ServiceTest<C,M> {
 	
 	private String name;
 	private String serviceName;
-	private T configuration;
+	private C configuration;
+	private M model;
 	private String requestId;
 	private String serviceTestType;
 	
@@ -19,20 +22,26 @@ public class ServiceTest<T> {
 			String serviceTestType,
 			String serviceName,
 			String requestId,
-			T configuration) {
+			C configuration,
+			M model) {
 		this.name = name;
 		this.serviceTestType = serviceTestType;
 		this.serviceName = serviceName;
 		this.requestId = requestId;
 		this.configuration = configuration;
+		this.model = model;
 	}
 	
 	public String getName() {
 		return this.name;
 	}
 	
-	public T getConfiguration() {
+	public C getConfiguration() {
 		return this.configuration;
+	}
+	
+	public M getModel() {
+		return this.model;
 	}
 
 	public String getRequestId() {
@@ -57,8 +66,4 @@ public class ServiceTest<T> {
 	public String getServiceTestType() {
 		return serviceTestType;
 	}
-
-//	public void setServiceTestType(String serviceTestType) {
-//		this.serviceTestType = serviceTestType;
-//	}
 }

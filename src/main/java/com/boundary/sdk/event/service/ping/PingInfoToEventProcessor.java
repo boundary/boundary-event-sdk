@@ -12,17 +12,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.boundary.camel.component.common.ServiceStatus;
-import com.boundary.camel.component.ping.PingInfo;
+import com.boundary.camel.component.ping.PingResult;
 import com.boundary.sdk.event.RawEvent;
 import com.boundary.sdk.event.Severity;
 import com.boundary.sdk.event.Source;
 import com.boundary.sdk.event.Status;
 import com.boundary.sdk.event.service.ServiceTest;
+import com.boundary.sdk.event.service.db.PingServiceModel;
 
 import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
 
 /**
- * Responsible for translating a {@link PingInfo} to {@link com.boundary.sdk.event.RawEvent}.
+ * Responsible for translating a {@link PingResult} to {@link com.boundary.sdk.event.RawEvent}.
  * 
  * @author davidg
  * 
@@ -43,10 +44,10 @@ public class PingInfoToEventProcessor implements Processor {
 		Message message = exchange.getIn();
 
 		// Extract {@link PingInfo} from message body
-		PingInfo info = message.getBody(PingInfo.class);
+		PingResult info = message.getBody(PingResult.class);
 		
 		// Extract {@link ServiceTest} from messsage headers
-		ServiceTest<PingInfo> serviceTest = message.getHeader(SERVICE_TEST_INSTANCE, ServiceTest.class);
+		ServiceTest<PingResult,PingServiceModel> serviceTest = message.getHeader(SERVICE_TEST_INSTANCE, ServiceTest.class);
 
 		// Create new event to translate the {@link PingInfo}
 		RawEvent event = new RawEvent();
@@ -64,38 +65,37 @@ public class PingInfoToEventProcessor implements Processor {
 	 * Converts a {@link SyslogMessage} to {@link com.boundary.sdk.event.RawEvent}
 	 * 
 	 * @param serviceTest {@link ServiceTest}
-	 * @param info {@link PingInfo}
-	 * @param e {@link RawEvent}
+	 * @param result {@link PingResult}
+	 * @param event {@link RawEvent}
 	 */
-	private void pingStatusToEvent(ServiceTest<PingInfo> serviceTest,PingInfo info,RawEvent event) {
+	private void pingStatusToEvent(ServiceTest<PingResult,PingServiceModel> serviceTest,PingResult result,RawEvent event) {
 		
 		// Add the hostname
 		Source s = event.getSource();
-		String host = info.getHost();
+		String host = result.getHost();
 		assert host != null: "Host is null";
-		s.setRef(info.getHost()).setType("host");
+		s.setRef(result.getHost()).setType("host");
 
-		String hostname = info.getHost();
+		String hostname = result.getHost();
 		String serviceName = serviceTest.getServiceName();
 		event.addProperty("hostname",hostname);
-		event.addProperty("ping-status", info.getStatus());
-		event.addProperty("rtt-avg",info.getRTTAvg());
-		event.addProperty("rtt-max",info.getRTTMax());
-		event.addProperty("rtt-min",info.getRTTMin());
-		event.addProperty("rtt-mdev",info.getRTTMDev());
+		event.addProperty("ping-status", result.getStatus());
+		event.addProperty("rtt-avg",result.getRTTAvg());
+		event.addProperty("rtt-max",result.getRTTMax());
+		event.addProperty("rtt-min",result.getRTTMin());
 		event.addProperty("service-test", serviceTest.getName());
 		event.addProperty("service-test-type",serviceTest.getServiceTestType());
 		event.addProperty("service",serviceName);
 		
-		event.addTag(info.getHost());
+		event.addTag(result.getHost());
 		event.addTag(serviceName);
 
 		
 		// Set the Severity and Message based on the results
 		// of the service test
-		if (info.getStatus() == ServiceStatus.FAIL) {
+		if (result.getStatus() == ServiceStatus.FAIL) {
 			event.setTitle(serviceName + " - " + hostname + " is DOWN");
-			event.setMessage("Ping failed to: " + hostname + ", reason: " + info.getMessage());
+			event.setMessage("Ping failed to: " + hostname + ", reason: " + result.getMessage());
 			event.setSeverity(Severity.WARN);
 			event.setStatus(Status.OPEN);
 		}
@@ -111,7 +111,7 @@ public class PingInfoToEventProcessor implements Processor {
 		event.addFingerprintField("hostname");
 
 		// Set the creation time based on time stamp from the Ping command
-		event.setCreatedAt(info.getTimestamp());
+		event.setCreatedAt(result.getTimestamp());
 
 		// Set Sender
 		event.getSender().setRef("Service Health Check");

@@ -14,6 +14,8 @@ import org.springframework.context.support.AbstractApplicationContext;
 
 import com.boundary.camel.component.ping.PingConfiguration;
 import com.boundary.camel.component.port.PortConfiguration;
+import com.boundary.sdk.event.service.db.PingServiceModel;
+import com.boundary.sdk.event.service.db.PortServiceModel;
 
 public class ServiceCheckRouterTest extends CamelSpringTestSupport {
 
@@ -45,9 +47,14 @@ public class ServiceCheckRouterTest extends CamelSpringTestSupport {
 		ServiceCheckRouter router = new ServiceCheckRouter();
 		ServiceCheckRequest request = new ServiceCheckRequest();
 		PingConfiguration pingConfiguration = new PingConfiguration();
+		PingServiceModel pingModel = new PingServiceModel();
 		PortConfiguration portConfiguration = new PortConfiguration();
-		ServiceTest<PingConfiguration> pingTest = new ServiceTest<PingConfiguration>("ping","ping","localhost",request.getRequestId(),pingConfiguration);
-		ServiceTest<PortConfiguration> portTest = new ServiceTest<PortConfiguration>("port","port","localhost",request.getRequestId(),portConfiguration);
+		PortServiceModel portModel = new PortServiceModel();
+		
+		ServiceTest<PingConfiguration,PingServiceModel> pingTest = new ServiceTest<PingConfiguration,PingServiceModel>(
+				"ping","ping","localhost",request.getRequestId(),pingConfiguration,pingModel);
+		ServiceTest<PortConfiguration,PortServiceModel> portTest = new ServiceTest<PortConfiguration,PortServiceModel>(
+				"port","port","localhost",request.getRequestId(),portConfiguration,portModel);
 		
 		request.addServiceTest(pingTest);
 		request.addServiceTest(portTest);

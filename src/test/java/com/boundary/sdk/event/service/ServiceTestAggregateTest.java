@@ -22,6 +22,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.boundary.camel.component.ping.PingConfiguration;
 import com.boundary.camel.component.port.PortConfiguration;
+import com.boundary.sdk.event.service.db.PingServiceModel;
+import com.boundary.sdk.event.service.db.PortServiceModel;
 
 import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
 
@@ -72,10 +74,14 @@ public class ServiceTestAggregateTest extends CamelSpringTestSupport  {
 		ServiceCheckRequest request = new ServiceCheckRequest();
 		properties.put(SERVICE_CHECK_REQUEST_ID, request.getRequestId());
 		PingConfiguration configuration = new PingConfiguration();
+		PingServiceModel model = new PingServiceModel();
 		configuration.setHost("localhost");
-		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","ping","localhost",request.getRequestId(),configuration));
-		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","ping","localhost",request.getRequestId(),configuration));
-		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","ping","localhost",request.getRequestId(),configuration));
+		request.addServiceTest(new ServiceTest<PingConfiguration,PingServiceModel>(
+				"ping","ping","localhost",request.getRequestId(),configuration,model));
+		request.addServiceTest(new ServiceTest<PingConfiguration,PingServiceModel>(
+				"ping","ping","localhost",request.getRequestId(),configuration,model));
+		request.addServiceTest(new ServiceTest<PingConfiguration,PingServiceModel>(
+				"ping","ping","localhost",request.getRequestId(),configuration,model));
 		
 		template.sendBodyAndHeaders("direct:service-check-request-in",request, properties);
 		
@@ -88,15 +94,21 @@ public class ServiceTestAggregateTest extends CamelSpringTestSupport  {
 		PingConfiguration pingConfig1 = new PingConfiguration();
 		PingConfiguration pingConfig2 = new PingConfiguration();
 		PortConfiguration portConfig = new PortConfiguration();
+		PingServiceModel pingModel1 = new PingServiceModel();
+		PingServiceModel pingModel2 = new PingServiceModel();
+		PortServiceModel portModel = new PortServiceModel();
 		
 		pingConfig1.setHost("localhost");
 		pingConfig2.setHost("google.com");
 		portConfig.setHost("google.com");
 		portConfig.setPort(81);
 		
-		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","ping","localhost",request.getRequestId(),pingConfig1));
-		request.addServiceTest(new ServiceTest<PortConfiguration>("port","port","Google Web Search",request.getRequestId(),portConfig));
-		request.addServiceTest(new ServiceTest<PingConfiguration>("ping","ping","Google Web Search",request.getRequestId(),pingConfig2));
+		request.addServiceTest(new ServiceTest<PingConfiguration,PingServiceModel>(
+				"ping","ping","localhost",request.getRequestId(),pingConfig1,pingModel1));
+		request.addServiceTest(new ServiceTest<PortConfiguration,PortServiceModel>(
+				"port","port","Google Web Search",request.getRequestId(),portConfig,portModel));
+		request.addServiceTest(new ServiceTest<PingConfiguration,PingServiceModel>(
+				"ping","ping","Google Web Search",request.getRequestId(),pingConfig2,pingModel2));
 		
 		template.sendBody("direct:service-check-request-in",request);
 	}

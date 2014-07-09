@@ -9,11 +9,4 @@ package com.boundary.sdk.event.service;
  */
 public class ServiceModel implements IServiceModel {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
 }

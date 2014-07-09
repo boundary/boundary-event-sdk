@@ -3,10 +3,7 @@
  */
 package com.boundary.sdk.event.service.port;
 
-import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.SERVICE_TEST_INSTANCE;
-
-import java.io.IOException;
-import java.util.Properties;
+import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
@@ -15,16 +12,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.boundary.camel.component.common.ServiceStatus;
-import com.boundary.camel.component.ping.PingInfo;
-import com.boundary.camel.component.port.PortInfo;
+import com.boundary.camel.component.ping.PingResult;
+import com.boundary.camel.component.port.PortConfiguration;
+import com.boundary.camel.component.port.PortResult;
 import com.boundary.sdk.event.RawEvent;
 import com.boundary.sdk.event.Severity;
 import com.boundary.sdk.event.Status;
 import com.boundary.sdk.event.service.ServiceTest;
+import com.boundary.sdk.event.service.db.PortServiceModel;
 
 
 /**
- * Responsible for translating a {@link PortInfo} to {@link com.boundary.sdk.event.RawEvent}.
+ * Responsible for translating a {@link PortResult} to {@link com.boundary.sdk.event.RawEvent}.
  * 
  * @author davidg
  * 
@@ -47,16 +46,16 @@ public class PortInfoToEventProcessor implements Processor {
 		Message message = exchange.getIn();
 
 		// Extract SyslogMessage from the message body.
-		PortInfo info = message.getBody(PortInfo.class);
+		PortResult result = message.getBody(PortResult.class);
 		
 		// Extract {@link ServiceTest} from message headers
-		ServiceTest<PortInfo> serviceTest = message.getHeader(SERVICE_TEST_INSTANCE, ServiceTest.class);
+		ServiceTest<PortConfiguration,PortServiceModel> serviceTest = message.getHeader(SERVICE_TEST_INSTANCE, ServiceTest.class);
 
 		// Create new event to translate the syslog message to
 		RawEvent event = new RawEvent();
 
 		// Delegate to member method call to perform the translation
-		portInfoToEvent(serviceTest,info,event);
+		portInfoToEvent(serviceTest,result,event);
 		
 		LOG.debug("RawEvent: " + event);
 
@@ -67,32 +66,33 @@ public class PortInfoToEventProcessor implements Processor {
 	/**
 	 * Converts a {@link SyslogMessage} to {@link RawEvent}
 	 * 
-	 * @param sm
-	 * @param e
+	 * @param serviceTest {@link ServiceTest}
+	 * @param result {@link PortResult}
+	 * @param event {@link RawEvent}
 	 */
-	private void portInfoToEvent(ServiceTest<PortInfo> serviceTest,PortInfo info, RawEvent event) {
+	private void portInfoToEvent(ServiceTest<PortConfiguration,PortServiceModel> serviceTest,PortResult result, RawEvent event) {
 
-		String hostname = info.getHost();
+		String hostname = result.getHost();
 		String serviceName = serviceTest.getServiceName();
 		
 		event.getSource().setRef(hostname).setType("host");
 		event.addProperty("hostname",hostname);
-		event.addProperty("port",info.getPort());
-		event.addProperty("port-status",info.getPortStatus());
-		event.addProperty("time-out", info.getTimeout());
+		event.addProperty("port",result.getPort());
+		event.addProperty("port-status",result.getPortStatus());
+		event.addProperty("time-out", result.getTimeout());
 		event.addProperty("service-test", serviceTest.getName());
 		event.addProperty("service-test-type",serviceTest.getServiceTestType());
 		event.addProperty("service", serviceName);
 		
 		event.addTag(serviceName);
 		event.addTag(hostname);
-		int port = info.getPort();
+		int port = result.getPort();
 		
 		// Set the Severity and Message based on the results
 		// of the service test
-		if (info.getStatus() == ServiceStatus.FAIL) {
+		if (result.getStatus() == ServiceStatus.FAIL) {
 			event.setTitle(serviceName + " - " + hostname + ":" + port + " is OFFLINE");
-			event.setMessage("Failed to connect the port, reason: " + info.getMessage());
+			event.setMessage("Failed to connect the port, reason: " + result.getMessage());
 			event.setSeverity(Severity.WARN);
 			event.setStatus(Status.OPEN);
 		}
@@ -107,8 +107,8 @@ public class PortInfoToEventProcessor implements Processor {
 		event.addFingerprintField("service-test");
 		event.addFingerprintField("hostname");
 		
-		// Set the time at which the Syslog record was created
-		event.setCreatedAt(info.getTimestamp());
+		// Set the time at which the port was polled
+		event.setCreatedAt(result.getTimestamp());
 		
 		// Set Sender
 		event.getSender().setRef("Service Health Check");

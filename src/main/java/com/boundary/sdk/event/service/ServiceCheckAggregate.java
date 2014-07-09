@@ -24,7 +24,7 @@ public class ServiceCheckAggregate implements AggregationStrategy {
 	public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
 		Exchange returnExchange = null;
 		Message message = newExchange.getIn();
-		ServiceTest<?> test = message.getHeader(
+		ServiceTest<?,?> test = message.getHeader(
 				ServiceCheckPropertyNames.SERVICE_TEST_INSTANCE,
 				ServiceTest.class);
 		

@@ -1,10 +1,10 @@
 package com.boundary.sdk.event.service.ssh;
 
+import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.SERVICE_TEST_INSTANCE;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,17 +16,12 @@ import org.apache.camel.Processor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.boundary.camel.component.ping.PingInfo;
 import com.boundary.camel.component.ssh.SshxConfiguration;
-import com.boundary.camel.component.ssh.SshxInfo;
+import com.boundary.camel.component.ssh.SshxResult;
 import com.boundary.sdk.event.RawEvent;
 import com.boundary.sdk.event.Severity;
 import com.boundary.sdk.event.Status;
-
-import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
-
 import com.boundary.sdk.event.service.ServiceTest;
-import com.boundary.sdk.event.snmp.MIBCompilerLogger;
 
 public class SSHCheckToEventProcessor implements Processor {
 	
@@ -40,13 +35,11 @@ public class SSHCheckToEventProcessor implements Processor {
 	public void process(Exchange exchange) throws Exception {
 		Message message = exchange.getIn();
 		
-		String output = message.getBody(String.class);
+		String output = message.getBody(String.class);		
 
-
-		ServiceTest<SshxConfiguration> serviceTest = message.getHeader(SERVICE_TEST_INSTANCE,ServiceTest.class);
+		ServiceTest<SshxConfiguration,SshxServiceModel> serviceTest = message.getHeader(SERVICE_TEST_INSTANCE,ServiceTest.class);
 		SshxConfiguration configuration = serviceTest.getConfiguration();
-		
-
+		SshxServiceModel model = serviceTest.getModel();
 
 		//
 		// Create the RawEvent and populate with values
@@ -68,7 +61,7 @@ public class SSHCheckToEventProcessor implements Processor {
 		
 		// Add the required properties
 		String hostname = configuration.getHost();
-		String expectedOutput = configuration.getExpectedOutput();
+		String expectedOutput = model.getExpectedOutput();
 		String serviceName = serviceTest.getServiceName();
 		event.addProperty("command",configuration.getCommand());
 		event.addProperty("expected-output",expectedOutput);
@@ -109,7 +102,7 @@ public class SSHCheckToEventProcessor implements Processor {
 		message.setBody(event);
 	}
 	
-	private void sshStatusToEvent(ServiceTest<SshxInfo> serviceTest,SshxInfo info,RawEvent event) {
+	private void sshStatusToEvent(ServiceTest<SshxConfiguration,SshxServiceModel> serviceTest,SshxResult result,RawEvent event) {
 
 	}
 

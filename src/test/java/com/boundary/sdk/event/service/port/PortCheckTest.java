@@ -11,13 +11,9 @@ import org.apache.camel.Exchange;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.spring.CamelSpringTestSupport;
 
-import com.boundary.camel.component.common.ServiceStatus;
-import com.boundary.camel.component.port.PortInfo;
-import com.boundary.camel.component.port.PortStatus;
 import com.boundary.sdk.event.RawEvent;
 import com.boundary.sdk.event.Severity;
 import com.boundary.sdk.event.Status;
-import com.boundary.sdk.event.syslog.SyslogMessageGenerator;
 
 /**
  * @version $Revision$

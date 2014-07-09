@@ -16,14 +16,14 @@ import java.util.UUID;
 public class ServiceCheckRequest {
 	
 	private String requestId;
-	private List<ServiceTest<?>> serviceTests;
+	private List<ServiceTest<?,?>> serviceTests;
 
 	/**
 	 * Default constructor that generates a {@link UUID}
 	 */
 	public ServiceCheckRequest() {
 		this.requestId = UUID.randomUUID().toString();
-		this.serviceTests = new ArrayList<ServiceTest<?>>();
+		this.serviceTests = new ArrayList<ServiceTest<?,?>>();
 	}
 	
 	/**
@@ -35,11 +35,11 @@ public class ServiceCheckRequest {
 		return this.requestId;
 	}
 	
-	public void addServiceTest(ServiceTest<?> test) {
+	public void addServiceTest(ServiceTest<?,?> test) {
 		serviceTests.add(test);
 	}
 
-	public List<ServiceTest<?>> getServiceTests() {
+	public List<ServiceTest<?,?>> getServiceTests() {
 		return this.serviceTests;
 	}
 	
@@ -47,7 +47,7 @@ public class ServiceCheckRequest {
 		StringBuffer sb = new StringBuffer();
 		sb.append("requestId: " + getRequestId());
 		//sb.append(",serviceName: " + getServiceName());
-		for (ServiceTest<?> test : getServiceTests()) {
+		for (ServiceTest<?,?> test : getServiceTests()) {
 			sb.append(",serviceTest: " + test);
 		}
 		return sb.toString();

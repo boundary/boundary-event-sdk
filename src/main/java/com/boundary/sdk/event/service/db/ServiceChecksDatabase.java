@@ -17,6 +17,7 @@ import com.boundary.camel.component.ssh.SshxConfiguration;
 import com.boundary.sdk.event.BoundaryEventRouteBuilder;
 import com.boundary.sdk.event.service.ServiceCheckRequest;
 import com.boundary.sdk.event.service.ServiceTest;
+import com.boundary.sdk.event.service.ssh.SshxServiceModel;
 
 public class ServiceChecksDatabase implements Processor {
 	
@@ -42,43 +43,63 @@ public class ServiceChecksDatabase implements Processor {
 		PingConfiguration sdnDirectorPingTest = new PingConfiguration();
 		sdnDirectorPingTest.setHost(sdnDirectorHost);
 		
+		PingServiceModel sdnDirectorPingModel = new PingServiceModel();
+		
+		
+		
 		PortConfiguration sdnDirectorPortTest8080 = new PortConfiguration();
 		sdnDirectorPortTest8080.setHost(sdnDirectorHost);
 		sdnDirectorPortTest8080.setPort(8080);
 		
+		PortServiceModel sdnDirectorPortModel8080 = new PortServiceModel();
+		
+		
+		
 		SshxConfiguration plumgridProcessTest = new SshxConfiguration();
 		plumgridProcessTest.setHost(sdnDirectorHost);
 		plumgridProcessTest.setCommand("status plumgrid");
-		plumgridProcessTest.setExpectedOutput("^plumgrid start/running, process\\s\\d+\n");
+		
+		SshxServiceModel plumgridProcessModel = new SshxServiceModel();
+		plumgridProcessModel.setExpectedOutput("^plumgrid start/running, process\\s\\d+\n");
+		
+		
 		
 		SshxConfiguration plumgridSalProcessTest = new SshxConfiguration();
 		plumgridSalProcessTest.setHost(sdnDirectorHost);
 		plumgridSalProcessTest.setCommand("status plumgrid-sal");
-		plumgridSalProcessTest.setExpectedOutput("^plumgrid-sal start/running, process\\s\\d+\n");
+		
+		SshxServiceModel plumgridSalProcessTestModel = new SshxServiceModel();
+		plumgridSalProcessTestModel.setExpectedOutput("^plumgrid-sal start/running, process\\s\\d+\n");
+		
+		
 
 		SshxConfiguration nginxProcessTest = new SshxConfiguration();
 		nginxProcessTest.setHost(sdnDirectorHost);
 		nginxProcessTest.setCommand("status nginx");
-		nginxProcessTest.setExpectedOutput("^nginx start/running, process\\s\\d+\n");
+		
+		SshxServiceModel nginxProcessModel = new SshxServiceModel();
+		nginxProcessModel.setExpectedOutput("^nginx start/running, process\\s\\d+\n");
 
-		ServiceTest<PingConfiguration> pingSDNDirector = new ServiceTest<PingConfiguration>(
-				"host status","ping",sdnDirectorName,request.getRequestId(),sdnDirectorPingTest);
+
+		ServiceTest<PingConfiguration,PingServiceModel> pingSDNDirector= new ServiceTest<PingConfiguration,PingServiceModel>(
+				"host status","ping",sdnDirectorName,request.getRequestId(),sdnDirectorPingTest,sdnDirectorPingModel);
 		request.addServiceTest(pingSDNDirector);
 		
-		ServiceTest<PortConfiguration> portSDNDirector8080 = new ServiceTest<PortConfiguration>(
-				"8080 port status","port",sdnDirectorName,request.getRequestId(),sdnDirectorPortTest8080);
+		ServiceTest<PortConfiguration,PortServiceModel> portSDNDirector8080
+			= new ServiceTest<PortConfiguration,PortServiceModel>(
+					"8080 port status","port",sdnDirectorName,request.getRequestId(),sdnDirectorPortTest8080,sdnDirectorPortModel8080);
 		request.addServiceTest(portSDNDirector8080);
 		
-		ServiceTest<SshxConfiguration> sshPlumgridProcess = new ServiceTest<SshxConfiguration>(
-				"plumgrid process status","ssh",sdnDirectorName,request.getRequestId(),plumgridProcessTest);
+		ServiceTest<SshxConfiguration,SshxServiceModel> sshPlumgridProcess = new ServiceTest<SshxConfiguration,SshxServiceModel>(
+				"plumgrid process status","ssh",sdnDirectorName,request.getRequestId(),plumgridProcessTest,plumgridProcessModel);
 		request.addServiceTest(sshPlumgridProcess);
 		
-		ServiceTest<SshxConfiguration> sshPlumgridSalProcess = new ServiceTest<SshxConfiguration>(
-				"plumgrid-sal process status","ssh",sdnDirectorName,request.getRequestId(),plumgridProcessTest);
+		ServiceTest<SshxConfiguration,SshxServiceModel> sshPlumgridSalProcess = new ServiceTest<SshxConfiguration,SshxServiceModel>(
+				"plumgrid-sal process status","ssh",sdnDirectorName,request.getRequestId(),plumgridProcessTest,plumgridProcessModel);
 		request.addServiceTest(sshPlumgridSalProcess);
 		
-		ServiceTest<SshxConfiguration> sshNginxProcess = new ServiceTest<SshxConfiguration>(
-				"nginx process status","ssh",sdnDirectorName,request.getRequestId(),plumgridProcessTest);
+		ServiceTest<SshxConfiguration,SshxServiceModel> sshNginxProcess = new ServiceTest<SshxConfiguration,SshxServiceModel>(
+				"nginx process status","ssh",sdnDirectorName,request.getRequestId(),plumgridProcessTest,plumgridProcessModel);
 		request.addServiceTest(sshNginxProcess);
 
 		message.setBody(request);

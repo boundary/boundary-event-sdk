@@ -232,15 +232,6 @@
 		        </otherwise>
 		      </choice>
 		</route>
-		
-<!-- SSH-CHECKS ROUTES -->
-		
-		<!-- Timer that drives the SSH-CHECK testing -->
-<!-- 		<route id="PLUMGRID-PROCESS-POLLER" startupOrder="190" autoStartup="false">
-			<from uri="quartz://boundary/plumgrid?cron={{plumgrid.cron}}"/>
-			<bean ref="sshTests"/>
-			<to ref="plumgrid-host-ssh-in"/>
-		</route> -->
 				
 		<!--  Specifically handles the Plumgrid Controller -->
 		<route id="SDN-DIRECTOR-SSH" startupOrder="180">

@@ -8,10 +8,13 @@
  */
 package com.boundary.sdk.event.service.port;
 
-import com.boundary.camel.component.ping.PingInfo;
+import com.boundary.camel.component.ping.PingConfiguration;
+import com.boundary.camel.component.ping.PingResult;
 import com.boundary.sdk.event.BoundaryRouteBuilder;
 import com.boundary.sdk.event.service.ServiceCheckRequest;
 import com.boundary.sdk.event.service.ServiceTest;
+import com.boundary.sdk.event.service.db.PingServiceModel;
+
 import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
 
 /**
@@ -56,8 +59,11 @@ public class PortRouteBuilder extends BoundaryRouteBuilder {
 	@Override
 	public void configure() throws Exception {
 		ServiceCheckRequest request = new ServiceCheckRequest();
-		PingInfo info = new PingInfo();
-		ServiceTest<PingInfo> serviceTest = new ServiceTest<PingInfo>("Sample Ping Test","ping","Ping Test",request.getRequestId(),info);
+		PingConfiguration config = new PingConfiguration();
+		PingServiceModel model = new PingServiceModel();
+		
+		ServiceTest<PingConfiguration,PingServiceModel> serviceTest = new ServiceTest<PingConfiguration,PingServiceModel>(
+				"Sample Ping Test","ping","Ping Test",request.getRequestId(),config,model);
 		String uri = "port://" + getHost() + ":" + getPort() + "/tcp?delay=" + getDelay();
 		System.out.println("URI: " + uri);
         from(uri)

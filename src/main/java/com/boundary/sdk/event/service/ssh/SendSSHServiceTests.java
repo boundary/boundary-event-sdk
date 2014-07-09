@@ -13,6 +13,7 @@ import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
 
 public class SendSSHServiceTests implements Processor {
 	private SshxConfiguration configuration;
+	private SshxServiceModel model;
 	private String serviceTestName;
 	private String serviceName;
 	private String requestId;
@@ -29,6 +30,7 @@ public class SendSSHServiceTests implements Processor {
 
 	public SendSSHServiceTests() {
 		configuration = new SshxConfiguration();
+		model = new SshxServiceModel();
 		
 		//TODO: Remove this completely. Justing for creating request Ids
 		ServiceCheckRequest request = new ServiceCheckRequest();
@@ -39,8 +41,8 @@ public class SendSSHServiceTests implements Processor {
 	public void process(Exchange exchange) throws Exception {
 		Message message = exchange.getIn();
 
-		ServiceTest<SshxConfiguration> serviceTest =
-				new ServiceTest<SshxConfiguration>(getServiceTestName(),"ssh",getServiceName(),getRequestId(),configuration);
+		ServiceTest<SshxConfiguration,SshxServiceModel> serviceTest = new ServiceTest<SshxConfiguration,SshxServiceModel>(
+				getServiceTestName(),"ssh",getServiceName(),getRequestId(),configuration,model);
 		
 		// Set the body to the command
 		message.setBody(getCommand());
@@ -80,11 +82,11 @@ public class SendSSHServiceTests implements Processor {
 	}
 
 	public String getUser() {
-		return configuration.getUser();
+		return configuration.getUsername();
 	}
 
 	public void setUser(String user) {
-		this.configuration.setUser(user);
+		this.configuration.setUsername(user);
 	}
 
 	public String getPassword() {
