@@ -20,6 +20,7 @@ public class SocketPollerRouteBuilder extends UDPRouteBuilder {
 	private static Logger LOG = LoggerFactory.getLogger(SocketPollerRouteBuilder.class);
 
 	private String cron;
+	private String host;
 
 	public SocketPollerRouteBuilder() {
 		// Default to poll every minute
@@ -37,7 +38,7 @@ public class SocketPollerRouteBuilder extends UDPRouteBuilder {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void configure() throws Exception {		
-		String socketUri = String.format("netty:tcp://" + this.host + ":" + this.port + "?sync=false");
+		String socketUri = String.format("netty:tcp://" + this.getHost() + ":" + this.getPort() + "?sync=false");
 		String timerUri = String.format("quartz://" + this.routeId + "?cron=" + this.cron);
 		LOG.info("Polling host:  " + this.host + " on port: " + this.port + " with this schedule: " + this.cron);
 
@@ -56,5 +57,9 @@ public class SocketPollerRouteBuilder extends UDPRouteBuilder {
 		.to("log:com.boundary.sdk.SocketPollerRouteBuilder?level=INFO&showHeaders=true&showBody=true&multiline=true")
 		// Connection succeeds
 		;
+	}
+
+	private String getHost() {
+		return host;
 	}
 }
