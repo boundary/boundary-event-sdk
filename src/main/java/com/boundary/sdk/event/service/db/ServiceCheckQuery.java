@@ -30,7 +30,13 @@ public class ServiceCheckQuery implements Processor {
 	public void process(Exchange exchange) throws Exception {
 		Message message = exchange.getIn();
 		Map<String,Object> map = message.getBody(Map.class);
-		System.out.println(map.toString());
+		//TODO: Place to put these constants like serviceCheckId? Standard format, e.g. all lower case??
+		int serviceCheckId = Integer.parseInt(map.get("serviceCheckId").toString());
+		
+		LOG.info(map.get("serviceCheckId").getClass().toString());
+		
+		LOG.info("serviceCheckId = " + serviceCheckId);
+		LOG.info(map.toString());
 		
 		String sql = "select now()";
 
