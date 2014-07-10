@@ -109,7 +109,13 @@
 		<route id="SERVICE-CHECKS" startupOrder="400">
     		<from uri="direct:service-db-in"/>
     		<setBody>
-    			<simple>SELECT serviceCheckId FROM v_service_checks GROUP BY 1</simple>
+    			<simple>
+    			SELECT serviceCheckId FROM v_service_checks
+    			WHERE 1 = 1 
+    			AND serviceCheckEnabled = 1
+    			AND serviceTestEnabled = 1
+    			GROUP BY 1
+    			</simple>
     		</setBody>
     		<to uri="jdbc:service-db-datasource?outputType=SelectList"/>
     		<split>
