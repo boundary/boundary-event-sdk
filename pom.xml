@@ -74,6 +74,9 @@
 		<!-- Set the project encoding -->
     		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+		<!-- Configuration for pushing Git Hub Pages -->
+		<github.global.server>github</github.global.server>
+
 		<!-- Properties for all of the java packages versions -->
 		<activemq-version>5.9.0</activemq-version>
 		<camel-version>2.12.3</camel-version>
