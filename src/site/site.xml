@@ -38,7 +38,7 @@
     <menu name="Boundary Event SDK">
       <item name="Overview" href="overview.html"/>
       <item name="User Guide" href="user-guide.html"/>
-      <item name="Download" href="downloads/download.html"/>
+      <item name="Releases" href="https://github.com/boundary/boundary-event-sdk/releases"/>
     </menu>
 
     <menu name="Adapters">

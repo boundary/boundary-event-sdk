@@ -5,22 +5,47 @@
 
   <meta>
     <title>Boundary Event SDK User Guide</title>
-    <author>David Gwartney</author>
+    <authors>
+        <author>
+            <firstName>David</firstName>
+            <lastName>Gwartney</lastName>
+            <name>David Gwartney</name>
+            <initials>JDG</initials>
+            <title>Senior Systems Engineer</title>
+            <email>davidg@boundary.com</email>
+            <companyName>Boundary, Inc.</companyName>
+            <street>444 Castro Street, Suite 917</street>
+            <city>Mountain View</city>
+            <postalCode>94041</postalCode>
+            <country>United States</country>
+            <state>CA</state>
+      </author>
+    </authors>
   </meta>
 
   <toc name="Table of Contents">
-    <item name="Introduction" ref="introduction.md"/>
-    <item name="Usage" ref="usage.md"/>
-    <item name="FAQ" ref="FAQ.fml"/>
+    <item name="Boundary Event SDK" ref="index.md">
+      <item name="Overview" ref="overview.md"/>
+      <item name="User Guide" ref="user-guide.md"/>
+      <item name="Releases" ref="downloads/index.md"/>
+    </item>
+    <item name="Adapters" ref="adapters/index.md">
+      <item name="SNMP" ref="adapters/snmp.md"/>
+      <item name="Syslog" ref="adapters/syslog.md"/>
+    </item>
+    <item name="Development" ref="development/index.md">
+      <item name="Building" ref="development/building.md"/>
+    </item>
   </toc>
 
   <cover>
-    <coverTitle>${project.name}</coverTitle>
-    <coverSubTitle>v. ${project.version}</coverSubTitle>
-    <coverType>User Guide</coverType>
+    <coverTitle>Boundary Event SDK</coverTitle>
+    <coverSubTitle>User Guide</coverSubTitle>
+    <coverVersion>version ${project.version}</coverVersion>
     <projectName>${project.name}</projectName>
     <projectLogo>images/BoundaryLogo-150.png</projectLogo>
     <companyName>Boundary,Inc.</companyName>
     <companyLogo>images/BoundaryLogo-300.png</companyLogo>
   </cover>
+
 </document>

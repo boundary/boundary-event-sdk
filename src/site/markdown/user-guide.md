@@ -12,7 +12,7 @@ Prerequisites
 
 Installation
 ------------
-1. Download the distribution from [Boundary Event SDK Github](https://github.com/boundary/boundary-event-sdk/tree/master/dist)
+1. Download the distribution from [Boundary Event SDK Github](https://github.com/boundary/boundary-event-sdk/releases).
 2. Extract the archive:
 
     ```$ cd tar xvf boundary-event-sdk-X.YY.ZZ-dist.tar.gz```

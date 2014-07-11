@@ -42,10 +42,7 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:git:https://github.com/boundary/boundary-event-sdk</connection>
-<!--
-		<developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/plugins/tags/maven-site-plugin-3.3</developerConnection>
--->
+		<connection>scm:git:https://github.com/boundary/boundary-event-sdk.git</connection>
 		<url>https://github.com/boundary/boundary-event-sdk</url>
 	</scm>
 	<ciManagement>
