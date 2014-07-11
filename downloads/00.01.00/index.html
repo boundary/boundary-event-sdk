@@ -9,13 +9,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="Date-Revision-yyyymmdd" content="20140711" />
     <meta http-equiv="Content-Language" content="en" />
-    <title>Boundary Event SDK - Boundary Event SDK</title>
-    <link rel="stylesheet" href="./css/apache-maven-fluido-1.3.1.min.css" />
-    <link rel="stylesheet" href="./css/site.css" />
-    <link rel="stylesheet" href="./css/print.css" media="print" />
+    <title>Boundary Event SDK - Release Notes</title>
+    <link rel="stylesheet" href="../../css/apache-maven-fluido-1.3.1.min.css" />
+    <link rel="stylesheet" href="../../css/site.css" />
+    <link rel="stylesheet" href="../../css/print.css" media="print" />
 
       
-    <script type="text/javascript" src="./js/apache-maven-fluido-1.3.1.min.js"></script>
+    <script type="text/javascript" src="../../js/apache-maven-fluido-1.3.1.min.js"></script>
 
     
                   </head>
@@ -27,7 +27,7 @@
           <div id="banner">
         <div class="pull-left">
                                     <a href="http://boundary.com" id="bannerLeft">
-                                                                                                <img src="images/BoundaryLogo-300.png"  alt="Left Banner"/>
+                                                                                                <img src="../../images/BoundaryLogo-300.png"  alt="Left Banner"/>
                 </a>
                       </div>
         <div class="pull-right">  </div>
@@ -45,26 +45,26 @@
                           <span class="divider">|</span>
                       </li>
                                       <li class="">
-                    <a href="index.html" title="SDK">
+                    <a href="../../index.html" title="SDK">
         SDK</a>
                     <span class="divider">/</span>
       </li>
             <li class="">
-                    <a href="adapters/index.html" title="Adapters">
+                    <a href="../../adapters/index.html" title="Adapters">
         Adapters</a>
                     <span class="divider">/</span>
       </li>
             <li class="">
-                    <a href="development/index.html" title="Development">
+                    <a href="../../development/index.html" title="Development">
         Development</a>
                     <span class="divider">/</span>
       </li>
             <li class="">
-                    <a href="reference/index.html" title="Reference">
+                    <a href="../../reference/index.html" title="Reference">
         Reference</a>
                     <span class="divider">/</span>
       </li>
-        <li class="active ">Boundary Event SDK</li>
+        <li class="active ">Release Notes</li>
                 
                 
                     
@@ -103,21 +103,21 @@
                               
       <li>
   
-                          <a href="overview.html" title="Overview">
+                          <a href="../../overview.html" title="Overview">
           <i class="none"></i>
         Overview</a>
             </li>
                 
       <li>
   
-                          <a href="user-guide.html" title="User Guide">
+                          <a href="../../user-guide.html" title="User Guide">
           <i class="none"></i>
         User Guide</a>
             </li>
                 
       <li>
   
-                          <a href="downloads/download.html" title="Download">
+                          <a href="../../downloads/download.html" title="Download">
           <i class="none"></i>
         Download</a>
             </li>
@@ -125,14 +125,14 @@
                               
       <li>
   
-                          <a href="adapters/snmp.html" title="SNMP">
+                          <a href="../../adapters/snmp.html" title="SNMP">
           <i class="none"></i>
         SNMP</a>
             </li>
                 
       <li>
   
-                          <a href="adapters/syslog.html" title="Syslog">
+                          <a href="../../adapters/syslog.html" title="Syslog">
           <i class="none"></i>
         Syslog</a>
             </li>
@@ -140,7 +140,7 @@
                               
       <li>
   
-                          <a href="development/building.html" title="Building">
+                          <a href="../../development/building.html" title="Building">
           <i class="none"></i>
         Building</a>
             </li>
@@ -171,7 +171,7 @@
                             <div class="clear"></div>
                             <div class="clear"></div>
                                                                                                                          <a href="http://boundary.com/" title="Boundary" class="builtBy">
-        <img class="builtBy"  alt="Boundary" src="images/BoundaryLogo-150.png"    />
+        <img class="builtBy"  alt="Boundary" src="../../images/BoundaryLogo-150.png"    />
       </a>
                       </div>
           </div>
@@ -180,18 +180,24 @@
                 
         <div id="bodyColumn"  class="span9" >
                                   
-            <h1>Boundary Event SDK</h1>
-<p>Boundary Event SDK enables the rapid integration of foreign events into the Boundary event management platform.</p>
-<p>The following sections provide information on getting the Boundary Event SDK up and running.</p>
-
-<ul>
-  
-<li><a href="overview.html">Overview</a></li>
-  
-<li><a href="user-guide.html">User Guide</a></li>
-  
-<li><a href="downloads/download.html">Download</a></li>
-</ul>
+            <h1>Release Notes</h1>
+<div class="section">
+<h2>Boundary Event SDK version 00.01.00<a name="Boundary_Event_SDK_version_00.01.00"></a></h2>
+<div class="section">
+<h3>Release Features<a name="Release_Features"></a></h3>
+<p>This is the inagural release of the Boundary Event SDK that includes the ability to receive syslog messages and snmp traps. The Boundary Event SDK will be foundation for future event integrations to the Boundary platform.</p>
+<div class="section">
+<h4>Syslog Event Adapter<a name="Syslog_Event_Adapter"></a></h4>
+<p>Enables the ability to handle Syslog messages in the <a class="externalLink" href="http://www.ietf.org/rfc/rfc3164.txt">RFC 3164</a> format and then translate the message into Boundary events. The Boundary syslog event adapter requires that the syslog daemon on a host be configured to forward all or a subset of the syslog messages to the UDP listener of the event adapter.</p></div>
+<div class="section">
+<h4>SNMP Event Adapter<a name="SNMP_Event_Adapter"></a></h4>
+<p>Enables the ability to receive version 1 and 2c SNMP traps and then translate these traps to Boundary events. The Boundary Event adapter translates OIDs using the SNMP4J-SMI library. Translation of trap from the enterprise sub-branch required a purchasing a license from the <a class="externalLink" href="http://www.snmp4j.org/html/buy.html">SNMP4J Website</a>. &#x2003;</p></div></div>
+<div class="section">
+<h3>Known Issues and Problems<a name="Known_Issues_and_Problems"></a></h3>
+<div class="section">
+<h4>Issue #1<a name="Issue_1"></a></h4>
+<div class="section">
+<h5>Workaround<a name="Workaround"></a></h5></div></div></div></div>
                   </div>
             </div>
           </div>

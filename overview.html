@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="Date-Revision-yyyymmdd" content="20140711" />
     <meta http-equiv="Content-Language" content="en" />
-    <title>Boundary Event SDK - Boundary Event SDK</title>
+    <title>Boundary Event SDK - Overview</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido-1.3.1.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -64,7 +64,7 @@
         Reference</a>
                     <span class="divider">/</span>
       </li>
-        <li class="active ">Boundary Event SDK</li>
+        <li class="active ">Overview</li>
                 
                 
                     
@@ -101,12 +101,10 @@
                 <ul class="nav nav-list">
                     <li class="nav-header">Boundary Event SDK</li>
                               
-      <li>
+      <li class="active">
   
-                          <a href="overview.html" title="Overview">
-          <i class="none"></i>
-        Overview</a>
-            </li>
+            <a href="#"><i class="none"></i>Overview</a>
+          </li>
                 
       <li>
   
@@ -180,18 +178,11 @@
                 
         <div id="bodyColumn"  class="span9" >
                                   
-            <h1>Boundary Event SDK</h1>
-<p>Boundary Event SDK enables the rapid integration of foreign events into the Boundary event management platform.</p>
-<p>The following sections provide information on getting the Boundary Event SDK up and running.</p>
-
-<ul>
-  
-<li><a href="overview.html">Overview</a></li>
-  
-<li><a href="user-guide.html">User Guide</a></li>
-  
-<li><a href="downloads/download.html">Download</a></li>
-</ul>
+            <h1>Overview</h1>
+<p>Boundary Event SDK (BESDK) provides a framework for introducing foreign events into the Boundary platform. It has been developed using the open source framework <a class="externalLink" href="http://camel.apache.com">Apache Camel</a>.</p>
+<p>A <a class="externalLink" href="http://camel.apache.org/routes.html">route</a> in Apache Camel is a series of message processing steps which are loosely coupled. The Boundary Event SDK implementation consists of defining <i>route builders</i> that convert foreign messages to Boundary events. Using the route builders one can declaratively define routes and logically connect them to accomplish the tasks of converting foreign messages to events.</p>
+<p>The diagram belows shows a graphical representation of the flow of data from the managed nodes via foreign message protocols (SNMP trap PDUs, and Syslog protocol), through the Boundary Event SDK and ending at the <a class="externalLink" href="https://app.boundary.com/docs/events_api">Boundary Event APIs</a>. The Boundary Event SDK hides the need to have deep technical knowledge of REST or JSON to run the pre-built adapters, since the pre-built adapters are configured in a declarative fashion using an XML file. Speciallized event adapters can be created but this requires that you have some knowledge of programming in Java, or Python.</p>
+<p><img src="images/besdk-data-flow.png" alt="Boundary SDK Data Flow" /></p>
                   </div>
             </div>
           </div>
