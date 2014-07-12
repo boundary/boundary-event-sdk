@@ -30,7 +30,7 @@
 
     <breadcrumbs>
       <item name="SDK" href="index.html"/>
-      <item name="Adapters" href="adapters/index.html"/>
+      <item name="Routes" href="adapters/index.html"/>
       <item name="Development" href="development/index.html"/>
       <item name="Reference" href="reference/index.html"/>
     </breadcrumbs>
@@ -38,16 +38,18 @@
     <menu name="Boundary Event SDK">
       <item name="Overview" href="overview.html"/>
       <item name="User Guide" href="user-guide.html"/>
-      <item name="Releases" href="https://github.com/boundary/boundary-event-sdk/releases"/>
+      <item name="Releases" href="http://github.com/boundary/boundary-event-sdk/releases/"/>
     </menu>
 
-    <menu name="Adapters">
+    <menu name="Routes">
+      <item name="Boundary Event API" href="adapters/beapi.html"/>
       <item name="SNMP" href="adapters/snmp.html"/>
       <item name="Syslog" href="adapters/syslog.html"/>
     </menu>
 
     <menu name="Development">
       <item name="Building" href="development/building.html"/>
+      <item name="Tutorial" href="development/tutorial.html"/>
     </menu>
 
     <menu name="Reference">
