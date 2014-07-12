@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="Date-Revision-yyyymmdd" content="20140711" />
     <meta http-equiv="Content-Language" content="en" />
-    <title>Boundary Event SDK - Boundary SNMP Route</title>
+    <title>Boundary Event SDK - Boundary Event API Route</title>
     <link rel="stylesheet" href="../css/apache-maven-fluido-1.3.1.min.css" />
     <link rel="stylesheet" href="../css/site.css" />
     <link rel="stylesheet" href="../css/print.css" media="print" />
@@ -64,7 +64,7 @@
         Reference</a>
                     <span class="divider">/</span>
       </li>
-        <li class="active ">Boundary SNMP Route</li>
+        <li class="active ">Boundary Event API Route</li>
                 
                 
                     
@@ -123,17 +123,17 @@
             </li>
                               <li class="nav-header">Routes</li>
                               
-      <li>
-  
-                          <a href="../adapters/beapi.html" title="Boundary Event API">
-          <i class="none"></i>
-        Boundary Event API</a>
-            </li>
-                
       <li class="active">
   
-            <a href="#"><i class="none"></i>SNMP</a>
+            <a href="#"><i class="none"></i>Boundary Event API</a>
           </li>
+                
+      <li>
+  
+                          <a href="../adapters/snmp.html" title="SNMP">
+          <i class="none"></i>
+        SNMP</a>
+            </li>
                 
       <li>
   
@@ -192,198 +192,44 @@
                 
         <div id="bodyColumn"  class="span9" >
                                   
-            <h1>Boundary SNMP Route</h1>
-<p>The SNMP route has the ability receive v1/v2c SNMP traps and translate into Boundary Events.</p>
-<div class="section">
-<h2>SNMP4J-SMI<a name="SNMP4J-SMI"></a></h2>
-<p>The SNMP route uses the SNMP4J-SMI library to decode OIDs. For open source use free license is granted which restricts usage to standard MIB modules which are not under the enterprise OID sub-tree. Licenses can be purchased from <a class="externalLink" href="http://www.snmp4j.org/html/buy.html">www.snmp4j.org</a> for $49 US, at the time of this writing.</p></div>
+            <h1>Boundary Event API Route</h1>
+<p>This route encapsulates requests to send a <tt>RawEvent</tt>s to Boundary Event Host via REST call with a JSON payload of the field contents.</p>
 <div class="section">
 <h2>Configuration<a name="Configuration"></a></h2>
-<p>The sections the follow describe the configuration of the SNMP route.</p>
 <div class="section">
 <h3>Environment Variables<a name="Environment_Variables"></a></h3>
-<p>SNMP adapter parameters <tt>mibRepository</tt> and <tt>license</tt> can be set by providing values in the <tt>BOUNDARY_SDK_HOME/etc/boundary-event-sdk</tt> file.</p></div>
+<p>Boundary Event API configurat parameters API Key and Organization ID are set by setting the environmen and <tt>license</tt> can be set by providing values in the <tt>BOUNDARY_SDK_HOME/etc/boundary-event-sdk</tt> file.</p></div>
 <div class="section">
 <h3>Parameters<a name="Parameters"></a></h3>
 <p>These parameters are configured in the <tt>BOUNDARY_SDK_HOME/event-application.xml</tt>.</p>
 
 <ul>
   
-<li><tt>bindAddress</tt> - Address to bind the socket to, defaults to 0.0.0.0</li>
+<li><tt>apiHost</tt> - Boundary Event API host (default: <tt>api.boundary.com</tt>)</li>
   
-<li><tt>license</tt> - License string purchased from SNMP4J-SMI</li>
+<li><tt>apiKey</tt> - Boundary Event API Key</li>
   
-<li><tt>mibRepository</tt> - Indicates the end point to send the transformed SNMP trap.</li>
-  
-<li><tt>port</tt> - Port number to listen for SNMP traps (default is 1162)</li>
+<li><tt>orgId</tt> - Boundary Organization ID</li>
   
 <li><tt>routeId</tt> - Name to identify the route in the logs</li>
   
 <li><tt>startOrder</tt> - Ordering of when this route is started in relationship to other routes</li>
   
-<li><tt>toUri</tt> - Indicates the end point to send the transformed SNMP trap.</li>
+<li><tt>fromUri</tt> - Indicates the end point to receive Boundary Event Raw Events. Additionally it configures the number of threads to process events</li>
 </ul></div>
 <div class="section">
 <h3>Example Configuration<a name="Example_Configuration"></a></h3>
 
 <div class="source">
-<pre>        &lt;!-- This route recieves v1 and v2c SNMP traps --&gt;
-        &lt;bean id=&quot;snmp-route&quot; class=&quot;com.boundary.sdk.event.snmp.SNMPRouteBuilder&quot;&gt;
-                &lt;property name=&quot;routeId&quot; value=&quot;SNMP&quot;/&gt;
-                &lt;property name=&quot;startUpOrder&quot; value=&quot;130&quot;/&gt;
-                &lt;property name=&quot;port&quot; value=&quot;1162&quot;/&gt;
-                &lt;property name=&quot;mibRepository&quot; value=&quot;#{systemEnvironment['BOUNDARY_MIB_REPOSITORY']}&quot;/&gt;
-                &lt;property name=&quot;license&quot; value=&quot;#{systemEnvironment['BOUNDARY_MIB_LICENSE']}&quot;/&gt;
-                &lt;property name=&quot;toUri&quot; value=&quot;seda:boundary-event&quot;/&gt;
-        &lt;/bean&gt;
-</pre></div></div>
-<div class="section">
-<h3>Event Mapping<a name="Event_Mapping"></a></h3>
-<p>This section describes the mapping of the SNMP trap to a Boundary event.</p>
-<p>A SNMP v1 trap consists of the following fields:</p>
-
-<ul>
-  
-<li>Facility</li>
-  
-<li>Hostname/IP Address</li>
-  
-<li>Severity</li>
-  
-<li>Message</li>
-  
-<li>Timestamp</li>
-</ul>
-<p>A SNMP v2 trap consists of list of varbinds.</p></div>
-<div class="section">
-<h3>Field Mapping<a name="Field_Mapping"></a></h3>
-
-<table border="0" class="table table-striped">
-  <thead>
-    
-<tr class="a">
-      
-<th>SNMP Field </th>
-      
-<th align="center">Boundary Event Field </th>
-      
-<th align="center">Boundary Field Type</th>
-      
-<th align="center">Boundary Fingerprint Field?</th>
-      
-<th align="center">Boundary Tag?</th>
-    </tr>
-  </thead>
-  <tbody>
-    
-<tr class="b">
-      
-<td> </td>
-      
-<td align="center">createdAt </td>
-      
-<td align="center">standard </td>
-      
-<td align="center">NO </td>
-      
-<td align="center">NO </td>
-    </tr>
-    
-<tr class="a">
-      
-<td>trap message </td>
-      
-<td align="center">message </td>
-      
-<td align="center">standard </td>
-      
-<td align="center">YES </td>
-      
-<td align="center">NO </td>
-    </tr>
-    
-<tr class="b">
-      
-<td>hostname </td>
-      
-<td align="center">source.ref </td>
-      
-<td align="center">standard </td>
-      
-<td align="center">YES </td>
-      
-<td align="center">YES </td>
-    </tr>
-    
-<tr class="a">
-      
-<td> </td>
-      
-<td align="center">source.type = <tt>host</tt> </td>
-      
-<td align="center">standard </td>
-      
-<td align="center">YES </td>
-      
-<td align="center">YES </td>
-    </tr>
-    
-<tr class="b">
-      
-<td>severity </td>
-      
-<td align="center">severity(mapped) </td>
-      
-<td align="center">standard </td>
-      
-<td align="center">NO </td>
-      
-<td align="center">NO </td>
-    </tr>
-    
-<tr class="a">
-      
-<td>varbind </td>
-      
-<td align="center">varbind name </td>
-      
-<td align="center">property </td>
-      
-<td align="center">NO </td>
-      
-<td align="center">NO </td>
-    </tr>
-    
-<tr class="b">
-      
-<td> </td>
-      
-<td align="center">title (trapName +text + hostname) </td>
-      
-<td align="center">standard </td>
-      
-<td align="center">NO </td>
-      
-<td align="center">NO </td>
-    </tr>
-  </tbody>
-</table></div>
-<div class="section">
-<h3>References<a name="References"></a></h3>
-
-<ul>
-  
-<li>Mauro, Douglas R.; Schmidt, Kevin J. <i>Essential SNMP</i>,2nd Ed. California: Sebastopol, OReily Media,Inc., 2009. Print.</li>
-</ul></div>
-<div class="section">
-<h3>Future Enhancements<a name="Future_Enhancements"></a></h3>
-
-<ul>
-  
-<li>Generalized mapping and transformation of SNMP trap varbinds message fields to Boundary event fields</li>
-  
-<li>Support for perform SNMP GETs.</li>
-</ul></div></div>
+<pre>&lt;!-- Definition of the route that communicates with the Boundary API host --&gt;
+&lt;bean id=&quot;boundary-event-route&quot; class=&quot;com.boundary.sdk.event.BoundaryEventRouteBuilder&quot;&gt;
+	&lt;property name=&quot;routeId&quot; value=&quot;BOUNDARY-EVENT&quot;/&gt;
+	&lt;property name=&quot;startUpOrder&quot; value=&quot;100&quot;/&gt;
+	&lt;property name=&quot;orgId&quot; value=&quot;#{systemEnvironment['BOUNDARY_ORG_ID']}&quot;/&gt;
+	&lt;property name=&quot;apiKey&quot; value=&quot;#{systemEnvironment['BOUNDARY_API_KEY']}&quot;/&gt;
+	&lt;property name=&quot;fromUri&quot; value=&quot;seda:boundary-event?concurrentConsumers=10&quot;/&gt;
+&lt;/bean&gt;
+</pre></div></div></div>
                   </div>
             </div>
           </div>

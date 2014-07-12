@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="Date-Revision-yyyymmdd" content="20140711" />
     <meta http-equiv="Content-Language" content="en" />
-    <title>Boundary Event SDK - Boundary Syslog Event Adapter</title>
+    <title>Boundary Event SDK - Boundary Syslog Route</title>
     <link rel="stylesheet" href="../css/apache-maven-fluido-1.3.1.min.css" />
     <link rel="stylesheet" href="../css/site.css" />
     <link rel="stylesheet" href="../css/print.css" media="print" />
@@ -50,8 +50,8 @@
                     <span class="divider">/</span>
       </li>
             <li class="">
-                    <a href="../adapters/index.html" title="Adapters">
-        Adapters</a>
+                    <a href="../adapters/index.html" title="Routes">
+        Routes</a>
                     <span class="divider">/</span>
       </li>
             <li class="">
@@ -64,7 +64,7 @@
         Reference</a>
                     <span class="divider">/</span>
       </li>
-        <li class="active ">Boundary Syslog Event Adapter</li>
+        <li class="active ">Boundary Syslog Route</li>
                 
                 
                     
@@ -117,12 +117,19 @@
                 
       <li>
   
-                          <a href="../../boundary-event-sdk/releases" title="Releases">
+                          <a href="http://github.com/boundary/boundary-event-sdk/releases/" class="externalLink" title="Releases">
           <i class="none"></i>
         Releases</a>
             </li>
-                              <li class="nav-header">Adapters</li>
+                              <li class="nav-header">Routes</li>
                               
+      <li>
+  
+                          <a href="../adapters/beapi.html" title="Boundary Event API">
+          <i class="none"></i>
+        Boundary Event API</a>
+            </li>
+                
       <li>
   
                           <a href="../adapters/snmp.html" title="SNMP">
@@ -141,6 +148,13 @@
                           <a href="../development/building.html" title="Building">
           <i class="none"></i>
         Building</a>
+            </li>
+                
+      <li>
+  
+                          <a href="../development/tutorial.html" title="Tutorial">
+          <i class="none"></i>
+        Tutorial</a>
             </li>
                               <li class="nav-header">Reference</li>
                               
@@ -178,20 +192,20 @@
                 
         <div id="bodyColumn"  class="span9" >
                                   
-            <h1>Boundary Syslog Event Adapter</h1>
-<p>The Syslog adapter for Boundary enables the UDP receipt of forwarded syslog messagesg daemon into Boundary events.</p>
+            <h1>Boundary Syslog Route</h1>
+<p>The Syslog route nables the UDP receipt of forwarded syslog messagesg daemon into Boundary events.</p>
 <p>This adapters adheres to standard set forth in <a class="externalLink" href="http://tools.ietf.org/html/rfc3164">RFC 3164</a>.</p>
 <div class="section">
 <h2>Configuration<a name="Configuration"></a></h2>
 <div class="section">
 <h3>Forwarding Syslog Messages<a name="Forwarding_Syslog_Messages"></a></h3>
-<p>The Syslog Event Adapter requires that syslog messages be forwarded as:</p>
+<p>The Syslog Event Route requires that syslog messages be forwarded:</p>
 
 <ul>
   
 <li>Using the <tt>UDP</tt> transport</li>
   
-<li>Send in the RFC 3164 format.</li>
+<li>Sent in the RFC 3164 format.</li>
 </ul>
 <p>There are various open source and commericial implementations of syslog including:</p>
 
@@ -205,14 +219,14 @@
   
 <li><a class="externalLink" href="http://www.syslog-ng.org">syslog-ng</a></li>
 </ul>
-<p>Those list above have the capability to forward syslog messages using UDP and syslog format (RFC 3164).</p>
+<p>The syslog implementations liste above have the capability to forward syslog messages using UDP and syslog format (RFC 3164).</p>
 <p>The configuration to forward syslog messages typically in this format:</p>
 
 <div class="source">
 <pre>*.*     @&lt;hostname&gt;:&lt;port&gt;
 
 </pre></div>
-<p>NOTE: Different implementations have different names for the configuration file location (typically /etc/syslog.conf or /etc/rsylog.conf) so consult the documentation for your implementation.</p>
+<p>NOTE: Different implementations have different names for the configuration file location (typically <tt>/etc/syslog.conf</tt> or <tt>/etc/rsylog.conf</tt>), consult the documentation for your implementation to determine the path to the configuration file.</p>
 <p>For example if the Boundary Event SDK was running on the host <tt>ren.stimpy.com</tt> and the Syslog adapter parameter <tt>port</tt> was configured to <i>1514</i> then the typical syslog configuration to forward <i>all</i> of the syslog messages would be the following:</p>
 
 <div class="source">
@@ -230,10 +244,15 @@
 <pre>daemon.*          @127.0.0.1:10514
 </pre></div></div>
 <div class="section">
+<h3>Aggregating Syslog Messages<a name="Aggregating_Syslog_Messages"></a></h3>
+<p>It is good practice to designate a system or systems to be serve the role as <i>loghost</i>. The loghost is responsible for aggregating the syslog messages sent from other hosts and then forwarding the required subset to the Syslog Message route which is co-located on the same host. Systems that are to forward Syslog messsage should be configured to forward messages using TCP rather than. Most modern implementations of Syslog allow forwarding of message via TCP. Consult your deployed Syslog implementation documentation for exact details and configuration on how to forward syslog messages via TCP.</p></div>
+<div class="section">
 <h3>Parameters<a name="Parameters"></a></h3>
 <p>These parameters that application in the <tt>etc/event-application.xml</tt> file.</p>
 
 <ul>
+  
+<li><tt>bindAddress</tt> - Address to bind the socket to, defaults to 0.0.0.0</li>
   
 <li><tt>port</tt> - Port number to listen for Syslog message (default is 1514).</li>
   
@@ -247,12 +266,12 @@
 <h3>Example Configuration<a name="Example_Configuration"></a></h3>
 
 <div class="source">
-<pre>        &lt;bean id=&quot;syslog-route&quot; class=&quot;com.boundary.sdk.event.syslog.SysLogRouteBuilder&quot;&gt;
-                &lt;property name=&quot;routeId&quot; value=&quot;SYSLOG&quot;/&gt;
-                &lt;property name=&quot;startUpOrder&quot; value=&quot;120&quot;/&gt;
-                &lt;property name=&quot;port&quot; value=&quot;1514&quot;/&gt;
-                &lt;property name=&quot;toUri&quot; value=&quot;seda:boundary-event&quot;/&gt;
-        &lt;/bean&gt;
+<pre>&lt;bean id=&quot;syslog-route&quot; class=&quot;com.boundary.sdk.event.syslog.SysLogRouteBuilder&quot;&gt;
+   &lt;property name=&quot;routeId&quot; value=&quot;SYSLOG&quot;/&gt;
+   &lt;property name=&quot;startUpOrder&quot; value=&quot;120&quot;/&gt;
+   &lt;property name=&quot;port&quot; value=&quot;1514&quot;/&gt;
+   &lt;property name=&quot;toUri&quot; value=&quot;seda:boundary-event&quot;/&gt;
+&lt;/bean&gt;
 </pre></div></div></div>
 <div class="section">
 <h2>Event Mapping<a name="Event_Mapping"></a></h2>
@@ -347,6 +366,19 @@
     
 <tr class="b">
       
+<td> </td>
+      
+<td align="center">source.type </td>
+      
+<td align="center">standard </td>
+      
+<td align="center">YES </td>
+      
+<td align="center">YES </td>
+    </tr>
+    
+<tr class="a">
+      
 <td>severity </td>
       
 <td align="center">severity(mapped) </td>
@@ -358,7 +390,7 @@
 <td align="center">NO </td>
     </tr>
     
-<tr class="a">
+<tr class="b">
       
 <td>severity </td>
       
@@ -371,7 +403,7 @@
 <td align="center">NO </td>
     </tr>
     
-<tr class="b">
+<tr class="a">
       
 <td> </td>
       
