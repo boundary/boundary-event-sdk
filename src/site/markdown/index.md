@@ -7,4 +7,3 @@ The following sections provide information on getting the Boundary Event SDK up 
 
 * [Overview](overview.html)
 * [User Guide](user-guide.html)
-* [Download](downloads/download.html)

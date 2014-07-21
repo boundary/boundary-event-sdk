@@ -17,7 +17,7 @@ Instructions
 
 1. Clone the distribution
 
-    ```$ git clone XXX```    
+    ```$ git clone https://github.com/boundary/boundary-event-sdk```    
 
 2. Change directory to the cloned repository
 
