@@ -47,10 +47,8 @@ public class TestLookup {
 		OID oid = new OID();
 		for (String o :oids) {
 			oid.setValue(o);
-
 			System.out.println(o + " = " + oid);
 			System.out.println(oid.getSyntaxString());
-			oid.
 		}
 		
 //		System.out.println(SnmpConstants.snmpTrapOID);
