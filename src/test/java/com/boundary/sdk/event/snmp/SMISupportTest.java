@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.snmp4j.mp.SnmpConstants;
 import org.snmp4j.smi.OID;
@@ -57,6 +58,7 @@ public class SMISupportTest {
 	public void tearDown() throws Exception {
 	}
 	
+	@Ignore("Requires SNMP4J License")
 	@Test
 	public void test() throws IOException {
 		SmiSupport support = new SmiSupport();
