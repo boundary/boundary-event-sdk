@@ -28,14 +28,9 @@ public class ServiceChecksDatabase implements Processor {
 		// TODO Auto-generated constructor stub
 	}
 	
-
-	@Override
-	public void process(Exchange exchange) throws Exception {
+	
+	private void sendTestData(Exchange exchange) {
 		Message message = exchange.getIn();
-		List<Map<String, Object>> list = message.getBody(List.class);
-		for (Map<String,Object> row : list) {
-			LOG.info(row.toString());
-		}		
 		String sdnDirectorHost = "192.168.137.11";
 		String sdnDirectorName = "SDN Director";
 		ServiceCheckRequest request = new ServiceCheckRequest();
@@ -59,9 +54,11 @@ public class ServiceChecksDatabase implements Processor {
 		plumgridProcessTest.setHost(sdnDirectorHost);
 		plumgridProcessTest.setCommand("status plumgrid");
 		plumgridProcessTest.setTimeout(10000);
+		plumgridProcessTest.setUsername("plumgrid");
+		plumgridProcessTest.setPassword("plumgrid");
 		
 		SshxServiceModel plumgridProcessModel = new SshxServiceModel();
-		plumgridProcessModel.setExpectedOutput("^plumgrid start/running, process\\s\\d+\n");
+		plumgridProcessModel.setExpectedOutput("^plumgrid start/running, process\\s+\\d+");
 		
 		
 		
@@ -69,19 +66,25 @@ public class ServiceChecksDatabase implements Processor {
 		plumgridSalProcessTest.setHost(sdnDirectorHost);
 		plumgridSalProcessTest.setCommand("status plumgrid-sal");
 		plumgridSalProcessTest.setTimeout(10000);
+		plumgridSalProcessTest.setUsername("plumgrid");
+		plumgridSalProcessTest.setPassword("plumgrid");
+
 		
 		SshxServiceModel plumgridSalProcessTestModel = new SshxServiceModel();
-		plumgridSalProcessTestModel.setExpectedOutput("^plumgrid-sal start/running, process\\s\\d+\n");
+		plumgridSalProcessTestModel.setExpectedOutput("^plumgrid-sal start/running, process\\s\\d+");
 		
 		
 
 		SshxConfiguration nginxProcessTest = new SshxConfiguration();
 		nginxProcessTest.setHost(sdnDirectorHost);
 		nginxProcessTest.setCommand("status nginx");
-		plumgridSalProcessTest.setTimeout(10000);
+		nginxProcessTest.setTimeout(10000);
+		nginxProcessTest.setUsername("plumgrid");
+		nginxProcessTest.setPassword("plumgrid");
+
 		
 		SshxServiceModel nginxProcessModel = new SshxServiceModel();
-		nginxProcessModel.setExpectedOutput("^nginx start/running, process\\s\\d+\n");
+		nginxProcessModel.setExpectedOutput("^nginx start/running, process\\s\\d+");
 
 
 		ServiceTest<PingConfiguration,PingServiceModel> pingSDNDirector= new ServiceTest<PingConfiguration,PingServiceModel>(
@@ -106,5 +109,17 @@ public class ServiceChecksDatabase implements Processor {
 		request.addServiceTest(sshNginxProcess);
 
 		message.setBody(request);
+	}
+	
+
+	@Override
+	public void process(Exchange exchange) throws Exception {
+		Message message = exchange.getIn();
+		List<Map<String, Object>> list = message.getBody(List.class);
+		for (Map<String,Object> row : list) {
+			LOG.info(row.toString());
+		}
+		
+		sendTestData(exchange);
 	}
 }

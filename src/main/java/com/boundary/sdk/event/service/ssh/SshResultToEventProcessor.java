@@ -35,7 +35,8 @@ public class SshResultToEventProcessor implements Processor {
 	public void process(Exchange exchange) throws Exception {
 		Message message = exchange.getIn();
 		
-		String output = message.getBody(String.class);		
+		SshxResult result = message.getBody(SshxResult.class);
+		String output = result.getOutput();
 
 		ServiceTest<SshxConfiguration,SshxServiceModel> serviceTest = message.getHeader(SERVICE_TEST_INSTANCE,ServiceTest.class);
 		SshxConfiguration configuration = serviceTest.getConfiguration();
@@ -80,7 +81,6 @@ public class SshResultToEventProcessor implements Processor {
 		// TODO: Service test provides a template from the available data??
 		event.setTitle(serviceName + " - " + serviceTest.getName());
 
-		
 		// Set Severity, Status, and Message of the event based on the matching of expected output
 		if (output.matches(expectedOutput)) {
 			event.setSeverity(Severity.INFO);
