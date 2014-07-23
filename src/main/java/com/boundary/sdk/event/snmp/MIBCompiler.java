@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Commandline tool to compile MIBs
+ * Command line tool to compile MIBs
  * 
  * @author davidg
  * 
@@ -28,7 +28,7 @@ public class MIBCompiler extends SmiSupport {
 
 	private static Logger LOG = LoggerFactory.getLogger(MIBCompiler.class);
 	
-	private static final String COMMAND_NAME="boundary.tools.command.name";
+	public static final String COMMAND_NAME="boundary.tools.command.name";
 	public static final String LICENSE="boundary.tools.snmp.license";
 	
 	private static String license;
@@ -89,7 +89,7 @@ public class MIBCompiler extends SmiSupport {
 		for (String s :args) {
 			LOG.debug(s);
 		}
-		// TODO: Internationalization
+
 		helpOption = OptionBuilder
 				.withDescription("Display help information")
 				.withLongOpt("help")
@@ -202,7 +202,6 @@ public class MIBCompiler extends SmiSupport {
 	private boolean setInputMIBs() {
 		boolean ok = false;
 		String path = cmd.getOptionValue("m");
-		System.out.println("path: " + path);
 
 		if (path != null) {
 
@@ -271,7 +270,7 @@ public class MIBCompiler extends SmiSupport {
 			compile(mibPath);
 		}
 		else {
-			System.err.println("failed");
+			usage();
 		}
 	}
 
