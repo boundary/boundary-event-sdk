@@ -2,6 +2,7 @@ package com.boundary.sdk.event.snmp;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
@@ -10,7 +11,9 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.snmp4j.SNMP4JSettings;
 import org.snmp4j.mp.SnmpConstants;
 import org.snmp4j.smi.OID;
@@ -21,9 +24,15 @@ import com.snmp4j.smi.SmiObject;
 public class CustomMIBTest {
 	
 	private static final String BOUNDARY_MIB_MODULE_NAME = "BOUNDARY-MIB-INTERNAL";
+	
+	private static final String SOURCE_MIB_DIR="src/test/snmp/SMIv2";
+	
+	@Rule
+	public TemporaryFolder folder = new TemporaryFolder();
+	
 	private static final String BOUNDARY_MIB_FILE_NAME = "src/test/snmp/BOUNDARY-MIB.txt";
-	private SmiSupport support;
-	private SmiManager smiManager;
+	private static SmiSupport support;
+
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -35,25 +44,47 @@ public class CustomMIBTest {
 
 	@Before
 	public void setUp() throws Exception {
+		File mibDir= folder.newFolder("mib-repo");
 		support = new SmiSupport();
-		smiManager = support.getSmiManager();
-		support.setRepository("src/main/resources/mibrepository");
-		support.setLicense(null);
+		System.out.println(mibDir.toString());
+		support.setRepository(mibDir.toString());
+		support.setLicense(System.getenv("BOUNDARY_MIB_LICENSE"));
 		support.initialize();
-		//SNMP4JSettings.setOIDTextFormat(smiManager);
-	    //SNMP4JSettings.setVariableTextFormat(smiManager);
-
-
 	}
 
 	@After
 	public void tearDown() throws Exception {
 	}
+
+	@Test
+	public void testCompileStandardMIBs() throws IOException {
+		File mibDir= folder.newFolder("mib-repo");
+		support = new SmiSupport();
+		System.out.println(mibDir.toString());
+		support.setRepository(mibDir.toString());
+		support.setLicense(System.getenv("BOUNDARY_MIB_LICENSE"));
+		support.initialize();
+		support.setCompileLeniently(true);
+		support.setLicense(null);
+		support.compile(SOURCE_MIB_DIR);
+	}
+	
+	//@Ignore("Requires SNMP4J License")
+	@Test
+	public void testCompile() throws IOException {
+		File mibDir= folder.newFolder("mib-repo");
+		support = new SmiSupport();
+		System.out.println(mibDir.toString());
+		support.setRepository(mibDir.toString());
+		support.initialize();
+		support.setCompileLeniently(true);
+		support.compile(BOUNDARY_MIB_FILE_NAME);
+	}
 	
 	@Ignore("Requires SNMP4J License")
 	@Test
-	public void testCompile() throws IOException {
-		support.compile(BOUNDARY_MIB_FILE_NAME);
+	public void testLoadModule() throws IOException {
+		support.getSmiManager().loadModule("BOUNDARY-MIB-INTERNAL");
 	}
 
 	@Ignore("Requires SNMP4J License")
@@ -87,17 +118,43 @@ public class CustomMIBTest {
 		System.out.println("SnmpConstants.snmpTrapEnterprise: " + SnmpConstants.snmpTrapEnterprise);
 		System.out.println(SnmpConstants.snmpTrapOID.toDottedString());
 		System.out.println(new OID(SnmpConstants.snmpTrapOID.toDottedString() + ".3"));
-		System.out.print(SnmpConstants.linkDown.toDottedString());
-
-
+		System.out.println(SnmpConstants.linkDown.toDottedString());
+	}
+	
+	@Ignore("Requires SNMP4J License")
+	@Test
+	public void testLookupDescription() {
+		support.loadModules();
+		
 	}
 	
 	@Ignore("Requires SNMP4J License")
 	@Test
 	public void testLookUpEnterpriseTrap() {
+		support.loadModules();
 		OID oid = new OID();
-		oid.setValue("1.3.6.1.6.3.1.1.4.3.0.24927.8.1.1");
-		//SmiObject o = smiManager.findSmiObject(oid);
-		//System.out.println(o.getDescription());
+		oid.setValue("1.3.6.1.4.1.4.8.1.1");
+		SmiManager smi = support.getSmiManager();
+
+		SmiObject o = smi.findSmiObject(oid);
+		
+		System.out.println("getAsn1Comments()");
+		for (String s : o.getAsn1Comments()) {
+			System.out.println(s);
+		}
+		System.out.println("getChildren()");
+		for (SmiObject co : o.getChildren()) {
+			System.out.println(co.getOID());
+		}
+
+		System.out.println(o.getDescription());
+		System.out.println(o.getObjectName());
+		System.out.println(o.getOID());
+		System.out.println(o.getParent().getOID());
+		System.out.println(o.getReference());
+		System.out.println(o.getSmiSyntax());
+		System.out.println(o.getStatus());
+		System.out.println(o.getType());
+		System.out.println(o);
 	}
 }
