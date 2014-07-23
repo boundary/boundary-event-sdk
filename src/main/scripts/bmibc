@@ -1,3 +1,13 @@
 #!/bin/bash
 
-exec mvn exec:java -Dexec.mainClass="com.boundary.sdk.event.snmp.MIBCompiler" -Dboundary.tools.command.name="$(basename $0)" -Dboundary.tools.snmp.license="$BOUNDARY_MIB_LICENSE" -Dexec.args="$*"
+if [ $BOUNDARY_MIB_COMPILER_DEV = 1 ]
+then
+    exec mvn exec:java -Dexec.mainClass="com.boundary.sdk.event.snmp.MIBCompiler" -Dboundary.tools.command.name="$(basename $0)" -Dboundary.tools.snmp.license="$BOUNDARY_MIB_LICENSE" -Dexec.args="$*"
+else
+    [[ -z "$BOUNDARY_SDK_HOME" ]]  && echo "BOUNDARY_SDK_HOME is not set. Set to top-level directory of the Boundary SDK Home" && exit 1
+	
+    # Contains all of the jars that the Boundary Event SDK is dependent upon
+    DEPENDENT_JARS="$BOUNDARY_SDK_HOME/lib/*"
+    SDK_CLASSPATH="${BOUNDARY_SDK_HOME}/boundary-event-sdk-*.jar:${DEPENDENT_JARS}"
+    java -classpath "$SDK_CLASSPATH" -Dboundary.tools.command.name="$(basename $0)" -Dboundary.tools.snmp.license="$BOUNDARY_MIB_LICENSE" com.boundary.sdk.event.snmp.MIBCompiler $*
+fi
