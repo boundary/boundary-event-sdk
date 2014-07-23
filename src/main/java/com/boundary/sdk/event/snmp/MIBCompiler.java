@@ -29,7 +29,7 @@ public class MIBCompiler extends SmiSupport {
 	private static Logger LOG = LoggerFactory.getLogger(MIBCompiler.class);
 	
 	private static final String COMMAND_NAME="boundary.tools.command.name";
-	private static final String LICENSE="boundary.tools.snmp.license";
+	public static final String LICENSE="boundary.tools.snmp.license";
 	
 	private static String license;
 	
