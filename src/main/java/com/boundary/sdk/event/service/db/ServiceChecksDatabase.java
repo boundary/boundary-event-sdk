@@ -21,6 +21,11 @@ import com.boundary.sdk.event.service.ssh.SshxServiceModel;
 
 public class ServiceChecksDatabase implements Processor {
 	
+	//TODO: Separate class for handling constants
+	private static final String PING = "ping";
+	private static final String PORT = "port";
+	private static final String SSH = "ssh";
+	private static final String URL = "url";
 	private static Logger LOG = LoggerFactory.getLogger(ServiceChecksDatabase.class);
 
 
@@ -111,15 +116,108 @@ public class ServiceChecksDatabase implements Processor {
 		message.setBody(request);
 	}
 	
+	private void createPingServiceTest(ServiceCheckRequest request, Map<String,Object> row) {
+		String pingHost = row.get("pingHost").toString();
+		int pingTimeout = Integer.parseInt(row.get("pingTimeout").toString());
+		
+		PingConfiguration pingConfiguration = new PingConfiguration();
+		pingConfiguration.setHost(pingHost);
+		pingConfiguration.setTimeout(pingTimeout);
+		
+		String serviceName = row.get("serviceName").toString();
+		String serviceTestName = row.get("serviceTestName").toString();
+		String serviceTypeName = row.get("serviceTypeName").toString();
+
+		
+		PingServiceModel pingServiceModel = new PingServiceModel();
+		
+		ServiceTest<PingConfiguration,PingServiceModel> pingServiceTest =
+				new ServiceTest<PingConfiguration,PingServiceModel>(serviceTestName,serviceTypeName,serviceName,
+				request.getRequestId(),pingConfiguration,pingServiceModel);
+		request.addServiceTest(pingServiceTest);
+	}
+	
+	private void createPortServiceTest(ServiceCheckRequest request, Map<String,Object> row) {
+		String portHost = row.get("portHost").toString();
+		int port = Integer.parseInt(row.get("portPort").toString());
+		int portTimeout = Integer.parseInt(row.get("portTimeout").toString());
+		
+		PortConfiguration portConfiguration = new PortConfiguration();
+		portConfiguration.setHost(portHost);
+		portConfiguration.setPort(port);
+		portConfiguration.setTimeout(portTimeout);
+		
+		String serviceName = row.get("serviceName").toString();
+		String serviceTestName = row.get("serviceTestName").toString();
+		String serviceTypeName = row.get("serviceTypeName").toString();
+
+		PortServiceModel portServiceModel = new PortServiceModel();
+		
+		ServiceTest<PortConfiguration,PortServiceModel> portServicetest =
+				new ServiceTest<PortConfiguration,PortServiceModel>(serviceTestName,serviceTypeName,serviceName,
+				request.getRequestId(),portConfiguration,portServiceModel);
+		request.addServiceTest(portServicetest);
+	}
+	
+	private void createSshServiceTest(ServiceCheckRequest request, Map<String,Object> row) {
+		String sshHost = row.get("sshHost").toString();
+		int sshPort = Integer.parseInt(row.get("sshPort").toString());
+		int sshTimeout = Integer.parseInt(row.get("sshTimeout").toString());
+		String sshUserName = row.get("sshUserName").toString();
+		String sshPassword = row.get("sshPassword").toString();
+		String sshCommand = row.get("sshCommand").toString();
+		
+		SshxConfiguration sshConfiguration = new SshxConfiguration();
+		sshConfiguration.setHost(sshHost);
+		sshConfiguration.setPort(sshPort);
+		sshConfiguration.setTimeout(sshTimeout);
+		sshConfiguration.setUsername(sshUserName);
+		sshConfiguration.setPassword(sshPassword);
+		sshConfiguration.setCommand(sshCommand);
+		
+		String serviceName = row.get("serviceName").toString();
+		String serviceTestName = row.get("serviceTestName").toString();
+		String serviceTypeName = row.get("serviceTypeName").toString();
+
+		SshxServiceModel sshServiceModel = new SshxServiceModel();
+		String expectedOutput = row.get("sshExpectedOutput").toString();
+		sshServiceModel.setExpectedOutput(expectedOutput);
+		
+		ServiceTest<SshxConfiguration,SshxServiceModel> sshServicetest =
+				new ServiceTest<SshxConfiguration,SshxServiceModel>(serviceTestName,serviceTypeName,serviceName,
+				request.getRequestId(),sshConfiguration,sshServiceModel);
+		request.addServiceTest(sshServicetest);
+	}
+	
+	private void createUrlServiceTest(ServiceCheckRequest request, Map<String,Object> row) {
+	}
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		Message message = exchange.getIn();
+		ServiceCheckRequest request = new ServiceCheckRequest();
+
 		List<Map<String, Object>> list = message.getBody(List.class);
 		for (Map<String,Object> row : list) {
-			LOG.info(row.toString());
+			LOG.debug("Service Test Data: " + row.toString());
+			String serviceTestType = row.get("serviceTypeName").toString();
+			
+			switch (serviceTestType) {
+			case PING:
+				createPingServiceTest(request,row);
+				break;
+			case PORT:
+				createPortServiceTest(request,row);
+				break;
+			case SSH:
+				createSshServiceTest(request,row);
+				break;
+			case URL:
+				createUrlServiceTest(request,row);
+				break;
+			}
 		}
-		
-		sendTestData(exchange);
+		//TODO: How to handle if there are no service tests
+		message.setBody(request);
 	}
 }

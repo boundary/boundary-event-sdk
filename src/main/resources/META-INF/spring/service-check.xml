@@ -183,6 +183,11 @@
 					<log loggingLevel="INFO" message="Sending to ssh-check"/>
 					<to uri="seda:ssh-check"/>
 				</when>
+				<when>
+					<simple>${body.serviceTestType} == "url"</simple>
+					<log loggingLevel="INFO" message="Sending to url-check"/>
+					<to uri="seda:url-check"/>
+				</when>
 				<otherwise>
 				</otherwise>
 			</choice>
@@ -219,14 +224,25 @@
 			<log loggingLevel="DEBUG" message="${headers}"/>
 			<bean ref="configurationProcessor" method="extractSshxConfiguration"/>
 			<!-- Work around for now add information that is ignored at runtime -->
-			<to uri="sshx://joe:dirt@loser.com"/>
+			<to uri="sshx://admin:dirt@loser.com"/>
 			<bean ref="ssh-to-event"/>
 			<marshal>
 				<serialization/>
 			</marshal>
 			<to ref="boundary-event"/>
 		</route>
-		
+		<route id="URL-CHECK" startupOrder="180">
+			<from uri="seda:url-check?concurrentConsumers=10"/>
+			<log loggingLevel="DEBUG" message="${headers}"/>
+			<!-- <bean ref="configurationProcessor" method="extractSshxConfiguration"/> -->
+			<!-- Work around for now add information that is ignored at runtime -->
+			<!-- <to uri="sshx://joe:dirt@loser.com"/>
+			<bean ref="ssh-to-event"/>
+			<marshal>
+				<serialization/>
+			</marshal>
+			<to ref="boundary-event"/> -->
+		</route>
 	</camelContext>
 	
 </beans>
