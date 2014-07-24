@@ -19,8 +19,8 @@ public class SNMPRouteBuilder extends UDPRouteBuilder {
 	
 	private final int DEFAULT_SNMP_PORT=162;
 	
-	private String mibRepositoryPath;
-	private String license;
+	protected String mibRepositoryPath;
+	protected String license;
 
 	/**
 	 * Default constructor
