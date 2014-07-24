@@ -42,6 +42,11 @@
       <file>
         <source>${project.build.scriptSourceDirectory}/beventd</source>
         <outputDirectory>bin</outputDirectory>
+        <fileMode>0755</fileMode>
+      </file>
+      <file>
+        <source>${project.build.scriptSourceDirectory}/bmibc</source>
+        <outputDirectory>bin</outputDirectory>
         <fileMode>0744</fileMode>
       </file>
       <!-- Binary for running Boundary SDK JVM as a daemon -->
@@ -54,17 +59,17 @@
       <file>
         <source>${project.build.scriptSourceDirectory}/send-v1-trap</source>
         <outputDirectory>bin</outputDirectory>
-        <fileMode>0744</fileMode>
+        <fileMode>0755</fileMode>
       </file>
       <file>
         <source>${project.build.scriptSourceDirectory}/send-v2c-trap</source>
         <outputDirectory>bin</outputDirectory>
-        <fileMode>0744</fileMode>
+        <fileMode>0755</fileMode>
       </file>
       <file>
         <source>${project.build.scriptSourceDirectory}/send-syslog</source>
         <outputDirectory>bin</outputDirectory>
-        <fileMode>0744</fileMode>
+        <fileMode>0755</fileMode>
       </file>
     </files>
     <fileSets>
@@ -106,7 +111,7 @@
       <fileSet>
         <directory>target/classes/mibrepository</directory>
         <outputDirectory>var/mibrepository</outputDirectory>
-        <directoryMode>0755</directoryMode>
+        <directoryMode>0744</directoryMode>
         <includes>
           <include>*</include>
         </includes>
@@ -114,7 +119,7 @@
       <fileSet>
         <directory>logs</directory>
         <outputDirectory>logs</outputDirectory>
-        <directoryMode>0755</directoryMode>
+        <directoryMode>0744</directoryMode>
         <includes>
           <include>*</include>
         </includes>

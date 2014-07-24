@@ -1,0 +1,67 @@
+BOUNDARY-MIB-INTERNAL DEFINITIONS ::= BEGIN
+
+-- Design notes:
+--
+
+IMPORTS
+    OBJECT-TYPE, MODULE-IDENTITY,
+        Integer32, enterprises, Counter32, Counter64
+        FROM SNMPv2-SMI
+
+    DisplayString
+        FROM SNMPv2-TC;
+
+boundarySmiMibModule MODULE-IDENTITY
+    LAST-UPDATED
+        "201404221200Z" -- July 22, 2014
+    ORGANIZATION
+        "Boundary, Inc."
+    CONTACT-INFO
+        "postal:   Boundary, Inc.
+                   444 Castro Street
+                   Suite 917
+                   Mountain View CA 94041
+         email:    support@boundary.com
+        "
+    DESCRIPTION
+        "Initial creation of Boundary MIB"
+    ::= { boundary 100 }
+
+boundary          OBJECT IDENTIFIER ::= { enterprises 4 }
+bTrap             OBJECT IDENTIFIER ::= { boundary 8 }
+
+
+bTrapType         OBJECT IDENTIFIER ::= { bTrap 1 }
+
+bTrapErrMsg         NOTIFICATION-TYPE
+    OBJECTS         { bTrapCode, bTrapText }
+    STATUS          current
+    DESCRIPTION
+       "An error level ALERT log message was written to the log.  The bTrapText variable contains
+       additional information regarding the specific error written to the log.
+       Action is required in order to resolve the error."
+    ::= { bTrapType 1 }
+    
+bTrapDescription	NOTIFICATION-TYPE
+	STATUS			current	
+	DESCRIPTION
+	"This is a description"
+	::= { bTrapType 2 }
+
+bTrapCode          OBJECT-TYPE
+    SYNTAX         Integer32
+    MAX-ACCESS     accessible-for-notify
+    STATUS         current
+    DESCRIPTION
+        "The specific error code that was the cause for the trap/notication event."
+    ::= { bTrap 2 }
+
+bTrapText           OBJECT-TYPE
+    SYNTAX          DisplayString (SIZE(0..256))
+    MAX-ACCESS      accessible-for-notify
+    STATUS          current
+    DESCRIPTION
+        "The text string containing additional information for the trap/notification event."
+    ::= { bTrap 3 }
+
+END

@@ -24,6 +24,7 @@ import com.boundary.sdk.event.Severity;
 import com.boundary.sdk.event.Status;
 
 
+
 /**
  * Implements {@link Processor} interface and is responsible for converting
  * a {@link PDU} to a {@link RawEvent}.
@@ -70,6 +71,16 @@ public class SNMPToEventProcessor implements Processor {
 	 */
 	public String getLicense() {
 		return smi.getLicense();
+	}
+	
+	// TODO: Generalize mechanism for handling mapping of variable bindings
+	private void mapVarbindToEvent(RawEvent event, VariableBinding var) {
+		//TODO: Remove log statement when generalized mechanism for mapping variable binds is complete
+		//LOG.warn("var.toString(): " + var.toString() + ", var.toValueString(): " + var.toValueString() + ",var.getOid(): " + var.getOid());
+		if (var.getOid().toString().equals("xTrapText")) {
+			LOG.debug("Setting varible binding \"{}\" to \"{}\"",var.getOid().toString(),var.toValueString());
+			event.setMessage(var.toValueString());
+		}
 	}
 	
 	/**
@@ -133,7 +144,6 @@ public class SNMPToEventProcessor implements Processor {
 	public void processV2Trap(SnmpMessage message, PDU pdu, RawEvent event) {
 		String specificTrap = "";
 		String hostname = getPeerAddress(message);
-
 		
 		// CREATED_AT
 		event.setCreatedAt(new Date());
@@ -147,10 +157,12 @@ public class SNMPToEventProcessor implements Processor {
 		event.addProperty(HOSTNAME_PROPERTY_NAME, hostname);
 		event.addProperty("error_status", pdu.getErrorStatusText());
 		
+		
 		// Get the variable bindings from the trap and create properties in the event
 		Vector<? extends VariableBinding> varBinds = pdu.getVariableBindings();
 		for (VariableBinding var : varBinds) {
 			OID oid = var.getOid();
+
 			if (oid.startsWith(SnmpConstants.snmpTraps) ||
 				oid.startsWith(SnmpConstants.snmpTrapOID)) {
 				specificTrap = var.toValueString();
@@ -162,6 +174,7 @@ public class SNMPToEventProcessor implements Processor {
 				event.addProperty(var.getOid().toString(),var.toValueString());
 				event.addFingerprintField(var.getOid().toString());
 			}
+			mapVarbindToEvent(event,var);
 		}
 		
 		// RECEIVED_AT - Default to value set by Boundary
