@@ -128,13 +128,16 @@ public class CustomMIBTest {
 		
 	}
 	
-	@Ignore("Requires SNMP4J License")
+	//@Ignore("Requires SNMP4J License")
 	@Test
-	public void testLookUpEnterpriseTrap() {
+	public void testLookUpEnterpriseTrap() throws IOException {
+		support.setCompileLeniently(true);
+		support.compile(BOUNDARY_MIB_FILE_NAME);
 		support.loadModules();
 		OID oid = new OID();
-		oid.setValue("1.3.6.1.4.1.4.8.1.1");
+		oid.setValue("enterprises.4.8.1.2");
 		SmiManager smi = support.getSmiManager();
+		System.out.println("oid: " + oid);
 
 		SmiObject o = smi.findSmiObject(oid);
 		
@@ -147,14 +150,15 @@ public class CustomMIBTest {
 			System.out.println(co.getOID());
 		}
 
-		System.out.println(o.getDescription());
-		System.out.println(o.getObjectName());
-		System.out.println(o.getOID());
-		System.out.println(o.getParent().getOID());
-		System.out.println(o.getReference());
-		System.out.println(o.getSmiSyntax());
-		System.out.println(o.getStatus());
-		System.out.println(o.getType());
+		System.out.println("getDescription(): " + o.getDescription());
+		System.out.println("getObjectName(): " + o.getObjectName());
+		System.out.println("getOID(): " + o.getOID());
+		System.out.println("getOID().toDottedString(): " + o.getOID().toDottedString());
+		System.out.println("getParent().getOID(): " + o.getParent().getOID());
+		System.out.println("getReference: " + o.getReference());
+		System.out.println("getSmiSyntax: " + o.getSmiSyntax());
+		System.out.println("getStatus: " + o.getStatus());
+		System.out.println("getType: " + o.getType());
 		System.out.println(o);
 	}
 }
