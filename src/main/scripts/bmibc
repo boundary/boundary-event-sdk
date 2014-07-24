@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $BOUNDARY_MIB_COMPILER_DEV = 1 ]
+if [ ! -z $BOUNDARY_MIB_COMPILER_DEV ]
 then
     exec mvn exec:java -Dexec.mainClass="com.boundary.sdk.event.snmp.MIBCompiler" -Dboundary.tools.command.name="$(basename $0)" -Dboundary.tools.snmp.license="$BOUNDARY_MIB_LICENSE" -Dexec.args="$*"
 else
