@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="Date-Revision-yyyymmdd" content="20140724" />
     <meta http-equiv="Content-Language" content="en" />
-    <title>Boundary Event SDK - Reference</title>
+    <title>Boundary Event SDK - Boundary SNMP MIB Compiler</title>
     <link rel="stylesheet" href="../css/apache-maven-fluido-1.3.1.min.css" />
     <link rel="stylesheet" href="../css/site.css" />
     <link rel="stylesheet" href="../css/print.css" media="print" />
@@ -64,7 +64,7 @@
         Reference</a>
                     <span class="divider">/</span>
       </li>
-        <li class="active ">Reference</li>
+        <li class="active ">Boundary SNMP MIB Compiler</li>
                 
                 
                     
@@ -194,15 +194,54 @@
                 
         <div id="bodyColumn"  class="span9" >
                                   
-            <h1>Reference</h1>
-<p>List of online references</p>
+            <h1>Boundary SNMP MIB Compiler</h1>
+<p>The Boundary SNMP MIB Compiler <tt>bmibc</tt> allows the compilation of custom MIBs for SNMP.</p>
+<div class="section">
+<h2>SNMP4J-SMI<a name="SNMP4J-SMI"></a></h2>
+<p>The Boundary SDK uses the SNMP4J-SMI library to decode OIDs. For open source use free license is granted which restricts usage to standard MIB modules which are not under the enterprise OID sub-tree. Licenses can be purchased from <a class="externalLink" href="http://www.snmp4j.org/html/buy.html">www.snmp4j.org</a> for $49 US, at the time of this writing.</p></div>
+<div class="section">
+<h2>Usage<a name="Usage"></a></h2>
 
-<ul>
-  
-<li><a class="externalLink" href="https://app.boundary.com/docs/events_api">Boundary Event API(Requires Login)</a></li>
-  
-<li><a class="externalLink" href="http://camel.apache.org/">Apache Camel Website</a></li>
-</ul>
+<div class="source">
+<pre>$ bmibc -h
+usage: bmibc
+ -h,--help                                 Display help information
+ -l,--license &lt;license&gt;                    The license key string you
+                                           received with the purchase a
+                                           SNMP4J-SMI license or its
+                                           evaluation.You may provide
+                                           leave empty, but then you may
+                                           not use any MIB modules of the
+                                           &quot;enterprise&quot; OID subtree.
+ -m,--mib-path &lt;mib_path&gt;                  Path to single MIB, ZIP file of
+                                           MIB(s), or a directory of MIBs
+                                           to compile.
+ -q,--quiet                                Quiet mode, suppress normal
+                                           output.
+ -r,--repository-dir &lt;repository_dir&gt;      An empty directory where the
+                                           bmibccan read and store
+                                           compiled MIB modules
+                                           persistently. Directory must
+                                           not contain any plain text
+                                           (i.e., uncompiled) MIB files.
+ -s,--compiler-strict &lt;lenient|standard&gt;   Strictness defines the number
+                                           of syntax checks done on the
+                                           sources.
+
+</pre></div></div>
+<div class="section">
+<h2>Configuration<a name="Configuration"></a></h2>
+<p>The sections the follow describe the configuration of the SNMP route.</p>
+<div class="section">
+<h3>Environment Variables<a name="Environment_Variables"></a></h3>
+<p>SNMP adapter parameters <tt>mibRepository</tt> and <tt>license</tt> can be set by providing values in the <tt>BOUNDARY_SDK_HOME/etc/boundary-event-sdk</tt> file.</p></div></div>
+<div class="section">
+<h2>Example<a name="Example"></a></h2>
+<p>In the example below, the <tt>var\mibrepository</tt> is the location of the existing compiled standard MIBs, the <tt>BOUNDARY-MIB.txt</tt> is a a custom MIB. Running the command as below will add the new custom MIB to the repository and allow for decoding of OIDs from the MIB. NOTE: The last option relaxes strict syntax checks.</p>
+
+<div class="source">
+<pre>$ bmibc -r var/mibrepository -m BOUNDARY-MIB.txt -s lenient
+</pre></div></div>
                   </div>
             </div>
           </div>
