@@ -389,8 +389,8 @@
 		</dependency>
 		<dependency>
 			<groupId>com.snmp4j</groupId>
-			<artifactId>snmp4j-smi-pro</artifactId>
-			<version>${snmp4j-smi-pro-version}</version>
+			<artifactId>snmp4j-smi</artifactId>
+			<version>${snmp4j-smi-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
