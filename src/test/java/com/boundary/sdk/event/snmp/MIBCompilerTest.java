@@ -56,7 +56,7 @@ public class MIBCompilerTest {
 		return args;
 	}
 
-
+	@Ignore("Requires SNMP4J License")
 	@Test
 	public void testCompileStandardMIBs() throws IOException {
 		File mibDir= folder.newFolder("mib-repo");
@@ -64,7 +64,7 @@ public class MIBCompilerTest {
 		mibCompiler.execute(args);
 	}
 	
-	//@Ignore("Requires SNMP4J License")
+	@Ignore("Requires SNMP4J License")
 	@Test
 	public void testCompileEnterpriseMIB() throws IOException {
 		File mibDir= folder.newFolder("mib-repo");
