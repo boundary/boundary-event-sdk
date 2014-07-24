@@ -1,7 +1,5 @@
 #!/bin/bash  
 
-set -x
-
 BOUNDARY_SDK_HOME=$1
 
 [[ -z "$BOUNDARY_SDK_HOME" ]]  && echo "BOUNDARY_SDK_HOME is not set. Set to top-level directory of the distribution" && exit 1
@@ -11,25 +9,24 @@ DOWNLOAD_DIR="$BOUNDARY_SDK_HOME/download"
 #
 # Parameters for SNMP4J-SMI 
 #
-SNMP4J_SMI_DIR='snmp4j-smi-pro-1.4.2'
+SNMP4J_SMI_DIR='snmp4j-smi-1.1.3'
 SNMP4J_SMI_ZIP_FILE="${SNMP4J_SMI_DIR}-dist.zip"
-SNMP4J_SMI_JAR_FILE='snmp4j-smi-pro.jar'
+SNMP4J_SMI_JAR_FILE='snmp4j-smi.jar'
 SNMP4J_SMI_JAR_FILE_PATH="$DOWNLOAD_DIR/$SNMP4J_SMI_DIR/$SNMP4J_SMI_JAR_FILE"
 SNMP4J_SMI_group_id="com.snmp4j"
-SNMP4J_SMI_artifact_id="snmp4j-smi-pro"
-SNMP4J_SMI_version="1.4.2"
-SNMP4J_SMI_URI="http://www.snmp4j.com/smi/pro/$SNMP4J_SMI_ZIP_FILE"
-
+SNMP4J_SMI_artifact_id="snmp4j-smi"
+SNMP4J_SMI_version="1.1.3"
+SNMP4J_SMI_URI="http://www.snmp4j.com/smi/$SNMP4J_SMI_ZIP_FILE"
 
 #
 # Parameters for SNMP4J
 #
-SNMP4J_DIR='snmp4j-smi-pro-1.4.2/lib'
-SNMP4J_JAR_FILE='snmp4j-2.3.0.jar'
+SNMP4J_DIR='snmp4j-smi-1.1.3/lib'
+SNMP4J_JAR_FILE='snmp4j-2.2.5.jar'
 SNMP4J_JAR_FILE_PATH="$DOWNLOAD_DIR/$SNMP4J_DIR/$SNMP4J_JAR_FILE"
 SNMP4J_group_id="org.snmp4j"
 SNMP4J_artifact_id="snmp4j"
-SNMP4J_version="2.3.0"
+SNMP4J_version="2.2.5"
 
 CURL_CMD=curl
 WGET_CMD=wget
