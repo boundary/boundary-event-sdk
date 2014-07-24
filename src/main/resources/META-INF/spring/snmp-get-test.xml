@@ -1,0 +1,32 @@
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+                   http://www.springframework.org/schema/beans
+                   http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                   http://camel.apache.org/schema/spring
+                   http://camel.apache.org/schema/spring/camel-spring.xsd">
+                   
+    <bean id="snmp-poller" class="com.boundary.sdk.event.snmp.SnmpPollerRouteBuilder">
+		<property name="routeId" value="SNMP-POLLER"/>
+		<property name="startUpOrder" value="110"/>	
+		<property name="oids" value="1.3.6.1.2.1.1.5.0,1.3.6.1.2.1.4.31.1.1.3.1"/>
+		<property name="bindAddress" value="192.168.178.100"/>
+		<property name="communityRead" value="piston"/>
+		<property name="port" value="161"/>
+		<property name="toUri" value="stream:out"/>
+	</bean>
+    
+	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+
+		<!-- <route id="snmp-get-spring" startupOrder="10">
+			Have a timer fire every minute
+			<from uri="snmp:192.168.178.100:161?protocol=udp&amp;type=POLL&amp;oids=1.3.6.1.2.1.1.5.0&amp;snmpVersion=1&amp;snmpCommunity=piston"/>
+			<log message="${body}" />
+			<to uri="mock:snmp-get-out"/>
+			<to uri="stream:out" />
+		</route> -->
+		
+		<routeBuilder ref="snmp-poller"/>
+	</camelContext>
+</beans>
