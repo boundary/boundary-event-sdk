@@ -3,6 +3,7 @@ Boundary SNMP Route
 
 The SNMP route has the ability receive v1/v2c SNMP traps and translate into Boundary Events.
 
+
 SNMP4J-SMI
 ----------
 
@@ -10,6 +11,12 @@ The SNMP route uses the SNMP4J-SMI library to decode OIDs. For open source use f
 license is granted which restricts usage to standard MIB modules which are 
 not under the enterprise OID sub-tree. Licenses can be purchased from
 [www.snmp4j.org](http://www.snmp4j.org/html/buy.html) for $49 US, at the time of this writing.
+
+
+Enterprise MIBs
+--------------
+
+Information regarding compiling and deploying custom enterprise MIBs can be found [here](bmibc.html)
 
 Configuration
 -------------
