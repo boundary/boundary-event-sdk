@@ -22,7 +22,7 @@ import org.snmp4j.smi.VariableBinding;
 import com.boundary.sdk.event.RawEvent;
 import com.boundary.sdk.event.Severity;
 import com.boundary.sdk.event.Status;
-import com.snmp4j.smi.SmiObject;
+
 
 
 /**
