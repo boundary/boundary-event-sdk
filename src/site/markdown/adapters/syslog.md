@@ -1,7 +1,7 @@
-Boundary Syslog Event Adapter
-=============================
+Boundary Syslog Route
+=====================
 
-The Syslog adapter for Boundary enables the UDP receipt of forwarded syslog messagesg daemon into Boundary events.
+The Syslog route nables the UDP receipt of forwarded syslog messagesg daemon into Boundary events.
 
 This adapters adheres to standard set forth in [RFC 3164](http://tools.ietf.org/html/rfc3164).
 
@@ -10,10 +10,10 @@ Configuration
 
 ### Forwarding Syslog Messages
 
-The Syslog Event Adapter requires that syslog messages be forwarded as:
+The Syslog Event Route requires that syslog messages be forwarded:
 
 * Using the `UDP` transport
-* Send in the RFC 3164 format.
+* Sent in the RFC 3164 format.
 
 There are various open source and commericial implementations of syslog including:
 
@@ -22,7 +22,7 @@ There are various open source and commericial implementations of syslog includin
 * [RSYSLOG](http://www.rsyslog.com)
 * [syslog-ng](http://www.syslog-ng.org)
 
-Those list above have the capability to forward syslog messages using UDP and syslog format (RFC 3164).
+The syslog implementations liste above have the capability to forward syslog messages using UDP and syslog format (RFC 3164).
 
 The configuration to forward syslog messages typically in this format:
 
@@ -31,8 +31,8 @@ The configuration to forward syslog messages typically in this format:
 
 ```
 
-NOTE: Different implementations have different names for the configuration file location (typically /etc/syslog.conf or /etc/rsylog.conf) so
-consult the documentation for your implementation.
+NOTE: Different implementations have different names for the configuration file location (typically `/etc/syslog.conf` or `/etc/rsylog.conf`),
+consult the documentation for your implementation to determine the path to the configuration file.
 
 For example if the Boundary Event SDK was running on the host `ren.stimpy.com` and the Syslog adapter parameter `port` was configured to _1514_
 then the typical syslog configuration to forward _all_ of the syslog messages would be the following:
@@ -55,11 +55,20 @@ Forward all `daemon` syslog messages to the Boundary Event SDK on the _localhost
 ```
 daemon.*          @127.0.0.1:10514
 ```
+### Aggregating Syslog Messages
+
+It is good practice to designate a system or systems to be serve the role as _loghost_. The loghost
+is responsible for aggregating the syslog messages sent from other hosts and then forwarding the required
+subset to the Syslog Message route which is co-located on the same host.
+Systems that are to forward Syslog messsage should be configured to forward messages using
+TCP rather than. Most modern implementations of Syslog allow forwarding of message via TCP. Consult your
+deployed Syslog implementation documentation for exact details and configuration on how to forward syslog messages via TCP.
 
 ### Parameters
 
 These parameters that application in the `etc/event-application.xml` file.
 
+* `bindAddress` - Address to bind the socket to, defaults to 0.0.0.0
 * `port` - Port number to listen for Syslog message (default is 1514).
 * `routeId` - Name of the route instance appears in logs.
 * `startOrder` - Ordering of when this route is started in relationship to other routes.
@@ -67,12 +76,12 @@ These parameters that application in the `etc/event-application.xml` file.
 
 ### Example Configuration
 ```
-        <bean id="syslog-route" class="com.boundary.sdk.event.syslog.SysLogRouteBuilder">
-                <property name="routeId" value="SYSLOG"/>
-                <property name="startUpOrder" value="120"/>
-                <property name="port" value="1514"/>
-                <property name="toUri" value="seda:boundary-event"/>
-        </bean>
+<bean id="syslog-route" class="com.boundary.sdk.event.syslog.SysLogRouteBuilder">
+   <property name="routeId" value="SYSLOG"/>
+   <property name="startUpOrder" value="120"/>
+   <property name="port" value="1514"/>
+   <property name="toUri" value="seda:boundary-event"/>
+</bean>
 ```
 
 Event Mapping
@@ -97,6 +106,7 @@ The table below provides a guide of how the Syslog message fields are mapped to 
 |timestamp     | createdAt               | standard          | NO                        | NO          |
 |message       | message                 | standard/property | YES                       | NO          |
 |hostname      | source.ref              | standard/property | YES                       | YES         |
+|              | source.type             | standard          | YES                       | YES         |
 |severity      | severity(mapped)        | standard          | NO                        | NO          |
 |severity      | status(mapped)          | standard          | NO                        | NO          |
 |              | title (text + hostname) | standard          | NO                        | NO          |

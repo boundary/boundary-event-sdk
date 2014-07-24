@@ -1,18 +1,26 @@
-Boundary SNMP Event Adapter
-===========================
+Boundary SNMP Route
+===================
 
-This event adapter can receive v1/v2c SNMP traps and translate into Boundary Events.
+The SNMP route has the ability receive v1/v2c SNMP traps and translate into Boundary Events.
+
 
 SNMP4J-SMI
 ----------
 
-The SNMP adapter uses the SNMP4J-SMI library to decode OIDs. For open source use free
+The SNMP route uses the SNMP4J-SMI library to decode OIDs. For open source use free
 license is granted which restricts usage to standard MIB modules which are 
 not under the enterprise OID sub-tree. Licenses can be purchased from
 [www.snmp4j.org](http://www.snmp4j.org/html/buy.html) for $49 US, at the time of this writing.
 
+
+Enterprise MIBs
+--------------
+
+Information regarding compiling and deploying custom enterprise MIBs can be found [here](bmibc.html)
+
 Configuration
 -------------
+The sections the follow describe the configuration of the SNMP route.
 
 ### Environment Variables
 
@@ -23,11 +31,12 @@ by providing values in the `BOUNDARY_SDK_HOME/etc/boundary-event-sdk` file.
 
 These parameters are configured in the `BOUNDARY_SDK_HOME/event-application.xml`.
 
+* `bindAddress` - Address to bind the socket to, defaults to 0.0.0.0
+* `license` - License string purchased from SNMP4J-SMI
+* `mibRepository` - Indicates the end point to send the transformed SNMP trap.
+* `port` - Port number to listen for SNMP traps (default is 1162)
 * `routeId` - Name to identify the route in the logs
 * `startOrder` - Ordering of when this route is started in relationship to other routes
-* `port` - Port number to listen for SNMP traps (default is 1162)
-* `mibRepository` - Indicates the end point to send the transformed SNMP trap.
-* `license` - License string purchased from SNMP4J-SMI
 * `toUri` - Indicates the end point to send the transformed SNMP trap.
 
 ### Example Configuration
@@ -55,14 +64,20 @@ A SNMP v1 trap consists of the following fields:
 * Message
 * Timestamp
 
-A SNMP v2 trap consists of list of varbinds:
-
-* varbind 1
-* varbind 2
+A SNMP v2 trap consists of list of varbinds.
 
 
 ### Field Mapping
 
+|SNMP Field    |Boundary Event Field               |Boundary Field Type|Boundary Fingerprint Field?|Boundary Tag?| 
+|--------------|:---------------------------------:|:-----------------:|:-------------------------:|:-----------:|
+|              | createdAt                         | standard          | NO                        | NO          |
+|trap message  | message                           | standard          | YES                       | NO          |
+|hostname      | source.ref                        | standard          | YES                       | YES         |
+|              | source.type = `host`              | standard          | YES                       | YES         |
+|severity      | severity(mapped)                  | standard          | NO                        | NO          |
+|varbind       | varbind name                      | property          | NO                        | NO          |
+|              | title (trapName +text + hostname) | standard          | NO                        | NO          |
 
 ### References
 

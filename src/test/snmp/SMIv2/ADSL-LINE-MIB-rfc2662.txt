@@ -1,0 +1,909 @@
+
+      IIT-JMS-APPLICATION-CONTAINER-SWIFTLET-MIB
+         DEFINITIONS ::= BEGIN
+         IMPORTS
+       MODULE-IDENTITY, OBJECT-TYPE, NOTIFICATION-TYPE, OBJECT-IDENTITY,
+           Unsigned32,
+           Integer32,
+           TimeTicks, Counter32, snmpModules, mib-2
+           FROM SNMPv2-SMI
+       TruthValue
+           FROM SNMPv2-TC
+       MODULE-COMPLIANCE, OBJECT-GROUP, NOTIFICATION-GROUP
+           FROM SNMPv2-CONF
+       EntityIndex, IitUTF8String
+           FROM IIT-SWIFTMQ-TC
+       iitSwiftMQSwiftletModules
+           FROM IIT-SWIFTMQ-REG;
+      sysJacModule
+        MODULE-IDENTITY
+        LAST-UPDATED "200710040000Z"
+
+        ORGANIZATION "IIT GmbH, Bremen/Germany"
+        CONTACT-INFO "IIT GmbH
+                Fahrenheitstr. 1
+                D28359 Bremen
+                GERMANY
+
+                Phone: +49 421 2208-166
+                Fax: +49 421 2208-167
+
+                Email: am@iit.de"
+        DESCRIPTION "JMS Application Container"
+        ::= { iitSwiftMQSwiftletModules 1 }
+
+      sysJacObjects
+      OBJECT IDENTIFIER
+      ::= {
+      sysJacModule
+      1
+      }
+
+      sysJacEvents
+      OBJECT IDENTIFIER
+      ::= {
+      sysJacModule
+      2
+      }
+
+      
+	
+        staticContainersTables
+        OBJECT IDENTIFIER
+        
+      ::= {
+      sysJacObjects
+             2
+      }
+    staticContainersTable
+       OBJECT-TYPE
+       SYNTAX SEQUENCE OF
+       StaticContainerEntry
+     
+        MAX-ACCESS      not-accessible
+        STATUS          current
+        
+      DESCRIPTION "Static Containers"
+    
+        ::= {
+        staticContainersTables
+        1
+        }
+      
+            staticContainerEntry
+       OBJECT-TYPE
+       SYNTAX
+       StaticContainerEntry
+    
+        MAX-ACCESS      not-accessible
+        STATUS          current
+        
+      DESCRIPTION "Static Container"
+    
+      INDEX {
+      staticContainerIndex
+      }
+    
+      ::= {
+      staticContainersTable
+             1
+      }
+    StaticContainerEntry
+    
+      ::= SEQUENCE {
+      staticContainerIndex
+        EntityIndex,
+        staticContainerStartupDelay
+          Unsigned32
+       ,
+        staticContainerEnabled
+          TruthValue
+       ,
+        staticContainerMainClass
+          IitUTF8String
+       ,
+        staticContainerMainClassArguments
+          IitUTF8String
+       ,
+        staticContainerMainReturnIsStop
+          TruthValue
+       ,
+        staticContainerShutdownMethodName
+          IitUTF8String
+       
+
+      }
+
+      staticContainerIndex
+      OBJECT-TYPE
+      SYNTAX EntityIndex
+      MAX-ACCESS
+      
+        not-accessible
+      
+      STATUS current
+      DESCRIPTION "The index of static-container."
+      ::= {
+      staticContainerEntry
+      1
+      }
+      
+                staticContainerStartupDelay
+       OBJECT-TYPE
+         SYNTAX
+      
+          Unsigned32
+       
+         MAX-ACCESS read-write
+         STATUS current
+         
+      DESCRIPTION "Delay (ms) to wait before start"
+    
+         DEFVAL
+         {
+         0
+         }
+       
+      ::= {
+      staticContainerEntry
+             2
+      }
+    
+                staticContainerEnabled
+       OBJECT-TYPE
+         SYNTAX
+      
+          TruthValue
+       
+         MAX-ACCESS read-write
+         STATUS current
+         
+      DESCRIPTION "Enables/Disables this Container"
+    
+         DEFVAL
+         {
+         false
+         }
+       
+      ::= {
+      staticContainerEntry
+             3
+      }
+    
+                staticContainerMainClass
+       OBJECT-TYPE
+         SYNTAX
+      
+          IitUTF8String
+       
+         MAX-ACCESS read-write
+         STATUS current
+         
+      DESCRIPTION "The class name with the 'main' method"
+    
+      ::= {
+      staticContainerEntry
+             4
+      }
+    
+                staticContainerMainClassArguments
+       OBJECT-TYPE
+         SYNTAX
+      
+          IitUTF8String
+       
+         MAX-ACCESS read-write
+         STATUS current
+         
+      DESCRIPTION "The Arguments of the Main Class (blank is Delimiter)"
+    
+      ::= {
+      staticContainerEntry
+             5
+      }
+    
+                staticContainerMainReturnIsStop
+       OBJECT-TYPE
+         SYNTAX
+      
+          TruthValue
+       
+         MAX-ACCESS read-write
+         STATUS current
+         
+      DESCRIPTION "Is the return from the 'main' method is equal to stop?"
+    
+         DEFVAL
+         {
+         false
+         }
+       
+      ::= {
+      staticContainerEntry
+             6
+      }
+    
+                staticContainerShutdownMethodName
+       OBJECT-TYPE
+         SYNTAX
+      
+          IitUTF8String
+       
+         MAX-ACCESS read-write
+         STATUS current
+         
+      DESCRIPTION "Optional static Shutdown Method Name"
+    
+      ::= {
+      staticContainerEntry
+             7
+      }
+    
+                staticContainersSystemPropertiesTable
+       OBJECT-TYPE
+       SYNTAX SEQUENCE OF
+       StaticContainersSystemPropertyEntry
+     
+        MAX-ACCESS      not-accessible
+        STATUS          current
+        
+      DESCRIPTION "System Properties"
+    
+            ::= {
+            staticContainersTables
+             2
+            }
+        
+                    staticContainersSystemPropertyEntry
+       OBJECT-TYPE
+       SYNTAX
+       StaticContainersSystemPropertyEntry
+    
+        MAX-ACCESS      not-accessible
+        STATUS          current
+        
+      DESCRIPTION "System Property"
+    
+      INDEX {
+      staticContainerIndex
+        , staticContainersSystemPropertyIndex
+      }
+    
+      ::= {
+      staticContainersSystemPropertiesTable
+             1
+      }
+    StaticContainersSystemPropertyEntry
+    
+      ::= SEQUENCE {
+      staticContainersSystemPropertyIndex
+        EntityIndex,
+        staticContainersSystemPropertyValue
+          IitUTF8String
+       
+
+      }
+
+      staticContainersSystemPropertyIndex
+      OBJECT-TYPE
+      SYNTAX EntityIndex
+      MAX-ACCESS
+      
+        not-accessible
+      
+      STATUS current
+      DESCRIPTION "The index of system-property."
+      ::= {
+      staticContainersSystemPropertyEntry
+      1
+      }
+      
+                        staticContainersSystemPropertyValue
+       OBJECT-TYPE
+         SYNTAX
+      
+          IitUTF8String
+       
+         MAX-ACCESS read-write
+         STATUS current
+         
+      DESCRIPTION "Property Value"
+    
+      ::= {
+      staticContainersSystemPropertyEntry
+             2
+      }
+    
+                    
+                
+                staticContainersClasspathTable
+       OBJECT-TYPE
+       SYNTAX SEQUENCE OF
+       StaticContainersPathEntryEntry
+     
+        MAX-ACCESS      not-accessible
+        STATUS          current
+        
+      DESCRIPTION "Classpath"
+    
+            ::= {
+            staticContainersTables
+             3
+            }
+        
+                    staticContainersPathEntryEntry
+       OBJECT-TYPE
+       SYNTAX
+       StaticContainersPathEntryEntry
+    
+        MAX-ACCESS      not-accessible
+        STATUS          current
+        
+      DESCRIPTION "Path Entry"
+    
+      INDEX {
+      staticContainerIndex
+        , staticContainersPathEntryIndex
+      }
+    
+      ::= {
+      staticContainersClasspathTable
+             1
+      }
+    StaticContainersPathEntryEntry
+    
+      ::= SEQUENCE {
+      staticContainersPathEntryIndex
+        EntityIndex,
+        staticContainersPathEntryValue
+          IitUTF8String
+       
+
+      }
+
+      staticContainersPathEntryIndex
+      OBJECT-TYPE
+      SYNTAX EntityIndex
+      MAX-ACCESS
+      
+        not-accessible
+      
+      STATUS current
+      DESCRIPTION "The index of path-entry."
+      ::= {
+      staticContainersPathEntryEntry
+      1
+      }
+      
+                        staticContainersPathEntryValue
+       OBJECT-TYPE
+         SYNTAX
+      
+          IitUTF8String
+       
+         MAX-ACCESS read-write
+         STATUS current
+         
+      DESCRIPTION "Path Entry"
+    
+      ::= {
+      staticContainersPathEntryEntry
+             2
+      }
+    
+                    
+                
+            
+        
+		usage
+        OBJECT-IDENTITY
+        
+        STATUS current
+        
+      DESCRIPTION "Running JMS Application Containers"
+    
+      ::= {
+      sysJacObjects
+             3
+      }
+    
+			staticsTables
+        OBJECT IDENTIFIER
+        
+      ::= {
+      usage 2
+      }
+    staticsTable
+       OBJECT-TYPE
+       SYNTAX SEQUENCE OF
+       StaticEntry
+     
+        MAX-ACCESS      not-accessible
+        STATUS          current
+        
+      DESCRIPTION "Running static JMS Application Containers"
+    
+        ::= {
+        staticsTables
+        1
+        }
+      
+				staticEntry
+       OBJECT-TYPE
+       SYNTAX
+       StaticEntry
+    
+        MAX-ACCESS      not-accessible
+        STATUS          current
+        
+      DESCRIPTION "Running static JMS Application Container"
+    
+      INDEX {
+      staticIndex
+      }
+    
+      ::= {
+      staticsTable
+             1
+      }
+    StaticEntry
+    
+      ::= SEQUENCE {
+      staticIndex
+        EntityIndex,
+        staticStartTime
+          IitUTF8String
+       
+
+      }
+
+      staticIndex
+      OBJECT-TYPE
+      SYNTAX EntityIndex
+      MAX-ACCESS
+      
+        not-accessible
+      
+      STATUS current
+      DESCRIPTION "The index of static."
+      ::= {
+      staticEntry
+      1
+      }
+      
+					staticStartTime
+       OBJECT-TYPE
+         SYNTAX
+      
+          IitUTF8String
+       
+         MAX-ACCESS read-write
+         STATUS current
+         
+      DESCRIPTION "Start Time"
+    
+      ::= {
+      staticEntry
+             2
+      }
+    
+				
+			
+			hotDeploysTables
+        OBJECT IDENTIFIER
+        
+      ::= {
+      usage 3
+      }
+    hotDeploysTable
+       OBJECT-TYPE
+       SYNTAX SEQUENCE OF
+       HotDeployEntry
+     
+        MAX-ACCESS      not-accessible
+        STATUS          current
+        
+      DESCRIPTION "Hot Deployed JMS Application Containers"
+    
+        ::= {
+        hotDeploysTables
+        1
+        }
+      
+				hotDeployEntry
+       OBJECT-TYPE
+       SYNTAX
+       HotDeployEntry
+    
+        MAX-ACCESS      not-accessible
+        STATUS          current
+        
+      DESCRIPTION "Hot Deployed JMS Application Container"
+    
+      INDEX {
+      hotDeployIndex
+      }
+    
+      ::= {
+      hotDeploysTable
+             1
+      }
+    HotDeployEntry
+    
+      ::= SEQUENCE {
+      hotDeployIndex
+        EntityIndex,
+        hotDeployDeployTime
+          IitUTF8String
+       ,
+        hotDeployStartupDelay
+          Unsigned32
+       ,
+        hotDeployMainClass
+          IitUTF8String
+       ,
+        hotDeployMainClassArguments
+          IitUTF8String
+       ,
+        hotDeployShutdownMethodName
+          IitUTF8String
+       ,
+        hotDeploysLoggingEnabled
+          TruthValue
+       ,
+        hotDeploysCalendar
+          IitUTF8String
+       ,
+        hotDeploysDateFrom
+          IitUTF8String
+       ,
+        hotDeploysDateTo
+          IitUTF8String
+       ,
+        hotDeploysMaxRuntime
+          IitUTF8String
+       ,
+        hotDeploysTimeExpression
+          IitUTF8String
+       
+
+      }
+
+      hotDeployIndex
+      OBJECT-TYPE
+      SYNTAX EntityIndex
+      MAX-ACCESS
+      
+        not-accessible
+      
+      STATUS current
+      DESCRIPTION "The index of hot-deploy."
+      ::= {
+      hotDeployEntry
+      1
+      }
+      
+					hotDeployDeployTime
+       OBJECT-TYPE
+         SYNTAX
+      
+          IitUTF8String
+       
+         MAX-ACCESS read-write
+         STATUS current
+         
+      DESCRIPTION "Deploy Time"
+    
+      ::= {
+      hotDeployEntry
+             2
+      }
+    
+                    hotDeployStartupDelay
+       OBJECT-TYPE
+         SYNTAX
+      
+          Unsigned32
+       
+         MAX-ACCESS read-write
+         STATUS current
+         
+      DESCRIPTION "Delay (ms) to wait before start"
+    
+         DEFVAL
+         {
+         0
+         }
+       
+      ::= {
+      hotDeployEntry
+             3
+      }
+    
+                    hotDeployMainClass
+       OBJECT-TYPE
+         SYNTAX
+      
+          IitUTF8String
+       
+         MAX-ACCESS read-write
+         STATUS current
+         
+      DESCRIPTION "The class name with the 'main' method"
+    
+      ::= {
+      hotDeployEntry
+             4
+      }
+    
+                    hotDeployMainClassArguments
+       OBJECT-TYPE
+         SYNTAX
+      
+          IitUTF8String
+       
+         MAX-ACCESS read-write
+         STATUS current
+         
+      DESCRIPTION "The Arguments of the Main Class (blank is Delimiter)"
+    
+      ::= {
+      hotDeployEntry
+             5
+      }
+    
+                    hotDeployShutdownMethodName
+       OBJECT-TYPE
+         SYNTAX
+      
+          IitUTF8String
+       
+         MAX-ACCESS read-write
+         STATUS current
+         
+      DESCRIPTION "Mandatory static Shutdown Method Name"
+    
+      ::= {
+      hotDeployEntry
+             6
+      }
+    
+                    hotDeploysSystemPropertiesTable
+       OBJECT-TYPE
+       SYNTAX SEQUENCE OF
+       HotDeploysSystemPropertyEntry
+     
+        MAX-ACCESS      not-accessible
+        STATUS          current
+        
+      DESCRIPTION "System Properties"
+    
+            ::= {
+            hotDeploysTables
+             2
+            }
+        
+                        hotDeploysSystemPropertyEntry
+       OBJECT-TYPE
+       SYNTAX
+       HotDeploysSystemPropertyEntry
+    
+        MAX-ACCESS      not-accessible
+        STATUS          current
+        
+      DESCRIPTION "System Property"
+    
+      INDEX {
+      hotDeployIndex
+        , hotDeploysSystemPropertyIndex
+      }
+    
+      ::= {
+      hotDeploysSystemPropertiesTable
+             1
+      }
+    HotDeploysSystemPropertyEntry
+    
+      ::= SEQUENCE {
+      hotDeploysSystemPropertyIndex
+        EntityIndex,
+        hotDeploysSystemPropertyValue
+          IitUTF8String
+       
+
+      }
+
+      hotDeploysSystemPropertyIndex
+      OBJECT-TYPE
+      SYNTAX EntityIndex
+      MAX-ACCESS
+      
+        not-accessible
+      
+      STATUS current
+      DESCRIPTION "The index of system-property."
+      ::= {
+      hotDeploysSystemPropertyEntry
+      1
+      }
+      
+                            hotDeploysSystemPropertyValue
+       OBJECT-TYPE
+         SYNTAX
+      
+          IitUTF8String
+       
+         MAX-ACCESS read-write
+         STATUS current
+         
+      DESCRIPTION "Property Value"
+    
+      ::= {
+      hotDeploysSystemPropertyEntry
+             2
+      }
+    
+                        
+                    
+                    
+                      hotDeploysLoggingEnabled
+       OBJECT-TYPE
+         SYNTAX
+      
+          TruthValue
+       
+         MAX-ACCESS read-write
+         STATUS current
+         
+      DESCRIPTION "If true, start/stop are logged in SwiftMQ's log file"
+    
+         DEFVAL
+         {
+         false
+         }
+       
+      ::= {
+      hotDeployEntry
+             9
+      }
+    
+                      hotDeploysCalendar
+       OBJECT-TYPE
+         SYNTAX
+      
+          IitUTF8String
+       
+         MAX-ACCESS read-write
+         STATUS current
+         
+      DESCRIPTION "Apply this Calendar"
+    
+      ::= {
+      hotDeployEntry
+             10
+      }
+    
+                      hotDeploysDateFrom
+       OBJECT-TYPE
+         SYNTAX
+      
+          IitUTF8String
+       
+         MAX-ACCESS read-write
+         STATUS current
+         
+      DESCRIPTION "From Date"
+    
+         DEFVAL
+         {
+         
+             "now"
+           
+         }
+       
+      ::= {
+      hotDeployEntry
+             11
+      }
+    
+                      hotDeploysDateTo
+       OBJECT-TYPE
+         SYNTAX
+      
+          IitUTF8String
+       
+         MAX-ACCESS read-write
+         STATUS current
+         
+      DESCRIPTION "To Date"
+    
+         DEFVAL
+         {
+         
+             "forever"
+           
+         }
+       
+      ::= {
+      hotDeployEntry
+             12
+      }
+    
+                      hotDeploysMaxRuntime
+       OBJECT-TYPE
+         SYNTAX
+      
+          IitUTF8String
+       
+         MAX-ACCESS read-write
+         STATUS current
+         
+      DESCRIPTION "n('s'|'m'|'h'), e.g. 30m"
+    
+      ::= {
+      hotDeployEntry
+             13
+      }
+    
+                      hotDeploysTimeExpression
+       OBJECT-TYPE
+         SYNTAX
+      
+          IitUTF8String
+       
+         MAX-ACCESS read-write
+         STATUS current
+         
+      DESCRIPTION "('at' HH:mm[:ss][, HH:mm[:ss]...]) | ('start' HH:mm[:ss] 'stop' HH:mm[:ss] 'delay' n('s'|'m'|'h' ['repeat' n])"
+    
+      ::= {
+      hotDeployEntry
+             14
+      }
+    
+                    
+				
+			
+		
+	
+sysJacConf
+      OBJECT IDENTIFIER
+      ::= {
+      sysJacModule
+      3
+      }
+
+      sysJacBasicGroup
+      OBJECT-GROUP
+      OBJECTS
+      {
+      staticContainerStartupDelay,
+      staticContainerEnabled,
+      staticContainerMainClass,
+      staticContainerMainClassArguments,
+      staticContainerMainReturnIsStop,
+      staticContainerShutdownMethodName,
+      staticContainersSystemPropertyValue,
+      staticContainersPathEntryValue,
+      staticStartTime,
+      hotDeployDeployTime,
+      hotDeployStartupDelay,
+      hotDeployMainClass,
+      hotDeployMainClassArguments,
+      hotDeployShutdownMethodName,
+      hotDeploysSystemPropertyValue,
+      hotDeploysLoggingEnabled,
+      hotDeploysCalendar,
+      hotDeploysDateFrom,
+      hotDeploysDateTo,
+      hotDeploysMaxRuntime,
+      hotDeploysTimeExpression
+      }
+      STATUS current
+      DESCRIPTION "Basic objects of sysJacModule."
+      ::= {
+      sysJacConf
+      1
+      }
+      END
+    

@@ -25,6 +25,9 @@ public class SmiSupport {
 	
 	protected SmiManager smiManager;
 	
+	protected boolean loadIntoRepository;
+	protected boolean updateExisting;
+	protected boolean compileLeniently;
 	private String repositoryPath;
 	private String license = null;
 	
@@ -32,6 +35,9 @@ public class SmiSupport {
 
 	public SmiSupport() {
 		this.monitor = new MIBCompilerLogger();
+		loadIntoRepository=true;
+		updateExisting=true;
+		compileLeniently=false;
 	}
 	
 	/**
@@ -76,6 +82,59 @@ public class SmiSupport {
 	}
 	
 	/**
+	 * Indicates if the compiled MIBs are added to the repository
+	 * 
+	 * @return true or false
+	 */
+	public boolean isLoadIntoRepository() {
+		return loadIntoRepository;
+	}
+
+	/**
+	 * Toggles whether compiled MIBs are added to the repository
+	 * 
+	 * @param loadIntoRepository true or false
+	 */
+	public void setLoadIntoRepository(boolean loadIntoRepository) {
+		this.loadIntoRepository = loadIntoRepository;
+	}
+
+	/**
+	 * Indicates if existing compiled MIBs should be updated.
+	 * 
+	 * @return
+	 */
+	public boolean isUpdateExisting() {
+		return updateExisting;
+	}
+
+	/**
+	 * Toggles the updating of compiled MIBs that already exist
+	 * 
+	 * @param updateExisting
+	 */
+	public void setUpdateExisting(boolean updateExisting) {
+		this.updateExisting = updateExisting;
+	}
+
+	/**
+	 * Indicates if MIB compilation syntax strictness
+	 * @return true or false
+	 */
+	public boolean isCompileLeniently() {
+		return compileLeniently;
+	}
+
+	/**
+	 * Toggles the leniency of MIB compilation
+	 * 
+	 * @param compileLeniently
+	 */
+	public void setCompileLeniently(boolean compileLeniently) {
+		this.compileLeniently = compileLeniently;
+	}
+
+	/**
 	 * 
 	 * @return {@link SmiManager}
 	 */
@@ -116,12 +175,9 @@ public class SmiSupport {
 	/**
 	 * Handles the compiling of a single MIB, single zip file with MIBs, or a directory of MIBs.
 	 * 
-	 * TODO: Add support of handling a zip file.??
 	 * @param file {@link File}
 	 */
 	public void compile(File file) {
-		
-		LOG.debug("BEGIN MIB COMPILE");
 
 		// Determine if this a single file or a directory of files
 		if (file.exists() && file.canRead()) {
@@ -136,15 +192,11 @@ public class SmiSupport {
 			}
 			
 			LOG.debug("Compiling " + files.length + " MIB files");
-			//
-			// Compile MIB files without monitor (null), load them directly into
-			// the MIB repository in memory,
-			// update existent MIB modules, and do not ignore syntax errors:
+			// Compile MIB files with the supplied monitor and configuratoin
 			List<CompilationResult> results = null;
 			try {
-				results = smiManager.compile(files,this.monitor,true, true, false);
+				results = smiManager.compile(files,this.monitor,loadIntoRepository, updateExisting, compileLeniently);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			int ok = 0;
@@ -182,8 +234,6 @@ public class SmiSupport {
 		else {
 			LOG.error("Cannot access MIB file '" + file.getName() + "'");
 		}
-		
-		LOG.debug("END MIB COMPILE");
 	}
 	
 	/**
@@ -192,6 +242,6 @@ public class SmiSupport {
 	 * @throws IOException Exception during compiling process
 	 */
 	public void compile(String fname) throws IOException {
-		//super(new File(fname));
+		this.compile(new File(fname));
 	}
 }
