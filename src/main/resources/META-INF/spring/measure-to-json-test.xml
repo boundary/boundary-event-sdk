@@ -1,0 +1,21 @@
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+                   http://www.springframework.org/schema/beans
+                   http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                   http://camel.apache.org/schema/spring
+                   http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+		<dataFormats>
+			<json id="json-jackson" library="Jackson" />
+		</dataFormats>
+		<route id="measure-to-json">
+			<from uri="direct:measure-in" />
+			<marshal ref="json-jackson" />
+			<log loggingLevel="INFO" message="${body}"/>
+			<to uri="mock:json-out" />
+		</route>
+	</camelContext>
+</beans>

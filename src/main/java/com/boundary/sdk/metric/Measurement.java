@@ -19,11 +19,10 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_EMPTY)
-@JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 /**
  * Data structure to add measurement readings to the data store.
  * Upon submitting measurements the data is instantly available to the dashboard for graphing.
@@ -39,20 +38,26 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * @author davidg
  *
  */
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_EMPTY)
 public class Measurement implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	@JsonProperty
+	@JsonInclude
 	private String source;
 	@JsonProperty
+	@JsonInclude
 	private String metric;
 	@JsonProperty
+	@JsonInclude
 	private int measure;
 	@JsonProperty
 	private Date timestamp;
 	
 	public Measurement() {
+		source = "";
+		metric = "";
 	}
 
 	/**
