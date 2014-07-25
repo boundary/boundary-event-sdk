@@ -36,13 +36,20 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 		this.apiKey = "";
 		this.fromUri = "direct:boundary-event";
 	}
+	
+	/**
+	 * Get the Boundary Organization ID to use by default 
+	 * @return {@link String} organization id
+	 */
+	public String getOrgId() {
+		return this.orgId;
+	}
 		
 	/**
 	 * Set the Boundary Organization ID to use by default
 	 * 
 	 * @param orgId Organization Id from the Boundary console.
 	 */
-	
 	public void setOrgId(String orgId) {
 		this.orgId = orgId;
 	}

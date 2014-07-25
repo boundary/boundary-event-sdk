@@ -1,4 +1,4 @@
-package com.boundary.sdk.event;
+package com.boundary.sdk.api;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
@@ -9,6 +9,8 @@ import org.apache.camel.model.dataformat.JsonLibrary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.boundary.sdk.event.BoundaryRouteBuilder;
+
 /**
  * {@link RouteBuilder} for sending events to Boundary. Accepts serialized requests
  * to invoked the Boundary API
@@ -16,22 +18,54 @@ import org.slf4j.LoggerFactory;
  * @author davidg
  *
  */
-public class BoundaryAPIRouteBuilder extends BoundaryRouteBuilder {
+public abstract class BoundaryAPIRouteBuilder extends BoundaryRouteBuilder {
 	
 	private static Logger LOG = LoggerFactory.getLogger(BoundaryAPIRouteBuilder.class);
+	
+	private final String HTTP="http";
+	private final String HTTPS="https";
+	
+	private final String DEFAULT_SCHEME="https";
+	private static final int DEFAULT_PORT = -1;
 
-	private String apiHost;
+	private String scheme;
+	private String user;
+	private String password;
+	private String host;
+	private int port;
 	private String orgId;
-	private String apiKey;
+	private String path;
 
 	/**
 	 * Default constructor
 	 */
 	public BoundaryAPIRouteBuilder() {
-		this.apiHost = "api.boundary.com";
-		this.orgId = "";
-		this.apiKey = "";
-		this.fromUri = "direct:boundary-event";
+		scheme = DEFAULT_SCHEME;
+		port = DEFAULT_PORT;
+	}
+	
+	/**
+	 * Set the scheme of the URL, e.g. http,https,ftp,etc.
+	 * @return {@link String} scheme used by this API
+	 */
+	public String getScheme() {
+		return scheme;
+	}
+
+	/**
+	 * Get the scheme of the URL
+	 * @param scheme {@link String} scheme
+	 */
+	public void setScheme(String scheme) {
+		this.scheme = scheme;
+	}
+
+	/**
+	 * Get the Boundary Organization ID to use by default 
+	 * @return {@link String} organization id
+	 */
+	public String getOrgId() {
+		return this.orgId;
 	}
 		
 	/**
@@ -39,83 +73,149 @@ public class BoundaryAPIRouteBuilder extends BoundaryRouteBuilder {
 	 * 
 	 * @param orgId Organization Id from the Boundary console.
 	 */
-	
 	public void setOrgId(String orgId) {
 		this.orgId = orgId;
 	}
 	
 	/**
-	 * Set the Boundary authentication key
+	 * Set the user id
 	 * 
-	 * @param apiKey API key from the Boundary Console
+	 * @param user {@link String} user id
 	 */
-	public void setApiKey(String apiKey) {
-		this.apiKey = apiKey;
+	public void setUser(String user) {
+		this.user = user;
 	}
 	
 	/**
-	 * Current value of the API key
+	 * Get the user id
 	 * 
 	 * @return {@link String}
 	 */
-	public String getApiKey() {
-		return this.apiKey;
+	public String getUser() {
+		return this.user;
 	}
 		
 	/**
-	 * Set the host to use for sending Boundary API requests
+	 * Set the host to use for sending API requests
 	 * 
-	 * @param apiHost Host where the Boundary API is running
+	 * @param host hostname
 	 */
-	public void setApiHost(String apiHost) {
-		this.apiHost = apiHost;
+	public void setHost(String host) {
+		this.host = host;
 	}
 	
 	/**
-	 * Return the current Boundary API host
+	 * Set the password
+	 * @return {@link String} password
+	 */
+	public String getPassword() {
+		return password;
+	}
+
+	/**
+	 * Get the password
+	 * @param password {@link String} password
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	/**
+	 * Get the port
+	 * @return {@link int}
+	 */
+	public int getPort() {
+		return port;
+	}
+
+	/**
+	 * Set the port
+	 * @param port {@link int} port
+	 */
+	public void setPort(int port) {
+		this.port = port;
+	}
+
+	/**
+	 * Get the host to use for sending API requests
 	 * 
 	 * @return {@link String}
 	 */
-	public String getApiHost() {
-		return this.apiHost;
+	public String getHost() {
+		return this.host;
 	}
-		
 	
 	/**
-	 * Configures the Camel route that receives {@link RawEvent}
-	 * and then sends to the Boundary API
+	 * Returns the URL for the API call
+	 * @return {@link String}
+	 */
+	public String getUrl() {
+		StringBuffer sb = new StringBuffer();
+		sb.append(HTTPS);
+		sb.append("://");
+		// User and password are optional
+//		if (getUser() != null || getPassword() != null) {
+//			sb.append(getUser() == null ? "" : getUser());
+//			sb.append(":");
+//			sb.append(getPassword());
+//			sb.append("@");
+//		}
+		sb.append(getHost());
+		sb.append(getPort() == DEFAULT_PORT ? "" : ":" + getPort());
+		sb.append("/");
+		sb.append(getPath() == null ? "" : getPath());
+
+		return sb.toString();
+	}
+	/**
+	 * Configure the API end point
 	 * 
+	 */
+	protected void setConfiguration() {
+		
+		LOG.info("SCHEME: {}",getScheme());
+
+		
+		switch(getScheme()) {
+		case "https":
+			// Configure our HTTP connection to use BASIC authentication
+			HttpConfiguration config = new HttpConfiguration();
+			config.setAuthMethod(AuthMethod.Basic);
+			LOG.info("USER: {}, PASSWORD: {}",getUser(),getPassword());
+			config.setAuthUsername(getUser());
+			config.setAuthPassword(getPassword());
+			HttpComponent http = this.getContext().getComponent("https",HttpComponent.class);
+			http.setHttpConfiguration(config);
+			break;
+		case "http":
+			assert false;
+			break;
+		default:
+			assert false;
+		}
+
+	}
+	
+	/**
+	 * Get path
+	 * @return path {@link String}
+	 */
+	public String getPath() {
+		return this.path;
+	}
+	
+	/**
+	 * Set path
+	 * @param path
+	 */
+	public void setPath(String path) {
+		this.path  = path;
+	}
+
+	
+	/**
+	 * Child classes are required to override
 	 */
 	@Override
-	public void configure() {
-		
-		// Create the URL used to send events
-		String url = "https://" + apiHost + "/" + orgId + "/" + "events";
-		
-		LOG.info("boundary event api url: " + url);
-		
-		// Configure our HTTP connection to use BASIC authentication
-		HttpConfiguration config = new HttpConfiguration();
-		config.setAuthMethod(AuthMethod.Basic);
-		config.setAuthUsername(this.apiKey);
-		config.setAuthPassword("");
-		
-		HttpComponent http = this.getContext().getComponent("https",HttpComponent.class);
-		http.setHttpConfiguration(config);
-		
-		from(fromUri)
-			.startupOrder(startUpOrder)
-			.routeId(routeId)
-			.unmarshal().serialization()
-			.marshal().json(JsonLibrary.Jackson)
-			.to("log:com.boundary.sdk.BoundaryEventRoute?level=DEBUG&showBody=true")
-			.setHeader(Exchange.ACCEPT_CONTENT_TYPE, constant("application/json"))
-			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
-			.setHeader(Exchange.HTTP_METHOD, constant("POST"))
-			//.setHeader(name, expression)
-			.to("log:com.boundary.sdk.event.BoundaryEventRouteBuilder?level=DEBUG&groupInterval=60000&groupDelay=60000&groupActiveOnly=false")
-			.to(url.toString())
-			.to("log:com.boundary.sdk.event.BoundaryEventRouteBuilder?level=INFO&showHeaders=true&multiline=true")
-			;
-	}
+	public abstract void configure();
 }
