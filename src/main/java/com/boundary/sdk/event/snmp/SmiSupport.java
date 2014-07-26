@@ -1,3 +1,16 @@
+// Copyright 2014 Boundary, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 package com.boundary.sdk.event.snmp;
 
 import java.io.File;
@@ -15,9 +28,6 @@ import com.snmp4j.smi.CompilationMonitor;
 
 /**
  * Provides support SMI (Structured Management Information) for decoding OIDs.
- * 
- * @author davidg
- *
  */
 public class SmiSupport {
 	
@@ -84,7 +94,7 @@ public class SmiSupport {
 	/**
 	 * Indicates if the compiled MIBs are added to the repository
 	 * 
-	 * @return true or false
+	 * @return {@link boolean} true or false
 	 */
 	public boolean isLoadIntoRepository() {
 		return loadIntoRepository;
@@ -102,7 +112,7 @@ public class SmiSupport {
 	/**
 	 * Indicates if existing compiled MIBs should be updated.
 	 * 
-	 * @return
+	 * @return {@link boolean} true or false
 	 */
 	public boolean isUpdateExisting() {
 		return updateExisting;
@@ -111,7 +121,7 @@ public class SmiSupport {
 	/**
 	 * Toggles the updating of compiled MIBs that already exist
 	 * 
-	 * @param updateExisting
+	 * @param updateExisting {@link boolean} true or false
 	 */
 	public void setUpdateExisting(boolean updateExisting) {
 		this.updateExisting = updateExisting;
@@ -128,20 +138,23 @@ public class SmiSupport {
 	/**
 	 * Toggles the leniency of MIB compilation
 	 * 
-	 * @param compileLeniently
+	 * @param compileLeniently {@link boolean} true or false
 	 */
 	public void setCompileLeniently(boolean compileLeniently) {
 		this.compileLeniently = compileLeniently;
 	}
 
 	/**
-	 * 
+	 * Returns the internal instance of {@link SmiManager}
 	 * @return {@link SmiManager}
 	 */
 	public SmiManager getSmiManager() {
 		return this.smiManager;
 	}
 	
+	/**
+	 * Initializes the {@link SmiManager} instances used for structed management information (SMI)
+	 */
 	public void initialize() {
 		try {
 			smiManager = new SmiManager(license, new File(repositoryPath));
