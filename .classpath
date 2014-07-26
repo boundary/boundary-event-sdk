@@ -38,7 +38,7 @@
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-tx/3.2.8.RELEASE/spring-tx-3.2.8.RELEASE.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.6/commons-lang-2.6.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/camel/camel-ssh/2.13.1/camel-ssh-2.13.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/mina/mina-core/2.0.7/mina-core-2.0.7.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/mina/mina-core/1.1.7/mina-core-1.1.7.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/sshd/sshd-core/0.10.1/sshd-core-0.10.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/bouncycastle/bcpg-jdk15on/1.49/bcpg-jdk15on-1.49.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/bouncycastle/bcprov-jdk15on/1.49/bcprov-jdk15on-1.49.jar"/>
