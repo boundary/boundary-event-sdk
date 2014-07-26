@@ -45,10 +45,16 @@ public class JsonToNotificationTest extends CamelSpringTestSupport {
 	public void tearDown() throws Exception {
 		super.tearDown();
 	}
+	
+	@Test
+	public void testReadFile() {
+		String resource = "META-INF/json/simple-notification.json";
+		
+	}
 
 	@Test
 	public void test() throws IOException, URISyntaxException {
-		String s = readFile("META-INF/json/simple-notification.json",Charset.defaultCharset());
+		String s = readFile("classpath:json/simple-notification.json",Charset.defaultCharset());
 		ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
 		Notification notification = mapper.readValue(s, Notification.class);
 		System.out.println("notification: " + notification);
