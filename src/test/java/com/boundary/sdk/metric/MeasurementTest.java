@@ -36,8 +36,8 @@ public class MeasurementTest {
 
 	@Test
 	public void testMeasurement() {
-		assertNull("check for null source",measure.getSource());
-		assertNull("check for null metric",measure.getMetric());
+		assertEquals("check for empty source","",measure.getSource());
+		assertEquals("check for empty metric","",measure.getMetric());
 		assertNull("check for null timestamp",measure.getTimestamp());
 		assertEquals("check for 0 value for measure",0,measure.getMeasure());
 	}
@@ -69,7 +69,7 @@ public class MeasurementTest {
 
 	@Test
 	public void testToString() {
-		String s = "{\"source\": \"null\",\"metric\": \"null\",\"measure\": 0}";
+		String s = "{\"source\": \"\",\"metric\": \"\",\"measure\": 0}";
 		assertEquals("check to string",s,measure.toString());
 	}
 }
