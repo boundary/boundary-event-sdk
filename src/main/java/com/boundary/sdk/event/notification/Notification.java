@@ -24,6 +24,10 @@ public class Notification {
     private String filterName;
     private String notificationId;
     
+    public Notification() {
+    	
+    }
+    
 	public Event getEvent() {
 		return event;
 	}
