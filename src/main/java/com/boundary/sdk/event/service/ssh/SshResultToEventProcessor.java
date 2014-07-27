@@ -35,6 +35,7 @@ public class SshResultToEventProcessor implements Processor {
 	public void process(Exchange exchange) throws Exception {
 		Message message = exchange.getIn();
 		
+		// Get our result instances and get the output of the SSH command
 		SshxResult result = message.getBody(SshxResult.class);
 		String output = result.getOutput();
 
@@ -82,6 +83,7 @@ public class SshResultToEventProcessor implements Processor {
 		event.setTitle(serviceName + " - " + serviceTest.getName());
 
 		// Set Severity, Status, and Message of the event based on the matching of expected output
+		LOG.info("output: {}, expectedOutput: {}",output,expectedOutput);
 		if (output.matches(expectedOutput)) {
 			event.setSeverity(Severity.INFO);
 			event.setStatus(Status.CLOSED);
@@ -102,21 +104,21 @@ public class SshResultToEventProcessor implements Processor {
 		message.setBody(event);
 	}
 	
-	private void sshStatusToEvent(ServiceTest<SshxConfiguration,SshxServiceModel> serviceTest,SshxResult result,RawEvent event) {
-
-	}
+//	private void sshStatusToEvent(ServiceTest<SshxConfiguration,SshxServiceModel> serviceTest,SshxResult result,RawEvent event) {
+//
+//	}
 
 	
-	private String getOutputString(ByteArrayInputStream inputStream) {
-		StringBuffer sb = new StringBuffer();
-		List<String> lines = getOutputToList(inputStream);
-		
-		for (String line : lines) {
-			sb.append(line);
-		}
-		
-		return sb.toString();
-	}
+//	private String getOutputString(ByteArrayInputStream inputStream) {
+//		StringBuffer sb = new StringBuffer();
+//		List<String> lines = getOutputToList(inputStream);
+//		
+//		for (String line : lines) {
+//			sb.append(line);
+//		}
+//		
+//		return sb.toString();
+//	}
 	
 	private List<String> getOutputToList(ByteArrayInputStream inputStream) {
 		List<String> lines = new ArrayList<String>();
