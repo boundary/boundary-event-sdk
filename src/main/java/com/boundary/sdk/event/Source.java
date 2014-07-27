@@ -1,6 +1,16 @@
-/**
- * 
- */
+// Copyright 2014 Boundary, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 package com.boundary.sdk.event;
 
 import java.io.Serializable;
@@ -32,13 +42,12 @@ public class Source implements Serializable {
 	@JsonProperty
 	private String name;
 	@JsonProperty
-	private LinkedHashMap<String,Object> properties;
+	private Map<String,Object> properties;
 
 	/**
 	 * Default constructor
 	 */
 	public Source() {
-		this("","");
 	}
 	
 	/**
@@ -48,7 +57,8 @@ public class Source implements Serializable {
 	 * @param type {@link String} Source type
 	 */
 	public Source(String ref, String type) {
-		this(ref,type,"");
+		setRef(ref);
+		setType(type);
 	}
 	
 	/**
@@ -59,7 +69,9 @@ public class Source implements Serializable {
 	 * @param name {@link String} Source name
 	 */
 	public Source(String ref,String type,String name) {
-		this(ref,type,name,new HashMap<String,Object>());
+		setRef(ref);
+		setType(type);
+		setName(name);
 	}
 
 	/**
@@ -71,10 +83,10 @@ public class Source implements Serializable {
 	 * @param properties {@link String} Source properties
 	 */
 	public Source(String ref, String type, String name, Map<String,Object> properties) {
-//		this.ref = ref;
-//		this.type = type;
-//		this.name = name;
-//		this.properties = properties;
+		setRef(ref);
+		setType(type);
+		setName(name);
+		setProperties(properties);
 	}
 	
 	/**
@@ -157,7 +169,7 @@ public class Source implements Serializable {
 	 * @param properties {@link String} Source properties
 	 * @return {@link Source}
 	 */
-	public Source setProperties(LinkedHashMap<String,Object> properties) {
+	public Source setProperties(Map<String,Object> properties) {
 		if (properties == null) {
 			initializeProperties();
 		}
