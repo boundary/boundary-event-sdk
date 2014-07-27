@@ -13,17 +13,10 @@
 // limitations under the License.
 package com.boundary.sdk.event.notification;
 
-import static org.junit.Assert.*;
-
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,67 +26,31 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.apache.camel.EndpointInject;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.component.mock.MockEndpoint;
-import org.apache.camel.test.junit4.CamelTestSupport;
 import org.apache.camel.test.spring.CamelSpringTestSupport;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.boundary.sdk.event.Severity;
 import com.boundary.sdk.event.Source;
 import com.boundary.sdk.event.Status;
+import static com.boundary.sdk.event.notification.NotificationTestUtil.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-/*
- * <code>
-{
-    "event": {
-        "fingerprint": "cM7tcSWntNfGDDQcvfS6csLNKyQ=",
-        "fingerprintFields": [
-            "generator",
-            "@title"
-        ],
-        "firstSeenAt": "2014-07-17T16:54:05.968Z",
-        "id": 323515771,
-        "lastSeenAt": "2014-07-17T16:54:05.968Z",
-        "lastUpdatedAt": "2014-07-17T16:54:05.986Z",
-        "message": "",
-        "organizationId": "DkQ2uOYtw0DyII696fpBUzIUMfs",
-        "properties": {
-            "generator": "Boundary Event Console",
-            "links": []
-        },
-        "severity": "CRITICAL",
-        "source": {
-            "name": "Lonesome no More, Inc.",
-            "ref": "DkQ2uOYtw0DyII696fpBUzIUMfs",
-            "type": "organization"
-        },
-        "status": "OPEN",
-        "timesSeen": 1,
-        "title": "Critical Test Event"
-    },
-    "filterId": "e3c045ec-8028-48ce-9373-93e5b01c690c",
-    "filterName": "Pester Michael about Critical events",
-    "notificationId": "4ba705f6-690c-4877-b041-791b84e1e032"
-}
- * </code>
+/**
+ * 
+ *
  */
 public class JsonToNotificationTest extends CamelSpringTestSupport {
-	
-	private final static String NOTIFICATION_BASIC_JSON="src/test/resources/META-INF/json/simple-notification.json";
-	private final static String NOTIFICATION_JSON="src/test/resources/META-INF/json/notification.json";
-	
+		
 	
     @Produce(uri = "direct:json-in")
     private ProducerTemplate in;
