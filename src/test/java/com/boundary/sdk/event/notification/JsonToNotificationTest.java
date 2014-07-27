@@ -68,19 +68,6 @@ public class JsonToNotificationTest extends CamelSpringTestSupport {
 		super.tearDown();
 	}
 	
-	/**
-	 * Helper function for reading JSON examples
-	 * 
-	 * @param path Location of the file
-	 * @param encoding Encoding used to read file
-	 * @return {@String} Contents of file
-	 * @throws IOException
-	 */
-	public String readFile(String path, Charset encoding) throws IOException {
-		byte[] encoded = Files.readAllBytes(Paths.get(path));
-		return new String(encoded, encoding);
-	}
-	
 	@Test
 	public void testReadFile() throws IOException {
 		String resource = readFile(NOTIFICATION_BASIC_JSON,Charset.defaultCharset());
