@@ -152,4 +152,15 @@ public class Event {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
+	@Override
+	public String toString() {
+		return "Event [fingerprint=" + fingerprint + ", fingerprintFields="
+				+ fingerprintFields + ", firstSeenAt=" + firstSeenAt + ", id="
+				+ id + ", lastSeenAt=" + lastSeenAt + ", lastUpdatedAt="
+				+ lastUpdatedAt + ", message=" + message + ", organizationId="
+				+ organizationId + ", properties=" + properties + ", severity="
+				+ severity + ", source=" + source + ", status=" + status
+				+ ", timesSeen=" + timesSeen + ", title=" + title + "]";
+	}
 }
