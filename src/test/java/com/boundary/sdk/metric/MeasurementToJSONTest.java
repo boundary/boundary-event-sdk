@@ -10,15 +10,10 @@ import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.spring.CamelSpringTestSupport;
-import org.apache.camel.component.mock.MockEndpoint;
 import org.junit.Test;
-import org.slf4j.Logger;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.boundary.sdk.event.RawEvent;
-
-@SuppressWarnings("deprecation")
 public class MeasurementToJSONTest extends CamelSpringTestSupport {
 	
 	private final String DEFAULT_JSON="{\"source\":\"\",\"metric\":\"\",\"measure\":0}";
