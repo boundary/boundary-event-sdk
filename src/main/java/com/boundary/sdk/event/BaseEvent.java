@@ -2,6 +2,7 @@ package com.boundary.sdk.event;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,7 +81,7 @@ public class BaseEvent {
 	 * @param prop {@link java.util.LinkedHashMap} that contains the {@link String}s to truncate.
 	 * @return {@link java.util.LinkedHashMap} with key {@link String} and value {@link Object}
 	 */
-	public static LinkedHashMap<String,Object> truncateToMaximumLength(LinkedHashMap<String,Object> prop) {
+	public static LinkedHashMap<String,Object> truncateToMaximumLength(Map<String,Object> prop) {
 		LinkedHashMap<String,Object> truncatedProp = new LinkedHashMap<String,Object>(prop.size());
 		
 		for (String key : prop.keySet()) {
