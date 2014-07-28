@@ -25,6 +25,11 @@
         <fileMode>0744</fileMode>
       </file>
       <file>
+        <source>src/main/resources/META-INF/spring/webhook-application.xml</source>
+        <outputDirectory>etc</outputDirectory>
+        <fileMode>0744</fileMode>
+      </file>
+      <file>
         <source>src/main/resources/log4j.properties</source>
         <outputDirectory>etc</outputDirectory>
         <fileMode>0744</fileMode>
@@ -46,6 +51,11 @@
       </file>
       <file>
         <source>${project.build.scriptSourceDirectory}/bmibc</source>
+        <outputDirectory>bin</outputDirectory>
+        <fileMode>0744</fileMode>
+      </file>
+      <file>
+        <source>${project.build.scriptSourceDirectory}/bwebhookapp</source>
         <outputDirectory>bin</outputDirectory>
         <fileMode>0744</fileMode>
       </file>
