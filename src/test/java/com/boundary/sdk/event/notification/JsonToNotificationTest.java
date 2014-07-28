@@ -157,10 +157,6 @@ public class JsonToNotificationTest extends CamelSpringTestSupport {
 		    assertEquals("status does not match",status,event.getStatus());
 		    assertEquals("timesSeen does not match",1,event.getTimesSeen());
 		    assertEquals("title does not match","Critical Test Event",event.getTitle());
-
-
-	
-		    System.out.println(event);
 		}
 	}
 
