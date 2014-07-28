@@ -23,9 +23,10 @@ limitations under the License.
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
 		<route id="WEBHOOK-TEST">
 			<from uri="jetty:http://0.0.0.0:8127/notification" />
-			<log loggingLevel="INFO" message="headers ${headers}"/>
+<!-- 		<log loggingLevel="INFO" message="headers ${headers}"/>
 			<log loggingLevel="INFO" message="body: ${body}"/>
-			<to uri="mock:out" />
+			<log loggingLevel="INFO" message="body: ${body}"/>
+ -->			<to uri="mock:out" />
 		</route>
 	</camelContext>
 </beans>
