@@ -24,10 +24,21 @@ limitations under the License.
 		<property name="routeId" value="EVENT-WEBHOOK"/>
 		<property name="startUpOrder" value="100"/>
 		<property name="fromUri" value="jetty:http://0.0.0.0:8127/notification" />
-		<property name="toUri" value="stream:out"/>
+		<property name="toUri" value="direct:to-json"/>
     </bean>
 
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+	
 		<routeBuilder ref="webhook-route-builder"/>
+		
+		<dataFormats>
+			<json id="jackson" library="Jackson" unmarshalTypeName="com.boundary.sdk.event.notification.Notification"/>
+		</dataFormats>
+
+		<route id="CONVERT-TO-JSON">
+			<from uri="direct:to-json"/>
+			<marshal ref="jackson"/>
+			<to uri="log:WEBHOOK-NOTIFICATION?showAll=true&amp;multiline=true"/>
+		</route>
 	</camelContext>
 </beans>
