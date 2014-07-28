@@ -15,10 +15,10 @@ package com.boundary.sdk.event.service.url;
 
 import com.boundary.camel.component.ping.PingConfiguration;
 import com.boundary.camel.component.ping.PingResult;
+import com.boundary.camel.component.url.UrlConfiguration;
 import com.boundary.sdk.event.BoundaryRouteBuilder;
 import com.boundary.sdk.event.service.ServiceCheckRequest;
 import com.boundary.sdk.event.service.ServiceTest;
-
 
 import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
 

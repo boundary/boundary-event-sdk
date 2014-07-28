@@ -14,8 +14,8 @@ import org.springframework.context.support.AbstractApplicationContext;
 
 import com.boundary.camel.component.ping.PingConfiguration;
 import com.boundary.camel.component.port.PortConfiguration;
-import com.boundary.sdk.event.service.db.PingServiceModel;
-import com.boundary.sdk.event.service.db.PortServiceModel;
+import com.boundary.sdk.event.service.ping.PingServiceModel;
+import com.boundary.sdk.event.service.port.PortServiceModel;
 
 public class ServiceCheckRouterTest extends CamelSpringTestSupport {
 

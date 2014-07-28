@@ -64,7 +64,7 @@ public class UrlResultToEventProcessor implements Processor {
 		RawEvent event = new RawEvent();
 
 		// Delegate to member method call to perform the translation
-		portInfoToEvent(serviceTest,result,event);
+		urlResultToEvent(serviceTest,result,event);
 		
 		LOG.debug("RawEvent: " + event);
 
@@ -79,15 +79,15 @@ public class UrlResultToEventProcessor implements Processor {
 	 * @param result {@link PortResult}
 	 * @param event {@link RawEvent}
 	 */
-	private void portInfoToEvent(ServiceTest<PortConfiguration,PortServiceModel> serviceTest,PortResult result, RawEvent event) {
+	private void urlResultToEvent(ServiceTest<UrlConfiguration,UrlServiceModel> serviceTest,UrlResult result, RawEvent event) {
 
 		String hostname = result.getHost();
 		String serviceName = serviceTest.getServiceName();
 		
 		event.getSource().setRef(hostname).setType("host");
 		event.addProperty("hostname",hostname);
-		event.addProperty("port",result.getPort());
-		event.addProperty("port-status",result.getPortStatus());
+		//event.addProperty("url",result.getPort());
+		//event.addProperty("port-status",result.getPortStatus());
 		event.addProperty("time-out", result.getTimeout());
 		event.addProperty("service-test", serviceTest.getName());
 		event.addProperty("service-test-type",serviceTest.getServiceTestType());

@@ -22,8 +22,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.boundary.camel.component.ping.PingConfiguration;
 import com.boundary.camel.component.port.PortConfiguration;
-import com.boundary.sdk.event.service.db.PingServiceModel;
-import com.boundary.sdk.event.service.db.PortServiceModel;
+import com.boundary.sdk.event.service.ping.PingServiceModel;
+import com.boundary.sdk.event.service.port.PortServiceModel;
 
 import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
 

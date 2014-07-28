@@ -17,6 +17,8 @@ import com.boundary.camel.component.ssh.SshxConfiguration;
 import com.boundary.sdk.event.BoundaryEventRouteBuilder;
 import com.boundary.sdk.event.service.ServiceCheckRequest;
 import com.boundary.sdk.event.service.ServiceTest;
+import com.boundary.sdk.event.service.ping.PingServiceModel;
+import com.boundary.sdk.event.service.port.PortServiceModel;
 import com.boundary.sdk.event.service.ssh.SshxServiceModel;
 
 public class ServiceChecksDatabase implements Processor {

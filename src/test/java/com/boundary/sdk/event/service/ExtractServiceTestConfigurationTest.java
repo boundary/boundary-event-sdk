@@ -23,8 +23,8 @@ import com.boundary.camel.component.ping.PingResult;
 import com.boundary.camel.component.port.PortConfiguration;
 import com.boundary.camel.component.port.PortResult;
 import com.boundary.camel.component.port.PortStatus;
-import com.boundary.sdk.event.service.db.PingServiceModel;
-import com.boundary.sdk.event.service.db.PortServiceModel;
+import com.boundary.sdk.event.service.ping.PingServiceModel;
+import com.boundary.sdk.event.service.port.PortServiceModel;
 
 public class ExtractServiceTestConfigurationTest extends CamelTestSupport {
 	

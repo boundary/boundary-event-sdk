@@ -6,8 +6,8 @@ import org.apache.camel.Message;
 import com.boundary.camel.component.ping.PingConfiguration;
 import com.boundary.camel.component.port.PortConfiguration;
 import com.boundary.camel.component.ssh.SshxConfiguration;
-import com.boundary.sdk.event.service.db.PingServiceModel;
-import com.boundary.sdk.event.service.db.PortServiceModel;
+import com.boundary.sdk.event.service.ping.PingServiceModel;
+import com.boundary.sdk.event.service.port.PortServiceModel;
 import com.boundary.sdk.event.service.ssh.SshxServiceModel;
 
 import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
