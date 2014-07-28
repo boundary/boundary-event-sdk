@@ -1,2 +1,24 @@
 #!/bin/bash
-curl -X POST -H "content-type: application/json" -d '{"filterId": "e3c045ec-8028-48ce-9373-93e5b01c690c", "filterName": "Pester Michael about Critical events", "notificationId": "4ba705f6-690c-4877-b041-791b84e1e032" }' 'http://0.0.0.0:8127/notification'
+DATA_FILE_DEV=$BOUNDARY_SDK_HOME/src/test/resources/META-INF/json/notification.json
+DATA_FILE_PROD=$BOUNDARY_SDK_HOME/etc/notification.json
+if [ ! -r "$DATA_FILE_DEV" ]
+then
+  if [ ! -r "$DATA_FILE_PROD" ]
+  then
+    echo "Cannot find notification JSON at $DATA_FILE_DEV or $DATA_FILE_PROD"
+  else
+    DATA_FILE=$DATA_FILE_PROD
+  fi
+else
+  DATA_FILE=$DATA_FILE_DEV
+fi
+
+DATA=$(cat $DATA_FILE)
+OUTPUT=$(curl -s -X POST -H "content-type: application/json" -d "$DATA" 'http://0.0.0.0:8127/notification' $PRETTY_CMD)
+
+# If jq is installed then beautify the output
+type jq > /dev/null
+if [[ $? == 0 ]]
+then
+  echo $OUTPUT | jq '.'
+fi
