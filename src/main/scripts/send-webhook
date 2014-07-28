@@ -1,0 +1,2 @@
+#!/bin/bash
+curl -X POST -H "content-type: application/json" -d '{"filterId": "e3c045ec-8028-48ce-9373-93e5b01c690c", "filterName": "Pester Michael about Critical events", "notificationId": "4ba705f6-690c-4877-b041-791b84e1e032" }' 'http://0.0.0.0:8127/notification'
