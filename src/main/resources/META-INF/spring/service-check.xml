@@ -46,6 +46,7 @@
 	<bean id="ping-to-event" class="com.boundary.sdk.event.service.ping.PingInfoToEventProcessor"/>
 	<bean id="port-to-event" class="com.boundary.sdk.event.service.port.PortInfoToEventProcessor"/>
 	<bean id="ssh-to-event" class="com.boundary.sdk.event.service.ssh.SshResultToEventProcessor"/>
+	<bean id="url-to-event" class="com.boundary.sdk.event.service.ssh.UrlResultToEventProcessor"/>
 	
 	
 	<!-- Plumgrid - plumgrid SSH test -->
@@ -234,14 +235,14 @@
 		<route id="URL-CHECK" startupOrder="180">
 			<from uri="seda:url-check?concurrentConsumers=10"/>
 			<log loggingLevel="DEBUG" message="${headers}"/>
-			<!-- <bean ref="configurationProcessor" method="extractSshxConfiguration"/> -->
+			<bean ref="configurationProcessor" method="extractUrlConfiguration"/>
 			<!-- Work around for now add information that is ignored at runtime -->
-			<!-- <to uri="sshx://joe:dirt@loser.com"/>
+			<to uri="url:http//localhost"/>
 			<bean ref="ssh-to-event"/>
 			<marshal>
 				<serialization/>
 			</marshal>
-			<to ref="boundary-event"/> -->
+			<to ref="boundary-event"/>
 		</route>
 	</camelContext>
 	
