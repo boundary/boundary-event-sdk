@@ -25,4 +25,8 @@ public class entry {
 	public void setValue(String value) {
 		this.value = value;
 	}
+	@Override
+	public String toString() {
+		return "entry [oid=" + oid + ", value=" + value + "]";
+	}
 }
