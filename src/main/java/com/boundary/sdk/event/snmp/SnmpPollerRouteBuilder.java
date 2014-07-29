@@ -2,30 +2,32 @@ package com.boundary.sdk.event.snmp;
 
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.converter.jaxb.JaxbDataFormat;
+import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.spi.DataFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.snmp4j.mp.SnmpConstants;
+
 import static org.apache.camel.LoggingLevel.*;
+
 
 public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 	
+	public final static String BOUNDARY_HOSTNAME="boundary.hostname";
 	
-//	<from uri="snmp:192.168.178.100:161?protocol=udp&amp;type=POLL&amp;oids=1.3.6.1.2.1.1.5.0&amp;snmpVersion=1&amp;snmpCommunity=piston"/>
-//	<log message="${body}" />
-//	<to uri="mock:snmp-get-out"/>
-//	<to uri="stream:out" />
 	private static Logger LOG = LoggerFactory.getLogger(SnmpPollerRouteBuilder.class);
 	
-	SnmpPollerRouteBuilder() {
-		communityRead="public";
-	}
-	
-	
 	private String communityRead;
-	
 	private String oids;
+	private int delay;
 	
+	public SnmpPollerRouteBuilder() {
+		communityRead="piston";
+		delay = 5;
+		setPort(161);
+		setToUri("seda:metric-translate");
+	}
+
 	public void setOids(String oids) {
 		this.oids = oids;
 	}
@@ -41,6 +43,14 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 	}
 	
 
+	public int getDelay() {
+		return delay;
+	}
+
+	public void setDelay(int delay) {
+		this.delay = delay;
+	}
+
 	private String getUri() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("snmp:");
@@ -52,6 +62,7 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 		sb.append("&oids=" + getOids());
 		sb.append("&snmpVersion=" + SnmpConstants.version2c);
 		sb.append("&snmpCommunity=" + getCommunityRead());
+		sb.append("&delay="+getDelay());
 		LOG.debug("from: " + sb.toString());
 		return sb.toString();
 	}
@@ -63,14 +74,18 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 		DataFormat jaxb = new JaxbDataFormat("com.boundary.sdk.event.snmp");
 		String uri = getUri();
 		
-		from(uri)
-		.startupOrder(startUpOrder)
+		RouteDefinition routeDefinition = from(uri)
 		.routeId(this.routeId)
+		.setHeader(BOUNDARY_HOSTNAME, constant(this.getBindAddress()))
 		.log(DEBUG,"body: ${body}")
 		.to(this.getToUri())
 		.unmarshal(jaxb)
 		.to("mock:snmp-poller-out");
-		;
+		
+		// Setup startup order only if it had been configured
+		if (this.getStartUpOrder() != 0) {
+			routeDefinition.startupOrder(this.getStartUpOrder());
+		}
 	}
 	
 	public static void main(String [] args) {
