@@ -1,8 +1,12 @@
 package com.boundary.sdk.event.snmp;
 
+import org.apache.camel.LoggingLevel;
+import org.apache.camel.converter.jaxb.JaxbDataFormat;
+import org.apache.camel.spi.DataFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.snmp4j.mp.SnmpConstants;
+import static org.apache.camel.LoggingLevel.*;
 
 public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 	
@@ -56,13 +60,15 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 	 */
 	@Override
 	public void configure() {
+		DataFormat jaxb = new JaxbDataFormat("com.boundary.sdk.event.snmp");
 		String uri = getUri();
 		
 		from(uri)
 		.startupOrder(startUpOrder)
 		.routeId(this.routeId)
-		.log("body: ${body}")
+		.log(DEBUG,"body: ${body}")
 		.to(this.getToUri())
+		.unmarshal(jaxb)
 		.to("mock:snmp-poller-out");
 		;
 	}
