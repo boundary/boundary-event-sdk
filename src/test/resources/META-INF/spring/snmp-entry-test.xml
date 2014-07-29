@@ -46,7 +46,7 @@ limitations under the License.
         	<to uri="stream:out"/>
         </route> -->
         
-        <route id="TRANSFORM-SNMP-XML" startupOrder="300">
+        <route id="TRANSFORM-SNMP-XML">
         	<from uri="direct:snmp-in"/>
         	<!-- <convertBodyTo type="java.lang.String"/> -->
         	<log loggingLevel="INFO" message="${body}"/>
@@ -55,6 +55,25 @@ limitations under the License.
         	<to uri="mock:snmp-out"/>
         	<to uri="stream:out"/>
         </route>
+        
+        <route id="SPLIT-SNMP-XML">
+        	<from uri="direct:split-in"/>
+        	<log loggingLevel="INFO" message="${body}"/>
+        	<unmarshal ref="jaxb"/>
+        	<log loggingLevel="INFO" message="${body.getClass.toString}"/>
+        	<split>
+        		<simple>${body.getEntries}</simple>
+        		<to uri="direct:entry"/>
+        	</split>
+        </route>
+        
+        <route id="ENTRY-SNMP-XML">
+        	<from uri="direct:entry"/>
+        	<log loggingLevel="INFO" message="${body}"/>
+        	<to uri="mock:split-out"/>     	
+        	<to uri="stream:out"/>
+        </route>
+        
         
 	</camelContext>
 </beans>

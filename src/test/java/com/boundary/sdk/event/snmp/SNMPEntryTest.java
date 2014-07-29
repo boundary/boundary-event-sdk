@@ -39,11 +39,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SNMPEntryTest extends CamelSpringTestSupport  {
 	
-//    @Produce(uri = "direct:in")
-//    private ProducerTemplate in;
-//	
-//    @EndpointInject(uri = "mock:out")
-//    private MockEndpoint out;
+    @Produce(uri = "direct:split-in")
+    private ProducerTemplate in;
+	
+    @EndpointInject(uri = "mock:split-out")
+    private MockEndpoint out;
 
     @Produce(uri = "direct:snmp-in")
     private ProducerTemplate snmp_in;
@@ -109,6 +109,21 @@ public class SNMPEntryTest extends CamelSpringTestSupport  {
 			assertNotNull("Body is null",exchange.getIn().getBody());
 		}
 	}
+	
+	@Test
+	public void testSplit() throws InterruptedException, IOException {
+		out.setMinimumExpectedMessageCount(2);
+		
+		String s = readFile("src/test/resources/snmp/snmp-entry.xml",Charset.defaultCharset());
+		in.sendBody(s);
+		out.assertIsSatisfied();
+		
+		List<Exchange> exchanges = out.getExchanges();
+		for (Exchange exchange : exchanges) {
+			assertNotNull("Body is null",exchange.getIn().getBody());
+		}
+	}
+
 
 	@Override
 	protected AbstractApplicationContext createApplicationContext() {
