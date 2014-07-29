@@ -19,6 +19,14 @@ limitations under the License.
                    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
                    http://camel.apache.org/schema/spring
                    http://camel.apache.org/schema/spring/camel-spring.xsd">
+                   
+
+	<bean id="syslog-route" class="com.boundary.sdk.event.exec.RunExec">
+		<property name="routeId" value="SYSLOG"/>
+		<property name="startUpOrder" value="120"/>
+		<property name="fromUri" value="seda:exec-bean-in?concurrentConsumers=10"/>
+		<property name="toUri" value="direct:exec-bean"/>
+	</bean>
 
 	<camelContext id="exec-test" xmlns="http://camel.apache.org/schema/spring">				
 		<route id="exec-route">
