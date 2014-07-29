@@ -35,7 +35,8 @@ LOG_ERR=${BOUNDARY_SDK_LOG_DIR}/beventd.err.log
 # Redirect standard error into standard out
 LOG_ERR="&1"
 
-if [ -z "$BOUNDARY_SDK_CONFIG_FILE" ]
+# If the BOUNDARY_SDK_CONFIG_FILE is set this overrides the default
+if [ ! -z "$BOUNDARY_SDK_CONFIG_FILE" ]
 then
   CONFIGURATION_FILE="$BOUNDARY_SDK_CONFIG_FILE"
 else
