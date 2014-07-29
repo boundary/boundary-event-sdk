@@ -39,12 +39,17 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SNMPEntryTest extends CamelSpringTestSupport  {
 	
-    @Produce(uri = "direct:in")
-    private ProducerTemplate in;
-	
-    @EndpointInject(uri = "mock:out")
-    private MockEndpoint out;
+//    @Produce(uri = "direct:in")
+//    private ProducerTemplate in;
+//	
+//    @EndpointInject(uri = "mock:out")
+//    private MockEndpoint out;
 
+    @Produce(uri = "direct:snmp-in")
+    private ProducerTemplate snmp_in;
+	
+    @EndpointInject(uri = "mock:snmp-out")
+    private MockEndpoint snmp_out;
 
 	/**
 	 * @throws java.lang.Exception
@@ -76,20 +81,35 @@ public class SNMPEntryTest extends CamelSpringTestSupport  {
 		super.tearDown();
 	}
 
+//	@Ignore
+//	@Test
+//	public void testSNMPEntry() throws InterruptedException, IOException {
+//		out.setMinimumExpectedMessageCount(1);
+//		
+//		String s = readFile("src/test/resources/snmp/snmp-entry.xml",Charset.defaultCharset());
+//		in.sendBody(s);
+//		out.assertIsSatisfied();
+//		
+//		List<Exchange> exchanges = out.getExchanges();
+//		for (Exchange exchange : exchanges) {
+//			assertNotNull("Body is null",exchange.getIn().getBody());
+//		}
+//	}
+
 	@Test
-	public void testSNMPEntry() throws InterruptedException, IOException {
-		out.setMinimumExpectedMessageCount(1);
+	public void testSNMP() throws InterruptedException, IOException {
+		snmp_out.setMinimumExpectedMessageCount(1);
 		
 		String s = readFile("src/test/resources/snmp/snmp-entry.xml",Charset.defaultCharset());
-		in.sendBody(s);
-		out.assertIsSatisfied();
+		snmp_in.sendBody(s);
+		snmp_out.assertIsSatisfied();
 		
-		List<Exchange> exchanges = out.getExchanges();
+		List<Exchange> exchanges = snmp_out.getExchanges();
 		for (Exchange exchange : exchanges) {
 			assertNotNull("Body is null",exchange.getIn().getBody());
 		}
 	}
-	
+
 	@Override
 	protected AbstractApplicationContext createApplicationContext() {
 		return new ClassPathXmlApplicationContext("META-INF/spring/snmp-entry-test.xml");

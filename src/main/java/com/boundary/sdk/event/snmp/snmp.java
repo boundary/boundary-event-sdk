@@ -1,16 +1,21 @@
 package com.boundary.sdk.event.snmp;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.*;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class snmp {
-    List<entry> entries;
 
-    @XmlElement(name="test-data")
+    @XmlElements({@XmlElement(name="entry",type=entry.class)})
+    public List<entry> entry = new ArrayList<entry>();
+
     public List<entry> getEntries() {
-        return entries;
+        return entry;
     }
     public void setEntries(List<entry> entries) {
-        this.entries = entries;
+        this.entry = entries;
     }
 }

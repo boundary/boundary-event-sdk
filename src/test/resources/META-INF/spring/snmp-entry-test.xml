@@ -1,0 +1,60 @@
+	<!-- 
+Copyright 2014 Boundary, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+                   http://www.springframework.org/schema/beans
+                   http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                   http://camel.apache.org/schema/spring
+                   http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">				
+
+        <dataFormats>
+            <jaxb id="jaxb" contextPath="com.boundary.sdk.event.snmp"/>
+        </dataFormats>
+
+        <!-- <route id="SPLIT-XML" startupOrder="200">
+            <from uri="direct:in"/>
+            <log loggingLevel="INFO" message="${body}"/>
+            <split streaming="true">
+            	<xpath>/snmp/entry</xpath>
+            	<tokenize token="entry" xml="true"/>
+            	<log loggingLevel="INFO" message="${body}"/>
+            	<to uri ="direct:jaxb"/>
+            </split >
+        </route>
+        <route id="TRANSFORM-ENTRY-XML" startupOrder="100">
+        	<from uri="direct:jaxb"/>
+        	<convertBodyTo type="java.lang.String"/>
+        	<log loggingLevel="INFO" message="${body}"/>
+        	<unmarshal ref="jaxb"/>
+        	<log loggingLevel="INFO" message="${body.getClass.toString}"/>
+        	<to uri="mock:out"/>
+        	<to uri="stream:out"/>
+        </route> -->
+        
+        <route id="TRANSFORM-SNMP-XML" startupOrder="300">
+        	<from uri="direct:snmp-in"/>
+        	<!-- <convertBodyTo type="java.lang.String"/> -->
+        	<log loggingLevel="INFO" message="${body}"/>
+        	<unmarshal ref="jaxb"/>
+        	<log loggingLevel="INFO" message="${body.getClass.toString}"/>
+        	<to uri="mock:snmp-out"/>
+        	<to uri="stream:out"/>
+        </route>
+        
+	</camelContext>
+</beans>

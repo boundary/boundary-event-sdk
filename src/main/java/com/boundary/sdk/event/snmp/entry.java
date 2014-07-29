@@ -2,15 +2,15 @@ package com.boundary.sdk.event.snmp;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name="entry")
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "entry", propOrder = {"oid","value"})
 public class entry {
-	@XmlElement
+	@XmlElement(name="oid")
     private String oid;
-	@XmlElement
+	@XmlElement(name="value")
     private String value;
 
 	public String getOid() {
