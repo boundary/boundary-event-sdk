@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 @XmlRootElement(name="entry")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SNMPEntry {
+public class entry {
 	@XmlElement
     private String oid;
 	@XmlElement
