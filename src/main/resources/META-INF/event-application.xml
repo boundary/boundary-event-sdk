@@ -46,7 +46,7 @@
 		<property name="toUri" value="seda:boundary-event"/>
 	</bean>
 		
-        <!-- This route recieves v1 and v2c SNMP traps -->
+    <!-- This route receives v1 and v2c SNMP traps -->
 	<bean id="snmp-route" class="com.boundary.sdk.event.snmp.SNMPRouteBuilder">
 		<property name="routeId" value="SNMP"/>
 		<property name="startUpOrder" value="130"/>
@@ -62,11 +62,18 @@
 	  -->
 	<camelContext xmlns="http://camel.apache.org/schema/spring">
 	
-                <routeBuilder ref="boundary-event-route"/>
+        <routeBuilder ref="boundary-event-route"/>
 		<routeBuilder ref="syslog-route"/>
 		<routeBuilder ref="snmp-route"/>
               
 		<!-- DISABLED <routeBuilder ref="event-queue"/>-->
 		
 	</camelContext>
+	
+	<!-- Service Checks -->
+	<import resource="spring/service-check.xml"/>
+	
+	<!-- SNMP metric polling -->
+	<import resource="spring/snmp-metrics.xml"/>
+	
 </beans>

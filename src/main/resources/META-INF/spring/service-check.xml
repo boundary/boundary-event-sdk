@@ -9,7 +9,7 @@
 <!--     <import resource="services.xml"/> -->
                    
     <!-- Definition of the route that communicates with the Boundary API host -->
-	<bean id="boundary-event-route" class="com.boundary.sdk.event.BoundaryEventRouteBuilder">
+	<bean id="boundary-event-service-route" class="com.boundary.sdk.event.BoundaryEventRouteBuilder">
 	
 		<property name="routeId" value="BOUNDARY-EVENT"/>
 		<!-- This route needs to start first and stop last so all routes
@@ -46,7 +46,7 @@
 	<bean id="ping-to-event" class="com.boundary.sdk.event.service.ping.PingInfoToEventProcessor"/>
 	<bean id="port-to-event" class="com.boundary.sdk.event.service.port.PortInfoToEventProcessor"/>
 	<bean id="ssh-to-event" class="com.boundary.sdk.event.service.ssh.SshResultToEventProcessor"/>
-	<bean id="url-to-event" class="com.boundary.sdk.event.service.ssh.UrlResultToEventProcessor"/>
+	<bean id="url-to-event" class="com.boundary.sdk.event.service.url.UrlResultToEventProcessor"/>
 	
 	
 	<!-- Plumgrid - plumgrid SSH test -->
@@ -75,7 +75,7 @@
 	
 		<propertyPlaceholder id="properties" location="classpath:META-INF/spring/service-check.properties"/>
 	
-		<routeBuilder ref="boundary-event-route"/>
+		<routeBuilder ref="boundary-event-service-route"/>
 	
 		<endpoint id ="plumgrid" uri ="ssh://{{plumgrid.user}}:{{plumgrid.password}}@{{plumgrid.host}}"/>
 		<endpoint id ="port-event-out" uri ="mock:port-event-out"/>
