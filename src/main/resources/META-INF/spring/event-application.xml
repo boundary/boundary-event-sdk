@@ -60,7 +60,7 @@
 	     context which orchestrates the connection of routes, and sending/receiving
 	     of messages between the routes
 	  -->
-	<camelContext xmlns="http://camel.apache.org/schema/spring">
+	<camelContext id="event-adapters" xmlns="http://camel.apache.org/schema/spring">
 	
         <routeBuilder ref="boundary-event-route"/>
 		<routeBuilder ref="syslog-route"/>
@@ -71,9 +71,12 @@
 	</camelContext>
 	
 	<!-- Service Checks -->
-	<import resource="spring/service-check.xml"/>
+	<import resource="service-check.xml"/>
 	
 	<!-- SNMP metric polling -->
-	<import resource="spring/snmp-metrics.xml"/>
+	<import resource="snmp-metrics.xml"/>
+
+	<!-- Web Hook Application-->
+	<import resource="webhook-application.xml"/>
 	
 </beans>

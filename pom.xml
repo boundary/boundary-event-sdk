@@ -154,7 +154,7 @@
 				<version>${camel-version}</version>
 				<artifactId>camel-maven-plugin</artifactId>
 				<configuration>
-					<applicationContextUri>META-INF/event-application.xml</applicationContextUri>
+					<applicationContextUri>META-INF/spring/event-application.xml</applicationContextUri>
 				</configuration>
 			</plugin>
 			<plugin>

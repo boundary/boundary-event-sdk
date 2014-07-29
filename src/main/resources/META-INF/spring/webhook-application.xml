@@ -27,7 +27,7 @@ limitations under the License.
 		<property name="toUri" value="direct:to-json"/>
     </bean>
 
-	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+	<camelContext id="webhook-context" xmlns="http://camel.apache.org/schema/spring">
 	
 		<routeBuilder ref="webhook-route-builder"/>
 		

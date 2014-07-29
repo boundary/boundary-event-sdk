@@ -20,7 +20,17 @@
     </dependencySets>
     <files>
       <file>
-        <source>src/main/resources/META-INF/event-application.xml</source>
+        <source>src/main/resources/META-INF/spring/event-application.xml</source>
+        <outputDirectory>etc</outputDirectory>
+        <fileMode>0744</fileMode>
+      </file>
+      <file>
+        <source>src/main/resources/META-INF/spring/service-check.xml</source>
+        <outputDirectory>etc</outputDirectory>
+        <fileMode>0744</fileMode>
+      </file>
+      <file>
+        <source>src/main/resources/META-INF/spring/snmp-metrics.xml</source>
         <outputDirectory>etc</outputDirectory>
         <fileMode>0744</fileMode>
       </file>
