@@ -23,8 +23,12 @@ import com.boundary.camel.component.ping.PingResult;
 import com.boundary.camel.component.port.PortConfiguration;
 import com.boundary.camel.component.port.PortResult;
 import com.boundary.camel.component.port.PortStatus;
+import com.boundary.camel.component.ssh.SshxConfiguration;
+import com.boundary.camel.component.url.UrlConfiguration;
 import com.boundary.sdk.event.service.ping.PingServiceModel;
 import com.boundary.sdk.event.service.port.PortServiceModel;
+import com.boundary.sdk.event.service.ssh.SshxServiceModel;
+import com.boundary.sdk.event.service.url.UrlServiceModel;
 
 public class ExtractServiceTestConfigurationTest extends CamelTestSupport {
 	
@@ -92,6 +96,7 @@ public class ExtractServiceTestConfigurationTest extends CamelTestSupport {
 		}
 	}
 	
+	
 	@Test
 	public void testGetPingConfiguration() throws InterruptedException {
 
@@ -123,6 +128,72 @@ public class ExtractServiceTestConfigurationTest extends CamelTestSupport {
 			assertEquals("check host",HOST, config.getHost());
 		}
 	}
+	
+	@Test
+	public void testGetSshConfiguration() throws InterruptedException {
+
+		MockEndpoint endPoint = getMockEndpoint("mock:ssh-service-test-out");
+		endPoint.expectedMessageCount(1);
+
+		ServiceCheckRequest request = new ServiceCheckRequest();
+
+		SshxConfiguration configuration = new SshxConfiguration();
+		SshxServiceModel model = new SshxServiceModel();
+		configuration.setHost(HOST);
+		ServiceTest<SshxConfiguration,SshxServiceModel> serviceTest = new ServiceTest<SshxConfiguration,SshxServiceModel>(
+				"ssh", "ssh","localhost", request.getRequestId(), configuration,model);
+
+		Map<String, Object> properties = new HashMap<String, Object>();
+		properties.put(ServiceCheckPropertyNames.SERVICE_CHECK_REQUEST_ID,request.getRequestId());
+		properties.put(ServiceCheckPropertyNames.SERVICE_CHECK_REQUEST_INSTANCE,request);
+		properties.put(ServiceCheckPropertyNames.SERVICE_TEST_INSTANCE,serviceTest);
+		properties.put(ServiceCheckPropertyNames.SERVICE_TEST_NAME,"url");
+
+		template.sendBodyAndHeaders("direct:ssh-service-test-in",serviceTest, properties);
+		
+		endPoint.assertIsSatisfied();
+		
+		List<Exchange> receivedExchanges = endPoint.getReceivedExchanges();
+		for (Exchange e : receivedExchanges) {
+			SshxConfiguration config = e.getIn().getBody(SshxConfiguration.class);
+
+			assertEquals("check host",HOST, config.getHost());
+		}
+	}
+
+
+	@Test
+	public void testGetUrlConfiguration() throws InterruptedException {
+
+		MockEndpoint endPoint = getMockEndpoint("mock:url-service-test-out");
+		endPoint.expectedMessageCount(1);
+
+		ServiceCheckRequest request = new ServiceCheckRequest();
+
+		UrlConfiguration configuration = new UrlConfiguration();
+		configuration.setHost("myhost");
+		UrlServiceModel model = new UrlServiceModel();
+		configuration.setHost(HOST);
+		ServiceTest<UrlConfiguration,UrlServiceModel> serviceTest = new ServiceTest<UrlConfiguration,UrlServiceModel>(
+				"url", "url","localhost", request.getRequestId(), configuration,model);
+
+		Map<String, Object> properties = new HashMap<String, Object>();
+		properties.put(ServiceCheckPropertyNames.SERVICE_CHECK_REQUEST_ID,request.getRequestId());
+		properties.put(ServiceCheckPropertyNames.SERVICE_CHECK_REQUEST_INSTANCE,request);
+		properties.put(ServiceCheckPropertyNames.SERVICE_TEST_INSTANCE,serviceTest);
+		properties.put(ServiceCheckPropertyNames.SERVICE_TEST_NAME,"url");
+
+		template.sendBodyAndHeaders("direct:url-service-test-in",serviceTest, properties);
+		
+		endPoint.assertIsSatisfied();
+		
+		List<Exchange> receivedExchanges = endPoint.getReceivedExchanges();
+		for (Exchange e : receivedExchanges) {
+			UrlConfiguration config = e.getIn().getBody(UrlConfiguration.class);
+
+			assertEquals("check host",HOST, config.getHost());
+		}
+	}
 
 
 	@Override
@@ -144,6 +215,12 @@ public class ExtractServiceTestConfigurationTest extends CamelTestSupport {
 				.log("ServiceTest: ${body}")
 				.bean(new ExtractServiceTestConfiguration(), "extractSshxConfiguration")
 				.to("mock:ssh-service-test-out");
+				
+				from("direct:url-service-test-in")
+				.log("ServiceTest: ${body}")
+				.bean(new ExtractServiceTestConfiguration(), "extractUrlConfiguration")
+				.to("mock:url-service-test-out");
+
 			}
 		};
 	}
