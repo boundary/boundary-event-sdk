@@ -25,26 +25,6 @@ limitations under the License.
         <dataFormats>
             <jaxb id="jaxb" contextPath="com.boundary.sdk.event.snmp"/>
         </dataFormats>
-
-        <!-- <route id="SPLIT-XML" startupOrder="200">
-            <from uri="direct:in"/>
-            <log loggingLevel="INFO" message="${body}"/>
-            <split streaming="true">
-            	<xpath>/snmp/entry</xpath>
-            	<tokenize token="entry" xml="true"/>
-            	<log loggingLevel="INFO" message="${body}"/>
-            	<to uri ="direct:jaxb"/>
-            </split >
-        </route>
-        <route id="TRANSFORM-ENTRY-XML" startupOrder="100">
-        	<from uri="direct:jaxb"/>
-        	<convertBodyTo type="java.lang.String"/>
-        	<log loggingLevel="INFO" message="${body}"/>
-        	<unmarshal ref="jaxb"/>
-        	<log loggingLevel="INFO" message="${body.getClass.toString}"/>
-        	<to uri="mock:out"/>
-        	<to uri="stream:out"/>
-        </route> -->
         
         <route id="TRANSFORM-SNMP-XML">
         	<from uri="direct:snmp-in"/>
@@ -55,21 +35,32 @@ limitations under the License.
         	<to uri="mock:snmp-out"/>
         	<to uri="stream:out"/>
         </route>
-        
-        <route id="SPLIT-SNMP-XML">
+        <route id="TRANSFORM-SNMP-XML-1">
         	<from uri="direct:split-in"/>
-        	<log loggingLevel="INFO" message="${body}"/>
         	<unmarshal ref="jaxb"/>
+        	<log loggingLevel="INFO" message="${body}"/>
         	<log loggingLevel="INFO" message="${body.getClass.toString}"/>
-        	<split>
+        	<marshal><serialization/></marshal>
+        	<to uri="direct:bridge"/>
+         </route>
+         <route id="SPLIT-SNMP-XML">
+         	<from uri="direct:bridge"/>
+         	<unmarshal><serialization/></unmarshal>
+         	<log loggingLevel="INFO" message="${body}"/>
+        	<log loggingLevel="INFO" message="${body.getClass.toString}"/>
+            <split>
         		<simple>${body.getEntries}</simple>
+        		<marshal><serialization/></marshal>
         		<to uri="direct:entry"/>
         	</split>
-        </route>
-        
+         </route>
+                
         <route id="ENTRY-SNMP-XML">
         	<from uri="direct:entry"/>
-        	<log loggingLevel="INFO" message="${body}"/>
+        	<unmarshal><serialization/></unmarshal>
+         	<log loggingLevel="INFO" message="${body}"/>
+        	<log loggingLevel="INFO" message="${body.getClass.toString}"/>
+
         	<to uri="mock:split-out"/>     	
         	<to uri="stream:out"/>
         </route>

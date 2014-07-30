@@ -81,21 +81,6 @@ public class SNMPEntryTest extends CamelSpringTestSupport  {
 		super.tearDown();
 	}
 
-//	@Ignore
-//	@Test
-//	public void testSNMPEntry() throws InterruptedException, IOException {
-//		out.setMinimumExpectedMessageCount(1);
-//		
-//		String s = readFile("src/test/resources/snmp/snmp-entry.xml",Charset.defaultCharset());
-//		in.sendBody(s);
-//		out.assertIsSatisfied();
-//		
-//		List<Exchange> exchanges = out.getExchanges();
-//		for (Exchange exchange : exchanges) {
-//			assertNotNull("Body is null",exchange.getIn().getBody());
-//		}
-//	}
-
 	@Test
 	public void testSNMP() throws InterruptedException, IOException {
 		snmp_out.setMinimumExpectedMessageCount(1);
