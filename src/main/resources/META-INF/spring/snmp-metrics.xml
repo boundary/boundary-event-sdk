@@ -14,38 +14,54 @@ limitations under the License.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:util="http://www.springframework.org/schema/util"
+	
 	xsi:schemaLocation="
                    http://www.springframework.org/schema/beans
                    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+                   http://www.springframework.org/schema/util
+                   http://www.springframework.org/schema/util/spring-util-2.5.xsd
                    http://camel.apache.org/schema/spring
                    http://camel.apache.org/schema/spring/camel-spring.xsd">
-                   
-    <bean id="snmp-poller" class="com.boundary.sdk.event.snmp.SnmpPollerRouteBuilder">
-		<property name="routeId" value="SNMP-POLLER"/>
-		<property name="startUpOrder" value="110"/>	
-		<!-- <property name="oids" value="1.3.6.1.2.1.1.5.0,1.3.6.1.2.1.4.31.1.1.3.1"/> -->
+
+  	
+ 	<!-- <util:properties id="snmp-metrics-properties" location="classpath:META-INF/spring/service-check.properties"/>	
+ 	<context:property-placeholder properties-ref="snmp-metrics-properties"/> -->
+ 	
+ 	<bean id="snmp-metrics-properties" class="org.apache.camel.component.properties.PropertiesComponent">
+            <property name="location" value="META-INF/spring/service-check.properties"/>
+    </bean>
+ 	
+    <bean id="snmp-poller-1" class="com.boundary.sdk.event.snmp.SnmpPollerRouteBuilder">
+		<property name="routeId" value="SNMP-POLLER-1"/>
 		<property name="oids" value="1.3.6.1.2.1.4.31.1.1.3.1"/>
 		<property name="bindAddress" value="192.168.178.100"/>
-		<property name="communityRead" value="piston"/>
-		<property name="port" value="161"/>
-		<property name="toUri" value="seda:metric-translate"/>
 	</bean>
+	<bean id="snmp-to-exec" class="com.boundary.sdk.event.snmp.SnmpToExecProcessor"/>
     
 	<camelContext id="snmp-metrics" xmlns="http://camel.apache.org/schema/spring">
-
-		<routeBuilder ref="snmp-poller"/>
-		
+		<routeBuilder ref="snmp-poller-1"/>
+		<route id="SPLIT-SNMP-XML">
+        	<from uri="seda:metric-translate?concurrentConsumers=10"/>
+        	<unmarshal><serialization/></unmarshal>
+        	<split>
+        		<simple>${body.getEntries}</simple>
+        		<to uri="direct:translate"/>
+        	</split>
+        </route>
 		<route id="TRANSLATE-TO-METRICS">
-			<from uri="seda:metric-translate"/>
-			<to uri="stream:out"/>
+			<from uri="direct:translate"/>
+			<bean ref="snmp-to-exec" method="process"/>
+			<log loggingLevel="DEBUG" message="${headers}"/>
+			<to uri="seda:exec-in"/>
 		</route>
-			
 		<route id="SEND-METRICS">
-			<from uri="direct:exec-in"/>
+			<from uri="seda:exec-in?concurrentConsumers=10"/>
 			<to uri="exec:command"/>
 			<convertBodyTo type="java.lang.String" charset="UTF-8"/>
 			<to uri="mock:exec-out"/>
 		</route>
-
 	</camelContext>
 </beans>

@@ -55,21 +55,18 @@ public class SnmpToExecProcessor implements Processor {
 	public void process(Exchange exchange) throws Exception {
 		// Extract the SnmpMessage and PDU instances from the Camel Exchange
 		Message message = exchange.getIn();
-		snmp snmp = message.getBody(snmp.class);
+		entry entry = message.getBody(entry.class);
 		
 		List<String> args = new ArrayList<String>();
-		List<entry> entries = snmp.getEntries();
-		
-		for (entry e : entries) {
-			// Add the source
-			args.add(message.getHeader(BOUNDARY_HOSTNAME).toString());
-			
-			// Add the metric name
-			args.add("jdg_sample");
 
-			// Add the measure
-			args.add(e.getValue());
-		}
+		// Add the source
+		args.add(message.getHeader(BOUNDARY_HOSTNAME).toString());
+			
+		// Add the metric name
+		args.add("jdg_sample");
+
+		// Add the measure
+		args.add(entry.getValue());
 		
 		message.setHeader(EXEC_COMMAND_EXECUTABLE, command);
 		message.setHeader(EXEC_COMMAND_ARGS,args);

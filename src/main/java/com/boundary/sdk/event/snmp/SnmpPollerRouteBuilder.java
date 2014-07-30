@@ -78,9 +78,9 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 		.routeId(this.routeId)
 		.setHeader(BOUNDARY_HOSTNAME, constant(this.getBindAddress()))
 		.log(DEBUG,"body: ${body}")
-		.to(this.getToUri())
 		.unmarshal(jaxb)
-		.to("mock:snmp-poller-out");
+		.marshal().serialization()
+		.to(this.getToUri());
 		
 		// Setup startup order only if it had been configured
 		if (this.getStartUpOrder() != 0) {
