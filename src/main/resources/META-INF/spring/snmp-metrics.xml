@@ -36,7 +36,8 @@ limitations under the License.
  	
     <bean id="snmp-poller-1" class="com.boundary.sdk.event.snmp.SnmpPollerRouteBuilder">
 		<property name="routeId" value="SNMP-POLLER-1"/>
-		<property name="oids" value="1.3.6.1.2.1.4.31.1.1.3.1"/>
+		<property name="delay" value="10"/>
+		<property name="oids" value="1.3.6.1.2.1.25.1.5.0,1.3.6.1.2.1.25.1.6.0,1.3.6.1.2.1.6.9.0,1.3.6.1.2.1.7.1.0,1.3.6.1.2.1.7.4.0,1.3.6.1.2.1.6.10.0,1.3.6.1.2.1.6.11.0,1.3.6.1.2.1.4.3.0,1.3.6.1.2.1.4.10.0"/>
 		<property name="bindAddress" value="192.168.178.100"/>
 	</bean>
 	<bean id="snmp-to-exec" class="com.boundary.sdk.event.snmp.SnmpToExecProcessor"/>
