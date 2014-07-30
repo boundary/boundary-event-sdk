@@ -155,6 +155,7 @@
 				<artifactId>camel-maven-plugin</artifactId>
 				<configuration>
 					<applicationContextUri>META-INF/spring/event-application.xml</applicationContextUri>
+					<logClasspath>true</logClasspath>
 				</configuration>
 			</plugin>
 			<plugin>
