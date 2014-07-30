@@ -16,6 +16,7 @@ public abstract class BoundaryRouteBuilder extends RouteBuilder {
 	// TBD, does this make sense adding
 	protected String logFileName;
 	protected int startUpOrder;
+	protected boolean autoStartup = true;
 	
 	protected final static String DEFAULT_EVENT_TO_URI = "direct:boundary-event";
 
@@ -98,5 +99,21 @@ public abstract class BoundaryRouteBuilder extends RouteBuilder {
 	 */
 	public int getStartUpOrder() {
 		return this.startUpOrder;
+	}
+	
+	/**
+	 * Gets the autoStartup value
+	 * @return boolean
+	 */
+	public boolean isAutoStartup() {
+		return autoStartup;
+	}
+
+	/**
+	 * Sets the autoStartup value
+	 * @param autoStartup true or false
+	 */
+	public void setAutoStartup(boolean autoStartup) {
+		this.autoStartup = autoStartup;
 	}
 }
