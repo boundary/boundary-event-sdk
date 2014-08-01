@@ -22,6 +22,7 @@ public class NotificationTestUtil {
 	
 	public final static String NOTIFICATION_BASIC_JSON="src/test/resources/META-INF/json/simple-notification.json";
 	public final static String NOTIFICATION_JSON="src/test/resources/META-INF/json/notification.json";
+	public final static String NOTIFICATION_FULL_JSON="src/test/resources/META-INF/json/full-notification.json";
 
 	
 	/**

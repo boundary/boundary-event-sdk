@@ -25,6 +25,7 @@ import com.boundary.sdk.event.Status;
 public class Event {
 	private String fingerprint;
 	private List<String> fingerprintFields;
+	private List<String> tags;
     private Date firstSeenAt;
     private String id;
     private Date lastSeenAt;
@@ -37,6 +38,7 @@ public class Event {
     private Status status;
     private Number timesSeen;
     private String title;
+    private List<Source> relatedSources;
     
     public Event() {
     }
@@ -153,6 +155,22 @@ public class Event {
 		this.title = title;
 	}
 
+	public List<Source> getRelatedSources() {
+		return relatedSources;
+	}
+
+	public void setRelatedSources(List<Source> relatedSources) {
+		this.relatedSources = relatedSources;
+	}
+
+	public List<String> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+	}
+
 	@Override
 	public String toString() {
 		return "Event [fingerprint=" + fingerprint + ", fingerprintFields="
@@ -161,6 +179,7 @@ public class Event {
 				+ lastUpdatedAt + ", message=" + message + ", organizationId="
 				+ organizationId + ", properties=" + properties + ", severity="
 				+ severity + ", source=" + source + ", status=" + status
-				+ ", timesSeen=" + timesSeen + ", title=" + title + "]";
+				+ ", timesSeen=" + timesSeen + ", title=" + title
+				+ ", relatedSources=" + relatedSources + "]";
 	}
 }

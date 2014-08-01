@@ -105,6 +105,22 @@ public class JsonToNotificationTest extends CamelSpringTestSupport {
 			validateNotification(notif);
 		}
 	}
+	
+	@Test
+	public void testUnMarshallingJsonFull() throws InterruptedException, IOException {
+		out.setExpectedMessageCount(1);
+		String s = readFile(NOTIFICATION_FULL_JSON,Charset.defaultCharset());
+		in.sendBody(s);
+		out.await(5,TimeUnit.SECONDS);
+		out.assertIsSatisfied();
+		List<Exchange> exchanges = out.getExchanges();
+		
+		for(Exchange exchange : exchanges) {
+			Message message = exchange.getIn();
+			Notification notif = message.getBody(Notification.class);
+			validateNotification(notif);
+		}
+	}
 
 	@Override
 	protected AbstractApplicationContext createApplicationContext() {
