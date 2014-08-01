@@ -13,18 +13,17 @@
 // limitations under the License.
 package com.boundary.sdk.event.service.url;
 
-import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
+import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.SERVICE_TEST_INSTANCE;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
+import org.apache.camel.component.syslog.SyslogMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.boundary.camel.component.common.ServiceStatus;
-import com.boundary.camel.component.ping.PingResult;
-import com.boundary.camel.component.url.UrlConfiguration;
 import com.boundary.camel.component.port.PortResult;
+import com.boundary.camel.component.url.UrlConfiguration;
 import com.boundary.camel.component.url.UrlResult;
 import com.boundary.sdk.event.RawEvent;
 import com.boundary.sdk.event.Severity;
