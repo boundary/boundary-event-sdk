@@ -46,6 +46,7 @@ public class UrlResultToEventProcessor implements Processor {
 	public UrlResultToEventProcessor() {
 	}
 	
+
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		UrlResultToRawEvent(exchange);
@@ -67,10 +68,13 @@ public class UrlResultToEventProcessor implements Processor {
 		urlResultToEvent(serviceTest,result,event);
 		
 		LOG.debug("RawEvent: " + event);
+		
+		message.setHeader("url-result", result);
 
 		// Set the message body to the RawEvent
 		message.setBody(event);
 	}
+
 
 	/**
 	 * Converts a {@link SyslogMessage} to {@link RawEvent}
@@ -84,32 +88,42 @@ public class UrlResultToEventProcessor implements Processor {
 		String hostname = result.getHost();
 		String serviceName = serviceTest.getServiceName();
 		String serviceTestName = serviceTest.getName();
+		UrlServiceModel serviceModel = serviceTest.getModel();
+		
+		LOG.info("UrlServiceModel: {}",serviceModel);
 		
 		event.getSource().setRef(hostname).setType("host");
 		event.addProperty("hostname",hostname);
-		event.addProperty("time-out", result.getTimeout());
+		event.addProperty("target-response-time",serviceModel.getResponseTime());
 		event.addProperty("service-test", serviceTestName);
 		event.addProperty("service-test-type",serviceTest.getServiceTestType());
 		event.addProperty("service", serviceName);
-		event.addProperty("elapsed-time", result.getElapsedTime());
+		event.addProperty("response-time", result.getResponseTime());
+		event.addProperty("response-code", result.getResponseCode());
+		event.addProperty("response-body", result.getResponseBody());
+		event.addProperty("url-target", result.getURL());
 		
 		event.addTag(serviceName);
 		event.addTag(hostname);
 		
-		// Set the Severity and Message based on the results
-		// of the service test
-		if (result.getStatus() == ServiceStatus.FAIL) {
-			event.setTitle(serviceName + " - " + serviceTestName + " - FAIL");
+		// Set the Severity and Message based on the results of the service test
+		if (serviceModel.isHealthly(result)) {
+			event.setTitle(serviceTestName + " - PASS");
+			event.setMessage("Connected to: " + result.getURL());
+			event.setSeverity(Severity.INFO);
+			event.setStatus(Status.CLOSED);
+			
+		}
+		else {
+			event.setTitle(serviceTestName + " - FAIL");
 			event.setMessage("Failed to connect to: " + result.getURL());
 			event.setSeverity(Severity.WARN);
 			event.setStatus(Status.OPEN);
 		}
-		else {
-			event.setTitle(serviceName + " - " + serviceTestName + " - SUCCEED");
-			event.setMessage("Connected to: " + result.getURL());
-			event.setSeverity(Severity.INFO);
-			event.setStatus(Status.CLOSED);
-		}
+		
+		event.addProperty("response-body-matched",getYesNo(serviceModel.isResponseBodyMatched()));
+		event.addProperty("response-code-matched",getYesNo(serviceModel.isResponseCodeMatched()));
+		event.addProperty("response-time-met",getYesNo(serviceModel.isResponseTimeMet()));
 		
 		event.addFingerprintField("service");
 		event.addFingerprintField("service-test");
@@ -118,5 +132,9 @@ public class UrlResultToEventProcessor implements Processor {
 		// Set Sender
 		event.getSender().setRef("Service Health Check");
 		event.getSender().setType("Boundary Event SDK");
+	}
+	
+	private String getYesNo(boolean b) {
+		return b ? "YES" : "NO";
 	}
 }

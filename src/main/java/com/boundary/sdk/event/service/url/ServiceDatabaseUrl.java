@@ -48,6 +48,7 @@ public class ServiceDatabaseUrl implements IServiceModelRecord {
 		UrlServiceModel urlServiceModel = new UrlServiceModel();
 		urlServiceModel.setResponseBody(responseBody);
 		urlServiceModel.setResponseTime(responseTime);
+		urlServiceModel.setResponseCode(responseCode);
 		
 		ServiceTest<UrlConfiguration,UrlServiceModel> urlServicetest =
 				new ServiceTest<UrlConfiguration,UrlServiceModel>(serviceTestName,serviceTypeName,serviceName,

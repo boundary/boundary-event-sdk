@@ -70,6 +70,7 @@
 	<bean id="service-check-configuration-query" class="com.boundary.sdk.event.service.db.ServiceCheckQuery"/>
 	
 	<bean id="select-list-to-iterator" class="com.boundary.sdk.event.util.SelectListConverter"/>
+	<bean id="url-translate-metrics" class="com.boundary.sdk.event.service.url.UrlToExecProcessor"/>
 	
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
 	
@@ -84,6 +85,8 @@
 		<endpoint id ="plumgrid-host-ssh-out" uri = "direct:plumgrid-host-ssh-out"/>
 		<endpoint id ="ssh-to-event-in" uri = "direct:ssh-to-event-in"/>
 		<endpoint id ="event-creator-out" uri = "mock:event-out"/>
+		<endpoint id ="url-metrics" uri = "seda:url-metrics"/>
+		
 		
  		<!--
  		This route is responsible for creating
@@ -242,8 +245,29 @@
 			<marshal>
 				<serialization/>
 			</marshal>
-			<to ref="boundary-event"/>
+			<multicast stopOnException="false">
+        		<to ref="boundary-event"/>
+        		<to uri="url-metrics"/>
+    		</multicast>
 		</route>
+		
+		<route id="URL-TRANSLATE-METRICS">
+			<from uri="seda:url-metrics?concurrentConsumers=10"/>
+			<log loggingLevel="INFO" message="${headers.getClass.toString}"/>
+			<unmarshal>
+				<serialization/>
+			</unmarshal>
+			<bean ref="url-translate-metrics"/>
+			<to uri="seda:exec-in"/>
+		</route>
+		
+		<route id="URL-SEND-METRICS">
+			<from uri="seda:exec-in?concurrentConsumers=10"/>
+			<to uri="exec:command"/>
+			<convertBodyTo type="java.lang.String" charset="UTF-8"/>
+			<to uri="mock:exec-out"/>
+		</route>
+		
 	</camelContext>
 	
 </beans>

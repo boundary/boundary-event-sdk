@@ -13,6 +13,7 @@
 // limitations under the License.
 package com.boundary.sdk.event.service.url;
 
+import com.boundary.camel.component.url.UrlResult;
 import com.boundary.sdk.event.service.ServiceModel;
 
 /**
@@ -24,6 +25,34 @@ public class UrlServiceModel extends ServiceModel {
 	private String responseBody;
 	private int responseCode;
 	private int responseTime;
+	private boolean responseTimeMet;
+	private boolean responseBodyMatched;
+	private boolean responseCodeMatched;
+	
+	public boolean isResponseTimeMet() {
+		return responseTimeMet;
+	}
+
+	public void setResponseTimeMet(boolean responseTimeMet) {
+		this.responseTimeMet = responseTimeMet;
+	}
+
+	public boolean isResponseBodyMatched() {
+		return responseBodyMatched;
+	}
+
+	public void setResponseBodyMatched(boolean responseBodyMatched) {
+		this.responseBodyMatched = responseBodyMatched;
+	}
+
+	public boolean isResponseCodeMatched() {
+		return responseCodeMatched;
+	}
+
+	public void setResponseCodeMatched(boolean responseCodeMatched) {
+		this.responseCodeMatched = responseCodeMatched;
+	}
+
 	
 	public int getResponseCode() {
 		return responseCode;
@@ -51,6 +80,23 @@ public class UrlServiceModel extends ServiceModel {
 
 	public void setResponseBody(String responseBody) {
 		this.responseBody = responseBody;
+	}
+	
+	public boolean isHealthly(UrlResult result)
+	{
+		setResponseTimeMet(result.getResponseTime() <= getResponseTime());
+		setResponseCodeMatched(result.getResponseCode() == getResponseCode());
+		setResponseBodyMatched(result.getResponseBody() == getResponseBody());
+		return isResponseTimeMet() && isResponseCodeMatched() && isResponseBodyMatched();
+	}
+
+	@Override
+	public String toString() {
+		return "UrlServiceModel [responseBody=" + responseBody
+				+ ", responseCode=" + responseCode + ", responseTime="
+				+ responseTime + ", responseTimeMet=" + responseTimeMet
+				+ ", responseBodyMatched=" + responseBodyMatched
+				+ ", responseCodeMatched=" + responseCodeMatched + "]";
 	}
 
 }
