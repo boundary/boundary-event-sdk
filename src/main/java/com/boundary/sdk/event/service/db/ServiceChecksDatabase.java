@@ -14,12 +14,14 @@ import org.slf4j.LoggerFactory;
 import com.boundary.camel.component.ping.PingConfiguration;
 import com.boundary.camel.component.port.PortConfiguration;
 import com.boundary.camel.component.ssh.SshxConfiguration;
+import com.boundary.camel.component.url.UrlConfiguration;
 import com.boundary.sdk.event.BoundaryEventRouteBuilder;
 import com.boundary.sdk.event.service.ServiceCheckRequest;
 import com.boundary.sdk.event.service.ServiceTest;
 import com.boundary.sdk.event.service.ping.PingServiceModel;
 import com.boundary.sdk.event.service.port.PortServiceModel;
 import com.boundary.sdk.event.service.ssh.SshxServiceModel;
+import com.boundary.sdk.event.service.url.ServiceDatabaseUrl;
 
 public class ServiceChecksDatabase implements Processor {
 	
@@ -46,8 +48,7 @@ public class ServiceChecksDatabase implements Processor {
 		sdnDirectorPingTest.setHost(sdnDirectorHost);
 		
 		PingServiceModel sdnDirectorPingModel = new PingServiceModel();
-		
-		
+	
 		
 		PortConfiguration sdnDirectorPortTest8080 = new PortConfiguration();
 		sdnDirectorPortTest8080.setHost(sdnDirectorHost);
@@ -192,6 +193,10 @@ public class ServiceChecksDatabase implements Processor {
 	}
 	
 	private void createUrlServiceTest(ServiceCheckRequest request, Map<String,Object> row) {
+		ServiceDatabaseUrl serviceUrl = new ServiceDatabaseUrl();
+		
+		serviceUrl.populate(request,row);
+
 	}
 
 	@Override
