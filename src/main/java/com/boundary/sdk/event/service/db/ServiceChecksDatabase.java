@@ -21,7 +21,7 @@ import com.boundary.sdk.event.service.ServiceTest;
 import com.boundary.sdk.event.service.ping.PingServiceModel;
 import com.boundary.sdk.event.service.port.PortServiceModel;
 import com.boundary.sdk.event.service.ssh.SshxServiceModel;
-import com.boundary.sdk.event.service.url.ServiceDatabaseUrl;
+import com.boundary.sdk.event.service.url.UrlServiceDatabase;
 
 public class ServiceChecksDatabase implements Processor {
 	
@@ -193,7 +193,7 @@ public class ServiceChecksDatabase implements Processor {
 	}
 	
 	private void createUrlServiceTest(ServiceCheckRequest request, Map<String,Object> row) {
-		ServiceDatabaseUrl serviceUrl = new ServiceDatabaseUrl();
+		UrlServiceDatabase serviceUrl = new UrlServiceDatabase();
 		
 		serviceUrl.populate(request,row);
 

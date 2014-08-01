@@ -23,6 +23,7 @@ import com.boundary.sdk.event.service.ServiceModel;
 public class UrlServiceModel extends ServiceModel {
 	
 	private String responseBody;
+	private boolean responseIgnoreBody;
 	private int responseCode;
 	private int responseTime;
 	private boolean responseTimeMet;
@@ -82,21 +83,30 @@ public class UrlServiceModel extends ServiceModel {
 		this.responseBody = responseBody;
 	}
 	
+	public boolean getResponseIgnoreBody() {
+		return responseIgnoreBody;
+	}
+	
+	public void setResponseIgnoreBody(boolean responseIgnoreBody) {
+		this.responseIgnoreBody = responseIgnoreBody;
+	}
+
 	public boolean isHealthly(UrlResult result)
 	{
 		setResponseTimeMet(result.getResponseTime() <= getResponseTime());
 		setResponseCodeMatched(result.getResponseCode() == getResponseCode());
-		setResponseBodyMatched(result.getResponseBody() == getResponseBody());
+		setResponseBodyMatched(result.getResponseBody() == getResponseBody()
+				|| getResponseIgnoreBody() == true);
 		return isResponseTimeMet() && isResponseCodeMatched() && isResponseBodyMatched();
 	}
 
 	@Override
 	public String toString() {
 		return "UrlServiceModel [responseBody=" + responseBody
+				+ ", responseIgnoreBody=" + responseIgnoreBody
 				+ ", responseCode=" + responseCode + ", responseTime="
 				+ responseTime + ", responseTimeMet=" + responseTimeMet
 				+ ", responseBodyMatched=" + responseBodyMatched
 				+ ", responseCodeMatched=" + responseCodeMatched + "]";
 	}
-
 }

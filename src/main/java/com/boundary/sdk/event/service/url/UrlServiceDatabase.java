@@ -9,7 +9,7 @@ import com.boundary.sdk.event.service.ServiceCheckRequest;
 import com.boundary.sdk.event.service.ServiceTest;
 import com.boundary.sdk.event.service.db.IServiceModelRecord;
 
-public class ServiceDatabaseUrl implements IServiceModelRecord {
+public class UrlServiceDatabase implements IServiceModelRecord {
 
 	public void populate(ServiceCheckRequest request, Map<String, Object> row) {
 		
@@ -21,6 +21,7 @@ public class ServiceDatabaseUrl implements IServiceModelRecord {
 		String requestBody = row.get("urlRequestBody").toString();
 		int responseCode = Integer.parseInt(row.get("urlResponseCode").toString());
 		String responseBody = row.get("urlResponseBody").toString();
+		boolean responseIgnoreBody = Boolean.valueOf(row.get("urlResponseIgnoreBody").toString());
 		int responseTime = Integer.parseInt(row.get("urlResponseTime").toString());
 		int urlTimeout = Integer.parseInt(row.get("urlRequestTimeout").toString());
 		String user = row.get("urlUser") != null ? row.get("urlUser").toString() : null;
@@ -34,26 +35,26 @@ public class ServiceDatabaseUrl implements IServiceModelRecord {
 
 		//
 		// Populate configuration
-		UrlConfiguration urlConfiguration = new UrlConfiguration();
+		UrlConfiguration configuration = new UrlConfiguration();
 		try {
-			urlConfiguration.setUrl(new URL(url));
+			configuration.setUrl(new URL(url));
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		urlConfiguration.setRequestMethod(requestMethod);
-		urlConfiguration.setUser(user != null ? user : null);
-		urlConfiguration.setPassword(password != null ? user : null);
+		configuration.setRequestMethod(requestMethod);
+		// null values indicate that the value was not specified
+		configuration.setUser(user != null ? user : null);
+		configuration.setPassword(password != null ? user : null);
 
-		UrlServiceModel urlServiceModel = new UrlServiceModel();
-		urlServiceModel.setResponseBody(responseBody);
-		urlServiceModel.setResponseTime(responseTime);
-		urlServiceModel.setResponseCode(responseCode);
+		UrlServiceModel serviceModel = new UrlServiceModel();
+		serviceModel.setResponseBody(responseBody);
+		serviceModel.setResponseIgnoreBody(responseIgnoreBody);
+		serviceModel.setResponseTime(responseTime);
+		serviceModel.setResponseCode(responseCode);
 		
 		ServiceTest<UrlConfiguration,UrlServiceModel> urlServicetest =
 				new ServiceTest<UrlConfiguration,UrlServiceModel>(serviceTestName,serviceTypeName,serviceName,
-				request.getRequestId(),urlConfiguration,urlServiceModel);
+				request.getRequestId(),configuration,serviceModel);
 		request.addServiceTest(urlServicetest);
 	}
-
 }
