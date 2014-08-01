@@ -110,6 +110,7 @@
         <fileMode>0744</fileMode>
         <includes>
           <include>syslog.*</include>
+          <include>snmp.*</include>
         </includes>
         <excludes>
           <exclude>syslog.event.properties</exclude>
