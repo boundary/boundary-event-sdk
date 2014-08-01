@@ -26,6 +26,9 @@ limitations under the License.
 		<property name="fromUri" value="jetty:http://0.0.0.0:8127/notification" />
 		<property name="toUri" value="direct:to-json"/>
     </bean>
+    
+    <bean id="args" class="com.boundary.sdk.event.notification.NotificationToExec"/>
+    
 
 	<camelContext id="webhook-context" xmlns="http://camel.apache.org/schema/spring">
 	
@@ -37,8 +40,12 @@ limitations under the License.
 
 		<route id="CONVERT-TO-JSON">
 			<from uri="direct:to-json"/>
-			<marshal ref="jackson"/>
-			<to uri="log:WEBHOOK-NOTIFICATION?showAll=true&amp;multiline=true"/>
+			<!-- <marshal ref="jackson"/> -->
+			<!-- <transform><simple>msend.pl -o ${body.getEvent.getSeverity}</simple></transform> -->
+			<bean ref="args" method="setArgs"/>
+			<to uri="exec:echo"/>
+			<convertBodyTo type="java.lang.String"/>
+			<to uri="stream:out"/>
 		</route>
 	</camelContext>
 </beans>
