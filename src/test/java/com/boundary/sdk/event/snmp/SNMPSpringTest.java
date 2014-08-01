@@ -86,7 +86,7 @@ public class SNMPSpringTest extends CamelSpringTestSupport  {
 	}
 	
 	//TODO: Configure Mock SSH Server for testing
-	//@Ignore ("Need Mock SSH Server")
+	@Ignore ("Need Mock SSH Server")
 	@Test
 	public void testSnmpGet() throws InterruptedException {
 		out.setMinimumExpectedMessageCount(1);
