@@ -96,7 +96,7 @@ public class UrlServiceModel extends ServiceModel {
 		setResponseTimeMet(result.getResponseTime() <= getResponseTime());
 		setResponseCodeMatched(result.getResponseCode() == getResponseCode());
 		setResponseBodyMatched(result.getResponseBody() == getResponseBody()
-				|| getResponseIgnoreBody() == true);
+				|| getResponseIgnoreBody() == false);
 		return isResponseTimeMet() && isResponseCodeMatched() && isResponseBodyMatched();
 	}
 

@@ -33,9 +33,8 @@ import com.boundary.sdk.event.service.ServiceTest;
 
 
 /**
- * Responsible for translating a {@link PortResult} to {@link com.boundary.sdk.event.RawEvent}.
+ * Responsible for translating a {@link UrlResult} to {@link com.boundary.sdk.event.RawEvent}.
  * 
- * @author davidg
  * 
  */
 public class UrlResultToEventProcessor implements Processor {
@@ -89,7 +88,8 @@ public class UrlResultToEventProcessor implements Processor {
 		String serviceTestName = serviceTest.getName();
 		UrlServiceModel serviceModel = serviceTest.getModel();
 		
-		LOG.info("UrlServiceModel: {}",serviceModel);
+		LOG.info("{}",serviceModel);
+		LOG.info("{}",result);
 		
 		event.getSource().setRef(hostname).setType("host");
 		event.addProperty("hostname",hostname);
