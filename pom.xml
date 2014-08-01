@@ -79,6 +79,7 @@
 		<camel-version>2.13.1</camel-version>
 		<camel-service-version>0.4.0</camel-service-version>
 		<commons-cli-version>1.2</commons-cli-version>
+		<commons-codec-version>1.9</commons-codec-version>
 		<commons-daemon-version>1.0.15</commons-daemon-version>
 		<commons-io-version>1.3.2</commons-io-version>
 		<commons-lang3-version>3.3.2</commons-lang3-version>
@@ -646,6 +647,11 @@
 			<groupId>commons-daemon</groupId>
 			<artifactId>commons-daemon</artifactId>
 			<version>${commons-daemon-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>${commons-codec-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
