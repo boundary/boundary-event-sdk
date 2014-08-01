@@ -238,7 +238,7 @@
 			<bean ref="configurationProcessor" method="extractUrlConfiguration"/>
 			<!-- Work around for now add information that is ignored at runtime -->
 			<to uri="url:http//localhost"/>
-			<bean ref="ssh-to-event"/>
+			<bean ref="url-to-event"/>
 			<marshal>
 				<serialization/>
 			</marshal>
