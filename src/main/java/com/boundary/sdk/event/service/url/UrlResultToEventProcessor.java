@@ -83,31 +83,30 @@ public class UrlResultToEventProcessor implements Processor {
 
 		String hostname = result.getHost();
 		String serviceName = serviceTest.getServiceName();
+		String serviceTestName = serviceTest.getName();
 		
 		event.getSource().setRef(hostname).setType("host");
 		event.addProperty("hostname",hostname);
-		//event.addProperty("url",result.getPort());
-		//event.addProperty("port-status",result.getPortStatus());
 		event.addProperty("time-out", result.getTimeout());
-		event.addProperty("service-test", serviceTest.getName());
+		event.addProperty("service-test", serviceTestName);
 		event.addProperty("service-test-type",serviceTest.getServiceTestType());
 		event.addProperty("service", serviceName);
+		event.addProperty("elapsed-time", result.getElapsedTime());
 		
 		event.addTag(serviceName);
 		event.addTag(hostname);
-		int port = result.getPort();
 		
 		// Set the Severity and Message based on the results
 		// of the service test
 		if (result.getStatus() == ServiceStatus.FAIL) {
-			event.setTitle(serviceName + " - " + hostname + ":" + port + " is OFFLINE");
-			event.setMessage("Failed to connect the port, reason: " + result.getMessage());
+			event.setTitle(serviceName + " - " + serviceTestName + " - FAIL");
+			event.setMessage("Failed to connect to: " + result.getURL());
 			event.setSeverity(Severity.WARN);
 			event.setStatus(Status.OPEN);
 		}
 		else {
-			event.setTitle(serviceName + " - " + hostname + ":" + port + " is ONLINE");
-			event.setMessage("Connected to port " + port + " on " + hostname);
+			event.setTitle(serviceName + " - " + serviceTestName + " - SUCCEED");
+			event.setMessage("Connected to: " + result.getURL());
 			event.setSeverity(Severity.INFO);
 			event.setStatus(Status.CLOSED);
 		}
@@ -115,9 +114,6 @@ public class UrlResultToEventProcessor implements Processor {
 		event.addFingerprintField("service");
 		event.addFingerprintField("service-test");
 		event.addFingerprintField("hostname");
-		
-		// Set the time at which the port was polled
-		event.setCreatedAt(result.getTimestamp());
 		
 		// Set Sender
 		event.getSender().setRef("Service Health Check");

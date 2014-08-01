@@ -21,18 +21,36 @@ import com.boundary.sdk.event.service.ServiceModel;
  */
 public class UrlServiceModel extends ServiceModel {
 	
-	private String expectedOutput;
+	private String responseBody;
+	private int responseCode;
+	private int responseTime;
 	
+	public int getResponseCode() {
+		return responseCode;
+	}
+
+	public void setResponseCode(int responseCode) {
+		this.responseCode = responseCode;
+	}
+
+	public int getResponseTime() {
+		return responseTime;
+	}
+
+	public void setResponseTime(int responseTime) {
+		this.responseTime = responseTime;
+	}
+
 	public UrlServiceModel() {
-		expectedOutput = "";
+		responseBody = "";
 	}
 
-	public String getExpectedOutput() {
-		return expectedOutput;
+	public String getResponseBody() {
+		return responseBody;
 	}
 
-	public void setExpectedOutput(String expectedOutput) {
-		this.expectedOutput = expectedOutput;
+	public void setResponseBody(String responseBody) {
+		this.responseBody = responseBody;
 	}
 
 }
