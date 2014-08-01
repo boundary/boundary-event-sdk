@@ -35,15 +35,53 @@ limitations under the License.
     </bean>
  	
     <bean id="snmp-poller-1" class="com.boundary.sdk.event.snmp.SnmpPollerRouteBuilder">
-		<property name="routeId" value="SNMP-POLLER-1"/>
-		<property name="delay" value="10"/>
+		<property name="routeId" value="PLUMgrid Director"/>
+		<property name="delay" value="5"/>
+		<property name="oids" value="1.3.6.1.2.1.25.1.5.0,1.3.6.1.2.1.25.1.6.0,1.3.6.1.2.1.6.9.0,1.3.6.1.2.1.7.1.0,1.3.6.1.2.1.7.4.0,1.3.6.1.2.1.6.10.0,1.3.6.1.2.1.6.11.0,1.3.6.1.2.1.4.3.0,1.3.6.1.2.1.4.10.0"/>
+		<property name="bindAddress" value="192.168.177.11"/>
+	</bean>
+	<bean id="snmp-poller-2" class="com.boundary.sdk.event.snmp.SnmpPollerRouteBuilder">
+		<property name="routeId" value="PLUMgrid x86gw"/>
+		<property name="delay" value="5"/>
+		<property name="oids" value="1.3.6.1.2.1.25.1.5.0,1.3.6.1.2.1.25.1.6.0,1.3.6.1.2.1.6.9.0,1.3.6.1.2.1.7.1.0,1.3.6.1.2.1.7.4.0,1.3.6.1.2.1.6.10.0,1.3.6.1.2.1.6.11.0,1.3.6.1.2.1.4.3.0,1.3.6.1.2.1.4.10.0"/>
+		<property name="bindAddress" value="192.168.177.9"/>
+	</bean>
+	<bean id="snmp-poller-3" class="com.boundary.sdk.event.snmp.SnmpPollerRouteBuilder">
+		<property name="routeId" value="Infrastructure node"/>
+		<property name="delay" value="5"/>
+		<property name="oids" value="1.3.6.1.2.1.25.1.5.0,1.3.6.1.2.1.25.1.6.0,1.3.6.1.2.1.6.9.0,1.3.6.1.2.1.7.1.0,1.3.6.1.2.1.7.4.0,1.3.6.1.2.1.6.10.0,1.3.6.1.2.1.6.11.0,1.3.6.1.2.1.4.3.0,1.3.6.1.2.1.4.10.0"/>
+		<property name="bindAddress" value="192.168.177.8"/>
+	</bean>
+	<bean id="snmp-poller-4" class="com.boundary.sdk.event.snmp.SnmpPollerRouteBuilder">
+		<property name="routeId" value="Piston Bootnode"/>
+		<property name="delay" value="5"/>
+		<property name="oids" value="1.3.6.1.2.1.25.1.5.0,1.3.6.1.2.1.25.1.6.0,1.3.6.1.2.1.6.9.0,1.3.6.1.2.1.7.1.0,1.3.6.1.2.1.7.4.0,1.3.6.1.2.1.6.10.0,1.3.6.1.2.1.6.11.0,1.3.6.1.2.1.4.3.0,1.3.6.1.2.1.4.10.0"/>
+		<property name="bindAddress" value="192.168.178.2"/>
+	</bean>
+	<bean id="snmp-poller-5" class="com.boundary.sdk.event.snmp.SnmpPollerRouteBuilder">
+		<property name="routeId" value="Piston Compute"/>
+		<property name="delay" value="5"/>
 		<property name="oids" value="1.3.6.1.2.1.25.1.5.0,1.3.6.1.2.1.25.1.6.0,1.3.6.1.2.1.6.9.0,1.3.6.1.2.1.7.1.0,1.3.6.1.2.1.7.4.0,1.3.6.1.2.1.6.10.0,1.3.6.1.2.1.6.11.0,1.3.6.1.2.1.4.3.0,1.3.6.1.2.1.4.10.0"/>
 		<property name="bindAddress" value="192.168.178.100"/>
 	</bean>
+	<bean id="snmp-poller-6" class="com.boundary.sdk.event.snmp.SnmpPollerRouteBuilder">
+		<property name="routeId" value="Piston Horizon"/>
+		<property name="delay" value="5"/>
+		<property name="oids" value="1.3.6.1.2.1.25.1.5.0,1.3.6.1.2.1.25.1.6.0,1.3.6.1.2.1.6.9.0,1.3.6.1.2.1.7.1.0,1.3.6.1.2.1.7.4.0,1.3.6.1.2.1.6.10.0,1.3.6.1.2.1.6.11.0,1.3.6.1.2.1.4.3.0,1.3.6.1.2.1.4.10.0"/>
+		<property name="bindAddress" value="192.168.179.2"/>
+	</bean>
+	
+	
 	<bean id="snmp-to-exec" class="com.boundary.sdk.event.snmp.SnmpToExecProcessor"/>
     
 	<camelContext id="snmp-metrics" xmlns="http://camel.apache.org/schema/spring">
 		<routeBuilder ref="snmp-poller-1"/>
+		<routeBuilder ref="snmp-poller-2"/>
+		<routeBuilder ref="snmp-poller-3"/>
+		<routeBuilder ref="snmp-poller-4"/>
+		<routeBuilder ref="snmp-poller-5"/>
+		<!-- <routeBuilder ref="snmp-poller-6"/> -->
+
 		<route id="SPLIT-SNMP-XML">
         	<from uri="seda:metric-translate?concurrentConsumers=10"/>
         	<unmarshal><serialization/></unmarshal>
