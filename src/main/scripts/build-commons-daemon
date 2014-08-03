@@ -21,6 +21,29 @@ else
   exit 1
 fi
 
+RequiredCommand() {
+  typeset -r command=$1
+
+  type $command > /dev/null
+  if [ $? -ne 0 ]
+  then
+     echo "$command not installed exiting"
+     exit 1
+  fi
+}
+
+CheckForRequiredCommands() {
+   typeset -r commands="autoconf make"
+
+   for command in $(echo $commands)
+   do
+     RequiredCommand $command
+   done
+}
+
+# Test for require command line tools
+CheckForRequiredCommands
+
 # Get the operating system we are running, unix flavors only at this point
 OPERATING_SYSTEM_NAME=$(uname -s)
 
