@@ -1,0 +1,50 @@
+{
+  "notificationId": "cM7tcSWntNfGDDQcvfS6csLNKyQ=",
+  "event": {
+    "id": 343859724,
+    "organizationId": "ChMBk5Ou9QBdDPaTai0rfUbZ8bC",
+    "severity": "WARN",
+    "source": {
+      "ref": "8k2LvQYFntDYfoIi3c",
+      "type": "host",
+      "name": "boot-192-168-138-2",
+      "properties": {
+        "obs_domain_id": 12
+      }
+    },
+    "properties": {
+      "hostname": "boot-192-168-138-2"
+    },
+    "status": "OPEN",
+    "fingerprintFields": [
+      "@message",
+      "hostname",
+      "@title"
+    ],
+    "title": "boot-192-168-138-2 NOT TRUSTED",
+    "message": "Mt. Wilson reports that boot-192-168-138-2 is not trusted.",
+    "relatedSources": [
+      {
+        "ref": "8k01Jt6gng6Oz7LBJI",
+        "type": "group",
+        "name": "cell - celine"
+      },
+      {
+        "ref": "8k02T94etkGe16ddp2",
+        "type": "conversation",
+        "name": "Syslog"
+      }
+    ],
+    "timesSeen": 5,
+    "firstSeenAt": "2014-08-01T20:14:29.380Z",
+    "lastSeenAt": "2014-08-01T21:04:24.146Z",
+    "lastUpdatedAt": "2014-08-01T21:04:24.155Z",
+    "tags": [
+      "planned-maintenance"
+    ],
+    "fingerprint": "AQK8Wd8zYqogKEyF7VG31Eov0r4="
+  },
+  "filterId": "e3c045ec-8028-48ce-9373-93e5b01c690c",
+  "filterName": "Pester Michael about Critical events",
+  "notificationId": "4ba705f6-690c-4877-b041-791b84e1e032"
+}
