@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 [[ -z "$BOUNDARY_SDK_HOME" ]]  && echo "BOUNDARY_SDK_HOME is not set. Set to top-level directory of the distribution" && exit 1
 
