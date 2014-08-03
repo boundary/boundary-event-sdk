@@ -6,6 +6,8 @@ Syslog and SNMP into your Boundary environment.
 
 Prerequisites
 -------------
+* Java 7
+* Bash (Bourne Again Shell)
 * Boundary Organizational Id
 * Boundary API Key
 * License key from [snmp4j](http://www.snmp4j.org/) if you plan on receiving traps from the enterprise sub-branch and wish OIDs to mapped to readable strings.

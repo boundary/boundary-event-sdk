@@ -6,6 +6,7 @@ Prerequisites
 -------------
 * Maven 3.2.1 or later
 * Java JDK 1.7
+# Bash 3.2.x or later
 * gcc 4.2.1 or later
 * Git 1.7.1 or later
 
