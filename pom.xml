@@ -86,6 +86,7 @@
 		<exec-maven-plugin-version>1.3</exec-maven-plugin-version>
 		<junit-version>4.8.1</junit-version>
 		<log4j-version>1.2.17</log4j-version>
+                <maven-compiler-plugin-version>3.1</maven-compiler-plugin-version>
 		<maven-dependency-plugin-version>2.8</maven-dependency-plugin-version>
 		<maven-javadoc-plugin-version>2.8.1</maven-javadoc-plugin-version>
 		<maven-pdf-plugin-version>1.2</maven-pdf-plugin-version>
@@ -99,9 +100,33 @@
 		<spring-version>3.2.5.RELEASE</spring-version>
 		<spring-security-version>3.1.4.RELEASE</spring-security-version>
 		<syslog4j-version>0.9.30</syslog4j-version>
-	</properties>
+
+                <!-- RPM packaging properties -->
+                <rpm-top-level-dir>/opt/boundary</rpm-top-level-dir>
+                <boundary-sdk-rpm-user-name>root</boundary-sdk-rpm-user-name>
+                <boundary-sdk-rpm-group-name>root</boundary-sdk-rpm-group-name>
+                <boundary-sdk-rpm-app-dir>/usr/share/besdk</boundary-sdk-rpm-app-dir>
+                <boundary-sdk-rpm-bin-dir>/usr/bin</boundary-sdk-rpm-bin-dir>
+                <boundary-sdk-rpm-etc-dir>/etc</boundary-sdk-rpm-etc-dir>
+                <boundary-sdk-rpm-jar-dir>/usr/share/besdk/lib</boundary-sdk-rpm-jar-dir>
+                <boundary-sdk-rpm-man-dir>/usr/share/man</boundary-sdk-rpm-man-dir>
+                <boundary-sdk-rpm-initd-dir>/etc/init.d</boundary-sdk-rpm-initd-dir>
+
+		<!-- JAVA Versions -->
+		<source-java-version>1.7</source-java-version>
+		<target-java-version>1.7</target-java-version>
+        </properties>
 	<build>
 		<plugins>
+                        <plugin>
+                                <groupId>org.apache.maven.plugins</groupId>
+                                <artifactId>maven-compiler-plugin</artifactId>
+                                <version>${maven-compiler-plugin-version}</version>
+                                <configuration>
+                                        <source>${source-java-version}</source>
+                                        <target>${target-java-version}</target>
+                                </configuration>
+                        </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
