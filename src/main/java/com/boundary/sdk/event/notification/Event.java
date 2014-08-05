@@ -35,6 +35,7 @@ public class Event {
     private Map<String,Object> properties;
     private Severity severity;
     private Source source;
+    private Source sender;
     private Status status;
     private Number timesSeen;
     private String title;
@@ -129,6 +130,14 @@ public class Event {
 
 	public void setSource(Source source) {
 		this.source = source;
+	}
+
+	public Source getSender() {
+		return sender;
+	}
+
+	public void setSender(Source sender) {
+		this.sender = sender;
 	}
 
 	public Status getStatus() {
