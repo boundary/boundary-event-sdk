@@ -38,6 +38,7 @@ public class MeasureRouteBuilder extends BoundaryAPIRouteBuilder {
 			.routeId(routeId)
 			.marshal().json(JsonLibrary.Jackson)
 			.log(INFO,"Measurement: ${body}")
+			.setHeader("Authorization",constant(" Basic " + getAuthentication()))
 			.setHeader(Exchange.ACCEPT_CONTENT_TYPE, constant("application/json"))
 			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
 			.setHeader(Exchange.HTTP_METHOD, constant("POST"))

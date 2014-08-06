@@ -18,6 +18,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.http.AuthMethod;
 import org.apache.camel.component.http.HttpComponent;
 import org.apache.camel.component.http.HttpConfiguration;
+import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +48,7 @@ public abstract class BoundaryAPIRouteBuilder extends BoundaryRouteBuilder {
 	private int port;
 	private String orgId;
 	private String path;
+	private String authentication;
 
 	/**
 	 * Default constructor
@@ -190,17 +192,19 @@ public abstract class BoundaryAPIRouteBuilder extends BoundaryRouteBuilder {
 		
 		switch(getScheme()) {
 		case "https":
-			// Configure our HTTP connection to use BASIC authentication
-			HttpConfiguration config = new HttpConfiguration();
-			config.setAuthMethod(AuthMethod.Basic);
-			LOG.info("USER: {}, PASSWORD: {}",getUser(),getPassword());
-			config.setAuthUsername(getUser());
-			config.setAuthPassword(getPassword());
-			HttpComponent http = this.getContext().getComponent("https",HttpComponent.class);
-			http.setHttpConfiguration(config);
-			break;
 		case "http":
-			assert false;
+			if (getUser() != null || getPassword() != null) {
+				StringBuffer sb = new StringBuffer();
+				if (getUser() != null) {
+					sb.append(getUser());
+				}
+				sb.append(":");
+				if (getPassword() != null) {
+					sb.append(getPassword());
+				}
+				LOG.info("authentication: " + sb.toString());
+				setAuthentication(Base64.encodeBase64String(sb.toString().getBytes()));
+			}
 			break;
 		default:
 			assert false;
@@ -225,6 +229,14 @@ public abstract class BoundaryAPIRouteBuilder extends BoundaryRouteBuilder {
 	}
 
 	
+	public String getAuthentication() {
+		return authentication;
+	}
+
+	public void setAuthentication(String authentication) {
+		this.authentication = authentication;
+	}
+
 	/**
 	 * Child classes are required to override
 	 */

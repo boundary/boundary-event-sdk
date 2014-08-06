@@ -89,12 +89,12 @@ public class MeasureRouteBuilderTest extends CamelSpringTestSupport {
 //		fail("Not yet implemented");
 //	}
 //
-	@Ignore("BROKEN: Does not send BASIC authentication")
+	//@Ignore("BROKEN: Does not send BASIC authentication")
 	@Test
 	public void testSendMetric() throws InterruptedException {
 		Measurement measurement = new Measurement();
 		measurement.setSource("26");
-		measurement.setMetric("jdg_sample");
+		measurement.setMetric("API_RESPONSE_TIME");
 		measurement.setMeasure(100);
 		out.setExpectedMessageCount(1);
 		in.sendBody(measurement);
