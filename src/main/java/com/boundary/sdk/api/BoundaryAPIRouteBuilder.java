@@ -37,6 +37,7 @@ public abstract class BoundaryAPIRouteBuilder extends BoundaryRouteBuilder {
 	
 	private final String HTTP="http";
 	private final String HTTPS="https";
+	protected final String HTTP_AUTHORIZATION="Authorization";
 	
 	private final String DEFAULT_SCHEME="https";
 	private static final int DEFAULT_PORT = -1;
@@ -47,6 +48,7 @@ public abstract class BoundaryAPIRouteBuilder extends BoundaryRouteBuilder {
 	private String host;
 	private int port;
 	private String orgId;
+	private String apiKey;
 	private String path;
 	private String authentication;
 
@@ -91,6 +93,14 @@ public abstract class BoundaryAPIRouteBuilder extends BoundaryRouteBuilder {
 		this.orgId = orgId;
 	}
 	
+	public String getApiKey() {
+		return apiKey;
+	}
+
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
+
 	/**
 	 * Set the user id
 	 * 
