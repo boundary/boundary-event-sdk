@@ -31,17 +31,16 @@ public class MeterRouteBuilder extends BoundaryAPIRouteBuilder {
 	
 	private static Logger LOG = LoggerFactory.getLogger(MeterRouteBuilder.class);
 	
-	private final String DEFAULT_METRIC_API_HOST="api.boundary.com";
-	private final String MEASUREMENT_PATH="v1/measurements";
+	private final String DEFAULT_API_HOST="api.boundary.com";
 	
 	public MeterRouteBuilder() {
-		setHost(DEFAULT_METRIC_API_HOST);
-		setPath(MEASUREMENT_PATH);
+		setHost(DEFAULT_API_HOST);
 	}
 		
 	@Override
 	public void configure() {
 		String url = getUrl();
+		LOG.info("url: " + url);
 		
 		// Configure the HTTP endpoint
 		setConfiguration();
@@ -49,8 +48,11 @@ public class MeterRouteBuilder extends BoundaryAPIRouteBuilder {
 		RouteDefinition routeDefinition = from(fromUri)
 			.startupOrder(startUpOrder)
 			.routeId(routeId)
+			.unmarshal().serialization()
+			.log(INFO,"MeterData: ${body}")
+			.bean(MeterAPIProcessor.class, "process")
 			.marshal().json(JsonLibrary.Jackson)
-			.log(INFO,"Measurement: ${body}")
+			.setHeader(HTTP_AUTHORIZATION,constant(" Basic " + getAuthentication()))
 			.setHeader(Exchange.ACCEPT_CONTENT_TYPE, constant("application/json"))
 			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
 			.setHeader(Exchange.HTTP_METHOD, constant("POST"))

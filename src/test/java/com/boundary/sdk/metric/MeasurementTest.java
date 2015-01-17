@@ -4,6 +4,10 @@ import static org.junit.Assert.*;
 
 import java.util.Date;
 
+import org.apache.camel.EndpointInject;
+import org.apache.camel.Produce;
+import org.apache.camel.ProducerTemplate;
+import org.apache.camel.component.mock.MockEndpoint;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -12,6 +16,11 @@ import org.junit.Test;
 
 public class MeasurementTest {
 	
+    @Produce(uri = "direct:meter-in")
+    private ProducerTemplate producerTemplate;
+    
+    @EndpointInject(uri = "mock:meter-out")
+    private MockEndpoint mockOut;
 	
 	private String expectedString;
 	private Measurement measure;

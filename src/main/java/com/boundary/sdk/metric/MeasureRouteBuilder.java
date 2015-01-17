@@ -4,9 +4,6 @@ import static org.apache.camel.LoggingLevel.DEBUG;
 import static org.apache.camel.LoggingLevel.INFO;
 
 import org.apache.camel.Exchange;
-import org.apache.camel.component.http.AuthMethod;
-import org.apache.camel.component.http.HttpComponent;
-import org.apache.camel.component.http.HttpConfiguration;
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.slf4j.Logger;
@@ -38,7 +35,7 @@ public class MeasureRouteBuilder extends BoundaryAPIRouteBuilder {
 			.routeId(routeId)
 			.marshal().json(JsonLibrary.Jackson)
 			.log(INFO,"Measurement: ${body}")
-			.setHeader("Authorization",constant(" Basic " + getAuthentication()))
+			.setHeader(HTTP_AUTHORIZATION,constant(" Basic " + getAuthentication()))
 			.setHeader(Exchange.ACCEPT_CONTENT_TYPE, constant("application/json"))
 			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
 			.setHeader(Exchange.HTTP_METHOD, constant("POST"))
