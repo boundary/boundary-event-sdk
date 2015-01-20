@@ -20,7 +20,22 @@
     </dependencySets>
     <files>
       <file>
-        <source>src/main/resources/META-INF/event-application.xml</source>
+        <source>src/main/resources/META-INF/spring/event-application.xml</source>
+        <outputDirectory>etc</outputDirectory>
+        <fileMode>0744</fileMode>
+      </file>
+      <file>
+        <source>src/main/resources/META-INF/spring/service-check.xml</source>
+        <outputDirectory>etc</outputDirectory>
+        <fileMode>0744</fileMode>
+      </file>
+      <file>
+        <source>src/main/resources/META-INF/spring/snmp-metrics.xml</source>
+        <outputDirectory>etc</outputDirectory>
+        <fileMode>0744</fileMode>
+      </file>
+      <file>
+        <source>src/main/resources/META-INF/spring/webhook-application.xml</source>
         <outputDirectory>etc</outputDirectory>
         <fileMode>0744</fileMode>
       </file>
@@ -46,6 +61,11 @@
       </file>
       <file>
         <source>${project.build.scriptSourceDirectory}/bmibc</source>
+        <outputDirectory>bin</outputDirectory>
+        <fileMode>0744</fileMode>
+      </file>
+      <file>
+        <source>${project.build.scriptSourceDirectory}/bwebhookapp</source>
         <outputDirectory>bin</outputDirectory>
         <fileMode>0744</fileMode>
       </file>
@@ -90,6 +110,7 @@
         <fileMode>0744</fileMode>
         <includes>
           <include>syslog.*</include>
+          <include>snmp.*</include>
         </includes>
         <excludes>
           <exclude>syslog.event.properties</exclude>

@@ -41,7 +41,7 @@ public class QueueRouteBuilder extends BoundaryRouteBuilder {
 	/**
 	 * Sets the name of JMS queue
 	 * 
-	 * @param queueName
+	 * @param queueName Name of the queue
 	 */
 	public void setQueueName(String queueName) {
 		this.queueName = queueName;
@@ -58,6 +58,7 @@ public class QueueRouteBuilder extends BoundaryRouteBuilder {
 	
 	/**
 	 * Sets the number of concurrent consumers use by ActiveMQ
+	 * @param consumers Number of consumers
 	 */
 	public void setConcurrentConsumers(int consumers) {
 		this.concurrentConsumers = consumers;
@@ -65,12 +66,16 @@ public class QueueRouteBuilder extends BoundaryRouteBuilder {
 
 	/**
 	 * Sets the queue consumers to be asynchronous
-	 * @param async
+	 * @param async true or false
 	 */
 	public void setAsyncConsumer(boolean async) {
 			this.asyncConsumer = async;
 	}
 	
+	/**
+	 * 
+	 * @param uri URI to the java message server
+	 */
 	public void setJmsUri(String uri) {
 		this.jmsUri = uri;
 	}

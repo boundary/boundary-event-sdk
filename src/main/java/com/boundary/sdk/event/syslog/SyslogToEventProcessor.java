@@ -98,8 +98,7 @@ public class SyslogToEventProcessor implements Processor {
 		e.addFingerprintField("facility");
 		e.addFingerprintField("message");
 		
-		// Set the time at which the syslog record was created
-		// TBD: Ensure time is in UTC
+		// Set the time at which the Syslog record was created
 		e.setCreatedAt(sm.getTimestamp());
 
 		// Set Title

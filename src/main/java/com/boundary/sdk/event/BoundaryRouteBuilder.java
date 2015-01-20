@@ -16,6 +16,7 @@ public abstract class BoundaryRouteBuilder extends RouteBuilder {
 	// TBD, does this make sense adding
 	protected String logFileName;
 	protected int startUpOrder;
+	protected boolean autoStartup = true;
 	
 	protected final static String DEFAULT_EVENT_TO_URI = "direct:boundary-event";
 
@@ -32,7 +33,7 @@ public abstract class BoundaryRouteBuilder extends RouteBuilder {
 	
 	/**
 	 * Sets the URI to send events to
-	 * @param toUri
+	 * @param toUri URI to send messages to
 	 */
 	public void setToUri(String toUri)  {
 		this.toUri = toUri;
@@ -40,7 +41,7 @@ public abstract class BoundaryRouteBuilder extends RouteBuilder {
 	
 	/**
 	 * Returns the current value of the to URI
-	 * @return String
+	 * @return {@link String}
 	 */
 	public String getToUri() {
 		return this.toUri;
@@ -48,7 +49,7 @@ public abstract class BoundaryRouteBuilder extends RouteBuilder {
 	
 	/**
 	 * URI used to receive {@link RawEvent} from.
-	 * @param fromUri
+	 * @param fromUri URI to receive messages from`
 	 */
 	public void setFromUri(String fromUri) {
 		this.fromUri = fromUri;
@@ -57,7 +58,7 @@ public abstract class BoundaryRouteBuilder extends RouteBuilder {
 	/**
 	 * Get the current URI that is receiving {@link RawEvent}
 	 * 
-	 * @return String
+	 * @return {@link String}
 	 */
 	public String getFromUri() {
 		return this.fromUri;
@@ -68,7 +69,7 @@ public abstract class BoundaryRouteBuilder extends RouteBuilder {
 	 * Sets the route ID to a defined value, make it easier to track
 	 * the route in the logs.
 	 * 
-	 * @param routeId
+	 * @param routeId Name of the route
 	 */
 	public void setRouteId(String routeId) {
 		this.routeId = routeId;
@@ -76,7 +77,7 @@ public abstract class BoundaryRouteBuilder extends RouteBuilder {
 	
 	/**
 	 * Returns the current value of the route id.
-	 * @return String
+	 * @return {@link String} Name of the route
 	 */
 	public String getRouteId() {
 		return this.routeId;
@@ -85,7 +86,7 @@ public abstract class BoundaryRouteBuilder extends RouteBuilder {
 	/**
 	 * Sets relative order of when this route starts.
 	 * 
-	 * @param startUpOrder
+	 * @param startUpOrder Global order in which to start this route
 	 */
 	public void setStartUpOrder(int startUpOrder) {
 		this.startUpOrder = startUpOrder;
@@ -94,9 +95,25 @@ public abstract class BoundaryRouteBuilder extends RouteBuilder {
 	/**
 	 * Returns the start up order of the route
 	 * 
-	 * @return int
+	 * @return int Global order in which to start this route
 	 */
 	public int getStartUpOrder() {
 		return this.startUpOrder;
+	}
+	
+	/**
+	 * Gets the autoStartup value
+	 * @return boolean
+	 */
+	public boolean isAutoStartup() {
+		return autoStartup;
+	}
+
+	/**
+	 * Sets the autoStartup value
+	 * @param autoStartup true or false
+	 */
+	public void setAutoStartup(boolean autoStartup) {
+		this.autoStartup = autoStartup;
 	}
 }

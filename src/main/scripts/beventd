@@ -1,21 +1,24 @@
 #!/bin/bash
 
-[[ -z "$BOUNDARY_SDK_HOME" ]]  && echo "BOUNDARY_SDK_HOME is not set. Set to top-level directory of the distribution" && exit 1
+if [ -r /etc/besdk/beventd.conf ]
+then
+  source /etc/besdk/beventd.conf
+fi
 
 # Set the location of the commons daemon binary 
-EXEC=$BOUNDARY_SDK_HOME/bin/jsvc
+EXEC=$BOUNDARY_SDK_BIN_DIR/jsvc
 
 # Contains all of the jars that the Boundary Event SDK is dependent upon
-DEPENDENT_JARS="$BOUNDARY_SDK_HOME/lib/*"
+DEPENDENT_JARS="${BOUNDARY_SDK_JAR_DIR}/*"
 
 # Create class path variable for the Boundary Event SDK configuration files
-CONFIG_DIR="$BOUNDARY_SDK_HOME/etc"
+CONFIG_DIR="$BOUNDARY_SDK_ETC_DIR"
 CONFIG_PATHS=$(CONFIGS=(`find "$CONFIG_DIR" -type d -print`); IFS=:; echo "${CONFIGS[*]}")
 
 # 1) Add the path to the xml and property files first so files in these directories are found first.
 # 2) Add the Boundary Event SDK jar
 # NOTE: There is an assumption that only one boundary-event-sdk jar file will be present in the distribution.
-SDK_CLASSPATH="$CONFIG_PATHS:${BOUNDARY_SDK_HOME}/boundary-event-sdk-*.jar:${DEPENDENT_JARS}"
+SDK_CLASSPATH="$CONFIG_PATHS:${BOUNDARY_SDK_APP_DIR}/*:${DEPENDENT_JARS}"
 
 # Entry point class to start the Boundary Event SDK
 CLASS=com.boundary.sdk.event.BoundaryEventDaemon
@@ -24,17 +27,28 @@ CLASS=com.boundary.sdk.event.BoundaryEventDaemon
 USER=$USER
 
 # Stores the process id of the running boundary event SDK instance
-PID=${BOUNDARY_SDK_HOME}/var/beventd.pid
+PID=${BOUNDARY_SDK_PID_DIR}/beventd.pid
 
 # Define output locations for logging of standard out and standard error
-LOG_OUT=${BOUNDARY_SDK_HOME}/logs/beventd.log
-LOG_ERR=${BOUNDARY_SDK_HOME}/logs/beventd.err.log
+LOG_OUT=${BOUNDARY_SDK_LOG_DIR}/beventd.log
+LOG_ERR=${BOUNDARY_SDK_LOG_DIR}/beventd.err.log
 # Redirect standard error into standard out
 LOG_ERR="&1"
 
+# If the BOUNDARY_SDK_CONFIG_FILE is set this overrides the default
+if [ ! -z "$BOUNDARY_SDK_CONFIG_FILE" ]
+then
+  CONFIGURATION_FILE="$BOUNDARY_SDK_CONFIG_FILE"
+else
+  CONFIGURATION_FILE="$BOUNDARY_SDK_ETC_DIR/event-application.xml"
+fi
+
+JMX_OPTIONS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=9991"
+JMX_OPTIONS=
+
 do_exec()
 {
-    $EXEC -home "$JAVA_HOME" -cp "$SDK_CLASSPATH" -user "$USER" -server -Dboundary.application.context.uri="file:$BOUNDARY_SDK_HOME/etc/event-application.xml" -outfile "$LOG_OUT" -errfile "$LOG_ERR" -pidfile "$PID" $1 "$CLASS"
+    $EXEC -home "$JAVA_HOME" -cp "$SDK_CLASSPATH" -user "$USER" -server "$JMX_OPTIONS" -Dboundary.application.context.uri="file:$CONFIGURATION_FILE" -outfile "$LOG_OUT" -errfile "$LOG_ERR" -pidfile "$PID" $1 "$CLASS"
 }
 
 case "$1" in

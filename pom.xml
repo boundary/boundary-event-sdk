@@ -6,7 +6,7 @@
 	<groupId>com.boundary</groupId>
 	<artifactId>boundary-event-sdk</artifactId>
 	<packaging>jar</packaging>
-	<version>00.02.00</version>
+	<version>00.04.00</version>
 
 	<name>boundary-event-sdk</name>
 	<description>Boundary Event SDK enables the rapid integration of foreign events into the Boundary monitoring platform</description>
@@ -76,8 +76,10 @@
 
 		<!-- Properties for all of the java packages versions -->
 		<activemq-version>5.9.0</activemq-version>
-		<camel-version>2.12.3</camel-version>
-                <commons-cli-version>1.2</commons-cli-version>
+		<camel-version>2.13.1</camel-version>
+		<camel-service-version>0.4.0</camel-service-version>
+		<commons-cli-version>1.2</commons-cli-version>
+		<commons-codec-version>1.9</commons-codec-version>
 		<commons-daemon-version>1.0.15</commons-daemon-version>
 		<commons-io-version>1.3.2</commons-io-version>
 		<commons-lang3-version>3.3.2</commons-lang3-version>
@@ -86,14 +88,16 @@
 		<exec-maven-plugin-version>1.3</exec-maven-plugin-version>
 		<junit-version>4.8.1</junit-version>
 		<log4j-version>1.2.17</log4j-version>
-                <maven-compiler-plugin-version>3.1</maven-compiler-plugin-version>
+		<maven-compiler-plugin-version>3.1</maven-compiler-plugin-version>
 		<maven-dependency-plugin-version>2.8</maven-dependency-plugin-version>
 		<maven-javadoc-plugin-version>2.8.1</maven-javadoc-plugin-version>
 		<maven-pdf-plugin-version>1.2</maven-pdf-plugin-version>
 		<maven-site-plugin-version>3.3</maven-site-plugin-version>
 		<maven-project-info-reports-plugin-version>2.7</maven-project-info-reports-plugin-version>
+		<mysql-connector-java-version>5.1.31</mysql-connector-java-version>
 		<rpm-maven-plugin-version>2.0.1</rpm-maven-plugin-version>
-		<slf4j-api-version>1.7.6</slf4j-api-version>
+		<slf4j-api-version>1.7.7</slf4j-api-version>
+		<slf4j-log4j12-version>1.7.7</slf4j-log4j12-version>
 		<snmp4j-version>2.2.5</snmp4j-version>
 		<snmp4j-smi-version>1.1.3</snmp4j-smi-version>
 		<snmp4j-smi-pro-version>1.4.2</snmp4j-smi-pro-version>
@@ -101,32 +105,32 @@
 		<spring-security-version>3.1.4.RELEASE</spring-security-version>
 		<syslog4j-version>0.9.30</syslog4j-version>
 
-                <!-- RPM packaging properties -->
-                <rpm-top-level-dir>/opt/boundary</rpm-top-level-dir>
-                <boundary-sdk-rpm-user-name>root</boundary-sdk-rpm-user-name>
-                <boundary-sdk-rpm-group-name>root</boundary-sdk-rpm-group-name>
-                <boundary-sdk-rpm-app-dir>/usr/share/besdk</boundary-sdk-rpm-app-dir>
-                <boundary-sdk-rpm-bin-dir>/usr/bin</boundary-sdk-rpm-bin-dir>
-                <boundary-sdk-rpm-etc-dir>/etc</boundary-sdk-rpm-etc-dir>
-                <boundary-sdk-rpm-jar-dir>/usr/share/besdk/lib</boundary-sdk-rpm-jar-dir>
-                <boundary-sdk-rpm-man-dir>/usr/share/man</boundary-sdk-rpm-man-dir>
-                <boundary-sdk-rpm-initd-dir>/etc/init.d</boundary-sdk-rpm-initd-dir>
+		<!-- RPM packaging properties -->
+		<rpm-top-level-dir>/opt/boundary</rpm-top-level-dir>
+		<boundary-sdk-rpm-user-name>root</boundary-sdk-rpm-user-name>
+		<boundary-sdk-rpm-group-name>root</boundary-sdk-rpm-group-name>
+		<boundary-sdk-rpm-app-dir>/usr/share/besdk</boundary-sdk-rpm-app-dir>
+		<boundary-sdk-rpm-bin-dir>/usr/bin</boundary-sdk-rpm-bin-dir>
+		<boundary-sdk-rpm-etc-dir>/etc</boundary-sdk-rpm-etc-dir>
+		<boundary-sdk-rpm-jar-dir>/usr/share/besdk/lib</boundary-sdk-rpm-jar-dir>
+		<boundary-sdk-rpm-man-dir>/usr/share/man</boundary-sdk-rpm-man-dir>
+		<boundary-sdk-rpm-initd-dir>/etc/init.d</boundary-sdk-rpm-initd-dir>
 
 		<!-- JAVA Versions -->
-		<source-java-version>1.7</source-java-version>
-		<target-java-version>1.7</target-java-version>
+		<source-java-version>1.8</source-java-version>
+		<target-java-version>1.8</target-java-version>
         </properties>
 	<build>
 		<plugins>
-                        <plugin>
-                                <groupId>org.apache.maven.plugins</groupId>
-                                <artifactId>maven-compiler-plugin</artifactId>
-                                <version>${maven-compiler-plugin-version}</version>
-                                <configuration>
-                                        <source>${source-java-version}</source>
-                                        <target>${target-java-version}</target>
-                                </configuration>
-                        </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin-version}</version>
+				<configuration>
+					<source>${source-java-version}</source>
+					<target>${target-java-version}</target>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -151,7 +155,8 @@
 				<version>${camel-version}</version>
 				<artifactId>camel-maven-plugin</artifactId>
 				<configuration>
-					<applicationContextUri>META-INF/event-application.xml</applicationContextUri>
+					<applicationContextUri>META-INF/spring/event-application.xml</applicationContextUri>
+					<logClasspath>true</logClasspath>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -190,6 +195,7 @@
 				<configuration>
 					<descriptors>
 						<descriptor>src/main/assembly/default.xml</descriptor>
+						<descriptor>src/main/assembly/tools.xml</descriptor>
 					</descriptors>
 				</configuration>
 			</plugin>
@@ -255,11 +261,14 @@
 					<license> Apache License Version 2.0, January 2004</license>
 					<distribution>Boundary,Inc 2014</distribution>
 					<group>Application/Collectors</group>
+					<needarch>true</needarch>
 <!-- TBD: Find a suitable icon
 					<icon>src/main/resources/icon.gif</icon>
 -->
 					<packager>Boundary, Inc.</packager>
+<!--
 					<prefix>/opt/boundary</prefix>
+-->
 <!--
 					<changelogFile>src/changelog</changelogFile>
 -->
@@ -268,14 +277,100 @@
 					</defineStatements>
 					<mappings>
 						<mapping>
-							<directory>/opt/boundary/bin/beventd</directory>
-							<filemode>440</filemode>
-							<username>root</username>
-							<groupname>root</groupname>
+							<directory>${boundary-sdk-rpm-bin-dir}</directory>
+							<directoryIncluded>false</directoryIncluded>
+							<filemode>755</filemode>
+							<username>${boundary-sdk-rpm-user-name}</username>
+							<groupname>${boundary-sdk-rpm-group-name}</groupname>
 							<sources>
                                 				<source>
-									<location>src/main/scripts/beventd</location>
+									<location>src/main/scripts</location>
+									<includes>
+										<include>bmibc</include>
+										<include>send-v1-trap</include>
+										<include>send-v2c-trap</include>
+										<include>send-syslog</include>
+									</includes>
                                 				</source>
+                                				<source>
+                                					<location>src/native/unix</location>
+                                					<includes>
+										<include>jsvc</include>
+                                					</includes>
+                                				</source>
+							</sources>
+						</mapping>
+						<mapping>
+							<directory>${boundary-sdk-rpm-jar-dir}</directory>
+							<directoryIncluded>false</directoryIncluded>
+							<filemode>744</filemode>
+							<username>${boundary-sdk-rpm-user-name}</username>
+							<groupname>${boundary-sdk-rpm-group-name}</groupname>
+							<sources>
+                                				<source>
+									<location>target/lib</location>
+                                				</source>
+							</sources>
+						</mapping>
+						<mapping>
+							<directory>${boundary-sdk-rpm-initd-dir}</directory>
+							<directoryIncluded>false</directoryIncluded>
+							<filemode>755</filemode>
+							<username>${boundary-sdk-rpm-user-name}</username>
+							<groupname>${boundary-sdk-rpm-group-name}</groupname>
+							<sources>
+								<source>
+									<location>src/main/scripts/beventd</location>
+								</source>
+							</sources>
+						</mapping>
+						<mapping>
+							<directory>${boundary-sdk-rpm-etc-dir}/besdk</directory>
+							<directoryIncluded>false</directoryIncluded>
+							<filemode>744</filemode>
+							<username>${boundary-sdk-rpm-user-name}</username>
+							<groupname>${boundary-sdk-rpm-group-name}</groupname>
+							<sources>
+								<source>
+									<location>src/main/scripts/beventd.conf</location>
+								</source>
+								<source>
+									<location>src/main/resources/META-INF/event-application.xml</location>
+								</source>
+								<source>
+									<location>src/main/resources</location>
+									<includes>
+										<include>syslog.status.properties</include>
+										<include>syslog.severity.properties</include>
+										<include>syslog.facility.properties</include>
+										<include>log4j.properties</include>
+									</includes>
+								</source>
+							</sources>
+						</mapping>
+						<mapping>
+							<directory>${boundary-sdk-rpm-app-dir}/mibrepository</directory>
+							<directoryIncluded>false</directoryIncluded>
+							<filemode>744</filemode>
+							<username>${boundary-sdk-rpm-user-name}</username>
+							<groupname>${boundary-sdk-rpm-group-name}</groupname>
+							<sources>
+                                				<source>
+									<location>src/main/resources/mibrepository</location>
+                                				</source>
+							</sources>
+						</mapping>
+						<mapping>
+							<directory>${boundary-sdk-rpm-app-dir}</directory>
+							<directoryIncluded>false</directoryIncluded>
+							<filemode>744</filemode>
+							<sources>
+								<source>
+									<location>target</location>
+									<includes>
+										<include>${project.name}-${project.version}.jar</include>
+									</includes>
+								</source>
 							</sources>
 						</mapping>
 					</mappings>
@@ -345,7 +440,7 @@
 						</configuration>
 					</execution>
 -->
-					<execution><!-- Run our version calculation script -->
+					<execution>
 						<id>Build Native Commons Daemon</id>
 						<phase>compile</phase>
 						<goals>
@@ -376,6 +471,22 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-eclipse</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jaxb</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jetty</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-spring</artifactId>
 			<version>${camel-version}</version>
 		</dependency>
@@ -383,6 +494,11 @@
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>${commons-lang-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-ssh</artifactId>
+			<version>${camel-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
@@ -400,6 +516,11 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j-api-version}</version>
+		</dependency>
+		<dependency> 
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j-log4j12-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
@@ -424,12 +545,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-http</artifactId>
+			<artifactId>camel-exec</artifactId>
 			<version>${camel-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-http4</artifactId>
+			<artifactId>camel-http</artifactId>
 			<version>${camel-version}</version>
 		</dependency>
 		<dependency>
@@ -508,6 +629,11 @@
 			<version>${camel-version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-stream</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+		<dependency>
 			<groupId>commons-cli</groupId>
 			<artifactId>commons-cli</artifactId>
 			<version>${commons-cli-version}</version>
@@ -521,6 +647,41 @@
 			<groupId>commons-daemon</groupId>
 			<artifactId>commons-daemon</artifactId>
 			<version>${commons-daemon-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>${commons-codec-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jdbc</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-xstream</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.mina</groupId>
+			<artifactId>mina-core</artifactId>
+			<version>1.1.7</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql-connector-java-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.boundary</groupId>
+			<artifactId>camel-service</artifactId>
+			<version>${camel-service-version}</version>
 		</dependency>
 	</dependencies>
 

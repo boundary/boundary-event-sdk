@@ -9,7 +9,4 @@ See the [user guide](http://boundary.github.io/boundary-event-sdk/user-guide.htm
 
 Specific configuration details for the adapters are found [here](http://boundary.github.io/boundary-event-sdk/adapters/index.html)
 
-Pre-Build distributions for CentOS can be found [here](http://github.com/boundary/boundary-event-sdk/releases).
-
-See the [site](http
-
+Pre-Built distributions for CentOS can be found [here](https://github.com/boundary/boundary-event-sdk/releases)

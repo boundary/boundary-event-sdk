@@ -1,0 +1,47 @@
+{
+  "notificationId": "cM7tcSWntNfGDDQcvfS6csLNKyQ=",
+  "event": {
+    "id": 323515771,
+    "organizationId": "DkQ2uOYtw0DyII696fpBUzIUMfs",
+    "fingerprint": "cM7tcSWntNfGDDQcvfS6csLNKyQ=",
+    "severity": "CRITICAL",
+    "source": {
+            "name": "Lonesome no More, Inc.",
+            "ref": "DkQ2uOYtw0DyII696fpBUzIUMfs",
+            "type": "organization"
+        },
+    "properties": {
+            "generator": "Boundary Event Console",
+            "links": []
+        },
+    "status": "OPEN",
+    "fingerprintFields": [
+            "generator",
+            "@title"
+        ],
+    "title": "Critical Test Event",
+    "message": "Hello World",
+    "relatedSources": [
+      {
+        "ref": "8k01Jt6gng6Oz7LBJI",
+        "type": "group",
+        "name": "cell - celine"
+      },
+      {
+        "ref": "8k02T94etkGe16ddp2",
+        "type": "conversation",
+        "name": "Syslog"
+      }
+    ],
+    "timesSeen": 1,
+    "firstSeenAt": "2014-08-01T20:14:29.380Z",
+    "lastSeenAt": "2014-08-01T21:04:24.146Z",
+    "lastUpdatedAt": "2014-08-01T21:04:24.155Z",
+    "tags": [
+      "planned-maintenance"
+    ]
+  },
+  "filterId": "e3c045ec-8028-48ce-9373-93e5b01c690c",
+  "filterName": "Pester Michael about Critical events",
+  "notificationId": "4ba705f6-690c-4877-b041-791b84e1e032"
+}

@@ -79,7 +79,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	/**
 	 * Sets the creation date of a raw event.
 	 * 
-	 * @param createdAt Date and time ({@link Date})  of when the event was created.
+	 * @param createdAt Date and time ({@link Date}) of when the event was created.
 	 * 
 	 * @return Returns the {@link RawEvent}
 	 */
@@ -111,7 +111,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * Adds a single finger print field a raw event.
 	 * 
 	 * @param fingerPrintFieldName {@link String} containing the finger print field to the {@link RawEvent}
-	 * @return Returns the {@link RawEvent}
+	 * @return {@link RawEvent}
 	 */
 	public RawEvent addFingerprintField(String fingerPrintFieldName) {
 		if (fingerprintFields == null) {
@@ -125,9 +125,9 @@ public class RawEvent extends BaseEvent implements Serializable {
 	/**
 	 * Removes a finger print field from a raw event.
 	 * 
-	 * @param fieldName
+	 * @param fieldName Name of the field
 	 * 
-	 * @return Returns the {@link RawEvent}
+	 * @return {@link RawEvent}
 	 */
 	public RawEvent removeFingerprintField(String fieldName) {
 		if (fingerprintFields != null){
@@ -141,7 +141,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * 
 	 * @param fingerprintFields Finger print fields to use for the {@link RawEvent}
 	 * 
-	 * @return Returns the {@link RawEvent}
+	 * @return {@link RawEvent}
 	 */
 	public RawEvent setFingerprintFields(ArrayList<String> fingerprintFields) {
 		if (fingerprintFields == null) {
@@ -182,8 +182,8 @@ public class RawEvent extends BaseEvent implements Serializable {
 	/**
 	 * Set the Boundary organization id on the raw event.
 	 * 
-	 * @param organizationId Boundary organizationId
-	 * @return Returns the {@link RawEvent}
+	 * @param organizationId Boundary organization id
+	 * @return {@link RawEvent}
 	 */
 	public RawEvent setOrganizationId(String organizationId) {
 		this.organizationId = organizationId;
@@ -201,8 +201,8 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * Adds a property to a raw event. A property consists of
 	 * a name/value pair.
 	 * 
-	 * @param propertyName
-	 * @param propertValue
+	 * @param propertyName Name of property
+	 * @param propertValue Value of property
 	 */
 	public void addProperty(String propertyName,Object propertValue) {
 		if (properties == null) {
@@ -214,7 +214,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	/**
 	 * Removes a property with the given name from the raw event.
 	 * 
-	 * @param propertyName {@link String} containing the name of the property to remove from the {@link RawEvent}.
+	 * @param propertyName Contains the name of the property to remove from the {@link RawEvent}.
 	 */
 	public void removeProperty(String propertyName) {
 		if (properties != null) {
@@ -238,7 +238,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * Sets the properties of a raw event.
 	 * 
 	 * @param properties ({@link LinkedHashMap}) to be associated with the {@link RawEvent}
-	 * @return Returns the {@link RawEvent}
+	 * @return {@link RawEvent}
 	 */
 	public RawEvent setProperties(LinkedHashMap<String,Object> properties) {
 		if (properties == null) {
@@ -251,7 +251,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	/**
 	 * Returns received date and time associated with the raw event.
 	 * 
-	 * @return {@link Date} Date and time when the {@link RawEvent} 
+	 * @return {@link Date} Date and time when the {@link RawEvent} was received.
 	 */
 	public Date getReceivedAt() {
 		return this.receivedAt;
@@ -311,7 +311,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	/**
 	 * Gets the current severity from a raw event
 	 * 
-	 * @return Returns {@link Severity} of this {@link RawEvent}
+	 * @return {@link Severity} of this {@link RawEvent}
 	 */
 	public Severity getSeverity() {
 		if (severity == null) {
@@ -324,7 +324,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * Set the severity of a raw event
 	 * 
 	 * @param severity - Severity {@link Severity} to be associated with the {@link RawEvent}
-	 * @return Returns the {@link RawEvent}
+	 * @return {@link RawEvent}
 	 */
 	public RawEvent setSeverity(Severity severity) {
 		if (severity == null) {
@@ -357,7 +357,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * Sets the source of a raw event
 	 * 
 	 * @param source {@link Source} to associate with the event.
-	 * @return Returns the {@link RawEvent}
+	 * @return {@link RawEvent}
 	 */
 	public RawEvent setSource(Source source) {
 		if (source == null) {
@@ -432,6 +432,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * Associates an array of tags with a raw event.
 	 * 
 	 * @param tags {@link ArrayList} of tags to associate with the {@link RawEvent}
+	 * @return {@link RawEvent}
 	 */
 	public RawEvent setTags(ArrayList<String> tags) {
 		if (tags == null) {
@@ -493,11 +494,11 @@ public class RawEvent extends BaseEvent implements Serializable {
 		s.append(fingerprintFields == null ? "" : ",fingerprintFields: " + fingerprintFields.toString());
 		s.append(message == null ? "": ",message: " + message);
 		s.append(organizationId == null ? "": ",organizationId: " + organizationId);
-		s.append(properties == null ? "" : ",properties: " + properties);
+		s.append(properties == null ? "" : ",properties => " + properties);
 		s.append(receivedAt == null ? "" : ",receivedAt: " + receivedAt);
-		s.append(sender == null ? "" : ",sender: " + sender);
+		s.append(sender == null ? "" : ",sender => " + sender);
 		s.append(severity == null ? "" : ",severity: " + severity);
-		s.append(source == null ? "" : ",source: " + source);
+		s.append(source == null ? "" : ",source => " + source);
 		s.append(status == null ? "" : ",status: " + status);
 		s.append(tags == null ? "" : ",tags: " + tags.toString());
 		s.append(title == null ? "" : ",title: " + title);

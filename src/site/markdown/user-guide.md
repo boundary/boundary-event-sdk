@@ -22,7 +22,7 @@ Installation
 Configuration
 -------------
 
-This sections provides the generatl configuration for the Boundary Event SDK. Specific instructions
+This sections provides the general configuration for the Boundary Event SDK. Specific instructions
 for each of the event adapters can found [here](adapters/index.html).
 
 ### Environment Variables

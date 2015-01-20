@@ -8,6 +8,7 @@ import org.apache.camel.component.http.HttpConfiguration;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import static org.apache.camel.LoggingLevel.*;
 
 /**
  * {@link RouteBuilder} for sending events to Boundary. Accepts serialized {@link RawEvent}
@@ -35,13 +36,20 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 		this.apiKey = "";
 		this.fromUri = "direct:boundary-event";
 	}
+	
+	/**
+	 * Get the Boundary Organization ID to use by default 
+	 * @return {@link String} organization id
+	 */
+	public String getOrgId() {
+		return this.orgId;
+	}
 		
 	/**
 	 * Set the Boundary Organization ID to use by default
 	 * 
 	 * @param orgId Organization Id from the Boundary console.
 	 */
-	
 	public void setOrgId(String orgId) {
 		this.orgId = orgId;
 	}
@@ -58,7 +66,7 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	/**
 	 * Current value of the API key
 	 * 
-	 * @return String
+	 * @return {@link String}
 	 */
 	public String getApiKey() {
 		return this.apiKey;
@@ -67,7 +75,7 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	/**
 	 * Set the host to use for sending Boundary API requests
 	 * 
-	 * @param apiHost
+	 * @param apiHost Host that is running the Boundary API
 	 */
 	public void setApiHost(String apiHost) {
 		this.apiHost = apiHost;
@@ -76,7 +84,7 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	/**
 	 * Return the current Boundary API host
 	 * 
-	 * @return String
+	 * @return {@link String}
 	 */
 	public String getApiHost() {
 		return this.apiHost;
@@ -85,7 +93,7 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	/**
 	 * Set the port to use for sending Boundary API requests
 	 * 
-	 * @param apiPort
+	 * @param apiPort Port to send Boundary API requests
 	 */
 	public void setApiPort(int apiPort) {
 		this.apiPort = apiPort;
@@ -94,14 +102,11 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	/**
 	 * Set the port to use for sending Boundary API requests
 	 * 
-	 * @return int
+	 * @return int Gets the port used to send Boundary API requests
 	 */
 	public int getApiPort() {
 		return this.apiPort;
 	}
-		
-	
-		
 	
 	/**
 	 * Configures the Camel route that receives {@link RawEvent}
@@ -130,13 +135,14 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 			.routeId(routeId)
 			.unmarshal().serialization()
 			.marshal().json(JsonLibrary.Jackson)
-			.to("log:com.boundary.sdk.BoundaryEventRoute?level=DEBUG&showBody=true")
+			.log(INFO,"RawEvent: ${body}")
 			.setHeader(Exchange.ACCEPT_CONTENT_TYPE, constant("application/json"))
 			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
 			.setHeader(Exchange.HTTP_METHOD, constant("POST"))
-			.to("log:com.boundary.sdk.event.BoundaryEventRouteBuilder?level=DEBUG&groupInterval=60000&groupDelay=60000&groupActiveOnly=false")
+			.to("log:com.boundary.sdk.event.BoundaryEventRouteBuilder?level=INFO&groupInterval=60000&groupDelay=60000&groupActiveOnly=false")
 			.to(url.toString())
-			.to("log:com.boundary.sdk.event.BoundaryEventRouteBuilder?level=INFO&showHeaders=true&multiline=true")
+			.log(DEBUG,"HTTP Method: ${headers.CamelHttpMethod},AcceptContentType={headers.CamelAcceptContentType}")
+			.log(INFO,"HTTP Response Code: ${headers.CamelHttpResponseCode},Location: ${headers.Location}")
 			;
 	}
 }

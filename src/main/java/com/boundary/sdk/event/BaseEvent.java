@@ -2,6 +2,7 @@ package com.boundary.sdk.event;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +30,8 @@ public class BaseEvent {
 	 * Helper method that truncates {@link String}
 	 * to the maximum allowed by the Boundary Event API
 	 * 
-	 * @param str
-	 * @return String
+	 * @param str {@link String} to truncate
+	 * @return {@link String}
 	 */
 	public static String truncateToMaximumLength(String str) {
 		int length = Math.min(str.length(),MAXIMUM_STRING_LENGTH);
@@ -45,7 +46,7 @@ public class BaseEvent {
 	 * Helper method that truncates an {@link ArrayList} of {@link String}
 	 * to the maximum allowed by the Boundary Event API
 	 * 
-	 * @param array
+	 * @param array An {@link ArrayList} of {@link String}s to truncate.
 	 * @return {@link ArrayList} of {@link String}
 	 */
 	public static ArrayList<String> truncateToMaximumLength(ArrayList<String> array) {
@@ -59,7 +60,7 @@ public class BaseEvent {
 	/**
 	 * Helper method that truncates an {@link Object} if it is a {@link String}
 	 * to the maximum allowed by the Boundary Event API
-	 * @param obj
+	 * @param obj {@link Object} instance that is a string.
 	 * @return {@link Object}
 	 */
 	public static Object truncateToMaximumLength(Object obj) {
@@ -73,14 +74,14 @@ public class BaseEvent {
 	}
 	
 	/**
-	 * Helper method that truncates a {@link LinkedHashMap} with keys of {@link String}
+	 * Helper method that truncates a {@link java.util.LinkedHashMap} with keys of {@link String}
 	 * and values of {@link Object} that are instances of {@link String}
 	 * to the maximum allowed by the Boundary Event API
 	 * 
-	 * @param prop
-	 * @return {@link LinkedHashMap} with key {@link String} and value {@link Object}
+	 * @param prop {@link java.util.LinkedHashMap} that contains the {@link String}s to truncate.
+	 * @return {@link java.util.LinkedHashMap} with key {@link String} and value {@link Object}
 	 */
-	public static LinkedHashMap<String,Object> truncateToMaximumLength(LinkedHashMap<String,Object> prop) {
+	public static LinkedHashMap<String,Object> truncateToMaximumLength(Map<String,Object> prop) {
 		LinkedHashMap<String,Object> truncatedProp = new LinkedHashMap<String,Object>(prop.size());
 		
 		for (String key : prop.keySet()) {

@@ -1,6 +1,16 @@
-/**
- * 
- */
+// Copyright 2014 Boundary, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 package com.boundary.sdk.event;
 
 import java.io.Serializable;
@@ -32,55 +42,57 @@ public class Source implements Serializable {
 	@JsonProperty
 	private String name;
 	@JsonProperty
-	private LinkedHashMap<String,Object> properties;
+	private Map<String,Object> properties;
 
 	/**
 	 * Default constructor
 	 */
 	public Source() {
-		this("","");
 	}
 	
 	/**
 	 * Constructor that uses ref and type
 	 * 
-	 * @param ref
-	 * @param type
+	 * @param ref {@link String} Source reference
+	 * @param type {@link String} Source type
 	 */
 	public Source(String ref, String type) {
-		this(ref,type,"");
+		setRef(ref);
+		setType(type);
 	}
 	
 	/**
 	 * Constructor
 	 * 
-	 * @param ref
-	 * @param type
-	 * @param name
+	 * @param ref {@link String} Source reference
+	 * @param type {@link String} Source type
+	 * @param name {@link String} Source name
 	 */
 	public Source(String ref,String type,String name) {
-		this(ref,type,name,new HashMap<String,Object>());
+		setRef(ref);
+		setType(type);
+		setName(name);
 	}
 
 	/**
 	 * Constructor
 	 * 
-	 * @param ref
-	 * @param type
-	 * @param name
-	 * @param properties
+	 * @param ref {@link String} Source reference
+	 * @param type {@link String} Source type
+	 * @param name {@link String} Source name
+	 * @param properties {@link String} Source properties
 	 */
 	public Source(String ref, String type, String name, Map<String,Object> properties) {
-//		this.ref = ref;
-//		this.type = type;
-//		this.name = name;
-//		this.properties = properties;
+		setRef(ref);
+		setType(type);
+		setName(name);
+		setProperties(properties);
 	}
 	
 	/**
 	 * Set the ref value
 	 * 
-	 * @param ref
+	 * @param ref {@link String} Source reference
 	 * @return {@link Source}
 	 */
 	public Source setRef(String ref) {
@@ -90,7 +102,7 @@ public class Source implements Serializable {
 	
 	/**
 	 * 
-	 * @return {@link Source}
+	 * @return {@link String}
 	 */
 	public String getRef() {
 		return this.ref;
@@ -98,7 +110,7 @@ public class Source implements Serializable {
 	
 	/**
 	 * Set the type of the source.
-	 * @param type
+	 * @param type {@link String} Source type
 	 * @return {@link Source}
 	 */
 	public Source setType(String type) {
@@ -109,7 +121,7 @@ public class Source implements Serializable {
 	/**
 	 * Get the type of this source.
 	 * 
-	 * @return {@link Source}
+	 * @return {@link String}
 	 */
 	public String getType() {
 		return this.type;
@@ -118,7 +130,7 @@ public class Source implements Serializable {
 	/**
 	 * Sets the name of this source
 	 * 
-	 * @param name
+	 * @param name {@link String} Source name
 	 * @return {@link Source}
 	 */
 	public Source setName(String name) {
@@ -154,10 +166,10 @@ public class Source implements Serializable {
 	
 	/**
 	 * Set the properties of the {@link RawEvent}
-	 * @param properties
+	 * @param properties {@link String} Source properties
 	 * @return {@link Source}
 	 */
-	public Source setProperties(LinkedHashMap<String,Object> properties) {
+	public Source setProperties(Map<String,Object> properties) {
 		if (properties == null) {
 			initializeProperties();
 		}
@@ -168,8 +180,8 @@ public class Source implements Serializable {
 	/**
 	 * Add a property to a {@link RawEvent}
 	 * 
-	 * @param key
-	 * @param value
+	 * @param key {@link String} Name of the property
+	 * @param value {@link Object} Value of the property
 	 * @return {@link Source}
 	 */
 	public Source addProperty(String key,Object value) {
@@ -187,9 +199,9 @@ public class Source implements Serializable {
 	 */
 	public String toString() {
 		StringBuffer s = new StringBuffer();
-		s.append(ref == null ? "": ",ref: " + this.ref);
+		s.append(ref == null ? "" : "ref: " + this.ref);
 		s.append(type == null ? "" : ",type: " + this.type);
-		s.append(name == null ? "" : "name: " + this.name);
+		s.append(name == null ? "" : ",name: " + this.name);
 		s.append(properties == null ? "": ",properties: " + this.properties);
 		return s.toString();
 	}
