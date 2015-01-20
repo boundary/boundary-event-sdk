@@ -23,7 +23,7 @@ public class ScriptUtils {
 	
 	/**
 	 * Finds a script to be tested from 
-	 * @param scriptPath
+	 * @param scriptPath File path
 	 * @return {@link File}
 	 */
 	static public FileReader getFile(String scriptPath) {

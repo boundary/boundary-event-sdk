@@ -1,0 +1,31 @@
+{
+    "event": {
+        "fingerprint": "cM7tcSWntNfGDDQcvfS6csLNKyQ=",
+        "fingerprintFields": [
+            "generator",
+            "@title"
+        ],
+        "firstSeenAt": "2014-07-17T16:54:05.968Z",
+        "id": 323515771,
+        "lastSeenAt": "2014-07-17T16:54:05.968Z",
+        "lastUpdatedAt": "2014-07-17T16:54:05.986Z",
+        "message": "Hello World",
+        "organizationId": "DkQ2uOYtw0DyII696fpBUzIUMfs",
+        "properties": {
+            "generator": "Boundary Event Console",
+            "links": []
+        },
+        "severity": "CRITICAL",
+        "source": {
+            "name": "Lonesome no More, Inc.",
+            "ref": "DkQ2uOYtw0DyII696fpBUzIUMfs",
+            "type": "organization"
+        },
+        "status": "OPEN",
+        "timesSeen": 1,
+        "title": "Critical Test Event"
+    },
+    "filterId": "e3c045ec-8028-48ce-9373-93e5b01c690c",
+    "filterName": "Pester Michael about Critical events",
+    "notificationId": "4ba705f6-690c-4877-b041-791b84e1e032"
+}

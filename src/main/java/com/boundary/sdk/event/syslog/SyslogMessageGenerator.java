@@ -46,7 +46,7 @@ public class SyslogMessageGenerator {
 	/**
 	 * Sets the host on the syslog message
 	 * 
-	 * @param host
+	 * @param host Host or IP address of syslog listener
 	 */
 	public void setHost(String host) {
 		syslog.getConfig().setHost(host);
@@ -55,7 +55,7 @@ public class SyslogMessageGenerator {
 	/**
 	 * Sets the facility on the syslog message
 	 * 
-	 * @param facility
+	 * @param facility Syslog facility
 	 */
 	public void setFacility(int facility) {
 		syslog.getConfig().setFacility(facility);
@@ -64,7 +64,7 @@ public class SyslogMessageGenerator {
 	/**
 	 * Set the port to send the syslog message
 	 * 
-	 * @param port
+	 * @param port Port of the syslog listener
 	 */
 	public void setPort(int port) {
 		syslog.getConfig().setPort(port);
@@ -73,7 +73,7 @@ public class SyslogMessageGenerator {
 	/**
 	 * Sends syslog messages with values set for count and delay.
 	 * 
-	 * @throws InterruptedException
+	 * @throws InterruptedException {@link Thread} is interrupted
 	 */
 	public void sendMessages() throws InterruptedException {
 		sendMessages(count,delay);
@@ -82,9 +82,9 @@ public class SyslogMessageGenerator {
 	/**
 	 * Sends syslog messages with the specified count and delay.
 	 * 
-	 * @param count
-	 * @param delay
-	 * @throws InterruptedException
+	 * @param count Number of syslog messages to send
+	 * @param delay Milliseconds to wait between sending of syslog messages
+	 * @throws InterruptedException Thread is interrupted
 	 */
 	public void sendMessages(int count,int delay) throws InterruptedException {
 		for (int n = count ; n != 0 ; n--) {
@@ -117,9 +117,10 @@ public class SyslogMessageGenerator {
 	
 	/**
 	 * Sends syslog messages with the number sent and delayed between each
-	 * passed in as arguments
-	 * @param args
-	 * @throws InterruptedException
+	 * passed in as arguments.
+	 * 
+	 * @param args Command line arguments
+	 * @throws InterruptedException Thread was interrupted
 	 */
 	public static void main(String[] args) throws InterruptedException {
 

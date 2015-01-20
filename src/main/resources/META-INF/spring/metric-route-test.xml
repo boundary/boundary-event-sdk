@@ -1,0 +1,28 @@
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+                   http://www.springframework.org/schema/beans
+                   http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                   http://camel.apache.org/schema/spring
+                   http://camel.apache.org/schema/spring/camel-spring.xsd">
+                   
+	<!-- Definition of the route that communicates with the Boundary Metric API host -->
+	<bean id="measure-route" class="com.boundary.sdk.event.metric.MeasureRouteBuilder">
+		<property name="routeId" value="BOUNDARY-METRIC"/>
+		<property name="startUpOrder" value="100"/>
+		<property name="orgId" value="#{systemEnvironment['BOUNDARY_ORG_ID']}"/>
+		<property name="host" value="#{systemEnvironment['BOUNDARY_METRICS_API_HOST']}"/>
+		<property name="user" value="#{systemEnvironment['BOUNDARY_METRICS_EMAIL']}"/>
+		<property name="password" value="#{systemEnvironment['BOUNDARY_METRICS_TOKEN']}"/>
+		<property name="fromUri" value="direct:measure-in"/>
+		<property name="toUri" value="mock:measure-out"/>
+	</bean>
+    
+	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+		
+		<routeBuilder ref="measure-route"/>
+		
+	</camelContext>
+</beans>
+	

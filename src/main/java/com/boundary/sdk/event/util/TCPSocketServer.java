@@ -14,9 +14,10 @@ public class TCPSocketServer {
 
     /**
      * Runs the server.
-     * @throws InterruptedException 
+     * @param args Command line parameters
+     * @throws IOException IO error occurs
      */
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException{
     	
     	if (args.length != 1) {
     		System.out.println("usage: <port>");

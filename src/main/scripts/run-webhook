@@ -1,0 +1,8 @@
+#!/bin/bash
+
+
+exec java -classpath "$CLASSPATH" -Dboundary.application.context.uri="$CONFIG_URI" "$MAIN_CLASS"
+#!/bin/bash
+
+
+mvn -q exec:java -Dexec.mainClass="com.boundary.sdk.event.snmp.SendTrap"

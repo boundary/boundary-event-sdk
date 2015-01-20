@@ -4,6 +4,14 @@
 # the top level of the distribution
 export BOUNDARY_SDK_HOME=$PWD
 
+export BOUNDARY_SDK_APP_DIR=${BOUNDARY_SDK_HOME}
+export BOUNDARY_SDK_BIN_DIR=${BOUNDARY_SDK_HOME}/bin
+export BOUNDARY_SDK_ETC_DIR=${BOUNDARY_SDK_HOME}/etc
+export BOUNDARY_SDK_JAR_DIR=${BOUNDARY_SDK_HOME}/lib
+export BOUNDARY_SDK_LOG_DIR=${BOUNDARY_SDK_HOME}/logs
+export BOUNDARY_SDK_PID_DIR=${BOUNDARY_SDK_HOME}/var/run
+export BOUNDARY_SDK_VAR_DIR=${BOUNDARY_SDK_HOME}/var
+
 # For the boundary organizational id and api key if the environmnent variable is 
 # already set then use that value otherwise set to empty
 export BOUNDARY_ORG_ID=${BOUNDARY_ORG_ID:=""}
@@ -16,7 +24,7 @@ export BOUNDARY_SDK_VERSION=0.02.00
 export BOUNDARY_MIB_LICENSE=${BOUNDARY_MIB_LICENSE:=""}
 
 # Set default location of the SNMP4J-SMI mib repository
-export BOUNDARY_MIB_REPOSITORY="$BOUNDARY_SDK_HOME/var/mibrepository"
+export BOUNDARY_MIB_REPOSITORY="${BOUNDARY_SDK_VAR_DIR}/mibrepository"
 
 # Add he bin directory into the PATH
 export PATH=$PATH:"$BOUNDARY_SDK_HOME/bin"

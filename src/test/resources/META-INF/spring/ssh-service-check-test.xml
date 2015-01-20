@@ -1,0 +1,22 @@
+ <beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+                   http://www.springframework.org/schema/beans
+                   http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                   http://camel.apache.org/schema/spring
+                   http://camel.apache.org/schema/spring/camel-spring.xsd">
+                   
+    <bean id="ssh-to-event-processor" class="com.boundary.sdk.event.service.ssh.SshResultToEventProcessor"/>
+   
+	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+		<route id="SSH-TO-EVENT-TEST">
+			<from uri="direct:in"/>
+			<log message="${body}"/>
+			<log message="${headers}"/>
+			<bean ref="ssh-to-event-processor"/>
+			<log message="${body}"/>
+			<log message="${headers}"/>
+			<to uri="mock:out"/>
+		</route>
+	</camelContext>
+</beans>

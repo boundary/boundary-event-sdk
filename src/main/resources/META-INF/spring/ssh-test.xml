@@ -1,0 +1,21 @@
+ <beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+                   http://www.springframework.org/schema/beans
+                   http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                   http://camel.apache.org/schema/spring
+                   http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+	
+		<propertyPlaceholder id="properties" location="classpath:META-INF/spring/service-check.properties"/>
+	
+		<route id="ssh-local-poll" startupOrder="10">
+			<!-- Have a timer fire every minute -->
+			<from uri="quartz://timerName?cron=0+0/1 * * * ?"/>
+			<to id="SSH" uri="ssh://davidg:Lerma$49@localhost"/>
+			<log message="${body}"/>
+			<to uri="mock:ssh-out"/>
+		</route>
+	</camelContext>
+</beans>

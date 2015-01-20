@@ -47,14 +47,23 @@ public class SNMPToEventProcessor implements Processor {
      * @param repositoryPath Path to compiled MIBs
      * @param license SNMP4J-SMI license from <a href="http://www.snmp4j.org">http://www.snmp4j.org</a>
      */
-	public SNMPToEventProcessor(String repositoryPath,String license) {
-		smi = new SmiSupport();
-		
-		smi.setLicense(license);
-		File mibDirectory = new File(repositoryPath);
-		smi.setRepository(mibDirectory.getAbsolutePath());
-		smi.initialize();
-		smi.loadModules();
+	public SNMPToEventProcessor(String repositoryPath, String license) {
+
+		// If the repositoryPath is null or zero length 
+		// then bypass configuring the structured management information.
+		if (repositoryPath != null && repositoryPath.length() > 0) {
+			smi = new SmiSupport();
+
+			smi.setLicense(license);
+			// TBD: Assert if repositoryPath is empty
+			File mibDirectory = new File(repositoryPath);
+			smi.setRepository(mibDirectory.getAbsolutePath());
+			smi.initialize();
+			smi.loadModules();
+		}
+		else {
+			throw new IllegalStateException("MIB repository path is null or empty.");
+		}
 	}
 
 	/**

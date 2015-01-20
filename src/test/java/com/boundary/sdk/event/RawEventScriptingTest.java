@@ -26,7 +26,7 @@ public class RawEventScriptingTest {
     ScriptEngine engine;
     RawEvent event;
     String scriptDirectory="js/rawevent";
-    String scriptEngineName = "JavaScript";
+    String scriptEngineName = "nashorn";
     
 
 	@BeforeClass

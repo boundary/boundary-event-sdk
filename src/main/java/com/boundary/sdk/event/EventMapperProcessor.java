@@ -45,7 +45,7 @@ public class EventMapperProcessor implements Processor  {
 
 
 	/**
-	 * @param args
+	 * @param args Command line arguments
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -58,6 +58,7 @@ public class EventMapperProcessor implements Processor  {
 
 	/**
 	 * 
+	 * @param exchange {@link Exchange} from the camel route
 	 */
 	@Override
 	public void process(Exchange exchange) throws Exception {
@@ -75,7 +76,7 @@ public class EventMapperProcessor implements Processor  {
 
 	/**
 	 * Sets the script to be used for the transformation of the event
-	 * @param scriptName
+	 * @param scriptName Name of the script to run
 	 */
 	public void setScriptName(String scriptName) {
 		this.scriptName = scriptName;
@@ -100,7 +101,7 @@ public class EventMapperProcessor implements Processor  {
 
 	/**
 	 * Set the location to look for scripts to associate with the {@link EventMapperProcessor}
-	 * @param scriptDirectory
+	 * @param scriptDirectory Path to the directory containing scripts
 	 */
 	public void setScriptDirectory(String scriptDirectory) {
 		this.scriptDirectory = scriptDirectory;
