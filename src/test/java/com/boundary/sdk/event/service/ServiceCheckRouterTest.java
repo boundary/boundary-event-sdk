@@ -1,9 +1,7 @@
 package com.boundary.sdk.event.service;
 
-import static org.junit.Assert.*;
-
 import org.apache.camel.component.mock.MockEndpoint;
-import org.apache.camel.test.junit4.CamelSpringTestSupport;
+import org.apache.camel.test.spring.CamelSpringTestSupport;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

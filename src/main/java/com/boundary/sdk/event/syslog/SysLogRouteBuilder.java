@@ -2,7 +2,7 @@ package com.boundary.sdk.event.syslog;
 
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.spi.DataFormat;
-import org.apache.camel.component.syslog.Rfc3164SyslogDataFormat;
+import org.apache.camel.component.syslog.SyslogDataFormat;
 
 import com.boundary.sdk.event.BoundaryRouteBuilder;
 import com.boundary.sdk.event.UDPRouteBuilder;
@@ -33,7 +33,7 @@ public class SysLogRouteBuilder extends UDPRouteBuilder {
 	@Override
 	public void configure() {
 		String uri = "netty:udp://"+ getBindAddress() + ":" + getPort() + "?sync=false&allowDefaultCodec=false";
-        DataFormat syslogDataFormat = new Rfc3164SyslogDataFormat();
+        DataFormat syslogDataFormat = new SyslogDataFormat();
 		RouteDefinition routeDefinition = from(uri);
 		
 		routeDefinition

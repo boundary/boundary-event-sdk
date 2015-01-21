@@ -1,15 +1,13 @@
 package com.boundary.sdk.event.syslog;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.camel.Endpoint;
 import org.apache.camel.Exchange;
-import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
-import org.apache.camel.test.junit4.CamelSpringTestSupport;
+import org.apache.camel.component.syslog.SyslogMessage;
+import org.apache.camel.test.spring.CamelSpringTestSupport;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -17,20 +15,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.apache.camel.component.syslog.SyslogMessage;
-import org.apache.camel.component.syslog.SyslogFacility;
-import org.apache.camel.component.syslog.SyslogSeverity;
-import org.apache.camel.component.syslog.SyslogConstants;
 
 import com.boundary.sdk.event.RawEvent;
 
 /**
  * Smoke test to test mapping of a {@link SyslogMessage} to a {@link RawEvent}
- * 
- * @author davidg
  *
  */
-@SuppressWarnings("deprecation")
 public class SyslogToEventScriptingTest extends CamelSpringTestSupport {
 	
 	SyslogMessage sm;

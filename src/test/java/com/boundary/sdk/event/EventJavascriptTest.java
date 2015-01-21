@@ -2,7 +2,7 @@ package com.boundary.sdk.event;
 
 import java.io.File;
 
-import org.apache.camel.test.junit4.CamelSpringTestSupport;
+import org.apache.camel.test.spring.CamelSpringTestSupport;
 import org.junit.Test;
 import org.junit.Ignore;
 import org.slf4j.Logger;
@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-@SuppressWarnings("deprecation")
+//@SuppressWarnings("deprecation")
 public class EventJavascriptTest extends CamelSpringTestSupport {
 	private static Logger LOG = LoggerFactory.getLogger(EventJavascriptTest.class);
 

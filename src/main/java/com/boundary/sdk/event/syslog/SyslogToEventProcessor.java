@@ -99,7 +99,7 @@ public class SyslogToEventProcessor implements Processor {
 		e.addFingerprintField("message");
 		
 		// Set the time at which the Syslog record was created
-		e.setCreatedAt(sm.getTimestamp());
+		e.setCreatedAt(sm.getTimestamp().getTime());
 
 		// Set Title
 		e.setTitle("Syslog message from: " + sm.getHostname());

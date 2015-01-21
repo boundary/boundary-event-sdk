@@ -3,15 +3,11 @@ package com.boundary.sdk.event;
 import java.io.File;
 import java.util.ArrayList;
 
-import org.apache.camel.Endpoint;
-import org.apache.camel.Exchange;
-import org.apache.camel.test.junit4.CamelSpringTestSupport;
+import org.apache.camel.test.spring.CamelSpringTestSupport;
 import org.junit.Test;
-import org.slf4j.Logger;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-@SuppressWarnings("deprecation")
 public class EventToJSONTest extends CamelSpringTestSupport {
 	protected AbstractXmlApplicationContext createApplicationContext() {
 		return new ClassPathXmlApplicationContext("META-INF/event-to-json.xml");
