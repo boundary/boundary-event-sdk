@@ -77,6 +77,7 @@
 		<!-- Properties for all of the java packages versions -->
 		<activemq-version>5.9.0</activemq-version>
 		<camel-version>2.14.1</camel-version>
+		<camel-esper-version>2.13.2</camel-esper-version>
 		<camel-service-version>0.4.0</camel-service-version>
 		<commons-cli-version>1.2</commons-cli-version>
 		<commons-codec-version>1.9</commons-codec-version>
@@ -474,6 +475,11 @@
 			<artifactId>camel-eclipse</artifactId>
 			<version>${camel-version}</version>
 		</dependency>
+		<dependency>
+        		<groupId>org.apache-extras.camel-extra</groupId>
+        		<artifactId>camel-esper</artifactId>
+			<version>${camel-esper-version}</version>
+         	</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-jaxb</artifactId>
