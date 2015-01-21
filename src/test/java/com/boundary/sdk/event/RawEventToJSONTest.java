@@ -16,7 +16,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.boundary.sdk.event.RawEvent;
 
-@SuppressWarnings("deprecation")
 public class RawEventToJSONTest extends CamelSpringTestSupport {
 	
     @Produce(uri = "direct:in")
