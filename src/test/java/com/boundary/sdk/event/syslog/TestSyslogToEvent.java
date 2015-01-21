@@ -49,9 +49,6 @@ public class TestSyslogToEvent extends CamelTestSupport {
         
         MockEndpoint endPoint  = getMockEndpoint("mock:test");
         endPoint.setExpectedMessageCount(1);
-        		
-        //endPoint.expectedBodiesReceived(message);
-        
         endPoint.assertIsSatisfied();       
     }
 
