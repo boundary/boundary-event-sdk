@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Copyright 2014 Boundary, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+                   http://www.springframework.org/schema/beans
+                   http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                   http://camel.apache.org/schema/spring
+                   http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+
+	<bean id="boundary-event-route" class="com.boundary.sdk.event.BoundaryEventRouteBuilder">
+		<property name="routeId" value="BOUNDARY-EVENT"/>
+		<property name="startUpOrder" value="100"/>
+		<property name="orgId" value="#{systemEnvironment['BOUNDARY_ORG_ID']}"/>
+		<property name="apiKey" value="#{systemEnvironment['BOUNDARY_API_KEY']}"/>
+		<property name="fromUri" value="seda:boundary-event?concurrentConsumers=10"/>
+	</bean>
+	
+	<bean id="syslog-route" class="com.boundary.sdk.event.syslog.SysLogRouteBuilder">
+		<property name="routeId" value="SYSLOG"/>
+		<property name="startUpOrder" value="120"/>
+		<property name="port" value="1514"/>
+		<property name="convertToEvent" value="false"/>
+		<property name="toUri" value="seda:to-esper"/>
+	</bean>
+	
+	<bean id="esper-route" class="com.boundary.sdk.event.esper.EsperRouteBuilder">
+		<property name="routeId" value="ESPER"/>
+		<property name="startUpOrder" value="130"/>
+		<property name="fromUri" value="seda:to-esper"/>
+		<property name="toUri" value="seda:from-esper"/>
+	</bean>
+	
+	<bean id="generate-events" class="com.boundary.sdk.event.esper.EsperProcessor"/>
+	
+    <bean id="ssh-to-event-processor" class="com.boundary.sdk.event.service.ssh.SshResultToEventProcessor"/>
+   
+	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+			
+        <routeBuilder ref="boundary-event-route"/>
+		<routeBuilder ref="syslog-route"/>
+		<routeBuilder ref="esper-route"/>
+		
+<!-- 		<route id="TIMER-ROUTE">
+			<from uri="timer://foo?fixedRate=true&amp;period=1000"/>
+			<bean ref="generate-events"/>
+			<to uri="seda:to-esper"/>
+		</route>
+ -->		
+<!-- 		<route id="SCOPE-ROUTE">
+			<from uri="seda:out-syslog"/>
+			<unmarshal>
+				<serialization/>
+			</unmarshal>
+			<to uri="stream:out"/>		
+			<marshal>
+				<serialization/>
+			</marshal>
+			<to uri="seda:to-esper"/>
+		</route>
+ -->		
+		<route id="OUT-ROUTE">
+			<from uri="seda:from-esper"/>
+			<unmarshal><serialization/></unmarshal>
+			<to uri="stream:out"/>
+		</route>
+	</camelContext>
+</beans>
