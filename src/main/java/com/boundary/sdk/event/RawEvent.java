@@ -4,11 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
-
-
-
-
-
+import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -39,13 +36,13 @@ public class RawEvent extends BaseEvent implements Serializable {
 	@JsonProperty
 	private Date createdAt;
 	@JsonProperty
-	private ArrayList<String> fingerprintFields;
+	private List<String> fingerprintFields;
 	@JsonProperty
 	private String message;
 	@JsonProperty
 	private String organizationId;
 	@JsonProperty
-	private LinkedHashMap<String,Object> properties;
+	private Map<String,Object> properties;
 	@JsonProperty
 	private Date receivedAt;
 	@JsonProperty
@@ -57,7 +54,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	@JsonProperty
 	private Status status;
 	@JsonProperty
-	private ArrayList<String> tags;
+	private List<String> tags;
 	@JsonProperty
 	private String title;
 
@@ -100,7 +97,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * 
 	 * @return Returns a {@link ArrayList} with finger print fields
 	 */
-	public ArrayList<String> getFingerprintFields() {
+	public List<String> getFingerprintFields() {
 		if (fingerprintFields == null) {
 			initFingerprintFields();
 		}
@@ -143,7 +140,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * 
 	 * @return {@link RawEvent}
 	 */
-	public RawEvent setFingerprintFields(ArrayList<String> fingerprintFields) {
+	public RawEvent setFingerprintFields(List<String> fingerprintFields) {
 		if (fingerprintFields == null) {
 			initFingerprintFields();
 		}
@@ -227,7 +224,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * 
 	 * @return {@link LinkedHashMap} containing the properties of the {@link RawEvent}
 	 */
-	public LinkedHashMap<String,Object> getProperties() {
+	public Map<String,Object> getProperties() {
 		if (properties == null) {
 			initProperties();
 		}
@@ -240,7 +237,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * @param properties ({@link LinkedHashMap}) to be associated with the {@link RawEvent}
 	 * @return {@link RawEvent}
 	 */
-	public RawEvent setProperties(LinkedHashMap<String,Object> properties) {
+	public RawEvent setProperties(Map<String,Object> properties) {
 		if (properties == null) {
 			initProperties();
 		}
@@ -434,7 +431,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * @param tags {@link ArrayList} of tags to associate with the {@link RawEvent}
 	 * @return {@link RawEvent}
 	 */
-	public RawEvent setTags(ArrayList<String> tags) {
+	public RawEvent setTags(List<String> tags) {
 		if (tags == null) {
 			initializeTags();
 		}
@@ -474,12 +471,40 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * 
 	 * @return {@link ArrayList} containing all of the tags associated with the {@link RawEvent}
 	 */
-	public ArrayList<String> getTags() {
+	public List<String> getTags() {
 		if (tags == null) {
 			initializeTags();
 		}
 
 		return tags;
+	}
+	
+	private boolean fieldsMatch(RawEvent event) {
+	
+		if (event.getTitle() != this.getTitle()) {
+			return false;
+		}
+		if (!event.getTags().containsAll(this.getTags()) &&
+				!this.getTags().containsAll(event.getTags())) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean equals(RawEvent event) {
+		boolean result = true;
+
+		if (event instanceof RawEvent) {
+			System.out.println("instance");
+			if (fieldsMatch(event) == false) {
+				result = false;
+			}
+//			if (this.hashCode() != event.hashCode()) {
+//				result = false;
+//			}
+		}
+		
+		return result;
 	}
 	
 	/**

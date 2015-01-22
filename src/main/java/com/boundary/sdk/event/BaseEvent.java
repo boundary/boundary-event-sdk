@@ -2,6 +2,7 @@ package com.boundary.sdk.event;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -49,7 +50,7 @@ public class BaseEvent {
 	 * @param array An {@link ArrayList} of {@link String}s to truncate.
 	 * @return {@link ArrayList} of {@link String}
 	 */
-	public static ArrayList<String> truncateToMaximumLength(ArrayList<String> array) {
+	public static ArrayList<String> truncateToMaximumLength(List<String> array) {
 		ArrayList<String> truncatedArray = new ArrayList<String>(array.size());
 		for (String s : array) {
 			truncatedArray.add(truncateToMaximumLength(s));
