@@ -52,5 +52,17 @@ public class SysLogRouteTest {
 		route.setToUri(expectedToUri);
 		assertEquals("Check toUri",expectedToUri,route.getToUri());
 	}
+	
+	@Test
+	public void testTranslateFlagConstructor() {
+		SysLogRouteBuilder route = new SysLogRouteBuilder(false);
+		assertFalse("Check convertToEvent constructor",route.isConvertToEvent());
+	}
+	
+	@Test
+	public void testTranslateFlagMethod() {
+		route.setConvertToEvent(false);
+		assertFalse("Check convertToEvent method",route.isConvertToEvent());
+	}
 
 }

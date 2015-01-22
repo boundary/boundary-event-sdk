@@ -6,6 +6,7 @@ import org.apache.camel.component.syslog.SyslogDataFormat;
 
 import com.boundary.sdk.event.BoundaryRouteBuilder;
 import com.boundary.sdk.event.UDPRouteBuilder;
+import com.boundary.sdk.event.RawEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,15 +17,25 @@ public class SysLogRouteBuilder extends UDPRouteBuilder {
 	
 	private final String DEFAULT_SYSLOG_ROUTE_NAME="SYSLOG-ROUTE";
 	private final int DEFAULT_SYSLOG_PORT = 1514;
-	
+	private SyslogToEventProcessor eventProcessor;
 
 	/**
-	 * Constructor
+	 * Default Constructor
 	 */
 	public SysLogRouteBuilder() {
 		this.toUri = BoundaryRouteBuilder.DEFAULT_EVENT_TO_URI;
 		this.routeId = DEFAULT_SYSLOG_ROUTE_NAME;
 		this.port = DEFAULT_SYSLOG_PORT;
+		this.eventProcessor = new SyslogToEventProcessor();
+	}
+	
+	/**
+	 * 
+	 * @param convertToEvent flag to indicate conversion to {@link RawEvent}
+	 */
+	public SysLogRouteBuilder(boolean convertToEvent) {
+		this();
+		this.eventProcessor.setConvertToEvent(convertToEvent);
 	}
 	
 	/**
@@ -40,9 +51,17 @@ public class SysLogRouteBuilder extends UDPRouteBuilder {
 		.startupOrder(startUpOrder)
 		.routeId(routeId)
 		.unmarshal(syslogDataFormat)
-		.process(new SyslogToEventProcessor())
+		.process(this.eventProcessor)
 		.marshal().serialization()
         .to(toUri)
         ;
+	}
+
+	public boolean isConvertToEvent() {
+		return this.eventProcessor.isConvertToEvent();
+	}
+
+	public void setConvertToEvent(boolean convertToEvent) {
+		this.eventProcessor.setConvertToEvent(convertToEvent);
 	}
 }

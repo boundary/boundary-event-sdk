@@ -26,8 +26,15 @@ import com.boundary.sdk.event.Status;
 public class SyslogToEventProcessor implements Processor {
 
 	private static Logger LOG = LoggerFactory.getLogger(SyslogToEventProcessor.class);
+	
+	// Flag to indicated if the event should be translated into a {@link RawEvent} or not
+	private boolean convertToEvent;
 
 	public SyslogToEventProcessor() {
+		this(true);
+	}
+	public SyslogToEventProcessor(boolean convertToEvent) {
+		this.convertToEvent = convertToEvent;
 	}
 	
 	private void logSyslogMessage(SyslogMessage slm) {
@@ -41,22 +48,34 @@ public class SyslogToEventProcessor implements Processor {
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
-		Message message = exchange.getIn();
-
-		// Extract SyslogMessage from the message body.
-		SyslogMessage syslogMessage = (SyslogMessage) message.getBody(SyslogMessage.class);
-		logSyslogMessage(syslogMessage);
-
-		// Create new event to translate the syslog message to
-		RawEvent event = new RawEvent();
-
-		// Delegate to member method call to perform the translation
-		syslogMessageToEvent(syslogMessage, event);
 		
-		LOG.debug("RawEvent: " + event);
-
-		// Set the message body to the RawEvent
-		message.setBody(event, RawEvent.class);
+		// Conditionally translate {@link SyslogMessage} to {@link RawEvent}
+		if (this.convertToEvent) {
+			LOG.debug("CONVERTING to RawEvent");
+			Message message = exchange.getIn();
+	
+			// Extract SyslogMessage from the message body.
+			SyslogMessage syslogMessage = (SyslogMessage) message.getBody(SyslogMessage.class);
+			logSyslogMessage(syslogMessage);
+	
+			// Create new event to translate the syslog message to
+			RawEvent event = new RawEvent();
+	
+			// Delegate to member method call to perform the translation
+			syslogMessageToEvent(syslogMessage, event);
+			
+			LOG.trace("{} {}",event.getClass().getName(),event);
+	
+			// Set the message body to the RawEvent
+			message.setBody(event, RawEvent.class);
+		}
+		else {
+			Message message = exchange.getIn();
+			SyslogMessage syslogMessage = message.getBody(SyslogMessage.class);
+			SyslogMessageEvent syslogEvent = new SyslogMessageEvent(syslogMessage);
+			LOG.trace("{} {}",syslogEvent.getClass().getName(),syslogEvent);
+			message.setBody(syslogEvent);
+		}
 	}
 
 	/**
@@ -147,5 +166,11 @@ public class SyslogToEventProcessor implements Processor {
 				LOG.error(e.getStackTrace().toString());
 			}
 		}
+	}
+	public boolean isConvertToEvent() {
+		return this.convertToEvent;
+	}
+	public void setConvertToEvent(boolean convertToEvent) {
+		this.convertToEvent = convertToEvent;
 	}
 }
