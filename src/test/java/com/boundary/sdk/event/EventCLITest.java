@@ -3,13 +3,13 @@
  */
 package com.boundary.sdk.event;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.TimeZone;
 
 import org.apache.commons.cli.ParseException;
@@ -62,16 +62,6 @@ public class EventCLITest {
 	public void tearDown() throws Exception {
 	}
 	
-	private void process() {
-		try {
-			if (cli.configure(toArgs()) == false) {
-				event = cli.getEvent();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 	private String [] toArgs() {
 		String [] lArgs = new String[args.size()];
 		int i = 0;
@@ -81,6 +71,16 @@ public class EventCLITest {
 		}
 		return lArgs;
 	}
+	private void process() {
+		try {
+			cli.configure(toArgs());
+			event = cli.getEvent();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+
 	
 	private void addRequiredArgs(ArrayList<String> args) {
 		args.add("-f");
@@ -116,7 +116,7 @@ public class EventCLITest {
 
 		process();
 		
-		ArrayList<String> extractedFields = event.getFingerprintFields();		
+		List<String> extractedFields = event.getFingerprintFields();		
 		assertEquals("check fingerprint fields",fields,extractedFields);
 	}
 
