@@ -1,4 +1,4 @@
-// Copyright 2014 Boundary, Inc.
+// Copyright 2014-2015 Boundary, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,20 +13,15 @@
 // limitations under the License.
 package com.boundary.sdk.event.snmp;
 
-import static org.junit.Assert.*;
-
 import java.util.List;
-import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.EndpointInject;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
-import org.apache.camel.Route;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.component.snmp.SnmpMessage;
-import org.apache.camel.spi.RouteContext;
 import org.apache.camel.test.spring.CamelSpringTestSupport;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -40,8 +35,6 @@ import org.snmp4j.PDU;
 import org.snmp4j.smi.VariableBinding;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import com.boundary.sdk.event.notification.WebHookApplication;
 
 
 /**
