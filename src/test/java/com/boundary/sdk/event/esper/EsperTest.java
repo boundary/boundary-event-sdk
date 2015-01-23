@@ -14,6 +14,8 @@
 package com.boundary.sdk.event.esper;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 
 import org.apache.camel.EndpointInject;
@@ -25,9 +27,13 @@ import org.apache.camel.component.mock.MockEndpoint;
 import org.junit.Test;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.Resource;
 
 
 public class EsperTest extends CamelSpringTestSupport {
+	
+	
+	
 	
 //    @Produce(uri = "direct:in")
 //    private ProducerTemplate producerTemplate;
@@ -38,6 +44,14 @@ public class EsperTest extends CamelSpringTestSupport {
 	@Override
 	protected AbstractXmlApplicationContext createApplicationContext() {
 		return new ClassPathXmlApplicationContext("META-INF/spring/syslog-event-adapter.xml");
+	}
+	
+	@Test
+	public void testReadURIClasspath() throws IOException {
+		Resource resource = applicationContext.getResource("test-syslog-filter-queries.json");
+		File file = resource.getFile();
+		assertTrue("check if file",file.isFile());
+		assertTrue("check file exists",file.exists());
 	}
 
 	@Test
