@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  *       serialization to JSON (via Jackson) is skipped for those fields that have not been
  *       specified.
  *
- * @author davidg
  */
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
@@ -479,34 +478,99 @@ public class RawEvent extends BaseEvent implements Serializable {
 		return tags;
 	}
 	
-	private boolean fieldsMatch(RawEvent event) {
-	
-		if (event.getTitle() != this.getTitle()) {
-			return false;
-		}
-		if (!event.getTags().containsAll(this.getTags()) &&
-				!this.getTags().containsAll(event.getTags())) {
-			return false;
-		}
-		return true;
-	}
-	
-	public boolean equals(RawEvent event) {
-		boolean result = true;
-
-		if (event instanceof RawEvent) {
-			System.out.println("instance");
-			if (fieldsMatch(event) == false) {
-				result = false;
-			}
-//			if (this.hashCode() != event.hashCode()) {
-//				result = false;
-//			}
-		}
-		
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((createdAt == null) ? 0 : createdAt.hashCode());
+		result = prime
+				* result
+				+ ((fingerprintFields == null) ? 0 : fingerprintFields
+						.hashCode());
+		result = prime * result + ((message == null) ? 0 : message.hashCode());
+		result = prime * result
+				+ ((organizationId == null) ? 0 : organizationId.hashCode());
+		result = prime * result
+				+ ((properties == null) ? 0 : properties.hashCode());
+		result = prime * result
+				+ ((receivedAt == null) ? 0 : receivedAt.hashCode());
+		result = prime * result + ((sender == null) ? 0 : sender.hashCode());
+		result = prime * result
+				+ ((severity == null) ? 0 : severity.hashCode());
+		result = prime * result + ((source == null) ? 0 : source.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
 	}
-	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RawEvent other = (RawEvent) obj;
+		if (createdAt == null) {
+			if (other.createdAt != null)
+				return false;
+		} else if (!createdAt.equals(other.createdAt))
+			return false;
+		if (fingerprintFields == null) {
+			if (other.fingerprintFields != null)
+				return false;
+		} else if (!fingerprintFields.equals(other.fingerprintFields))
+			return false;
+		if (message == null) {
+			if (other.message != null)
+				return false;
+		} else if (!message.equals(other.message))
+			return false;
+		if (organizationId == null) {
+			if (other.organizationId != null)
+				return false;
+		} else if (!organizationId.equals(other.organizationId))
+			return false;
+		if (properties == null) {
+			if (other.properties != null)
+				return false;
+		} else if (!properties.equals(other.properties))
+			return false;
+		if (receivedAt == null) {
+			if (other.receivedAt != null)
+				return false;
+		} else if (!receivedAt.equals(other.receivedAt))
+			return false;
+		if (sender == null) {
+			if (other.sender != null)
+				return false;
+		} else if (!sender.equals(other.sender))
+			return false;
+		if (severity != other.severity)
+			return false;
+		if (source == null) {
+			if (other.source != null)
+				return false;
+		} else if (!source.equals(other.source))
+			return false;
+		if (status != other.status)
+			return false;
+		if (tags == null) {
+			if (other.tags != null)
+				return false;
+		} else if (!tags.equals(other.tags))
+			return false;
+		if (title == null) {
+			if (other.title != null)
+				return false;
+		} else if (!title.equals(other.title))
+			return false;
+		return true;
+	}
+
 	/**
 	 * Converts a raw event into a string representation.
 	 * 

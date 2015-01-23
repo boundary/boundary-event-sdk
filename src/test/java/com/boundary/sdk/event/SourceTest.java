@@ -53,4 +53,28 @@ public class SourceTest {
 		assertNotNull(s.toString());
 		assertEquals("",s.toString());
 	}
+	
+	@Test
+	public void testEqual1() {
+		Source source1 = new Source("foobar","red","green");
+		Source source2 = new Source("foobar","red","green");
+		
+		assertTrue("test equal",source1.equals(source2));
+	}
+	
+	@Test
+	public void testNotEqual() {
+		Source source1 = new Source("foobar","red");
+		Source source2 = new Source("barfoo","der");
+		
+		assertFalse("test equal",source1.equals(source2));
+	}
+	
+	@Test
+	public void testNotEqual2() {
+		Source source1 = new Source("foobar","red","green");
+		Source source2 = new Source("barfoo","der","neerg");
+
+		assertFalse("test not equal2",source1.equals(source2));
+	}
 }

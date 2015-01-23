@@ -35,10 +35,14 @@ public class BaseEvent {
 	 * @return {@link String}
 	 */
 	public static String truncateToMaximumLength(String str) {
-		int length = Math.min(str.length(),MAXIMUM_STRING_LENGTH);
-		String truncStr = str.substring(0, length);
-		if (length < str.length() ) {
-			LOG.warn("String truncated from {} to {}", str,truncStr);
+		String truncStr = null;
+
+		if (str != null) {
+			int length = Math.min(str.length(), MAXIMUM_STRING_LENGTH);
+			truncStr = str.substring(0, length);
+			if (length < str.length()) {
+				LOG.warn("String truncated from {} to {}", str, truncStr);
+			}
 		}
 		return truncStr;
 	}
