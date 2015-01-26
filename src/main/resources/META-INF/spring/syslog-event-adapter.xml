@@ -43,6 +43,8 @@ limitations under the License.
 		<property name="startUpOrder" value="130"/>
 		<property name="fromUri" value="seda:to-esper"/>
 		<property name="toUri" value="seda:from-esper"/>
+		<property name="instance" value="events"/>
+		<property name="configuration" value="syslog-filter-queries.json"/>
 	</bean>
 	
 	<bean id="generate-events" class="com.boundary.sdk.event.esper.EsperProcessor"/>
