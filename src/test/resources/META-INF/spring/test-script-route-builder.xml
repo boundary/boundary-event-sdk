@@ -21,21 +21,26 @@ limitations under the License.
                    http://camel.apache.org/schema/spring
                    http://camel.apache.org/schema/spring/camel-spring.xsd">
 	
-	<bean id="script-route" class="com.boundary.sdk.event.esper.EsperRouteBuilder">
+	<bean id="script-route" class="com.boundary.sdk.event.script.ScriptRouteBuilder">
 		<property name="routeId" value="SCRIPT"/>
 		<property name="startUpOrder" value="100"/>
-		<property name="fromUri" value="seda:to-script"/>
-		<property name="toUri" value="stream:out"/>
-		<property name="instance" value="events"/>
-		<property name="configuration" value="test-esper-route-queries.json"/>
+		<property name="fromUri" value="direct:script-in"/>
+		<property name="toUri" value="direct:script-out"/>
+		<property name="script" value="classpath:test-syslog-to-raw_event.js"/>
 	</bean>
    
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
 		<routeBuilder ref="script-route"/>
-		<route id="SCRIPT-IN-ROUTE" startupOrder="120">
+		<route id="SERIALIZE">
 			<from uri="direct:in"/>
 			<marshal><serialization/></marshal>
-			<to uri="seda:to-script"/>
+			<to uri="direct:script-in"/>
 		</route>
+		<route id="DE-SERIALIZE">
+			<from uri="direct:script-out"/>
+			<unmarshal><serialization/></unmarshal>
+			<to uri="mock:out"/>
+		</route>
+		
 	</camelContext>
 </beans>
