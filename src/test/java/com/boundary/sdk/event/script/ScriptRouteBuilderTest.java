@@ -185,7 +185,7 @@ public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
 		out.expectedMessageCount(1);
 		
 		out.getExchanges();
-		in.sendBodyAndHeaders(this.syslogMessageEvent,setScriptHeader("classpath:test-syslog-to-raw_event.js"));
+		in.sendBodyAndHeaders(this.syslogMessageEvent,setScriptHeader("classpath:test-script-route-builder.json"));
 		out.assertIsSatisfied();
 	}
 	
@@ -232,25 +232,22 @@ public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
 		list.add("geddy");
 		list.add("neal");
 		
+		ScriptEnum enumeration = ScriptEnum.YELLOW;
+		
 		ScriptObject object = new ScriptObject();
 		object.setDate(cal.getTime());
 		object.setString("Goodbye");
 		object.setList(list);
 		object.setMap(map);
 		
-
 		assertEquals("check date",cal.getTime(),newEvent.getDate());
 		assertEquals("check string","Hello World!",newEvent.getString());
 		assertEquals("check int",37,newEvent.getInteger());
 		assertEquals("check decimal",9.81,newEvent.getDecimal(),DELTA);
 		assertEquals("check map",map,newEvent.getMap());
 		assertEquals("check list",list,newEvent.getList());
+		assertEquals("check enumeration",enumeration,newEvent.getEnumeration());
 		assertEquals("check object",object,newEvent.getObject());
-
-//		private Map<String,Object>map;
-//		private List<String> list;
-//		private ScriptObject object;
-
 
 	}
 

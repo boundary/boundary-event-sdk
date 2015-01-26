@@ -32,6 +32,7 @@ public class ScriptEvent implements Serializable {
 	private double decimal;
 	private Map<String,Object>map;
 	private List<String> list;
+	private ScriptEnum enumeration;
 	private ScriptObject object;
 	
 	public ScriptEvent() {
@@ -90,6 +91,14 @@ public class ScriptEvent implements Serializable {
 		this.list = list;
 	}
 
+	public ScriptEnum getEnumeration() {
+		return enumeration;
+	}
+
+	public void setEnumeration(ScriptEnum enumeration) {
+		this.enumeration = enumeration;
+	}
+
 	public ScriptObject getObject() {
 		return object;
 	}
@@ -102,6 +111,9 @@ public class ScriptEvent implements Serializable {
 	public String toString() {
 		return "ScriptEvent [date=" + date + ", string=" + string
 				+ ", integer=" + integer + ", decimal=" + decimal + ", map="
-				+ map + ", list=" + list + ", object=" + object + "]";
+				+ map + ", list=" + list + ", enumeration=" + enumeration
+				+ ", object=" + object + "]";
 	}
+
+
 }

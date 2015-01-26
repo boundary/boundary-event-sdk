@@ -1,18 +1,12 @@
 // Extract our object
 var event = request.getBody()
 
-
-
 // Date
 var builder = new java.util.Calendar.Builder();
 builder.setDate(2010,5,20);
 builder.setTimeOfDay(13,0,0,0);
 
 event.date = builder.build().getTime();
-
-
-//private List<String> list;
-//private ScriptEvent event;
 
 // String
 event.string = "Hello World!";
@@ -39,6 +33,11 @@ list.add("neal");
 
 event.setList(list);
 
+// Enum
+var ScriptEnum = Java.type('com.boundary.sdk.event.script.ScriptEnum');
+event.setEnumeration(ScriptEnum.YELLOW);
+
+// Object
 var object = new com.boundary.sdk.event.script.ScriptObject();
 object.setDate(builder.build().getTime());
 object.setString("Goodbye");

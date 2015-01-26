@@ -26,7 +26,7 @@ limitations under the License.
 		<property name="startUpOrder" value="100"/>
 		<property name="fromUri" value="direct:script-in"/>
 		<property name="toUri" value="direct:script-out"/>
-		<property name="script" value="classpath:test-syslog-to-raw_event.js"/>
+		<property name="script" value="classpath:test-script-route-builder.json"/>
 	</bean>
    
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
