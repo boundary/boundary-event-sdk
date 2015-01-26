@@ -33,7 +33,7 @@ public class RawEventBuilder {
 	private List<String> tags;
 	private String title;
 
-	RawEventBuilder() {
+	public RawEventBuilder() {
 	}
 	
 	public RawEventBuilder setCreatedAt(Date createdAt) {
