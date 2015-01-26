@@ -59,11 +59,10 @@ public class SyslogToEventProcessor implements Processor {
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		
-		LOG.info("Converting SyslogMessage to {}",this.convertToEvent ? "RawEvent" : "SyslogMessageEvent");
+		LOG.debug("Converting SyslogMessage to {}",this.convertToEvent ? "RawEvent" : "SyslogMessageEvent");
 		
 		// Conditionally translate {@link SyslogMessage} to {@link RawEvent}
 		if (this.convertToEvent) {
-			LOG.debug("CONVERTING to RawEvent");
 			Message message = exchange.getIn();
 	
 			// Extract SyslogMessage from the message body.
