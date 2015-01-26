@@ -34,7 +34,7 @@ public class SyslogEventAdapter extends CamelApplication {
 		try {
 			sea.boot();
 		} catch (Exception e) {
-			LOG.error("{}",e.getMessage());
+			LOG.error("{}",e.toString());
 		}
 	}
 }
