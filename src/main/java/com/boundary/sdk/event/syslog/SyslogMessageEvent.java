@@ -32,8 +32,8 @@ public class SyslogMessageEvent implements Serializable{
 	private String remoteAddress;
 	private String severity;
 	private Date timestamp;
-
-	SyslogMessageEvent(SyslogMessage message) {
+	
+	public SyslogMessageEvent(SyslogMessage message) {
 		this.facility = message.getFacility().toString();
 		this.hostname = message.getHostname();
 		this.localAddress = message.getLocalAddress();
