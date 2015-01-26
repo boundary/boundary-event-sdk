@@ -1,0 +1,16 @@
+{
+	"queries": [
+		{
+			"name": "defaults",
+			"enabled": true,
+			"description": "Returns all of the syslog messages",
+			"query": "select * from SyslogMessage"
+		},
+		{
+			"name": "ALERT on KERN",
+			"enabled": false,
+			"description": "Returns all of the syslog messages with facility of KERN and severity of ALERT",
+			"query": "select * from SyslogMessage where facility = 'KERN' and severity = 'ALERT'"
+		}
+	]
+}

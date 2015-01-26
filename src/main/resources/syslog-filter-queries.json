@@ -1,0 +1,10 @@
+{
+	"queries": [
+		{
+			"name": "default",
+			"enabled": true,
+			"description": "Returns all of the Syslog messages",
+			"query": "select * from SyslogMessage"
+		}
+	]
+}
