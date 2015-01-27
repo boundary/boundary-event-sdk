@@ -374,7 +374,7 @@ public class EventCLI {
 	 * @param strs Array of strings from the command line
 	 * @return {@link Source}
 	 */
-	private Source getSourceType(String [] strs) {
+	protected Source getSourceType(String [] strs) {
 		Source s = null;
 		LOG.debug("strs[0] = " + (strs != null && strs.length >= 1 ? strs[0] : ""));
 		LOG.debug("strs[1] = " + (strs != null && strs.length >= 2 ? strs[1] : ""));
