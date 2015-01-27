@@ -342,6 +342,17 @@ public class RawEvent extends BaseEvent implements Serializable {
 		this.severity = severity;
 		return this;
 	}
+	
+	/**
+	 * Set the severity of raw event from a string
+	 * 
+	 * @param severity {@link String} representation of the event severity
+	 * @return {@link Raw Event}
+	 */
+	public RawEvent setSeverity(String severity) {
+		Severity enumSeverity = Severity.valueOf(severity);
+		return setSeverity(enumSeverity);
+	}
 
 	/**
 	 * Internal method for lazy initialization.
@@ -408,6 +419,16 @@ public class RawEvent extends BaseEvent implements Serializable {
 		}
 		this.status = status;
 		return this;
+	}
+	
+	/**
+	 * Sets the status of the raw event from a string
+	 * @param status {@link String} representation of the event status
+	 * @return {@link RawEvent}
+	 */
+	public RawEvent setStatus(String status) {
+		Status enumStatus = Status.valueOf(status);
+		return setStatus(enumStatus);
 	}
 
 	/**
