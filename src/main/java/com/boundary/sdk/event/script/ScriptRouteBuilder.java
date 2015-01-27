@@ -78,7 +78,7 @@ public class ScriptRouteBuilder extends BoundaryRouteBuilder {
 		return this.transform;
 	}
 	
-	protected void setTransform(boolean transform) {
+	public void setTransform(boolean transform) {
 		this.transform = transform;
 	}
 	
