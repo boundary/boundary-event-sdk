@@ -52,7 +52,7 @@ public class CamelApplication
 	 * @param uri Points to Spring camel configuration file
 	 * @param name Name of the application, outputs on start up
 	 */
-    CamelApplication(String uri,String name) {
+    public CamelApplication(String uri,String name) {
     	this.uri = uri;
     	this.name = name;
     }
