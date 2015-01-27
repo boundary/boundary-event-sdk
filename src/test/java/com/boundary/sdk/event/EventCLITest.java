@@ -17,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Calendar.Builder;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -187,15 +188,24 @@ public class EventCLITest {
 	@Ignore
 	@Test
 	public void testParseDateTime_1() throws java.text.ParseException {
-		String s = "2006-04-06 14:22:22";
-		String iso = "2010-01-05T14:22:22Z";
-		Date parsedDate = cli.parseDateTime(iso);
-
-		cal.set(2010,04,05,14,22,22);
-		cal.setTimeZone(TimeZone.getTimeZone("GMT"));
-		Date date = cal.getTime();
+		Builder builder = new Calendar.Builder();
+		builder.setTimeZone(TimeZone.getTimeZone("GMT"));
 		
-		assertEquals("check parse Date Time",date,parsedDate);
+		builder.setDate(2010, 0, 5);
+		builder.setTimeOfDay(22, 22, 22);
+		Date expectedISODate = builder.build().getTime();
+		
+		builder.setDate(2006, 3, 6);
+		builder.setTimeOfDay(14, 22, 22);
+		Date expectedDate = builder.build().getTime();
+
+		String iso = "2010-01-05T14:22:22";
+		Date parsedISODate = cli.parseDateTime(iso);
+		assertEquals("check parsed ISO Date Time",expectedISODate,parsedISODate);
+		
+		String s = "2006-04-06 14:22:22";
+		Date parsedDate = cli.parseDateTime(s);
+		assertEquals("check parsed Date Time",expectedDate,parsedDate);
 	}
 	
 	@Ignore
