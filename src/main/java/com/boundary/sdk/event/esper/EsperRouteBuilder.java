@@ -22,12 +22,10 @@ import java.net.URL;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
-import org.eclipse.jetty.util.log.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.boundary.sdk.event.BoundaryRouteBuilder;
-import com.boundary.sdk.event.service.url.UrlResultToEventProcessor;
 import com.espertech.esper.client.EventBean;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -88,7 +86,7 @@ public class EsperRouteBuilder extends BoundaryRouteBuilder {
 
 	/**
 	 * TODO: Proper handling of exception
-	 * @throws URISyntaxException 
+	 * @throws URISyntaxException {@link URISyntaxException}
 	 */
 	protected void loadConfiguration() throws URISyntaxException {
 		ClassLoader classLoader = this.getClass().getClassLoader();

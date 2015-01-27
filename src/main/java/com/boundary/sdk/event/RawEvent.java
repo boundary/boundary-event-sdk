@@ -347,7 +347,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * Set the severity of raw event from a string
 	 * 
 	 * @param severity {@link String} representation of the event severity
-	 * @return {@link Raw Event}
+	 * @return {@link RawEvent}
 	 */
 	public RawEvent setSeverity(String severity) {
 		Severity enumSeverity = Severity.valueOf(severity);
