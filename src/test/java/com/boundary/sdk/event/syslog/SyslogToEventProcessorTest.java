@@ -21,11 +21,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.camel.EndpointInject;
 import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
 import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
@@ -38,12 +36,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.boundary.sdk.event.RawEvent;
-import com.boundary.sdk.event.SyslogEventAdapter;
-import com.espertech.esper.client.EventBean;
 
 /**
  * Test {@link SyslogToEvent} processor
@@ -51,8 +45,6 @@ import com.espertech.esper.client.EventBean;
  */
 public class SyslogToEventProcessorTest extends CamelTestSupport {
 	
-	private static Logger LOG = LoggerFactory.getLogger(SyslogToEventProcessorTest.class);
-
 	private final static SyslogFacility EXPECTED_SYSLOG_FACILITY = SyslogFacility.DAEMON;
 	private final static String EXPECTED_HOST="foobar";
 	private final static String EXPECTED_SOURCE_TYPE="host";
@@ -181,6 +173,7 @@ public class SyslogToEventProcessorTest extends CamelTestSupport {
         List<Exchange> exchanges = out.getExchanges();
         Exchange exchange = exchanges.get(0);
         RawEvent newEvent = exchange.getIn().getBody(RawEvent.class);
+        assertNotNull(newEvent);
         assertEquals("check exchange count",1,exchanges.size());
     }
     
@@ -223,49 +216,16 @@ public class SyslogToEventProcessorTest extends CamelTestSupport {
         assertEquals("check timestamp",syslogMessage.getTimestamp().getTime(),event.getTimestamp());
     }
  
-    @Test
-    public void testSendNotMatchingMessage() throws Exception {
-//        resultEndpoint.expectedMessageCount(0);
-//        template.sendBodyAndHeader("<notMatched/>", "foo", "notMatchedHeaderValue");
-//        resultEndpoint.assertIsSatisfied();
-    }
-    
-	/**
-	 *  Tests to validate Severity retrieval from a properties file.
-	 */
-	@Test
-	public void testSeverityProperties() {
-//		bu
-//		Properties props = new Properties();
-//
-//		SyslogMessage m = buildSyslogMessage();
-//		Severity e;
-//		m.setSeverity(SyslogSeverity.NOTICE);
-	}
- 
     @Override
     protected RouteBuilder createRouteBuilder() {
         return new RouteBuilder() {
             public void configure() {
                 from("direct:in-translate")
- 
                 .process(new SyslogToEventProcessor(true))
                 .to("mock:out");
                 
                 from("direct:in-no-translate")
-                .process(new Processor() {
-                    public void process(Exchange exchange) throws Exception {
-                        SyslogMessage message = exchange.getIn().getBody(SyslogMessage.class);
-//                        LOG.info("SyslogMessage: {}", message);
-                    }
-                })
                 .process(new SyslogToEventProcessor(false))
-                .process(new Processor() {
-                    public void process(Exchange exchange) throws Exception {
-                        SyslogMessageEvent event = exchange.getIn().getBody(SyslogMessageEvent.class);
-//                        LOG.info("SyslogMessageEvent: {}", event);
-                    }
-                })
                 .to("mock:out");
             }
         };
