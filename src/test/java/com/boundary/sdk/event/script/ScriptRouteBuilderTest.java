@@ -45,7 +45,10 @@ import org.junit.rules.ExpectedException;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.boundary.sdk.event.RawEvent;
 import com.boundary.sdk.event.RawEventBuilder;
+import com.boundary.sdk.event.Severity;
+import com.boundary.sdk.event.Status;
 import com.boundary.sdk.event.syslog.SyslogMessageEvent;
 
 public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
@@ -61,7 +64,9 @@ public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
 	@EndpointInject(uri = "mock:out")
 	private MockEndpoint out;
 
-	private Object syslogMessageEvent;
+	private SyslogMessageEvent syslogMessageEvent;
+
+	private Date now;
 
 	@Override
 	protected AbstractApplicationContext createApplicationContext() {
@@ -75,7 +80,7 @@ public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
 		
 		Builder dtBuilder = new Calendar.Builder();
 		Calendar cal = dtBuilder.build();
-		Date now = cal.getTime();
+		this.now = cal.getTime();
 		
 		SyslogMessage syslogMessage = new SyslogMessage();
 		syslogMessage.setFacility(SyslogFacility.FTP);
@@ -167,10 +172,59 @@ public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
 	@Test
 	public void testSyslogToEvent() throws InterruptedException {
 		out.expectedMessageCount(1);
-		
-		in.sendBody(syslogMessageEvent);
-		
+		in.sendBodyAndHeaders(this.syslogMessageEvent,setScriptHeader("classpath:syslog-to-raw_event.js"));
 		out.assertIsSatisfied();
+		
+		List<Exchange> exchanges = out.getExchanges();
+		assertEquals("check exchange count",1,exchanges.size());
+		Exchange exchange = exchanges.get(0);
+		Message message = exchange.getIn();
+		RawEvent e = message.getBody(RawEvent.class);
+		assertNotNull("check event for not null",e);
+		
+		SyslogMessageEvent sme = this.syslogMessageEvent;
+		
+		assertEquals("check facility property",
+				this.syslogMessageEvent.getFacility(),
+				e.getProperties().get("facility"));
+		assertTrue("check facility tag exists",
+				e.getTags().contains(sme.getFacility()));
+		
+		assertEquals("check hostname property",
+				sme.getHostname(),
+				e.getProperties().get("hostname"));
+		assertTrue("check hostname tag exists",
+				e.getTags().contains(sme.getHostname()));
+		assertEquals("check source ref",sme.getHostname(),e.getSource().getRef());
+		assertEquals("check source type","host",e.getSource().getType());
+		
+		assertEquals("check message",sme.getLogMessage(),e.getMessage());
+		assertEquals("check message property",sme.getLogMessage(),
+				e.getProperties().get("message"));
+		
+		assertEquals("check remote address property",sme.getRemoteAddress(),
+				e.getProperties().get("remote_address"));
+		assertTrue("check remote address tag exists",
+				e.getTags().contains(sme.getRemoteAddress()));
+		
+		assertEquals("check severity",Severity.CRITICAL,e.getSeverity());
+		
+		assertEquals("check status",Status.OPEN,e.getStatus());
+		
+		assertEquals("check number of fingerprint fields",3,e.getFingerprintFields().size());
+		List<String> fp = new ArrayList<String>();
+		fp.add("hostname");
+		fp.add("facility");
+		fp.add("message");
+		assertTrue("check fingerprint fields in event",e.getFingerprintFields().containsAll(fp));
+		assertTrue("check fingerprint fields in array",fp.containsAll(e.getFingerprintFields()));
+		
+		assertEquals("check createdAt",this.now,e.getCreatedAt());
+		
+		assertEquals("check title","Syslog message from: " + sme.getHostname(),e.getTitle());
+
+		assertEquals("check sender ref","Syslog",e.getSender().getRef());
+		assertEquals("check sender type","Boundary Event SDK",e.getSender().getType());
 	}
 	
 	private Map<String,Object> setScriptHeader(String script) {
