@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "entry", propOrder = {"oid","value"})
-public class entry implements Serializable {
+public class entry implements Serializable,Cloneable {
 	/**
 	 * 
 	 */

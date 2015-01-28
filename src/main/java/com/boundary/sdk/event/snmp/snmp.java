@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.*;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class snmp implements Serializable {
+public class snmp implements Serializable,Cloneable {
 
     /**
 	 * 
@@ -39,5 +39,14 @@ public class snmp implements Serializable {
 	@Override
 	public String toString() {
 		return "snmp [entry=" + entry + "]";
+	}
+	
+	@Override
+	public snmp clone() throws CloneNotSupportedException {
+		snmp copy = (snmp)super.clone();
+		List<entry> copyEntry = new ArrayList<entry>();
+		copyEntry.addAll(this.entry);
+		copy.setEntries(copyEntry);
+		return copy;
 	}
 }

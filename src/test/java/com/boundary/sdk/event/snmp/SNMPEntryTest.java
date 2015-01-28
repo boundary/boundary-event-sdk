@@ -108,7 +108,25 @@ public class SNMPEntryTest extends CamelSpringTestSupport  {
 			assertNotNull("Body is null",exchange.getIn().getBody());
 		}
 	}
-
+	
+	@Test
+	public void testCopy() throws IOException, InterruptedException, CloneNotSupportedException {
+		
+		snmp_out.setMinimumExpectedMessageCount(1);
+		String s = readFile("src/test/resources/snmp/snmp-entry.xml",Charset.defaultCharset());
+		snmp_in.sendBody(s);
+		snmp_out.assertIsSatisfied();
+		
+		List<Exchange> exchanges = snmp_out.getExchanges();
+		Exchange exchange = exchanges.get(0);
+		snmp snmp = exchange.getIn().getBody(snmp.class);
+		snmp copy = snmp.clone();
+		assertNotNull(copy);
+		assertEquals("check size",snmp.getEntries().size(),copy.getEntries().size());
+		assertEquals("check entry 1",snmp.getEntries().get(0),copy.getEntries().get(0));
+		assertEquals("check entry 2",snmp.getEntries().get(1),copy.getEntries().get(1));
+		
+	}
 
 	@Override
 	protected AbstractApplicationContext createApplicationContext() {
