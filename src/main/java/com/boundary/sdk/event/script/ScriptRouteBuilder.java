@@ -13,10 +13,6 @@
 // limitations under the License.
 package com.boundary.sdk.event.script;
 
-import org.apache.camel.component.syslog.SyslogDataFormat;
-import org.apache.camel.model.RouteDefinition;
-import org.apache.camel.spi.DataFormat;
-
 import com.boundary.sdk.event.BoundaryRouteBuilder;
 
 public class ScriptRouteBuilder extends BoundaryRouteBuilder {
