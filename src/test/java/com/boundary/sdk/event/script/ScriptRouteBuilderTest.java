@@ -13,8 +13,6 @@
 // limitations under the License.
 package com.boundary.sdk.event.script;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Calendar.Builder;
@@ -22,7 +20,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.io.FileNotFoundException;
 
 import org.apache.camel.CamelExecutionException;
 import org.apache.camel.EndpointInject;
@@ -34,21 +31,19 @@ import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.component.syslog.SyslogFacility;
 import org.apache.camel.component.syslog.SyslogMessage;
 import org.apache.camel.component.syslog.SyslogSeverity;
+import org.apache.camel.component.snmp.SnmpMessage;
 import org.apache.camel.test.spring.CamelSpringTestSupport;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.snmp4j.PDU;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.boundary.sdk.event.RawEvent;
-import com.boundary.sdk.event.RawEventBuilder;
 import com.boundary.sdk.event.Severity;
 import com.boundary.sdk.event.Status;
+import com.boundary.sdk.event.snmp.SnmpMessageEvent;
 import com.boundary.sdk.event.syslog.SyslogMessageEvent;
 
 public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
@@ -225,6 +220,34 @@ public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
 
 		assertEquals("check sender ref","Syslog",e.getSender().getRef());
 		assertEquals("check sender type","Boundary Event SDK",e.getSender().getType());
+	}
+	
+	private PDU createV2Trap() {
+		PDU pdu = new PDU();
+		
+		pdu.setType(PDU.TRAP);
+		
+		return pdu;
+	}
+	
+	@Test
+	public void testSNMPTrapToEvent() throws InterruptedException {
+		PDU pdu = createV2Trap();
+		SnmpMessageEvent snmpMessage = new SnmpMessageEvent(pdu);
+
+		out.expectedMessageCount(1);
+		
+		out.getExchanges();
+		in.sendBodyAndHeaders(snmpMessage,setScriptHeader("classpath:snmp-trap-to-event.js"));
+		out.assertIsSatisfied();
+		
+		List<Exchange> exchanges = out.getExchanges();
+		assertEquals("check exchange count",1,exchanges.size());
+		Exchange exchange = exchanges.get(0);
+		Message message = exchange.getIn();
+		RawEvent e = message.getBody(RawEvent.class);
+		assertNotNull("check event for not null",e);
+
 	}
 	
 	private Map<String,Object> setScriptHeader(String script) {
