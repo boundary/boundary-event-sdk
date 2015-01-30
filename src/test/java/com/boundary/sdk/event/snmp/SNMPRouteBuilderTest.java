@@ -13,75 +13,81 @@
 // limitations under the License.
 package com.boundary.sdk.event.snmp;
 
+import static com.boundary.sdk.util.TestUtil.readFile;
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.List;
+
+import org.apache.camel.EndpointInject;
+import org.apache.camel.Exchange;
+import org.apache.camel.Produce;
+import org.apache.camel.ProducerTemplate;
+import org.apache.camel.component.mock.MockEndpoint;
+import org.apache.camel.test.spring.CamelSpringTestSupport;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * @author davidg
  *
  */
-public class SNMPRouteBuilderTest {
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-	}
-
-        /**
-         *
-         */
-        @Test
-        public void testBindAddress() {
-            String expectedBindAddress = "1.2.3.4";
-	    SNMPRouteBuilder builder = new SNMPRouteBuilder();
-            builder.setBindAddress(expectedBindAddress);
-            assertEquals("check bind address",expectedBindAddress,builder.getBindAddress());
-        }
+public class SNMPRouteBuilderTest extends CamelSpringTestSupport {
 	
+    @Produce(uri = "direct:in")
+    private ProducerTemplate in;
+	
+    @EndpointInject(uri = "mock:out")
+    private MockEndpoint out;
+
+
+	@Test
+	public void testBindAddress() {
+		String expectedBindAddress = "1.2.3.4";
+		SNMPRouteBuilder builder = new SNMPRouteBuilder();
+		builder.setBindAddress(expectedBindAddress);
+		assertEquals("check bind address", expectedBindAddress,
+				builder.getBindAddress());
+	}
+
 	@Test
 	public void testMibRepository() {
 		String expectedPath = "foobar";
 		SNMPRouteBuilder builder = new SNMPRouteBuilder();
-		
+
 		builder.setMibRepository(expectedPath);
-		assertEquals("Check license",expectedPath,builder.getMibRepository());
+		assertEquals("Check license", expectedPath, builder.getMibRepository());
 	}
 
 	@Test
 	public void testLicense() {
 		String expectedLicense = "foobar";
 		SNMPRouteBuilder builder = new SNMPRouteBuilder();
-		
+
 		builder.setLicense(expectedLicense);
-		assertEquals("Check license",expectedLicense,builder.getLicense());
+		assertEquals("Check license", expectedLicense, builder.getLicense());
+	}
+	
+	@Test
+	public void testSnmpGet() throws InterruptedException {
+		
+		out.setMinimumExpectedMessageCount(0);
+		out.assertIsSatisfied();
+		
+		List<Exchange> exchanges = out.getExchanges();
+//		Exchange exchange = exchanges.get(0);
+		assertEquals(0,exchanges.size());
+	}
+
+	@Override
+	protected AbstractApplicationContext createApplicationContext() {
+		return new ClassPathXmlApplicationContext(
+				"META-INF/spring/test-snmp-poller-route.xml");
 	}
 
 }
