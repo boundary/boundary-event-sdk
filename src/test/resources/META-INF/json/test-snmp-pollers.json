@@ -1,0 +1,66 @@
+{	
+    "pollers": [
+		{
+			"id": 1,
+			"name": "Web Server Poller",
+			"description": "Polls metrics from SNMP agents from infrastructure web servers",
+			"delay": 5000,
+			"host-lists": [ 
+						{
+							"id": 1,
+							"enabled":true
+						}
+						],
+			"oid-lists": [
+							{
+							"id": 1,
+							"enabled":true
+							}
+						]
+		},
+		{
+			"id": 2,
+			"name": "Database poller",
+			"description": "Polls metrics from SNMP agents from infrastructure databases",
+			"delay": 10,
+			"host-lists": [
+						{
+							"id": 1,
+							"enabled":true
+						},
+						{
+							"id":2,
+							"enabled": false
+						}
+				],
+			"oid-lists": [ 
+						{
+							"id": 1,
+							"enabled": true
+						},
+						{
+							"id": 2,
+							"enabled": true
+						}
+			]
+		},
+		{
+			"id": 3,
+			"name": "DNS Poller",
+			"description": "Polls metrics from SNMP agents from infrastructure DNS services",
+			"delay": 5000,
+			"host-lists": [
+						{
+							"id": 3,
+							"enabled": true
+						}
+						],
+			"oid-lists": [
+						{
+							"id": 3,
+							"enabled": true
+						}
+						]
+		}
+	]
+}

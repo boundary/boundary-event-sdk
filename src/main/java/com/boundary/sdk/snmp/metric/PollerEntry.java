@@ -17,7 +17,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Pollers {
+public class PollerEntry {
 	
 	@JsonProperty
 	private long id;
