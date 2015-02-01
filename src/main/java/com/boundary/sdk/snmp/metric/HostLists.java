@@ -13,82 +13,58 @@
 // limitations under the License.
 package com.boundary.sdk.snmp.metric;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * List of hosts to be polled for SNMP metrics
  *
  */
-public class HostList {
-//	{
-//		"id": 1,
-//		"name": "Web Servers",
-//		"description": "Web Servers to monitor via SNMP",
-//		"port": 161,
-//		"community-read": "public",
-//		"hosts": [
-//			"web-001",
-//			"web-002",
-//			"web-003",
-//			"web-004",
-//			"web-005"
-//		]
-//	},
-	@JsonProperty
-	private long id;
-	@JsonProperty
-	private String name;
-	@JsonProperty
-	String description;
-	@JsonProperty
-	long port;
-	@JsonProperty("community-read")
-	String defaultCommunityRead;
-	@JsonProperty
-	private List<String> hosts;
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public long getPort() {
-		return port;
-	}
-	public void setPort(long port) {
-		this.port = port;
-	}
-	public String getDefaultCommunityRead() {
-		return defaultCommunityRead;
-	}
-	public void setDefaultCommunityRead(String defaultCommunityRead) {
-		this.defaultCommunityRead = defaultCommunityRead;
-	}
-	public List<String> getHosts() {
-		return hosts;
-	}
-	public void setHosts(List<String> hosts) {
-		this.hosts = hosts;
-	}
+public class HostLists {
 	
+	@JsonProperty("host-lists")
+	private List<HostListEntry> hostLists;
+
+	public List<HostListEntry> getHostLists() {
+		return hostLists;
+	}
+
+	public void setHostList(List<HostListEntry> hostLists) {
+		this.hostLists = hostLists;
+	}
+
+	public static HostLists load(String resource) throws URISyntaxException {
+		HostLists instance = new HostLists();
+
+		ClassLoader classLoader = instance.getClass().getClassLoader();
+		URL url = classLoader.getResource(resource);
+		File file = new File(url.toURI());
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		try {
+			instance = mapper.readValue(file,HostLists.class);
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return instance;
+	}
+
 	@Override
 	public String toString() {
-		return "HostList [id=" + id + ", name=" + name + ", description="
-				+ description + ", port=" + port + ", defaultCommunityRead="
-				+ defaultCommunityRead + ", hosts=" + hosts + "]";
+		return "HostLists [hostLists=" + hostLists + "]";
 	}
+	
 }

@@ -1,0 +1,65 @@
+{
+	"host-lists":[
+		{
+			"id": 1,
+			"name": "Web Servers",
+			"description": "Web Servers to monitor via SNMP",
+			"port": 161,
+			"community-read": "public",
+			"hosts": [
+				{
+					"host": "web-001",
+					"community-read": "foobar"
+				},
+				{
+					"host": "web-002"
+				},
+				{
+					"host": "web-003"
+				},
+				{
+					"host": "web-004",
+					"community-read": "public"
+				},
+				{
+					"host": "web005",
+					"community-read": "secret"
+				}
+			]
+		},
+		{
+			"id": 2,
+			"name": "Database Servers",
+			"description": "",
+			"port": 161,
+			"community-read": "public",
+			"hosts": [
+				{
+					"host": "database-001"
+				},
+				{
+					"host": "database-002"
+				},
+				{
+					"host": "database-003"
+				}
+			]
+		},
+		{
+			"id": 3,
+			"name": "DNS Servers",
+			"description": "SNMP monitoring of infrastructure DNS services",
+			"port": 161,
+			"community-read": "public",
+			"hosts": [
+				{
+					"host": "ns-001",
+					"community-read": "flubber"
+				},
+				{
+					"host": "ns-002"
+				}
+			]
+		}
+	]
+}
