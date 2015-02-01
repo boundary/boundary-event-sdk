@@ -41,27 +41,6 @@ public class HostLists {
 		this.hostLists = hostLists;
 	}
 
-	public static HostLists load(String resource) throws URISyntaxException {
-		HostLists instance = new HostLists();
-
-		ClassLoader classLoader = instance.getClass().getClassLoader();
-		URL url = classLoader.getResource(resource);
-		File file = new File(url.toURI());
-
-		ObjectMapper mapper = new ObjectMapper();
-
-		try {
-			instance = mapper.readValue(file,HostLists.class);
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return instance;
-	}
-
 	@Override
 	public String toString() {
 		return "HostLists [hostLists=" + hostLists + "]";
