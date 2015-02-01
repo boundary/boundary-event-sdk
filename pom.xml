@@ -67,60 +67,61 @@
        </site>
      </distributionManagement>
      <properties>
-		<!-- Set the project encoding -->
-    		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+       <!-- Set the project encoding -->
+       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<!-- Configuration for pushing Git Hub Pages -->
-		<github.global.server>github</github.global.server>
+       <!-- Configuration for pushing Git Hub Pages -->
+       <github.global.server>github</github.global.server>
 
-		<!-- Properties for all of the java packages versions -->
-		<activemq-version>5.9.0</activemq-version>
-		<camel-version>2.14.1</camel-version>
-		<camel-esper-version>2.13.2</camel-esper-version>
-		<camel-service-version>0.4.0</camel-service-version>
-		<commons-cli-version>1.2</commons-cli-version>
-		<commons-codec-version>1.9</commons-codec-version>
-		<commons-daemon-version>1.0.15</commons-daemon-version>
-		<commons-io-version>1.3.2</commons-io-version>
-		<commons-lang3-version>3.3.2</commons-lang3-version>
-		<commons-lang-version>2.6</commons-lang-version>
-		<doxia-module-markdown-version>1.5</doxia-module-markdown-version>
-		<exec-maven-plugin-version>1.3</exec-maven-plugin-version>
-		<junit-version>4.8.1</junit-version>
-		<log4j-version>1.2.17</log4j-version>
-		<maven-compiler-plugin-version>3.1</maven-compiler-plugin-version>
-		<maven-dependency-plugin-version>2.8</maven-dependency-plugin-version>
-		<maven-javadoc-plugin-version>2.8.1</maven-javadoc-plugin-version>
-		<maven-pdf-plugin-version>1.2</maven-pdf-plugin-version>
-		<maven-site-plugin-version>3.3</maven-site-plugin-version>
-		<maven-project-info-reports-plugin-version>2.7</maven-project-info-reports-plugin-version>
-		<mysql-connector-java-version>5.1.31</mysql-connector-java-version>
-		<rpm-maven-plugin-version>2.0.1</rpm-maven-plugin-version>
-		<slf4j-api-version>1.7.7</slf4j-api-version>
-		<slf4j-log4j12-version>1.7.7</slf4j-log4j12-version>
-		<snmp4j-version>2.2.5</snmp4j-version>
-		<snmp4j-smi-version>1.1.3</snmp4j-smi-version>
-		<snmp4j-smi-pro-version>1.4.2</snmp4j-smi-pro-version>
-		<spring-version>3.2.5.RELEASE</spring-version>
-		<spring-security-version>3.1.4.RELEASE</spring-security-version>
-		<syslog4j-version>0.9.30</syslog4j-version>
+       <!-- Properties for all of the java packages versions -->
+       <activemq-version>5.9.0</activemq-version>
+       <camel-version>2.14.1</camel-version>
+       <camel-esper-version>2.13.2</camel-esper-version>
+       <camel-service-version>0.4.0</camel-service-version>
+       <commons-cli-version>1.2</commons-cli-version>
+       <commons-codec-version>1.9</commons-codec-version>
+       <commons-daemon-version>1.0.15</commons-daemon-version>
+       <commons-io-version>1.3.2</commons-io-version>
+       <commons-lang3-version>3.3.2</commons-lang3-version>
+       <commons-lang-version>2.6</commons-lang-version>
+       <doxia-module-markdown-version>1.5</doxia-module-markdown-version>
+       <exec-maven-plugin-version>1.3</exec-maven-plugin-version>
+       <javaee-api-version>7.0</javaee-api-version>
+       <junit-version>4.8.1</junit-version>
+       <log4j-version>1.2.17</log4j-version>
+       <maven-compiler-plugin-version>3.1</maven-compiler-plugin-version>
+       <maven-dependency-plugin-version>2.8</maven-dependency-plugin-version>
+       <maven-javadoc-plugin-version>2.8.1</maven-javadoc-plugin-version>
+       <maven-pdf-plugin-version>1.2</maven-pdf-plugin-version>
+       <maven-site-plugin-version>3.3</maven-site-plugin-version>
+       <maven-project-info-reports-plugin-version>2.7</maven-project-info-reports-plugin-version>
+       <mysql-connector-java-version>5.1.31</mysql-connector-java-version>
+       <rpm-maven-plugin-version>2.0.1</rpm-maven-plugin-version>
+       <slf4j-api-version>1.7.7</slf4j-api-version>
+       <slf4j-log4j12-version>1.7.7</slf4j-log4j12-version>
+       <snmp4j-version>2.2.5</snmp4j-version>
+       <snmp4j-smi-version>1.1.3</snmp4j-smi-version>
+       <snmp4j-smi-pro-version>1.4.2</snmp4j-smi-pro-version>
+       <spring-version>3.2.5.RELEASE</spring-version>
+       <spring-security-version>3.1.4.RELEASE</spring-security-version>
+       <syslog4j-version>0.9.30</syslog4j-version>
+       
+       <!-- RPM packaging properties -->
+       <rpm-top-level-dir>/opt/boundary</rpm-top-level-dir>
+       <boundary-sdk-rpm-user-name>root</boundary-sdk-rpm-user-name>
+       <boundary-sdk-rpm-group-name>root</boundary-sdk-rpm-group-name>
+       <boundary-sdk-rpm-app-dir>/usr/share/besdk</boundary-sdk-rpm-app-dir>
+       <boundary-sdk-rpm-bin-dir>/usr/bin</boundary-sdk-rpm-bin-dir>
+       <boundary-sdk-rpm-etc-dir>/etc</boundary-sdk-rpm-etc-dir>
+       <boundary-sdk-rpm-jar-dir>/usr/share/besdk/lib</boundary-sdk-rpm-jar-dir>
+       <boundary-sdk-rpm-man-dir>/usr/share/man</boundary-sdk-rpm-man-dir>
+       <boundary-sdk-rpm-initd-dir>/etc/init.d</boundary-sdk-rpm-initd-dir>
 
-		<!-- RPM packaging properties -->
-		<rpm-top-level-dir>/opt/boundary</rpm-top-level-dir>
-		<boundary-sdk-rpm-user-name>root</boundary-sdk-rpm-user-name>
-		<boundary-sdk-rpm-group-name>root</boundary-sdk-rpm-group-name>
-		<boundary-sdk-rpm-app-dir>/usr/share/besdk</boundary-sdk-rpm-app-dir>
-		<boundary-sdk-rpm-bin-dir>/usr/bin</boundary-sdk-rpm-bin-dir>
-		<boundary-sdk-rpm-etc-dir>/etc</boundary-sdk-rpm-etc-dir>
-		<boundary-sdk-rpm-jar-dir>/usr/share/besdk/lib</boundary-sdk-rpm-jar-dir>
-		<boundary-sdk-rpm-man-dir>/usr/share/man</boundary-sdk-rpm-man-dir>
-		<boundary-sdk-rpm-initd-dir>/etc/init.d</boundary-sdk-rpm-initd-dir>
-
-		<!-- JAVA Versions -->
-		<source-java-version>1.8</source-java-version>
-		<target-java-version>1.8</target-java-version>
-        </properties>
-	<build>
+       <!-- JAVA Versions -->
+       <source-java-version>1.8</source-java-version>
+       <target-java-version>1.8</target-java-version>
+     </properties>
+     <build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -458,6 +459,11 @@
 		</plugins>
   </build>
   <dependencies>
+    <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-api</artifactId>
+      <version>${javaee-api-version}</version>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
