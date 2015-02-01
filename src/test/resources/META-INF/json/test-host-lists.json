@@ -31,8 +31,8 @@
 			"id": 2,
 			"name": "Database Servers",
 			"description": "",
-			"port": 161,
-			"community-read": "public",
+			"port": 1161,
+			"community-read": "YXz1297",
 			"hosts": [
 				{
 					"host": "database-001"
@@ -49,7 +49,7 @@
 			"id": 3,
 			"name": "DNS Servers",
 			"description": "SNMP monitoring of infrastructure DNS services",
-			"port": 161,
+			"port": 1161,
 			"community-read": "public",
 			"hosts": [
 				{

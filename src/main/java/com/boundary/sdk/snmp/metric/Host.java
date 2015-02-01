@@ -17,10 +17,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Host {
 	
+	public final static long UKNOWN_PORT=-1;
+	
 	@JsonProperty
 	private String host;
 	@JsonProperty("community-read")
 	private String communityRead;
+	@JsonProperty
+	private long port;
+	
+	public Host() {
+		this.port = UKNOWN_PORT;
+	}
 	
 	public String getHost() {
 		return host;
@@ -34,6 +42,15 @@ public class Host {
 	public void setCommunityRead(String communityRead) {
 		this.communityRead = communityRead;
 	}
-
-	
+	public long getPort() {
+		return port;
+	}
+	public void setPort(long port) {
+		this.port = port;
+	}
+	@Override
+	public String toString() {
+		return "Host [host=" + host + ", communityRead=" + communityRead
+				+ ", port=" + port + "]";
+	}
 }

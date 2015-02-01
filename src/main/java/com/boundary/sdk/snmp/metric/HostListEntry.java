@@ -15,9 +15,15 @@ package com.boundary.sdk.snmp.metric;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+
 public class HostListEntry {
+	
+	private final static String DEFAULT_COMMUNITY_READ="public";
+	private final static long DEFAULT_PORT=161;
 
 	@JsonProperty
 	private long id;
@@ -27,10 +33,16 @@ public class HostListEntry {
 	String description;
 	@JsonProperty
 	long port;
+	@NotNull
 	@JsonProperty("community-read")
-	String defaultCommunityRead;
+	String communityRead;
 	@JsonProperty
 	private List<Host> hosts;
+	
+	public HostListEntry() {
+		this.port = DEFAULT_PORT;
+		this.communityRead = DEFAULT_COMMUNITY_READ;
+	}
 	
 	public long getId() {
 		return id;
@@ -56,13 +68,13 @@ public class HostListEntry {
 	public void setPort(long port) {
 		this.port = port;
 	}
-	public String getDefaultCommunityRead() {
-		return defaultCommunityRead;
-	}
-	public void setDefaultCommunityRead(String defaultCommunityRead) {
-		this.defaultCommunityRead = defaultCommunityRead;
-	}
 
+	public String getCommunityRead() {
+		return communityRead;
+	}
+	public void setCommunityRead(String communityRead) {
+		this.communityRead = communityRead;
+	}
 	public List<Host> getHosts() {
 		return hosts;
 	}
@@ -73,7 +85,8 @@ public class HostListEntry {
 	@Override
 	public String toString() {
 		return "HostListEntry [id=" + id + ", name=" + name + ", description="
-				+ description + ", port=" + port + ", defaultCommunityRead="
-				+ defaultCommunityRead + ", hosts=" + hosts + "]";
+				+ description + ", port=" + port + ", communityRead="
+				+ communityRead + ", hosts=" + hosts + "]";
 	}
+
 }

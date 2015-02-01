@@ -49,8 +49,6 @@ public class PollersTest {
 	public void tearDown() throws Exception {
 	}
 	
-
-
 	@Test
 	public void testLoad() throws URISyntaxException {
 		Pollers pollers = Pollers.load("META-INF/json/test-snmp-pollers.json");

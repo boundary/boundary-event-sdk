@@ -16,6 +16,7 @@ package com.boundary.sdk.snmp.metric;
 import static org.junit.Assert.*;
 
 import java.net.URISyntaxException;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -61,12 +62,86 @@ public class HostListTest {
 		
 		HostListEntry hostListEntry = hostLists.getHostLists().get(0);
 		assertNotNull("check for host list entry null",hostListEntry);
+		assertEquals("check for host list size",5,hostListEntry.getHosts().size());
 		
 		assertEquals("check host list entry id 1",1,hostListEntry.getId());
 		assertEquals("check host list entry name 1","Web Servers",hostListEntry.getName());
-		assertEquals("check host list entry name 1","Web Servers",hostListEntry.getDescription());
-		assertEquals("check host list entry name 1","Web Servers",hostListEntry.getDefaultCommunityRead());
+		assertEquals("check host list entry name 1","Web Servers to monitor via SNMP",hostListEntry.getDescription());
+		assertEquals("check host list entry name 1","public",hostListEntry.getCommunityRead());
+		assertEquals("check host list entry name 1",161,hostListEntry.getPort());
+		
+		List<Host> hosts = hostListEntry.getHosts();
+		assertNotNull("check host list entry hosts not null 1",hosts);
+		Host host1 = hosts.get(0);
+		assertEquals("check host 1","web-001",host1.getHost());
+		assertEquals("check community-read 1","foobar",host1.getCommunityRead());
+		
+		Host host2 = hosts.get(1);
+		assertEquals("check host 2","web-002",host2.getHost());
+		assertEquals("check community-read 2",null,host2.getCommunityRead());
+
+		Host host3 = hosts.get(2);
+		assertEquals("check host 3","web-003",host3.getHost());
+		assertEquals("check community-read 3",null,host3.getCommunityRead());
+	
+		Host host4 = hosts.get(3);
+		assertEquals("check host 4","web-004",host4.getHost());
+		assertEquals("check community-read 4","public",host4.getCommunityRead());
+
+	}
+	
+	@Test
+	public void testHostListTwo() throws URISyntaxException {
+		HostLists hostLists = HostLists.load(HOST_LIST_FILE);
+		
+		HostListEntry hostListEntry = hostLists.getHostLists().get(1);
+		assertNotNull("check for host list entry null",hostListEntry);
+		assertEquals("check for host list size",3,hostListEntry.getHosts().size());
+		
+		assertEquals("check host list entry id 2",2,hostListEntry.getId());
+		assertEquals("check host list entry name 2","Database Servers",hostListEntry.getName());
+		assertEquals("check host list entry name 2","",hostListEntry.getDescription());
+		assertEquals("check host list entry name 2","YXz1297",hostListEntry.getCommunityRead());
+		assertEquals("check host list entry name 2",1161,hostListEntry.getPort());
+		
+		List<Host> hosts = hostListEntry.getHosts();
+		assertNotNull("check host list entry hosts not null 2",hosts);
+		Host host1 = hosts.get(0);
+		assertEquals("check host 1","database-001",host1.getHost());
+		assertEquals("check community-read 1",null,host1.getCommunityRead());
+		
+		Host host2 = hosts.get(1);
+		assertEquals("check host 2","database-002",host2.getHost());
+		assertEquals("check community-read 2",null,host2.getCommunityRead());
+
+		Host host3 = hosts.get(2);
+		assertEquals("check host 3","database-003",host3.getHost());
+		assertEquals("check community-read 3",null,host3.getCommunityRead());
 	}
 
+	@Test
+	public void testHostListThree() throws URISyntaxException {
+		HostLists hostLists = HostLists.load(HOST_LIST_FILE);
+		
+		HostListEntry hostListEntry = hostLists.getHostLists().get(2);
+		assertNotNull("check for host list entry null",hostListEntry);
+		assertEquals("check for host list size",2,hostListEntry.getHosts().size());
 
+		
+		assertEquals("check host list entry id 3",3,hostListEntry.getId());
+		assertEquals("check host list entry name 3","DNS Servers",hostListEntry.getName());
+		assertEquals("check host list entry name 3","SNMP monitoring of infrastructure DNS services",hostListEntry.getDescription());
+		assertEquals("check host list entry name 3","public",hostListEntry.getCommunityRead());
+		assertEquals("check host list entry name 3",1161,hostListEntry.getPort());
+		
+		List<Host> hosts = hostListEntry.getHosts();
+		assertNotNull("check host list entry hosts not null 3",hosts);
+		Host host1 = hosts.get(0);
+		assertEquals("check host 1","ns-001",host1.getHost());
+		assertEquals("check community-read 1","flubber",host1.getCommunityRead());
+		
+		Host host2 = hosts.get(1);
+		assertEquals("check host 2","ns-002",host2.getHost());
+		assertEquals("check community-read 2",null,host2.getCommunityRead());
+	}
 }
