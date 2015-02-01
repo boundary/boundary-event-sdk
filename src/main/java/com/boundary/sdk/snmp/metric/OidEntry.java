@@ -13,40 +13,71 @@
 // limitations under the License.
 package com.boundary.sdk.snmp.metric;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class OidEntry {
 	
 	@JsonProperty
-	private String oid;
-	@JsonProperty("metric-id")
-	private String metricId;
+	private long id;
+	@JsonProperty
+	private String name;
 	@JsonProperty
 	private boolean enabled;
 	@JsonProperty
-	private String description;
-	public String getOid() {
-		return oid;
+	private List<Oid> oids;
+	public long getId() {
+		return id;
 	}
-	public void setOid(String oid) {
-		this.oid = oid;
+	public void setId(long id) {
+		this.id = id;
 	}
-	public String getMetricId() {
-		return metricId;
+	public String getName() {
+		return name;
 	}
-	public void setMetricId(String metricId) {
-		this.metricId = metricId;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public boolean isEnabled() {
-		return enabled;
+	public List<Oid> getOids() {
+		return oids;
 	}
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
+	public void setOids(List<Oid> oids) {
+		this.oids = oids;
 	}
-	public String getDescription() {
-		return description;
+	
+	public static HostLists load(String resource) throws URISyntaxException {
+		HostLists instance = new HostLists();
+
+		ClassLoader classLoader = instance.getClass().getClassLoader();
+		URL url = classLoader.getResource(resource);
+		File file = new File(url.toURI());
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		try {
+			instance = mapper.readValue(file,HostLists.class);
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return instance;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	
+	@Override
+	public String toString() {
+		return "OidList [id=" + id + ", name=" + name + ", oids=" + oids + "]";
 	}
+	
+	
 }

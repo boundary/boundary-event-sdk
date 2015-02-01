@@ -13,42 +13,45 @@
 // limitations under the License.
 package com.boundary.sdk.snmp.metric;
 
-import java.util.List;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class OidList {
+public class Oid {
 	
+	@NotNull
 	@JsonProperty
-	private long id;
-	@JsonProperty
-	private String name;
+	private String oid;
+	@NotNull
+	@JsonProperty("metric-id")
+	private String metricId;
 	@JsonProperty
 	private boolean enabled;
 	@JsonProperty
-	private List<OidEntry> oids;
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public List<OidEntry> getOids() {
-		return oids;
-	}
-	public void setOids(List<OidEntry> oids) {
-		this.oids = oids;
-	}
-	@Override
-	public String toString() {
-		return "OidList [id=" + id + ", name=" + name + ", oids=" + oids + "]";
-	}
+	private String description;
 	
-	
+	public String getOid() {
+		return oid;
+	}
+	public void setOid(String oid) {
+		this.oid = oid;
+	}
+	public String getMetricId() {
+		return metricId;
+	}
+	public void setMetricId(String metricId) {
+		this.metricId = metricId;
+	}
+	public boolean isEnabled() {
+		return enabled;
+	}
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }
