@@ -22,7 +22,8 @@ import java.util.TreeMap;
 
 public class SnmpPollerConfiguration {
 	
-	
+	private String host;
+	private long port;
 	private Set<String> oids;
 	private String community;
 	private long delay;
@@ -30,7 +31,23 @@ public class SnmpPollerConfiguration {
 	public SnmpPollerConfiguration() {
 		oids = new LinkedHashSet<String>();
 	}
-	
+		
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
+	}
+
+	public long getPort() {
+		return port;
+	}
+
+	public void setPort(long port) {
+		this.port = port;
+	}
+
 	public void addOid(String oid) {
 		oids.add(oid);
 	}
@@ -69,5 +86,4 @@ public class SnmpPollerConfiguration {
 	public void setDelay(long delay) {
 		this.delay = delay;
 	}
-	
 }

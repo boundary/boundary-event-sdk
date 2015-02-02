@@ -13,7 +13,9 @@
 // limitations under the License.
 package com.boundary.sdk.event.snmp;
 
-import org.apache.camel.LoggingLevel;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.camel.converter.jaxb.JaxbDataFormat;
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.spi.DataFormat;
@@ -22,7 +24,6 @@ import org.slf4j.LoggerFactory;
 import org.snmp4j.mp.SnmpConstants;
 
 import static org.apache.camel.LoggingLevel.*;
-
 
 public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 	
@@ -33,12 +34,22 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 	private String communityRead;
 	private String oids;
 	private int delay;
+	private List<SnmpPollerConfiguration> configuration;
 	
 	public SnmpPollerRouteBuilder() {
-		communityRead="piston";
+		communityRead="public";
 		delay = 5;
 		setPort(161);
 		setToUri("seda:metric-translate");
+		configuration = new ArrayList<SnmpPollerConfiguration>();
+	}
+	
+	public SnmpPollerRouteBuilder(List<SnmpPollerConfiguration> configuration) {
+		this.configuration = configuration;
+	}
+	
+	private void load() {
+		
 	}
 
 	public void setOids(String oids) {
@@ -54,7 +65,6 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 	public String getCommunityRead() {
 		return this.communityRead;
 	}
-	
 
 	public int getDelay() {
 		return delay;
@@ -64,47 +74,57 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 		this.delay = delay;
 	}
 
-	private String getUri() {
+	private String getUri(
+			String host,
+			long port,
+			String oids,
+			String community,
+			long delay) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("snmp:");
-		sb.append(getBindAddress());
+		sb.append(host);
 		sb.append(":");
-		sb.append(getPort());
+		sb.append(port);
 		sb.append("?protocol=udp");
 		sb.append("&type=POLL");
-		sb.append("&oids=" + getOids());
+		sb.append("&oids=" + oids);
 		sb.append("&snmpVersion=" + SnmpConstants.version2c);
-		sb.append("&snmpCommunity=" + getCommunityRead());
-		sb.append("&delay="+getDelay());
+		sb.append("&snmpCommunity=" + community);
+		sb.append("&delay="+delay);
 		LOG.debug("from: " + sb.toString());
 		return sb.toString();
 	}
+	
 	/**
 	 * Configuration for the SNMP route 
 	 */
 	@Override
 	public void configure() {
+		int startUpOrder = this.getStartUpOrder();
 		DataFormat jaxb = new JaxbDataFormat("com.boundary.sdk.event.snmp");
-		String uri = getUri();
-		
-		RouteDefinition routeDefinition = from(uri)
-		.routeId(this.routeId)
-		.setHeader(BOUNDARY_HOSTNAME, constant(this.getBindAddress()))
-		.log(DEBUG,"body: ${body}")
-		.unmarshal(jaxb)
-		.marshal().serialization()
-		.to(this.getToUri());
-		
-		// Setup startup order only if it had been configured
-		if (this.getStartUpOrder() != 0) {
-			routeDefinition.startupOrder(this.getStartUpOrder());
+
+		for (SnmpPollerConfiguration config : this.configuration) {
+			
+			String fromUri = getUri(
+					config.getHost(),
+					config.getPort(),
+					config.getOidsAsString(),
+					config.getCommunity(),
+					config.getDelay());
+
+			RouteDefinition routeDefinition = from(fromUri)
+					.routeId(this.routeId)
+					.setHeader(BOUNDARY_HOSTNAME,
+							constant(this.getBindAddress()))
+					.log(DEBUG, "body: ${body}")
+					.unmarshal(jaxb)
+					.marshal().serialization()
+					.to(this.getToUri());
+
+			// Setup startup order only if it had been configured
+			if (this.getStartUpOrder() != 0) {
+				routeDefinition.startupOrder(this.getStartUpOrder());
+			}
 		}
 	}
-	
-	public static void main(String [] args) {
-		SnmpPollerRouteBuilder poller = new SnmpPollerRouteBuilder();
-		
-		System.out.println(poller.getUri());
-	}
-
 }
