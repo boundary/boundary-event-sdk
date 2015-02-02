@@ -86,23 +86,23 @@ public class SnmpMetricCatalogTest {
 
 	@Test
 	public void testGetOidList() {
-		List<OidList> oidList = snmpMetricCatalog.getOidList();
+		List<OidListEntry> oidList = snmpMetricCatalog.getOidList();
 		assertNotNull("check for null oidList",oidList);
 		assertEquals("check oids list count",3,oidList.size());
 
 		
-		OidList list1 = oidList.get(0);
+		OidListEntry list1 = oidList.get(0);
 		assertEquals("check id",1,list1.getId());
 		assertEquals("check name","Default",list1.getName());
 		assertEquals("check oids count",9,list1.getOids().size());
 		
-		OidEntry entry1 = list1.getOids().get(0);
+		Oid entry1 = list1.getOids().get(0);
 		assertEquals("check oid 1","1.3.6.1.2.1.25.1.5.0",entry1.getOid());
 		assertEquals("check metric-id 1","",entry1.getMetricId());
 		assertEquals("check description 1","Red",entry1.getDescription());
 		assertEquals("check enabled 1",true,entry1.isEnabled());
 		
-		OidEntry entry2 = list1.getOids().get(1);
+		Oid entry2 = list1.getOids().get(1);
 		assertEquals("check oid 2","1.3.6.1.2.1.25.1.6.0",entry2.getOid());
 		assertEquals("check metric-id 2","",entry2.getMetricId());
 		assertEquals("check description 2","Green",entry2.getDescription());

@@ -46,6 +46,8 @@ import com.boundary.sdk.event.Status;
 import com.boundary.sdk.event.snmp.SnmpMessageEvent;
 import com.boundary.sdk.event.syslog.SyslogMessageEvent;
 
+import static com.boundary.sdk.event.script.ScriptTestUtils.*;
+
 public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
 	
 	private static final double DELTA = 1e-15;
@@ -249,14 +251,7 @@ public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
 		assertNotNull("check event for not null",e);
 
 	}
-	
-	private Map<String,Object> setScriptHeader(String script) {
-		Map <String,Object> headers = new HashMap<String,Object>();
-		headers.put("CamelLanguageScript",script);
 
-		return headers;
-	}
-	
 	@Test
 	public void testScriptHeader() throws InterruptedException {
 		out.expectedMessageCount(1);
