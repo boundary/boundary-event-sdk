@@ -19,7 +19,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -32,6 +35,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class PollersTest {
+	
+	private final static String POLLERS_TEST_FILENAME="META-INF/json/test-snmp-pollers.json";
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -51,13 +56,13 @@ public class PollersTest {
 	
 	@Test
 	public void testLoad() throws URISyntaxException {
-		Pollers pollers = Pollers.load("META-INF/json/test-snmp-pollers.json");
+		Pollers pollers = Pollers.load(POLLERS_TEST_FILENAME);
 		assertNotNull("check for not null",pollers);
 	}
 	
 	@Test
 	public void testPollerEntry1() throws URISyntaxException {
-		Pollers pollers = Pollers.load("META-INF/json/test-snmp-pollers.json");
+		Pollers pollers = Pollers.load(POLLERS_TEST_FILENAME);
 		PollerEntry entry = pollers.getPollers().get(0);
 		assertNotNull("check poller entry for null",entry);
 		
@@ -77,7 +82,7 @@ public class PollersTest {
 	
 	@Test
 	public void testPollerEntry2() throws URISyntaxException {
-		Pollers pollers = Pollers.load("META-INF/json/test-snmp-pollers.json");
+		Pollers pollers = Pollers.load(POLLERS_TEST_FILENAME);
 		PollerEntry entry = pollers.getPollers().get(1);
 		assertNotNull("check poller entry for null",entry);
 		
@@ -88,7 +93,7 @@ public class PollersTest {
 				entry.getDescription());
 		
 		List<HostListRef> hostList = entry.getHostLists();
-		assertEquals("check host list count",2,hostList.size());
+		assertEquals("check host list count",3,hostList.size());
 		HostListRef hostListRef1 = hostList.get(0);
 		assertNotNull("check host list ref for null",hostListRef1);
 		assertEquals("check host list ref id",1,hostListRef1.getId());
@@ -99,11 +104,16 @@ public class PollersTest {
 		assertEquals("check host list ref id",2,hostListRef2.getId());
 		assertEquals("check host list ref enabled",false,hostListRef2.isEnabled());
 
+		HostListRef hostListRef3 = hostList.get(2);
+		assertNotNull("check host list ref for null",hostListRef3);
+		assertEquals("check host list ref id",3,hostListRef3.getId());
+		assertEquals("check host list ref enabled",true,hostListRef3.isEnabled());
+
 	}
 	
 	@Test
 	public void testPollerEntry3() throws URISyntaxException {
-		Pollers pollers = Pollers.load("META-INF/json/test-snmp-pollers.json");
+		Pollers pollers = Pollers.load(POLLERS_TEST_FILENAME);
 		PollerEntry entry = pollers.getPollers().get(2);
 		assertNotNull("check poller entry for null",entry);
 		
@@ -119,6 +129,31 @@ public class PollersTest {
 		assertNotNull("check host list ref for null",hostListRef1);
 		assertEquals("check host list ref id",3,hostListRef1.getId());
 		assertEquals("check host list ref enabled",true,hostListRef1.isEnabled());
+	}
+	
+	@Test
+	public void testGetHostIds() throws URISyntaxException {
+		Pollers pollers = Pollers.load(POLLERS_TEST_FILENAME);
+		
+		PollerEntry entry = pollers.getPollers().get(0);
+		
+		List<Long> expectedIds = new ArrayList<Long>();
+		expectedIds.add(new Long(1));
+		List<Long> ids = entry.getHostListIds();
+		assertEquals("check getHostListIds 1",expectedIds,ids);
+		
+		entry = pollers.getPollers().get(1);
+		ids = entry.getHostListIds();
+		expectedIds.add(new Long(3));
+		assertEquals("check getHostListIds 2",expectedIds,ids);
+		
+		entry = pollers.getPollers().get(2);
+		ids = entry.getHostListIds();
+		expectedIds.clear();
+		expectedIds.add(new Long(3));
+		assertEquals("check getHostListIds 3",expectedIds,ids);
+
+
 	}
 
 }

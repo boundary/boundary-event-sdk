@@ -13,7 +13,10 @@
 // limitations under the License.
 package com.boundary.sdk.snmp.metric;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -31,6 +34,11 @@ public class PollerEntry {
 	private List<HostListRef> hostLists;
 	@JsonProperty("oid-lists")
 	private List<OidListRef> oidList;
+	
+	public PollerEntry() {
+		this.hostLists = new ArrayList<HostListRef>();
+		this.oidList = new ArrayList<OidListRef>();
+	}
 	public long getId() {
 		return id;
 	}
@@ -66,6 +74,19 @@ public class PollerEntry {
 	}
 	public void setOidList(List<OidListRef> oidList) {
 		this.oidList = oidList;
+	}
+	
+	public List<Long> getHostListIds() {
+		Set<Long> ids = new LinkedHashSet<Long>();
+		for (HostListRef ref : hostLists) {
+			if (ref.isEnabled()) {
+				ids.add(ref.getId());
+			}
+		}
+		
+		ArrayList<Long> list = new ArrayList<Long>();
+		list.addAll(ids);
+		return list;
 	}
 	
 	@Override
