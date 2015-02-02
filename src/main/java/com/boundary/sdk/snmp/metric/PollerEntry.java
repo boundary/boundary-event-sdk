@@ -33,11 +33,11 @@ public class PollerEntry {
 	@JsonProperty("host-lists")
 	private List<HostListRef> hostLists;
 	@JsonProperty("oid-lists")
-	private List<OidListRef> oidList;
+	private List<OidListRef> oidLists;
 	
 	public PollerEntry() {
 		this.hostLists = new ArrayList<HostListRef>();
-		this.oidList = new ArrayList<OidListRef>();
+		this.oidLists = new ArrayList<OidListRef>();
 	}
 	public long getId() {
 		return id;
@@ -70,10 +70,10 @@ public class PollerEntry {
 		this.hostLists = hostLists;
 	}
 	public List<OidListRef> getOidList() {
-		return oidList;
+		return oidLists;
 	}
-	public void setOidList(List<OidListRef> oidList) {
-		this.oidList = oidList;
+	public void setOidList(List<OidListRef> oidLists) {
+		this.oidLists = oidLists;
 	}
 	
 	public List<Long> getHostListIds() {
@@ -89,10 +89,23 @@ public class PollerEntry {
 		return list;
 	}
 	
+	public List<Long> getOidListIds() {
+		Set<Long> ids = new LinkedHashSet<Long>();
+		for (OidListRef ref : oidLists) {
+			if (ref.isEnabled()) {
+				ids.add(ref.getId());
+			}
+		}
+		
+		ArrayList<Long> list = new ArrayList<Long>();
+		list.addAll(ids);
+		return list;
+	}
+	
 	@Override
 	public String toString() {
 		return "Pollers [id=" + id + ", name=" + name + ", description="
 				+ description + ", delay=" + delay + ", hostLists=" + hostLists
-				+ ", oidList=" + oidList + "]";
+				+ ", oidList=" + oidLists + "]";
 	}
 }

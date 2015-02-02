@@ -26,7 +26,7 @@ public class HostListEntry {
 	private final static long DEFAULT_PORT=161;
 
 	@JsonProperty
-	private long id;
+	private Long id;
 	@JsonProperty
 	private String name;
 	@JsonProperty
@@ -43,11 +43,10 @@ public class HostListEntry {
 		this.port = DEFAULT_PORT;
 		this.communityRead = DEFAULT_COMMUNITY_READ;
 	}
-	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getName() {

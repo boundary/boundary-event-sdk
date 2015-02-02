@@ -25,9 +25,12 @@ public class Host {
 	private String communityRead;
 	@JsonProperty
 	private long port;
+	@JsonProperty
+	private boolean enabled;
 	
 	public Host() {
 		this.port = UKNOWN_PORT;
+		this.enabled = true;
 	}
 	
 	public String getHost() {
@@ -48,9 +51,55 @@ public class Host {
 	public void setPort(long port) {
 		this.port = port;
 	}
+	
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((communityRead == null) ? 0 : communityRead.hashCode());
+		result = prime * result + ((host == null) ? 0 : host.hashCode());
+		result = prime * result + (int) (port ^ (port >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Host other = (Host) obj;
+		if (communityRead == null) {
+			if (other.communityRead != null)
+				return false;
+		} else if (!communityRead.equals(other.communityRead))
+			return false;
+		if (host == null) {
+			if (other.host != null)
+				return false;
+		} else if (!host.equals(other.host))
+			return false;
+		if (port != other.port)
+			return false;
+		return true;
+	}
+
 	@Override
 	public String toString() {
 		return "Host [host=" + host + ", communityRead=" + communityRead
-				+ ", port=" + port + "]";
+				+ ", port=" + port + ", enabled=" + enabled + "]";
 	}
+
 }

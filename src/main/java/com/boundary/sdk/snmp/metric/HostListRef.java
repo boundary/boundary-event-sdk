@@ -14,10 +14,6 @@
 package com.boundary.sdk.snmp.metric;
 
 public class HostListRef {
-//	{
-//		"id": 1,
-//		"enabled":true
-//	},
 	
 	private long id;
 	boolean enabled;
@@ -38,6 +34,4 @@ public class HostListRef {
 	public String toString() {
 		return "HostListRef [id=" + id + ", enabled=" + enabled + "]";
 	}
-	
-	
 }

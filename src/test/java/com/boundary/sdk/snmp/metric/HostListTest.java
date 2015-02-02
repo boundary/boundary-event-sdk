@@ -16,6 +16,8 @@ package com.boundary.sdk.snmp.metric;
 import static org.junit.Assert.*;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.After;
@@ -64,7 +66,7 @@ public class HostListTest {
 		assertNotNull("check for host list entry null",hostListEntry);
 		assertEquals("check for host list size",5,hostListEntry.getHosts().size());
 		
-		assertEquals("check host list entry id 1",1,hostListEntry.getId());
+		assertEquals("check host list entry id 1",new Long(1),hostListEntry.getId());
 		assertEquals("check host list entry name 1","Web Servers",hostListEntry.getName());
 		assertEquals("check host list entry name 1","Web Servers to monitor via SNMP",hostListEntry.getDescription());
 		assertEquals("check host list entry name 1","public",hostListEntry.getCommunityRead());
@@ -98,7 +100,7 @@ public class HostListTest {
 		assertNotNull("check for host list entry null",hostListEntry);
 		assertEquals("check for host list size",3,hostListEntry.getHosts().size());
 		
-		assertEquals("check host list entry id 2",2,hostListEntry.getId());
+		assertEquals("check host list entry id 2",new Long(2),hostListEntry.getId());
 		assertEquals("check host list entry name 2","Database Servers",hostListEntry.getName());
 		assertEquals("check host list entry name 2","",hostListEntry.getDescription());
 		assertEquals("check host list entry name 2","YXz1297",hostListEntry.getCommunityRead());
@@ -128,7 +130,7 @@ public class HostListTest {
 		assertEquals("check for host list size",2,hostListEntry.getHosts().size());
 
 		
-		assertEquals("check host list entry id 3",3,hostListEntry.getId());
+		assertEquals("check host list entry id 3",new Long(3),hostListEntry.getId());
 		assertEquals("check host list entry name 3","DNS Servers",hostListEntry.getName());
 		assertEquals("check host list entry name 3","SNMP monitoring of infrastructure DNS services",hostListEntry.getDescription());
 		assertEquals("check host list entry name 3","public",hostListEntry.getCommunityRead());
@@ -143,5 +145,84 @@ public class HostListTest {
 		Host host2 = hosts.get(1);
 		assertEquals("check host 2","ns-002",host2.getHost());
 		assertEquals("check community-read 2",null,host2.getCommunityRead());
+	}
+	
+	@Test
+	public void testGetHosts() throws URISyntaxException {
+		HostLists hostLists = HostLists.load(HOST_LIST_FILE);
+		
+		List<Long> ids = new ArrayList<Long>();
+		ids.add(new Long(1));
+		Long long1 = new Long(1);
+		assertTrue("contains",ids.contains(long1));
+		
+		List<Host> expectedHosts = new ArrayList<Host>();
+		Host host = new Host();
+		host.setHost("web-001");
+		host.setCommunityRead("foobar");
+		expectedHosts.add(host);
+		host = new Host();
+		host.setHost("web-002");
+		expectedHosts.add(host);
+		host = new Host();
+		host.setHost("web-003");
+		expectedHosts.add(host);
+		host = new Host();
+		host.setHost("web-004");
+		host.setCommunityRead("public");
+		expectedHosts.add(host);
+		host = new Host();
+		host.setCommunityRead("secret");
+		host.setHost("web-005");
+		expectedHosts.add(host);
+		
+		List<Host> hosts = hostLists.getHosts(ids);
+		assertEquals("check host sizes",expectedHosts.size(),hosts.size());
+		assertEquals("check equal",expectedHosts,hosts);
+	}
+	
+	@Test
+	public void testHostEqual() {
+		Host host1 = new Host();
+		host1.setHost("foo");
+		host1.setPort(162);
+		host1.setCommunityRead("public");
+		Host host2 = new Host();
+		host2.setHost("foo");
+		host2.setPort(162);
+		host2.setCommunityRead("public");
+		assertEquals("check hosts for equal",host1,host2);
+	}
+	
+	@Test
+	public void testHostNotEqual() {
+		Host host1 = new Host();
+		host1.setHost("bar");
+		host1.setPort(162);
+		host1.setCommunityRead("public");
+		Host host2 = new Host();
+		host2.setHost("foo");
+		host2.setPort(162);
+		host2.setCommunityRead("public");
+		assertNotSame("check hosts for not equal",host1,host2);
+	}
+	
+	@Test
+	public void testLongEqual() {
+		Long long1 = new Long(1);
+		Long long2 = new Long(1);
+		assertEquals("check long for equal",long1,long2);
+	}
+	
+	@Test
+	public void testLongContains() {
+		Long long1 = new Long(1);
+		Long long2 = new Long(1);
+		List<Long> list = new ArrayList<Long>();
+		list.add(long1);
+		list.add(long2);
+		Long long3 = new Long(1);
+		
+		assertTrue("check for contains",list.contains(long3));
 	}
 }

@@ -17,7 +17,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -56,6 +59,24 @@ public class OidLists {
 			e.printStackTrace();
 		}
 		return instance;
+	}
+	
+	public List<Oid> getOids(List<Long> ids) {
+		Set<Oid> oids = new LinkedHashSet<Oid>();
+		
+		for (OidListEntry entry : oidList) {
+			if (ids.contains(entry.getId())) {
+				for (Oid oid : entry.getOids()) {
+					if (oid.isEnabled()) {
+						oids.add(oid);
+					}
+				}
+			}
+		}
+		
+		List<Oid> list = new ArrayList<Oid>();
+		list.addAll(oids);
+		return list;
 	}
 
 	@Override

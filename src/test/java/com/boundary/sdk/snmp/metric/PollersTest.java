@@ -152,8 +152,6 @@ public class PollersTest {
 		expectedIds.clear();
 		expectedIds.add(new Long(3));
 		assertEquals("check getHostListIds 3",expectedIds,ids);
-
-
 	}
 
 }

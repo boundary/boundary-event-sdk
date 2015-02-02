@@ -17,7 +17,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -32,6 +35,10 @@ public class HostLists {
 	
 	@JsonProperty("host-lists")
 	private List<HostListEntry> hostLists;
+	
+	public HostLists() {
+		this.hostLists = new ArrayList<HostListEntry>();
+	}
 
 	public List<HostListEntry> getHostLists() {
 		return hostLists;
@@ -39,6 +46,25 @@ public class HostLists {
 
 	public void setHostList(List<HostListEntry> hostLists) {
 		this.hostLists = hostLists;
+	}
+	
+	public List<Host> getHosts(List<Long> ids) {
+		Set<Host> hosts = new LinkedHashSet<Host>();
+		
+		for (HostListEntry entry : hostLists) {
+			if (ids.contains(entry.getId())) {
+				for (Host host : entry.getHosts()) {
+					if (host.isEnabled()) {
+
+						hosts.add(host);
+					}
+				}
+			}
+		}
+		
+		List<Host> list = new ArrayList<Host>();
+		list.addAll(hosts);
+		return list;
 	}
 
 	public static HostLists load(String resource) throws URISyntaxException {

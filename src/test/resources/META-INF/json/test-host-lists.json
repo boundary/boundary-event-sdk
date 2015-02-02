@@ -22,7 +22,7 @@
 					"community-read": "public"
 				},
 				{
-					"host": "web005",
+					"host": "web-005",
 					"community-read": "secret"
 				}
 			]
