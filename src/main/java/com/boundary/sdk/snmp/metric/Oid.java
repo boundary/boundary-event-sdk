@@ -30,6 +30,10 @@ public class Oid {
 	@JsonProperty
 	private String description;
 	
+	public Oid() {
+		this.enabled = true;
+	}
+	
 	public String getOid() {
 		return oid;
 	}

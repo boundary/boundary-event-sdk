@@ -19,21 +19,31 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class OidEntry {
-	
+public class OidListEntry {
+	@Min(1)
 	@JsonProperty
 	private long id;
+	@NotNull
 	@JsonProperty
 	private String name;
 	@JsonProperty
 	private boolean enabled;
+	@NotNull
 	@JsonProperty
 	private List<Oid> oids;
+	
+	public OidListEntry() {
+		this.enabled = true;
+	}
+	
 	public long getId() {
 		return id;
 	}
@@ -41,10 +51,17 @@ public class OidEntry {
 		this.id = id;
 	}
 	public String getName() {
+		
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public boolean isEnabled() {
+		return enabled;
+	}
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 	public List<Oid> getOids() {
 		return oids;
@@ -53,31 +70,10 @@ public class OidEntry {
 		this.oids = oids;
 	}
 	
-	public static HostLists load(String resource) throws URISyntaxException {
-		HostLists instance = new HostLists();
-
-		ClassLoader classLoader = instance.getClass().getClassLoader();
-		URL url = classLoader.getResource(resource);
-		File file = new File(url.toURI());
-
-		ObjectMapper mapper = new ObjectMapper();
-
-		try {
-			instance = mapper.readValue(file,HostLists.class);
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return instance;
-	}
-	
 	@Override
 	public String toString() {
-		return "OidList [id=" + id + ", name=" + name + ", oids=" + oids + "]";
+		return "OidListEntry [id=" + id + ", name=" + name + ", enabled="
+				+ enabled + ", oids=" + oids + "]";
 	}
-	
 	
 }
