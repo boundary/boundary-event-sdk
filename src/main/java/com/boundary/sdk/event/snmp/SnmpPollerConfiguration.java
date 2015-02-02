@@ -22,14 +22,22 @@ import java.util.TreeMap;
 
 public class SnmpPollerConfiguration {
 	
+	private static final long DEFAULT_SNMP_PORT = 161;
+	private static final String DEFAULT_HOST="localhost";
+	private static final String DEFAULT_COMMUNITY_READ="public";
+	private static final long DEFAULT_DELAY = 5;
 	private String host;
 	private long port;
 	private Set<String> oids;
-	private String community;
+	private String communityRead;
 	private long delay;
 	
 	public SnmpPollerConfiguration() {
-		oids = new LinkedHashSet<String>();
+		this.oids = new LinkedHashSet<String>();
+		this.host = DEFAULT_HOST;
+		this.port = DEFAULT_SNMP_PORT;
+		this.communityRead = DEFAULT_COMMUNITY_READ;
+		this.delay = DEFAULT_DELAY;
 	}
 		
 	public String getHost() {
@@ -71,12 +79,12 @@ public class SnmpPollerConfiguration {
 		return this.oids;
 	}
 
-	public String getCommunity() {
-		return community;
+	public String getCommunityRead() {
+		return communityRead;
 	}
 
-	public void setCommunity(String community) {
-		this.community = community;
+	public void setCommunity(String communityRead) {
+		this.communityRead = communityRead;
 	}
 
 	public long getDelay() {
