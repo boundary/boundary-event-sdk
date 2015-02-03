@@ -43,6 +43,4 @@ public class SnmpMetricCatalogTest {
 		
 		List<SnmpPollerConfiguration> configs = catalog.load();
 	}
-
-
 }

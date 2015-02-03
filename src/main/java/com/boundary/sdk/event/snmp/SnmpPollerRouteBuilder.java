@@ -13,6 +13,7 @@
 // limitations under the License.
 package com.boundary.sdk.event.snmp;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,8 @@ import org.apache.camel.spi.DataFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.snmp4j.mp.SnmpConstants;
+
+import com.boundary.sdk.snmp.metric.SnmpMetricCatalog;
 
 import static org.apache.camel.LoggingLevel.*;
 
@@ -34,6 +37,7 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 	private String communityRead;
 	private String oids;
 	private int delay;
+	private SnmpMetricCatalog catalog;
 	private List<SnmpPollerConfiguration> configuration;
 	
 	public SnmpPollerRouteBuilder() {
@@ -41,7 +45,7 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 		delay = 5;
 		setPort(161);
 		setToUri("seda:metric-translate");
-		configuration = new ArrayList<SnmpPollerConfiguration>();
+		catalog = new SnmpMetricCatalog();
 	}
 	
 	public SnmpPollerRouteBuilder(List<SnmpPollerConfiguration> configuration) {
@@ -73,6 +77,10 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 	public void setDelay(int delay) {
 		this.delay = delay;
 	}
+	
+	public void loadConfiguration() throws Exception {
+		this.configuration = this.catalog.load();
+	}
 
 	private String getUri(
 			String host,
@@ -102,6 +110,13 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 	public void configure() {
 		int startUpOrder = this.getStartUpOrder();
 		DataFormat jaxb = new JaxbDataFormat("com.boundary.sdk.event.snmp");
+		
+		try {
+			this.loadConfiguration();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		for (SnmpPollerConfiguration config : this.configuration) {
 			
@@ -109,13 +124,12 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 					config.getHost(),
 					config.getPort(),
 					config.getOidsAsString(),
-					config.getCommunity(),
+					config.getCommunityRead(),
 					config.getDelay());
 
 			RouteDefinition routeDefinition = from(fromUri)
 					.routeId(this.routeId)
-					.setHeader(BOUNDARY_HOSTNAME,
-							constant(this.getBindAddress()))
+					.setHeader(BOUNDARY_HOSTNAME,constant(config.getHost()))
 					.log(DEBUG, "body: ${body}")
 					.unmarshal(jaxb)
 					.marshal().serialization()

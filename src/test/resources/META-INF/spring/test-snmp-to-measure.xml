@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-Copyright 2014 Boundary, Inc.
+Copyright 2014-2015 Boundary, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,20 +20,25 @@ limitations under the License.
                    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
                    http://camel.apache.org/schema/spring
                    http://camel.apache.org/schema/spring/camel-spring.xsd">
-                   
-  <bean id="snmp-poller" class="com.boundary.sdk.event.snmp.SnmpPollerRouteBuilder">
-    <property name="routeId" value="SNMP-POLLER"/>
-    <property name="startUpOrder" value="110"/>	
-    <property name="toUri" value="direct:out"/>
-  </bean>
-    
-  <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">		
-    <routeBuilder ref="snmp-poller"/>
-    <route id="TEST">
-      <from uri="direct:out"/>
-        <unmarshal><serialization/></unmarshal>
-        <to uri="mock:out"/>
-	<to uri="stream:out"/>
-    </route>
-  </camelContext>
+	
+	<bean id="script-route" class="com.boundary.sdk.event.script.ScriptRouteBuilder">
+		<property name="routeId" value="SCRIPT"/>
+		<property name="startUpOrder" value="100"/>
+		<property name="fromUri" value="direct:script-in"/>
+		<property name="toUri" value="direct:script-out"/>
+		<!-- <property name="script" value="classpath:test-script-route-builder.json"/> -->
+	</bean>
+	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+		<routeBuilder ref="script-route"/>
+		<route id="SERIALIZE">
+			<from uri="direct:in"/>
+			<marshal><serialization/></marshal>
+			<to uri="direct:script-in"/>
+		</route>
+		<route id="DE-SERIALIZE">
+			<from uri="direct:script-out"/>
+			<unmarshal><serialization/></unmarshal>
+			<to uri="mock:out"/>
+		</route>
+	</camelContext>
 </beans>

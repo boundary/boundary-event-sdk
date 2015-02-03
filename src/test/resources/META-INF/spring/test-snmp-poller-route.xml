@@ -26,7 +26,8 @@ limitations under the License.
 		<property name="startUpOrder" value="100"/>
 		<property name="toUri" value="direct:snmp-out"/>
 		<property name="bindAddress" value="localhost"/>
-		<property name="port" value="162"/>
+		<property name="delay" value="5"/>
+		<property name="port" value="161"/>
 		<property name="oids" value="1.3.6.1.2.1.25.1.5.0"/>
 		<property name="mibRepository" value="#{systemEnvironment['BOUNDARY_MIB_REPOSITORY']}"/>
 		<property name="license" value="#{systemEnvironment['BOUNDARY_MIB_LICENSE']}"/>
