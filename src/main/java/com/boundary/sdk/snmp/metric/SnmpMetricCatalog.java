@@ -13,52 +13,96 @@
 // limitations under the License.
 package com.boundary.sdk.snmp.metric;
 
+import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.boundary.sdk.event.snmp.MIBCompiler;
+import com.boundary.sdk.event.snmp.SnmpPollerConfiguration;
 
 /**
  * Master catalog of meta for SNMP metric collection
  */
 public class SnmpMetricCatalog {
 	
-	@JsonProperty("oid-list")
-	private List<OidList> oidList;
-	@JsonProperty("host-lists")
-	private List<HostList> hostList;
-	@JsonProperty
-	private List<Pollers> pollers;
+	private static Logger LOG = LoggerFactory.getLogger(SnmpMetricCatalog.class);
+
+	private static final String SNMP_CONFIG_DIR_PROPERTY = "com.boundary.snmp.config.directory";
+	private static final String POLLERS_CONFIG_FILENAME = "pollers.json";
+	private static final String HOST_LISTS_CONFIG_FILENAME = "hosts.json";
+	private static final String OID_LISTS_CONFIG_FILENAME = "oids.json";
+	private OidLists oidLists;
+	private HostLists hostLists;
+	private Pollers pollers;
+	private String configDirectory;
+	private String pollersResource;
+	private String hostListsResource;
+	private String oidListsResource;
 	
 	public SnmpMetricCatalog() {
-		this.oidList = new ArrayList<OidList>();
-		this.hostList = new ArrayList<HostList>();
-		this.pollers = new ArrayList<Pollers>();
-	}
-
-	public List<OidList> getOidList() {
-		return oidList;
-	}
-
-	public void setOidList(List<OidList> oidList) {
-		this.oidList = oidList;
-	}
-
-	public List<HostList> getHostList() {
-		return hostList;
-	}
-
-	public void setHostList(List<HostList> hostList) {
-		this.hostList = hostList;
-	}
-
-	public List<Pollers> getPollers() {
-		return pollers;
-	}
-
-	public void setPollers(List<Pollers> pollers) {
-		this.pollers = pollers;
+		
+		this.configDirectory = System.getProperty(SNMP_CONFIG_DIR_PROPERTY, "META-INF/json");
+		this.pollersResource = this.configDirectory + "/" + POLLERS_CONFIG_FILENAME;
+		this.hostListsResource = this.configDirectory + "/" + HOST_LISTS_CONFIG_FILENAME;
+		this.oidListsResource = this.configDirectory + "/" + OID_LISTS_CONFIG_FILENAME;
 	}
 	
-	
+	private void readAndValidate() throws Exception {
+		try {
+			LOG.info("Loading pollers from {}",this.pollersResource);
+			pollers = Pollers.load(this.pollersResource);
+			LOG.info("Loading hosts from {}",this.hostListsResource);
+
+			hostLists = HostLists.load(this.hostListsResource);
+			LOG.info("Loading oids from {}",this.oidListsResource);
+			oidLists = OidLists.load(this.oidListsResource);
+		} catch (URISyntaxException e) {
+			throw new Exception("Configuration Error");
+		}
+		LOG.info("Configuration loaded",this.hostListsResource);
+	}
+
+	/**
+	 * Loop over pollers and build a list of {@link SnmpPollerConfiguration}s
+	 * @return List of {@link SnmpPollerConfiguration}s
+	 * @throws Exception Any kind of error occurs
+	 */
+	public List<SnmpPollerConfiguration> load() throws Exception {
+		List<SnmpPollerConfiguration> list = new ArrayList<SnmpPollerConfiguration>();
+		
+		this.readAndValidate();
+		
+		for (PollerEntry entry: pollers.getPollers()) {
+			
+			List<Host> hosts = hostLists.getHosts(entry.getHostListIds());
+			for (Host host : hosts) {
+				SnmpPollerConfiguration configuration = new SnmpPollerConfiguration();
+				configuration.setDelay(entry.getDelay());
+				
+				configuration.setHost(host.getHost());
+				if (host.getPort() == Host.UKNOWN_PORT) {
+					configuration.setPort(host.getPort());
+				}
+				else {
+					configuration.setPort(1);
+				}
+				if (host.getCommunityRead() == null) {
+					
+				}
+				else {
+					configuration.setCommunity(host.getCommunityRead());
+				}
+				
+				List<Oid> oids = oidLists.getOids(entry.getOidListIds());
+				configuration.setOids(oids);
+			}
+		}
+		return list;
+	}
+
+
 }

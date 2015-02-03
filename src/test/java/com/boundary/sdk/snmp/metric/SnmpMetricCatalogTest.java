@@ -28,6 +28,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.boundary.sdk.event.snmp.SnmpPollerConfiguration;
 import com.boundary.sdk.snmp.metric.SnmpMetricCatalog;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -35,101 +36,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SnmpMetricCatalogTest {
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	private SnmpMetricCatalog snmpMetricCatalog;
-
-
-	@Before
-	public void setUp() throws Exception {
-		snmpMetricCatalog = load("META-INF/json/test-snmp-poller-catalog.json");
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		snmpMetricCatalog = null;
-	}
-	
-	private SnmpMetricCatalog load(String resource) throws URISyntaxException {
-		SnmpMetricCatalog snmpMetricCatalog = null;
-
-		ClassLoader classLoader = this.getClass().getClassLoader();
-		URL url = classLoader.getResource(resource);
-		File file = new File(url.toURI());
-
-		ObjectMapper mapper = new ObjectMapper();
-
-		try {
-			snmpMetricCatalog = mapper.readValue(file,SnmpMetricCatalog.class);
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return snmpMetricCatalog;
-	}
 
 	@Test
-	public void testSnmpMetricCatalog() throws URISyntaxException {
+	public void testLoad() throws Exception {
+		SnmpMetricCatalog catalog = new SnmpMetricCatalog();
 		
-		assertEquals("check poller count",3,snmpMetricCatalog.getPollers().size());
-		assertEquals("check host list count",3,snmpMetricCatalog.getHostList().size());
+		List<SnmpPollerConfiguration> configs = catalog.load();
 	}
 
-	@Test
-	public void testGetOidList() {
-		List<OidListEntry> oidList = snmpMetricCatalog.getOidList();
-		assertNotNull("check for null oidList",oidList);
-		assertEquals("check oids list count",3,oidList.size());
-
-		
-		OidListEntry list1 = oidList.get(0);
-		assertEquals("check id",1,list1.getId());
-		assertEquals("check name","Default",list1.getName());
-		assertEquals("check oids count",9,list1.getOids().size());
-		
-		Oid entry1 = list1.getOids().get(0);
-		assertEquals("check oid 1","1.3.6.1.2.1.25.1.5.0",entry1.getOid());
-		assertEquals("check metric-id 1","",entry1.getMetricId());
-		assertEquals("check description 1","Red",entry1.getDescription());
-		assertEquals("check enabled 1",true,entry1.isEnabled());
-		
-		Oid entry2 = list1.getOids().get(1);
-		assertEquals("check oid 2","1.3.6.1.2.1.25.1.6.0",entry2.getOid());
-		assertEquals("check metric-id 2","",entry2.getMetricId());
-		assertEquals("check description 2","Green",entry2.getDescription());
-		assertEquals("check enabled 2",false,entry2.isEnabled());
-
-		
-//		{
-//			"oid":"1.3.6.1.2.1.25.1.5.0",
-//			"metric-id":"",
-//			"description":"Red"
-//		},
-//		{
-//			"oid":"1.3.6.1.2.1.25.1.6.0",
-//			"metric-id":"",
-//			"description":"Green"
-//		},
-	}
-
-	@Test
-	public void testGetHostList() {
-
-	}
-
-	@Ignore
-	@Test
-	public void testGetPollers() {
-		fail("Not yet implemented");
-	}
 
 }
