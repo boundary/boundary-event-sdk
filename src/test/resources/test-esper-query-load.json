@@ -1,0 +1,28 @@
+{
+	"queries": [
+		{
+			"name": "red",
+			"created": "2015-01-27T00:00:00+00:00",
+			"modified": "2015-01-27T00:00:00+00:00",
+			"enabled": true,
+			"description": "Red description",
+			"query": "select * from Red where name = 'ONE' and property = 2"
+		},
+		{
+			"name": "blue",
+			"created": "1992-06-20T00:00:00+00:00",
+			"modified": "1992-06-20T00:00:00+00:00",
+			"enabled": false,
+			"description": "Blue description",
+			"query": "select * from Blue where name = 'ONE' and property = 2"
+		},
+		{
+			"name": "green",
+			"created": "2000-12-10T00:00:00+00:00",
+			"modified": "2000-12-10T10:30:36+00:00",
+			"enabled": true,
+			"description": "Green description",
+			"query": "select * from Green where name = 'ONE' and property = 2"
+		}
+	]
+}

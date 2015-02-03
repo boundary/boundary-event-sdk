@@ -1,4 +1,4 @@
-// Copyright 2014 Boundary, Inc.
+// Copyright 2014-2015 Boundary, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,14 +11,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.boundary.sdk.event.service;
+package com.boundary.sdk.event.script;
 
-public class ServiceTestDynamicRouter {
+import java.util.HashMap;
+import java.util.Map;
 
-	public ServiceTestDynamicRouter() {
-	}
-	
-	public void route(ServiceTest<?,?> test) {
-		
+public class ScriptTestUtils {
+
+	public static Map<String,Object> setScriptHeader(String script) {
+		Map <String,Object> headers = new HashMap<String,Object>();
+		headers.put("CamelLanguageScript",script);
+
+		return headers;
 	}
 }

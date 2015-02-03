@@ -1,7 +1,21 @@
+// Copyright 2014-2015 Boundary, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 package com.boundary.sdk.event;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -9,8 +23,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Common properties between RawEvent and Event
- * 
- * @author davidg
  *
  */
 public class BaseEvent {
@@ -34,10 +46,14 @@ public class BaseEvent {
 	 * @return {@link String}
 	 */
 	public static String truncateToMaximumLength(String str) {
-		int length = Math.min(str.length(),MAXIMUM_STRING_LENGTH);
-		String truncStr = str.substring(0, length);
-		if (length < str.length() ) {
-			LOG.warn("String truncated from {} to {}", str,truncStr);
+		String truncStr = null;
+
+		if (str != null) {
+			int length = Math.min(str.length(), MAXIMUM_STRING_LENGTH);
+			truncStr = str.substring(0, length);
+			if (length < str.length()) {
+				LOG.warn("String truncated from {} to {}", str, truncStr);
+			}
 		}
 		return truncStr;
 	}
@@ -49,7 +65,7 @@ public class BaseEvent {
 	 * @param array An {@link ArrayList} of {@link String}s to truncate.
 	 * @return {@link ArrayList} of {@link String}
 	 */
-	public static ArrayList<String> truncateToMaximumLength(ArrayList<String> array) {
+	public static ArrayList<String> truncateToMaximumLength(List<String> array) {
 		ArrayList<String> truncatedArray = new ArrayList<String>(array.size());
 		for (String s : array) {
 			truncatedArray.add(truncateToMaximumLength(s));

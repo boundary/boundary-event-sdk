@@ -1,3 +1,16 @@
+// Copyright 2014-2015 Boundary, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 package com.boundary.sdk.event;
 
 import java.text.DateFormat;
@@ -22,7 +35,6 @@ import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.boundary.sdk.event.syslog.SyslogMessageGenerator;
 
 public class EventCLI {
 	
@@ -276,30 +288,21 @@ public class EventCLI {
 		addTitleOption();
 		addHelpOption();
 	}
-	protected boolean handleCommandlandArguments(String[] args) throws ParseException {
-		boolean exit = false;
-		
+
+	protected void handleCommandlandArguments(String[] args)
+			throws ParseException {
+
 		configureCommandLineOptions();
-		
 		CommandLineParser parser = new BasicParser();
-		try {
-			cmd = parser.parse(options, args);
-			if (cmd.hasOption(OPTION_HELP)) {
-				usage();
-				exit = true;
-			}
-		} catch (ParseException e) {
+		cmd = parser.parse(options, args);
+		if (cmd.hasOption(OPTION_HELP)) {
 			usage();
-//			e.printStackTrace();
-			exit = true;
 		}
-		return exit;
 	}
 	
 	protected RawEvent getEvent() {
 		return this.event;
 	}
-	
 
 	protected Date parseDateTime(String s) throws java.text.ParseException {
 		Date dt = null;
@@ -371,7 +374,7 @@ public class EventCLI {
 	 * @param strs Array of strings from the command line
 	 * @return {@link Source}
 	 */
-	private Source getSourceType(String [] strs) {
+	protected Source getSourceType(String [] strs) {
 		Source s = null;
 		LOG.debug("strs[0] = " + (strs != null && strs.length >= 1 ? strs[0] : ""));
 		LOG.debug("strs[1] = " + (strs != null && strs.length >= 2 ? strs[1] : ""));
@@ -534,30 +537,25 @@ public class EventCLI {
 		// context.
 		context.start();
 	}
-	
+
+	protected void configure(String [] args) throws Exception {
+		handleCommandlandArguments(args);
+		configureEvent();
+		//configureRoutes();
+	}
+
 	/**
-	 * Handles the processing of command line options, configuring, and sending the events
-	 * @param args
-	 * @return
+	 * Handles the processing of command line options,
+	 * configuring, and sending the events
+	 * @param args command line arguments
+	 * @return {@link String}
 	 * @throws Exception
 	 */
 	private String execute(String [] args) throws Exception {
-		// If there were no errors parsing the command line
-		// then proceed with configuring and sending the event
-		if (configure(args) == false) {
-			configureRoutes();
-			sendEvent();
-		}
+		configure(args);
+
 		// @TODO: Return the event id created
 		return null;
-	}
-	
-	protected boolean configure(String [] args) throws Exception {
-		boolean result = handleCommandlandArguments(args);
-		if (result == false) {
-			configureEvent();
-		}
-		return result;
 	}
 
 	/**
@@ -574,8 +572,7 @@ public class EventCLI {
 				System.out.println(eventId);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
+			LOG.error("{}",e.getMessage());
 		}
 	}
 }

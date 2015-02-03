@@ -1,0 +1,91 @@
+{
+	"oid-list":[
+		{
+			"id":"1",
+			"name":"Default",
+			"enabled": true,
+			"oids":[
+				{
+					"oid":"1.3.6.1.2.1.25.1.5.0",
+					"metric-id":"METRIC_RED",
+					"enabled": true,
+					"description":"Red"
+				},
+				{
+					"oid":"1.3.6.1.2.1.25.1.6.0",
+					"metric-id":"METRIC_GREEN",
+					"enabled": false,
+					"description":"Green"
+				},
+				{
+					"oid":"1.3.6.1.2.1.6.9.0",
+					"metric-id":"METRIC_BLUE",
+					"description":"Blue"
+				},
+				{
+					"oid":"1.3.6.1.2.1.7.1.0",
+					"metric-id":"METRIC_CYAN",
+					"description":"Cyan"
+				},
+				{
+					"oid":"1.3.6.1.2.1.7.4.0",
+					"metric-id":"METRIC_PINK",
+					"description":"Pink"
+				},
+				{
+					"oid":"1.3.6.1.2.1.6.10.0",
+					"metric-id":"METRIC_MAGENTA",
+					"description":"Magenta"
+				},
+				{
+					"oid":"1.3.6.1.2.1.6.11.0",
+					"metric-id":"METRIC_YELLOW",
+					"description":"Yellow"
+				},
+				{
+					"oid":"1.3.6.1.2.1.4.3.0",
+					"metric-id":"METRIC_PURPLE",
+					"description":"Purple"
+				},
+				{
+					"oid":"1.3.6.1.2.1.4.10.0",
+					"metric-id":"METRIC_ORANGE",
+					"description":"Orange"
+				}
+			]
+		},
+		{
+			"id":"2",
+			"name":"Extra",
+			"oids":[
+				{
+					"oid":"1.3.6.1.2.1.25.1.5.0",
+					"metric-id":"METRIC_SKY",
+					"description":"Sky"
+				},
+				{
+					"oid":"1.3.6.1.2.1.25.1.6.0",
+					"metric-id":"METRIC_CLOUDS",
+					"description":"Clouds"
+				}
+			]
+		},
+		{
+			"id": 3,
+			"name": "DNS",
+			"oids": [
+				{
+					"oid":"1.3.6.1.2.1.25.1.5.0",
+					"metric-id":"METRIC_DELAY",
+					"description":"Delay"
+				},
+				{
+					"oid":"1.3.6.1.2.1.25.1.6.0",
+					"metric-id":"METRIC_LOOKUP",
+					"description":"Lookup"
+				}
+			]
+		}
+		
+	]
+}

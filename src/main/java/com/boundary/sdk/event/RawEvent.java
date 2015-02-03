@@ -1,14 +1,24 @@
+// Copyright 2014-2015 Boundary, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 package com.boundary.sdk.event;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
-
-
-
-
-
+import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,7 +36,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  *       serialization to JSON (via Jackson) is skipped for those fields that have not been
  *       specified.
  *
- * @author davidg
  */
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
@@ -39,13 +48,13 @@ public class RawEvent extends BaseEvent implements Serializable {
 	@JsonProperty
 	private Date createdAt;
 	@JsonProperty
-	private ArrayList<String> fingerprintFields;
+	private List<String> fingerprintFields;
 	@JsonProperty
 	private String message;
 	@JsonProperty
 	private String organizationId;
 	@JsonProperty
-	private LinkedHashMap<String,Object> properties;
+	private Map<String,Object> properties;
 	@JsonProperty
 	private Date receivedAt;
 	@JsonProperty
@@ -57,7 +66,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	@JsonProperty
 	private Status status;
 	@JsonProperty
-	private ArrayList<String> tags;
+	private List<String> tags;
 	@JsonProperty
 	private String title;
 
@@ -100,7 +109,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * 
 	 * @return Returns a {@link ArrayList} with finger print fields
 	 */
-	public ArrayList<String> getFingerprintFields() {
+	public List<String> getFingerprintFields() {
 		if (fingerprintFields == null) {
 			initFingerprintFields();
 		}
@@ -143,7 +152,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * 
 	 * @return {@link RawEvent}
 	 */
-	public RawEvent setFingerprintFields(ArrayList<String> fingerprintFields) {
+	public RawEvent setFingerprintFields(List<String> fingerprintFields) {
 		if (fingerprintFields == null) {
 			initFingerprintFields();
 		}
@@ -227,7 +236,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * 
 	 * @return {@link LinkedHashMap} containing the properties of the {@link RawEvent}
 	 */
-	public LinkedHashMap<String,Object> getProperties() {
+	public Map<String,Object> getProperties() {
 		if (properties == null) {
 			initProperties();
 		}
@@ -240,7 +249,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * @param properties ({@link LinkedHashMap}) to be associated with the {@link RawEvent}
 	 * @return {@link RawEvent}
 	 */
-	public RawEvent setProperties(LinkedHashMap<String,Object> properties) {
+	public RawEvent setProperties(Map<String,Object> properties) {
 		if (properties == null) {
 			initProperties();
 		}
@@ -333,6 +342,17 @@ public class RawEvent extends BaseEvent implements Serializable {
 		this.severity = severity;
 		return this;
 	}
+	
+	/**
+	 * Set the severity of raw event from a string
+	 * 
+	 * @param severity {@link String} representation of the event severity
+	 * @return {@link RawEvent}
+	 */
+	public RawEvent setSeverity(String severity) {
+		Severity enumSeverity = Severity.valueOf(severity);
+		return setSeverity(enumSeverity);
+	}
 
 	/**
 	 * Internal method for lazy initialization.
@@ -400,6 +420,16 @@ public class RawEvent extends BaseEvent implements Serializable {
 		this.status = status;
 		return this;
 	}
+	
+	/**
+	 * Sets the status of the raw event from a string
+	 * @param status {@link String} representation of the event status
+	 * @return {@link RawEvent}
+	 */
+	public RawEvent setStatus(String status) {
+		Status enumStatus = Status.valueOf(status);
+		return setStatus(enumStatus);
+	}
 
 	/**
 	 * Returns the current value of the {@link RawEvent}
@@ -434,7 +464,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * @param tags {@link ArrayList} of tags to associate with the {@link RawEvent}
 	 * @return {@link RawEvent}
 	 */
-	public RawEvent setTags(ArrayList<String> tags) {
+	public RawEvent setTags(List<String> tags) {
 		if (tags == null) {
 			initializeTags();
 		}
@@ -474,7 +504,7 @@ public class RawEvent extends BaseEvent implements Serializable {
 	 * 
 	 * @return {@link ArrayList} containing all of the tags associated with the {@link RawEvent}
 	 */
-	public ArrayList<String> getTags() {
+	public List<String> getTags() {
 		if (tags == null) {
 			initializeTags();
 		}
@@ -482,6 +512,99 @@ public class RawEvent extends BaseEvent implements Serializable {
 		return tags;
 	}
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((createdAt == null) ? 0 : createdAt.hashCode());
+		result = prime
+				* result
+				+ ((fingerprintFields == null) ? 0 : fingerprintFields
+						.hashCode());
+		result = prime * result + ((message == null) ? 0 : message.hashCode());
+		result = prime * result
+				+ ((organizationId == null) ? 0 : organizationId.hashCode());
+		result = prime * result
+				+ ((properties == null) ? 0 : properties.hashCode());
+		result = prime * result
+				+ ((receivedAt == null) ? 0 : receivedAt.hashCode());
+		result = prime * result + ((sender == null) ? 0 : sender.hashCode());
+		result = prime * result
+				+ ((severity == null) ? 0 : severity.hashCode());
+		result = prime * result + ((source == null) ? 0 : source.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RawEvent other = (RawEvent) obj;
+		if (createdAt == null) {
+			if (other.createdAt != null)
+				return false;
+		} else if (!createdAt.equals(other.createdAt))
+			return false;
+		if (fingerprintFields == null) {
+			if (other.fingerprintFields != null)
+				return false;
+		} else if (!fingerprintFields.equals(other.fingerprintFields))
+			return false;
+		if (message == null) {
+			if (other.message != null)
+				return false;
+		} else if (!message.equals(other.message))
+			return false;
+		if (organizationId == null) {
+			if (other.organizationId != null)
+				return false;
+		} else if (!organizationId.equals(other.organizationId))
+			return false;
+		if (properties == null) {
+			if (other.properties != null)
+				return false;
+		} else if (!properties.equals(other.properties))
+			return false;
+		if (receivedAt == null) {
+			if (other.receivedAt != null)
+				return false;
+		} else if (!receivedAt.equals(other.receivedAt))
+			return false;
+		if (sender == null) {
+			if (other.sender != null)
+				return false;
+		} else if (!sender.equals(other.sender))
+			return false;
+		if (severity != other.severity)
+			return false;
+		if (source == null) {
+			if (other.source != null)
+				return false;
+		} else if (!source.equals(other.source))
+			return false;
+		if (status != other.status)
+			return false;
+		if (tags == null) {
+			if (other.tags != null)
+				return false;
+		} else if (!tags.equals(other.tags))
+			return false;
+		if (title == null) {
+			if (other.title != null)
+				return false;
+		} else if (!title.equals(other.title))
+			return false;
+		return true;
+	}
+
 	/**
 	 * Converts a raw event into a string representation.
 	 * 

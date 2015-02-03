@@ -1,3 +1,16 @@
+// Copyright 2014-2015 Boundary, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 package com.boundary.sdk.event;
 
 import static org.junit.Assert.*;
@@ -15,7 +28,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TestRawEvent {
 	
@@ -469,6 +485,60 @@ public class TestRawEvent {
 	public void testTitleMaximum() {
 		event.setTitle(maxStr);
 		assertEquals("Check maximum title",maxStr,event.getTitle());
+	}
+	
+	private RawEventBuilder rawEventBuilder() {
+		RawEventBuilder builder = RawEventBuilder.builder();
+		Date now = new Date();
+		builder.setCreatedAt(new Date());
+		List<String> fingerprintFields = new ArrayList<String>();
+		fingerprintFields.add("red");
+		fingerprintFields.add("blue");
+		fingerprintFields.add("green");
+		builder.setFingerprintFields(fingerprintFields);
+		builder.setMessage("HELLO PEOPLE");
+		builder.setOrganizationId("foobar");
+		Map<String,Object> properties = new HashMap<String,Object>();
+		properties.put("one","1");
+		properties.put("two","2");
+		properties.put("three","3");
+		builder.setProperties(properties);
+		builder.setReceivedAt(now);
+		Source sender = new Source("alex","geddy","neal",properties);
+		builder.setSender(sender);
+		builder.setSeverity(Severity.INFO);
+		Source source = new Source("larry","curl","moe",properties);
+		builder.setSource(source);
+		builder.setStatus(Status.OPEN);
+		List<String> tags = new ArrayList<String>();
+		tags.add("cyan");
+		tags.add("magenta");
+		tags.add("yellow");
+		builder.setTags(tags);
+		builder.setTitle("foobar");
+		return builder;
+	}
+	
+	@Test
+	public void testEventEquals() {
+		RawEventBuilder builder = rawEventBuilder();
+		
+		RawEvent event1 = builder.build();
+		RawEvent event2 = builder.build();
+		
+		assertTrue("check equals",event1.equals(event2));
+	}
+	
+	@Test
+	public void testNotEqual() {
+		RawEventBuilder builder = RawEventBuilder.builder();
+		
+		builder.setTitle("foobar");
+		RawEvent event1 = builder.build();
+		builder.setTitle("barfoo");
+		RawEvent event2 = builder.build();
+		
+		assertFalse("check title equals",event1.equals(event2));
 	}
 }
 

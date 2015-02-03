@@ -1,12 +1,23 @@
-/**
- * 
- */
+// Copyright 2014-2015 Boundary, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 package com.boundary.sdk.event.snmp;
 
 import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -20,19 +31,24 @@ import org.snmp4j.smi.OID;
 import com.snmp4j.smi.SmiManager;
 
 /**
- * @author davidg
  *
  */
 public class SMISupportTest {
 	
 	
 	private static SmiSupport smi;
+	private static String BOUNDARY_MIB_REPOSITORY;
+	private static String BOUNDARY_MIB_LICENSE;
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		Map<String, String> env = System.getenv();
+		BOUNDARY_MIB_REPOSITORY = env.get("BOUNDARY_MIB_REPOSITORY");
+		BOUNDARY_MIB_LICENSE=env.get("BOUNDARY_MIB_LICENSE");
+
 		
 		smi = new SmiSupport();
 	}
@@ -58,14 +74,14 @@ public class SMISupportTest {
 	public void tearDown() throws Exception {
 	}
 	
-	@Ignore("Requires SNMP4J License")
+	//@Ignore("Requires SNMP4J License")
 	@Test
 	public void test() throws IOException {
 		SmiSupport support = new SmiSupport();
 		SmiManager smiManager = support.getSmiManager();
 		
-		support.setRepository("src/main/resources/mibrepository");
-		support.setLicense(null);
+		support.setRepository(BOUNDARY_MIB_REPOSITORY);
+		support.setLicense(BOUNDARY_MIB_LICENSE);
 		support.initialize();
 		
 		smiManager = support.getSmiManager();

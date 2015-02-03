@@ -1,0 +1,20 @@
+{
+	"host-lists":[
+		{
+			"id":1,
+			"name":"Local",
+			"description":"Local SNMP agent where the integration the SNMP integration is running",
+			"port":161,
+			"community-read":"public",
+			"hosts":[
+				{
+					"host": "localhost",
+					"enabled": true
+				}
+				
+			]
+			
+		}
+		
+	]
+}
