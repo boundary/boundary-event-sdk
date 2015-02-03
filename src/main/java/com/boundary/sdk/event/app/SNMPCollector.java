@@ -11,10 +11,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.boundary.sdk.event;
+package com.boundary.sdk.event.app;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.boundary.sdk.event.CamelApplication;
+import com.boundary.sdk.event.SNMPTrapEventAdapter;
 
 public class SNMPCollector extends CamelApplication {
 	
