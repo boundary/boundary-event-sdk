@@ -29,8 +29,10 @@ limitations under the License.
   <!-- Polls the SNMP agents to collect metrics based on provided configuration -->
   <bean id="poller" class="com.boundary.sdk.event.snmp.SnmpPollerRouteBuilder">
     <property name="routeId" value="SNMP-POLLER"/>
-    <property name="configuration" value=""/>
     <property name="startUpOrder" value="200"/>
+    <property name="host" value="#{systemEnvironment['BOUNDARY_PREMIUM_API_HOST']}"/>
+    <property name="user" value=""/>
+    <property name="password" value=""/>
     <property name="toUri" value="seda:snmp-poller-out"/>
   </bean>
 	
@@ -40,21 +42,16 @@ limitations under the License.
     <property name="fromUri" value="seda:boundary-metric?concurrentConsumers=10"/>
     <property name="startUpOrder" value="110"/>
   </bean>
+  
+  <!-- Processor that takes Oid/Value pairs and creates a Measurement -->
+  <bean id="oid-to-measure" class="com.boundary.sdk.event.snmp.OidValueToMeasurement"/>
 
   <camelContext id="snmp-metrics" xmlns="http://camel.apache.org/schema/spring">
 
     <routeBuilder ref="api"/>
     <routeBuilder ref="poller"/>
-
-    <route id="TRANSLATE">
-      <from uri="direct:translate"/>
-      <unmarshal><serialization/></unmarshal>
-      <bean ref="snmp-to-measure"/>
-      <marshal><serialization/></marshal> 
-      <to uri="seda:boundary-metric"/>
-    </route>
-
-    <route id="SPLIT-SNMP-XML" startUpOrder="100">
+    
+    <route id="SPLIT-SNMP-XML" startupOrder="100">
       <from uri="seda:snmp-poller-out?concurrentConsumers=10"/>
       <unmarshal><serialization/></unmarshal>
       <split>
@@ -63,5 +60,16 @@ limitations under the License.
         <to uri="direct:translate"/>
       </split>
     </route>
+    
+    <route id="TRANSLATE">
+      <from uri="direct:translate"/>
+      <unmarshal><serialization/></unmarshal>
+      <bean ref="snmp-to-measure"/>
+      <marshal><serialization/></marshal> 
+      <to uri="seda:boundary-metric"/>
+      <to uri="seda:boundary-metric"/>
+    </route>
+
+
   </camelContext>
 </beans>

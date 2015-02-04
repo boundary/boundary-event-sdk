@@ -51,10 +51,6 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 	public SnmpPollerRouteBuilder(List<SnmpPollerConfiguration> configuration) {
 		this.configuration = configuration;
 	}
-	
-	private void load() {
-		
-	}
 
 	public void setOids(String oids) {
 		this.oids = oids;
@@ -110,35 +106,31 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 	public void configure() {
 		int startUpOrder = this.getStartUpOrder();
 		DataFormat jaxb = new JaxbDataFormat("com.boundary.sdk.event.snmp");
-		
+
 		try {
 			this.loadConfiguration();
+
+			for (SnmpPollerConfiguration config : this.configuration) {
+
+				String fromUri = getUri(config.getHost(), config.getPort(),
+						config.getOidsAsString(), config.getCommunityRead(),
+						config.getDelay());
+
+				RouteDefinition routeDefinition = from(fromUri)
+						.routeId(this.routeId)
+						.setHeader(BOUNDARY_HOSTNAME,
+								constant(config.getHost()))
+						.log(DEBUG, "body: ${body}").unmarshal(jaxb).marshal()
+						.serialization().to(this.getToUri());
+
+				// Setup startup order only if it had been configured
+				if (this.getStartUpOrder() != 0) {
+					routeDefinition.startupOrder(this.getStartUpOrder());
+				}
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-
-		for (SnmpPollerConfiguration config : this.configuration) {
-			
-			String fromUri = getUri(
-					config.getHost(),
-					config.getPort(),
-					config.getOidsAsString(),
-					config.getCommunityRead(),
-					config.getDelay());
-
-			RouteDefinition routeDefinition = from(fromUri)
-					.routeId(this.routeId)
-					.setHeader(BOUNDARY_HOSTNAME,constant(config.getHost()))
-					.log(DEBUG, "body: ${body}")
-					.unmarshal(jaxb)
-					.marshal().serialization()
-					.to(this.getToUri());
-
-			// Setup startup order only if it had been configured
-			if (this.getStartUpOrder() != 0) {
-				routeDefinition.startupOrder(this.getStartUpOrder());
-			}
 		}
 	}
 }
