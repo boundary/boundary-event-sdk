@@ -37,7 +37,7 @@ public class SNMPGetTest extends CamelSpringTestSupport  {
 
 	@Test
 	public void testSnmpGet() throws InterruptedException {
-		out.await(30,TimeUnit.SECONDS);
+		out.await(20,TimeUnit.SECONDS);
 		out.setMinimumExpectedMessageCount(1);
 		
 		out.assertIsSatisfied();
@@ -51,6 +51,6 @@ public class SNMPGetTest extends CamelSpringTestSupport  {
 	
 	@Override
 	protected AbstractApplicationContext createApplicationContext() {
-		return new ClassPathXmlApplicationContext("META-INF/spring/snmp-get-test.xml");
+		return new ClassPathXmlApplicationContext("META-INF/spring/snmp-collector.xml");
 	}
 }

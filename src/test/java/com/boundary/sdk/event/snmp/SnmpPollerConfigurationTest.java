@@ -52,8 +52,8 @@ public class SnmpPollerConfigurationTest {
 		config.addOid(oid2);
 		
 		List<Oid> set = config.getOids();
-		assertEquals("check set count",1,set.size());
-		assertEquals("check getOidsAsString","1.3.6.1.2.1.25.1.5.0",config.getOidsAsString());
+		assertEquals("check set count",2,set.size());
+		assertEquals("check getOidsAsString","1.3.6.1.2.1.25.1.5.0,1.3.6.1.2.1.25.1.5.0",config.getOidsAsString());
 	}
 	
 	@Test

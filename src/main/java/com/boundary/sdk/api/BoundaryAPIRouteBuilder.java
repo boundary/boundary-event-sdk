@@ -118,7 +118,16 @@ public abstract class BoundaryAPIRouteBuilder extends BoundaryRouteBuilder {
 	public String getUser() {
 		return this.user;
 	}
-		
+	
+	/**
+	 * Get the host to use for sending API requests
+	 * 
+	 * @return {@link String}
+	 */
+	public String getHost() {
+		return this.host;
+	}
+	
 	/**
 	 * Set the host to use for sending API requests
 	 * 
@@ -160,14 +169,7 @@ public abstract class BoundaryAPIRouteBuilder extends BoundaryRouteBuilder {
 		this.port = port;
 	}
 
-	/**
-	 * Get the host to use for sending API requests
-	 * 
-	 * @return {@link String}
-	 */
-	public String getHost() {
-		return this.host;
-	}
+
 	
 	/**
 	 * Returns the URL for the API call

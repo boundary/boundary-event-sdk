@@ -32,7 +32,7 @@ limitations under the License.
       <from uri="direct:out"/>
         <unmarshal><serialization/></unmarshal>
         <to uri="mock:out"/>
-	<to uri="stream:out"/>
+	    <to uri="stream:out"/>
     </route>
   </camelContext>
 </beans>

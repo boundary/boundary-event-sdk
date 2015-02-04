@@ -30,9 +30,6 @@ limitations under the License.
   <bean id="poller" class="com.boundary.sdk.event.snmp.SnmpPollerRouteBuilder">
     <property name="routeId" value="SNMP-POLLER"/>
     <property name="startUpOrder" value="200"/>
-    <property name="host" value="#{systemEnvironment['BOUNDARY_PREMIUM_API_HOST']}"/>
-    <property name="user" value=""/>
-    <property name="password" value=""/>
     <property name="toUri" value="seda:snmp-poller-out"/>
   </bean>
 	
@@ -40,6 +37,10 @@ limitations under the License.
   <bean id="api" class="com.boundary.sdk.metric.MeasureRouteBuilder">
     <property name="routeId" value="MEASUREMENT-API"/>
     <property name="fromUri" value="seda:boundary-metric?concurrentConsumers=10"/>
+    <property name="host" value="#{systemEnvironment['BOUNDARY_PREMIUM_API_HOST']}"/>
+    <property name="user" value="#{systemEnvironment['BOUNDARY_PREMIUM_EMAIL']}"/>
+    <property name="password" value="#{systemEnvironment['BOUNDARY_PREMIUM_API_TOKEN']}"/>
+    
     <property name="startUpOrder" value="110"/>
   </bean>
   
@@ -60,16 +61,12 @@ limitations under the License.
         <to uri="direct:translate"/>
       </split>
     </route>
-    
     <route id="TRANSLATE">
       <from uri="direct:translate"/>
       <unmarshal><serialization/></unmarshal>
       <bean ref="snmp-to-measure"/>
       <marshal><serialization/></marshal> 
       <to uri="seda:boundary-metric"/>
-      <to uri="seda:boundary-metric"/>
     </route>
-
-
   </camelContext>
 </beans>
