@@ -160,20 +160,31 @@ public class HostListTest {
 		Host host = new Host();
 		host.setHost("web-001");
 		host.setCommunityRead("foobar");
+		host.setPort(161);
 		expectedHosts.add(host);
+		
 		host = new Host();
 		host.setHost("web-002");
+		host.setCommunityRead("public");
+		host.setPort(161);
 		expectedHosts.add(host);
+		
 		host = new Host();
 		host.setHost("web-003");
+		host.setCommunityRead("public");
+		host.setPort(1161);
 		expectedHosts.add(host);
+		
 		host = new Host();
 		host.setHost("web-004");
 		host.setCommunityRead("public");
+		host.setPort(161);
 		expectedHosts.add(host);
+		
 		host = new Host();
 		host.setCommunityRead("secret");
 		host.setHost("web-005");
+		host.setPort(161);
 		expectedHosts.add(host);
 		
 		List<Host> hosts = hostLists.getHosts(ids);
