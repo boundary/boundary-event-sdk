@@ -17,25 +17,21 @@ package com.boundary.sdk.metric;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * Data structure to add measurement readings to the data store.
- * Upon submitting measurements the data is instantly available to the dashboard for graphing.
+ * Upon submitting measurements the data is instantly available to the Dashboard for graphing.
  * In order to submit data you must first have created a metric with a unique metric name.
  * 
  * <ul>
- *     <li>source - The source of the metric</li>
- *     <li>metric - The name of the metric that you've set up in your account</li>
- *     <li>measure -Numeric measure to report</li>
+ *     <li>source    - The source of the metric</li>
+ *     <li>metric    - The name of the metric that you've set up in your account</li>
+ *     <li>measure   - Numeric measure to report</li>
  *     <li>timestamp - Unix timestamp the measurement was taken. If omitted, uses the time at which the measure is received.</li>
  * </ul>
- * 
- * @author davidg
  *
  */
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_EMPTY)
@@ -145,9 +141,4 @@ public class Measurement implements Serializable {
 		return sb.toString();
 	}
 	
-	public static void main(String [] args) {
-		Measurement measurement = new Measurement();
-		
-		System.out.println(measurement);
-	}
 }
