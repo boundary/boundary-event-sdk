@@ -15,7 +15,8 @@
 					"host": "web-002"
 				},
 				{
-					"host": "web-003"
+					"host": "web-003",
+					"port": 1161
 				},
 				{
 					"host": "web-004",

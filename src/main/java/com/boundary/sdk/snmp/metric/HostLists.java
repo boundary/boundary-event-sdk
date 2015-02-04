@@ -55,7 +55,12 @@ public class HostLists {
 			if (ids.contains(entry.getId())) {
 				for (Host host : entry.getHosts()) {
 					if (host.isEnabled()) {
-
+						if (host.getPort() == Host.UKNOWN_PORT) {
+							host.setPort(entry.getPort());
+						}
+						if (host.getCommunityRead() == null) {
+							host.setCommunityRead(entry.getCommunityRead());
+						}
 						hosts.add(host);
 					}
 				}

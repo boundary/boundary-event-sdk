@@ -11,17 +11,20 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.boundary.sdk.event;
+package com.boundary.sdk.event.app;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.boundary.sdk.event.CamelApplication;
+import com.boundary.sdk.event.SNMPTrapEventAdapter;
 
 public class SNMPCollector extends CamelApplication {
 	
 	private static Logger LOG = LoggerFactory.getLogger(SNMPTrapEventAdapter.class);
 
 	private static final String SNMP_POLLER_URI =
-			"META-INF/spring/snmp-metrics.xml";
+			"META-INF/spring/snmp-collector.xml";
 	private static final String SNMP_POLLER_NAME = "SNMP Collector";
 	
 	public SNMPCollector() {

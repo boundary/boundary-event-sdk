@@ -32,10 +32,10 @@ public class HostListEntry {
 	@JsonProperty
 	String description;
 	@JsonProperty
-	long port;
+	private long port;
 	@NotNull
 	@JsonProperty("community-read")
-	String communityRead;
+	private String communityRead;
 	@JsonProperty
 	private List<Host> hosts;
 	

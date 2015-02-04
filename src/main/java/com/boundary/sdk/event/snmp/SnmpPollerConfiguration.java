@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 
+import com.boundary.sdk.snmp.metric.Oid;
+
 public class SnmpPollerConfiguration {
 	
 	private static final long DEFAULT_SNMP_PORT = 161;
@@ -28,12 +30,12 @@ public class SnmpPollerConfiguration {
 	private static final long DEFAULT_DELAY = 5;
 	private String host;
 	private long port;
-	private Set<String> oids;
+	private List<Oid> oids;
 	private String communityRead;
 	private long delay;
 	
 	public SnmpPollerConfiguration() {
-		this.oids = new LinkedHashSet<String>();
+		this.oids = new ArrayList<Oid>();
 		this.host = DEFAULT_HOST;
 		this.port = DEFAULT_SNMP_PORT;
 		this.communityRead = DEFAULT_COMMUNITY_READ;
@@ -56,7 +58,7 @@ public class SnmpPollerConfiguration {
 		this.port = port;
 	}
 
-	public void addOid(String oid) {
+	public void addOid(Oid oid) {
 		oids.add(oid);
 	}
 	
@@ -64,18 +66,22 @@ public class SnmpPollerConfiguration {
 		StringBuilder builder = new StringBuilder();
 		
 		boolean first = true;
-		for (String oid: oids) {
+		for (Oid oid: oids) {
 			if (first == false) {
 				builder.append(",");
 			}
-			builder.append(oid);
+			builder.append(oid.getOid());
 			first = false;
 		}
 		
 		return builder.toString();
 	}
 	
-	public Set<String> getOids() {
+	public void setOids(List<Oid> oids) {
+		this.oids = oids;
+	}
+	
+	public List<Oid> getOids() {
 		return this.oids;
 	}
 
@@ -83,7 +89,7 @@ public class SnmpPollerConfiguration {
 		return communityRead;
 	}
 
-	public void setCommunity(String communityRead) {
+	public void setCommunityRead(String communityRead) {
 		this.communityRead = communityRead;
 	}
 
@@ -94,4 +100,12 @@ public class SnmpPollerConfiguration {
 	public void setDelay(long delay) {
 		this.delay = delay;
 	}
+
+	@Override
+	public String toString() {
+		return "SnmpPollerConfiguration [host=" + host + ", port=" + port
+				+ ", oids=" + oids + ", communityRead=" + communityRead
+				+ ", delay=" + delay + "]";
+	}
+
 }

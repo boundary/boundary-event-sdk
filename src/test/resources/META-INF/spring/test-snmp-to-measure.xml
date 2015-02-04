@@ -21,24 +21,24 @@ limitations under the License.
                    http://camel.apache.org/schema/spring
                    http://camel.apache.org/schema/spring/camel-spring.xsd">
 	
-	<bean id="snmp-route" class="com.boundary.sdk.event.snmp.SnmpPollerRouteBuilder">
-		<property name="routeId" value="SNMP"/>
+	<bean id="script-route" class="com.boundary.sdk.event.script.ScriptRouteBuilder">
+		<property name="routeId" value="SCRIPT"/>
 		<property name="startUpOrder" value="100"/>
-		<property name="toUri" value="direct:snmp-out"/>
-<!-- 		<property name="bindAddress" value="localhost"/>
-		<property name="delay" value="5"/>
-		<property name="port" value="161"/>
-		<property name="oids" value="1.3.6.1.2.1.25.1.5.0"/>
- -->		<property name="mibRepository" value="#{systemEnvironment['BOUNDARY_MIB_REPOSITORY']}"/>
-		<property name="license" value="#{systemEnvironment['BOUNDARY_MIB_LICENSE']}"/>
+		<property name="fromUri" value="direct:script-in"/>
+		<property name="toUri" value="direct:script-out"/>
+		<!-- <property name="script" value="classpath:test-script-route-builder.json"/> -->
 	</bean>
-   
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
-	    <routeBuilder ref="snmp-route"/>
+		<routeBuilder ref="script-route"/>
+		<route id="SERIALIZE">
+			<from uri="direct:in"/>
+			<marshal><serialization/></marshal>
+			<to uri="direct:script-in"/>
+		</route>
 		<route id="DE-SERIALIZE">
-			<from uri="direct:snmp-out"/>
+			<from uri="direct:script-out"/>
 			<unmarshal><serialization/></unmarshal>
 			<to uri="mock:out"/>
-		</route>	
+		</route>
 	</camelContext>
 </beans>

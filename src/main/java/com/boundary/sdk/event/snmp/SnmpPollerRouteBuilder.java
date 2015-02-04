@@ -13,6 +13,7 @@
 // limitations under the License.
 package com.boundary.sdk.event.snmp;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.snmp4j.mp.SnmpConstants;
 
+import com.boundary.sdk.snmp.metric.SnmpMetricCatalog;
+
 import static org.apache.camel.LoggingLevel.*;
 
 public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
@@ -31,47 +34,48 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 	
 	private static Logger LOG = LoggerFactory.getLogger(SnmpPollerRouteBuilder.class);
 	
-	private String communityRead;
-	private String oids;
-	private int delay;
+//	private String communityRead;
+//	private String oids;
+//	private int delay;
+	private SnmpMetricCatalog catalog;
 	private List<SnmpPollerConfiguration> configuration;
 	
 	public SnmpPollerRouteBuilder() {
-		communityRead="public";
-		delay = 5;
-		setPort(161);
-		setToUri("seda:metric-translate");
-		configuration = new ArrayList<SnmpPollerConfiguration>();
+//		communityRead="public";
+//		delay = 5;
+//		setPort(161);
+//		setToUri("seda:metric-translate");
+		catalog = new SnmpMetricCatalog();
 	}
 	
-	public SnmpPollerRouteBuilder(List<SnmpPollerConfiguration> configuration) {
-		this.configuration = configuration;
-	}
+//	public SnmpPollerRouteBuilder(List<SnmpPollerConfiguration> configuration) {
+//		this.configuration = configuration;
+//	}
+
+//	public void setOids(String oids) {
+//		this.oids = oids;
+//	}
+//	public String getOids() {
+//		return this.oids;
+//	}
+//
+//	public void setCommunityRead(String communityRead) {
+//		this.communityRead = communityRead;
+//	}
+//	public String getCommunityRead() {
+//		return this.communityRead;
+//	}
+//
+//	public int getDelay() {
+//		return delay;
+//	}
+//
+//	public void setDelay(int delay) {
+//		this.delay = delay;
+//	}
 	
-	private void load() {
-		
-	}
-
-	public void setOids(String oids) {
-		this.oids = oids;
-	}
-	public String getOids() {
-		return this.oids;
-	}
-
-	public void setCommunityRead(String communityRead) {
-		this.communityRead = communityRead;
-	}
-	public String getCommunityRead() {
-		return this.communityRead;
-	}
-
-	public int getDelay() {
-		return delay;
-	}
-
-	public void setDelay(int delay) {
-		this.delay = delay;
+	public void loadConfiguration() throws Exception {
+		this.configuration = this.catalog.load();
 	}
 
 	private String getUri(
@@ -103,28 +107,32 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 		int startUpOrder = this.getStartUpOrder();
 		DataFormat jaxb = new JaxbDataFormat("com.boundary.sdk.event.snmp");
 
-		for (SnmpPollerConfiguration config : this.configuration) {
-			
-			String fromUri = getUri(
-					config.getHost(),
-					config.getPort(),
-					config.getOidsAsString(),
-					config.getCommunity(),
-					config.getDelay());
+		try {
+			this.loadConfiguration();
+			LOG.info("Configuration contains {} pollers to start",this.configuration.size());
+			for (SnmpPollerConfiguration config : this.configuration) {
+				                                                                                 
+				LOG.info("Create route from: {}",config);
 
-			RouteDefinition routeDefinition = from(fromUri)
-					.routeId(this.routeId)
-					.setHeader(BOUNDARY_HOSTNAME,
-							constant(this.getBindAddress()))
-					.log(DEBUG, "body: ${body}")
-					.unmarshal(jaxb)
-					.marshal().serialization()
-					.to(this.getToUri());
+				String fromUri = getUri(config.getHost(), config.getPort(),
+						config.getOidsAsString(), config.getCommunityRead(),
+						config.getDelay());
 
-			// Setup startup order only if it had been configured
-			if (this.getStartUpOrder() != 0) {
-				routeDefinition.startupOrder(this.getStartUpOrder());
+				RouteDefinition routeDefinition = from(fromUri)
+						.routeId(this.routeId)
+						.setHeader(BOUNDARY_HOSTNAME,
+								constant(config.getHost()))
+						.log(DEBUG, "body: ${body}").unmarshal(jaxb).marshal()
+						.serialization().to(this.getToUri());
+
+				// Setup startup order only if it had been configured
+				if (this.getStartUpOrder() != 0) {
+					routeDefinition.startupOrder(this.getStartUpOrder());
+				}
 			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }
