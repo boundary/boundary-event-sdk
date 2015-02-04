@@ -47,13 +47,14 @@ public class Measurement implements Serializable {
 	private String metric;
 	@JsonProperty
 	@JsonInclude
-	private int measure;
+	private Number measure;
 	@JsonProperty
 	private Date timestamp;
 	
 	public Measurement() {
 		source = "";
 		metric = "";
+		measure = 0;
 	}
 
 	/**
@@ -95,16 +96,16 @@ public class Measurement implements Serializable {
 	/**
 	 * Sets the numeric measure
 	 * 
-	 * @return {@link int}
+	 * @return {@link Number}
 	 */
-	public int getMeasure() {
+	public Number getMeasure() {
 		return measure;
 	}
 	/**
 	 * Sets the numeric measure
-	 * @param measure {@link int} value of measurement
+	 * @param measure {@link Number} value of measurement
 	 */
-	public void setMeasure(int measure) {
+	public void setMeasure(Number measure) {
 		this.measure = measure;
 	}
 

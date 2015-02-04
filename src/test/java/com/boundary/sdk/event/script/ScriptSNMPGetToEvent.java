@@ -15,7 +15,9 @@ package com.boundary.sdk.event.script;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Calendar.Builder;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.camel.EndpointInject;
@@ -29,9 +31,8 @@ import org.junit.Test;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.boundary.sdk.event.RawEvent;
 import com.boundary.sdk.event.snmp.entry;
-import com.boundary.sdk.event.snmp.snmp;
+import com.boundary.sdk.metric.Measurement;
 
 import static com.boundary.sdk.event.script.ScriptTestUtils.*;
 
@@ -45,9 +46,16 @@ public class ScriptSNMPGetToEvent extends CamelSpringTestSupport {
 
 	@Test
 	public void test() throws InterruptedException {
+		String expectedOid = "1.3.6.1.2.1.1.3.0";
+		Number expectedValue = 2929358;
+		// Build Date of 2014-12-31 13:13:13
+		Builder builder = new Calendar.Builder();
+		builder.setDate(2014, 11, 31);
+		builder.setTimeOfDay(13,13,13);
+		Date expectedTimestamp = builder.build().getTime();
 		entry entry = new entry();
-		entry.setOid("1.3.6.1.2.1.1.3.0");
-		entry.setValue("2929358");
+		entry.setOid(expectedOid);
+		entry.setValue(expectedValue.toString());
 		
 		out.expectedMessageCount(1);
 		in.sendBodyAndHeaders(entry,setScriptHeader("classpath:META-INF/js/snmp-to-measure.js"));
@@ -57,9 +65,13 @@ public class ScriptSNMPGetToEvent extends CamelSpringTestSupport {
 		assertEquals("check exchange count",1,exchanges.size());
 		Exchange exchange = exchanges.get(0);
 		Message message = exchange.getIn();
-		RawEvent e = message.getBody(RawEvent.class);
-		assertNotNull("check event for null",e);
-		System.out.println(e);
+		Measurement m = message.getBody(Measurement.class);
+		assertNotNull("check event for null",m);
+		assertEquals("check source","SNMP",m.getSource());
+		assertEquals("check metric",expectedOid,m.getMetric());
+		assertEquals("check measure",entry.getValue(),Integer.toString(m.getMeasure().intValue()));
+		assertEquals("check timestamp",expectedTimestamp,m.getTimestamp());
+		System.out.println(m);
 	}
 
 	@Override
