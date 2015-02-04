@@ -42,5 +42,9 @@ public class SnmpMetricCatalogTest {
 		SnmpMetricCatalog catalog = new SnmpMetricCatalog();
 		
 		List<SnmpPollerConfiguration> configs = catalog.load();
+		assertNotNull("check for configuration null",configs);
+		assertEquals("check configuration size",1,configs.size());
+		SnmpPollerConfiguration conf = configs.get(0);
+		assertEquals("check configuration host","localhost",conf.getHost());
 	}
 }

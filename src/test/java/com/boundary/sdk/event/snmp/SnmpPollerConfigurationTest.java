@@ -97,7 +97,7 @@ public class SnmpPollerConfigurationTest {
 	@Test
 	public void testCommunity() {
 		SnmpPollerConfiguration config = new SnmpPollerConfiguration();
-		config.setCommunity("foobar");
+		config.setCommunityRead("foobar");
 		assertEquals("check community","foobar",config.getCommunityRead());
 	}
 	

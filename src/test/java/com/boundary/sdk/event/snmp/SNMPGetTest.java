@@ -37,7 +37,7 @@ public class SNMPGetTest extends CamelSpringTestSupport  {
 
 	@Test
 	public void testSnmpGet() throws InterruptedException {
-		out.await(20,TimeUnit.SECONDS);
+//		out.await(8,TimeUnit.SECONDS);
 		out.setMinimumExpectedMessageCount(1);
 		
 		out.assertIsSatisfied();

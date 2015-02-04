@@ -18,6 +18,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jetty.util.log.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,29 +77,24 @@ public class SnmpMetricCatalog {
 		
 		this.readAndValidate();
 		
+		LOG.info("Loaded {} poller entries",pollers.getPollers().size());
 		for (PollerEntry entry: pollers.getPollers()) {
 			
+
 			List<Host> hosts = hostLists.getHosts(entry.getHostListIds());
+			LOG.info("Poller \"{}\" (id {}) contains {} host list(s)",
+					entry.getName(),entry.getId(),hosts.size());
 			for (Host host : hosts) {
 				SnmpPollerConfiguration configuration = new SnmpPollerConfiguration();
 				configuration.setDelay(entry.getDelay());
 				
 				configuration.setHost(host.getHost());
-				if (host.getPort() == Host.UKNOWN_PORT) {
-					configuration.setPort(host.getPort());
-				}
-				else {
-					configuration.setPort(1);
-				}
-				if (host.getCommunityRead() == null) {
-					
-				}
-				else {
-					configuration.setCommunity(host.getCommunityRead());
-				}
+				configuration.setPort(host.getPort());
+				configuration.setCommunityRead(host.getCommunityRead());
 				
 				List<Oid> oids = oidLists.getOids(entry.getOidListIds());
 				configuration.setOids(oids);
+				list.add(configuration);
 			}
 		}
 		return list;

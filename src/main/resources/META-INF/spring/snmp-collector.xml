@@ -27,21 +27,32 @@ limitations under the License.
                    http://camel.apache.org/schema/spring/camel-spring.xsd">
  	
   <!-- Polls the SNMP agents to collect metrics based on provided configuration -->
-  <bean id="poller" class="com.boundary.sdk.event.snmp.SnmpPollerRouteBuilder">
+  <bean id="poller-route" class="com.boundary.sdk.event.snmp.SnmpPollerRouteBuilder">
     <property name="routeId" value="SNMP-POLLER"/>
     <property name="startUpOrder" value="200"/>
     <property name="toUri" value="seda:snmp-poller-out"/>
   </bean>
+  
+  <bean id="script-route" class="com.boundary.sdk.event.script.ScriptRouteBuilder">
+    <property name="routeId" value="TRANSFORM-SNMP"/>
+    <property name="startUpOrder" value="120"/>
+    <property name="fromUri" value="direct:translate"/>
+    <property name="toUri" value="seda:boundary-metric"/>
+    <property name="transform" value="true"/>
+    <property name="cacheScript" value="true"/>
+    <property name="contentCache" value="true"/>
+    <property name="languageName" value="javascript"/>
+    <property name="script" value="classpath:META-INF/js/snmp-to-measure.js"/>
+  </bean>
 	
   <!-- Receives requests to submit measurement values to Boundary -->
-  <bean id="api" class="com.boundary.sdk.metric.MeasureRouteBuilder">
+  <bean id="api-route" class="com.boundary.sdk.metric.MeasureRouteBuilder">
     <property name="routeId" value="MEASUREMENT-API"/>
+    <property name="startUpOrder" value="110"/>
     <property name="fromUri" value="seda:boundary-metric?concurrentConsumers=10"/>
     <property name="host" value="#{systemEnvironment['BOUNDARY_PREMIUM_API_HOST']}"/>
     <property name="user" value="#{systemEnvironment['BOUNDARY_PREMIUM_EMAIL']}"/>
     <property name="password" value="#{systemEnvironment['BOUNDARY_PREMIUM_API_TOKEN']}"/>
-    
-    <property name="startUpOrder" value="110"/>
   </bean>
   
   <!-- Processor that takes Oid/Value pairs and creates a Measurement -->
@@ -49,8 +60,9 @@ limitations under the License.
 
   <camelContext id="snmp-metrics" xmlns="http://camel.apache.org/schema/spring">
 
-    <routeBuilder ref="api"/>
-    <routeBuilder ref="poller"/>
+    <routeBuilder ref="api-route"/>
+    <routeBuilder ref="poller-route"/>
+    <routeBuilder ref="script-route"/>
     
     <route id="SPLIT-SNMP-XML" startupOrder="100">
       <from uri="seda:snmp-poller-out?concurrentConsumers=10"/>
@@ -61,12 +73,12 @@ limitations under the License.
         <to uri="direct:translate"/>
       </split>
     </route>
-    <route id="TRANSLATE">
+    <!-- <route id="TRANSLATE">
       <from uri="direct:translate"/>
       <unmarshal><serialization/></unmarshal>
-      <bean ref="snmp-to-measure"/>
+      <bean ref="oid-to-measure"/>
       <marshal><serialization/></marshal> 
       <to uri="seda:boundary-metric"/>
-    </route>
+    </route> -->
   </camelContext>
 </beans>

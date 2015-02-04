@@ -40,10 +40,13 @@ public class MeasureRouteBuilder extends BoundaryAPIRouteBuilder {
 	public void configure() {
 		String url = getUrl();
 		
+		LOG.info("url: {}",url);
+		LOG.info("getToUri(): {}",this.getToUri());
+		
 		// Configure the HTTP endpoint
 		setConfiguration();
 		
-		RouteDefinition routeDefinition = from(fromUri)
+		RouteDefinition routeDefinition = from(this.getFromUri())
 			.startupOrder(startUpOrder)
 			.routeId(routeId)
 			.marshal().json(JsonLibrary.Jackson)
@@ -59,7 +62,7 @@ public class MeasureRouteBuilder extends BoundaryAPIRouteBuilder {
 			.log(DEBUG,"HTTP Method: ${headers.CamelHttpMethod},AcceptContentType={headers.CamelAcceptContentType}")
 			.log(INFO,"HTTP Response Code: ${headers.CamelHttpResponseCode},Location: ${headers.Location}")
 			;
-		if (getToUri() != null) {
+		if (this.getToUri() != null && this.getToUri().length() > 0) {
 			routeDefinition.to(getToUri());
 		}
 	}
