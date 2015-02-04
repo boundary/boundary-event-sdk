@@ -176,16 +176,9 @@ public abstract class BoundaryAPIRouteBuilder extends BoundaryRouteBuilder {
 	 * @return {@link String}
 	 */
 	public String getUrl() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(HTTPS);
 		sb.append("://");
-		// User and password are optional
-//		if (getUser() != null || getPassword() != null) {
-//			sb.append(getUser() == null ? "" : getUser());
-//			sb.append(":");
-//			sb.append(getPassword());
-//			sb.append("@");
-//		}
 		sb.append(getHost());
 		sb.append(getPort() == DEFAULT_PORT ? "" : ":" + getPort());
 		sb.append("/");
