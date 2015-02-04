@@ -36,7 +36,7 @@ import com.boundary.sdk.metric.Measurement;
 
 import static com.boundary.sdk.event.script.ScriptTestUtils.*;
 
-public class ScriptSNMPGetToEvent extends CamelSpringTestSupport {
+public class SnmpToMeasureTest extends CamelSpringTestSupport {
 
 	@Produce(uri = "direct:in")
 	private ProducerTemplate in;
