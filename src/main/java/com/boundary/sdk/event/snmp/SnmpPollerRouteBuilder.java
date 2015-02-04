@@ -34,45 +34,45 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 	
 	private static Logger LOG = LoggerFactory.getLogger(SnmpPollerRouteBuilder.class);
 	
-	private String communityRead;
-	private String oids;
-	private int delay;
+//	private String communityRead;
+//	private String oids;
+//	private int delay;
 	private SnmpMetricCatalog catalog;
 	private List<SnmpPollerConfiguration> configuration;
 	
 	public SnmpPollerRouteBuilder() {
-		communityRead="public";
-		delay = 5;
-		setPort(161);
-		setToUri("seda:metric-translate");
+//		communityRead="public";
+//		delay = 5;
+//		setPort(161);
+//		setToUri("seda:metric-translate");
 		catalog = new SnmpMetricCatalog();
 	}
 	
-	public SnmpPollerRouteBuilder(List<SnmpPollerConfiguration> configuration) {
-		this.configuration = configuration;
-	}
+//	public SnmpPollerRouteBuilder(List<SnmpPollerConfiguration> configuration) {
+//		this.configuration = configuration;
+//	}
 
-	public void setOids(String oids) {
-		this.oids = oids;
-	}
-	public String getOids() {
-		return this.oids;
-	}
-
-	public void setCommunityRead(String communityRead) {
-		this.communityRead = communityRead;
-	}
-	public String getCommunityRead() {
-		return this.communityRead;
-	}
-
-	public int getDelay() {
-		return delay;
-	}
-
-	public void setDelay(int delay) {
-		this.delay = delay;
-	}
+//	public void setOids(String oids) {
+//		this.oids = oids;
+//	}
+//	public String getOids() {
+//		return this.oids;
+//	}
+//
+//	public void setCommunityRead(String communityRead) {
+//		this.communityRead = communityRead;
+//	}
+//	public String getCommunityRead() {
+//		return this.communityRead;
+//	}
+//
+//	public int getDelay() {
+//		return delay;
+//	}
+//
+//	public void setDelay(int delay) {
+//		this.delay = delay;
+//	}
 	
 	public void loadConfiguration() throws Exception {
 		this.configuration = this.catalog.load();
@@ -109,8 +109,10 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 
 		try {
 			this.loadConfiguration();
-
+			LOG.info("Configuration contains {} pollers to start",this.configuration.size());
 			for (SnmpPollerConfiguration config : this.configuration) {
+				                                                                                 
+				LOG.info("Create route from: {}",config);
 
 				String fromUri = getUri(config.getHost(), config.getPort(),
 						config.getOidsAsString(), config.getCommunityRead(),

@@ -89,7 +89,7 @@ public class SnmpPollerConfiguration {
 		return communityRead;
 	}
 
-	public void setCommunity(String communityRead) {
+	public void setCommunityRead(String communityRead) {
 		this.communityRead = communityRead;
 	}
 
@@ -100,4 +100,12 @@ public class SnmpPollerConfiguration {
 	public void setDelay(long delay) {
 		this.delay = delay;
 	}
+
+	@Override
+	public String toString() {
+		return "SnmpPollerConfiguration [host=" + host + ", port=" + port
+				+ ", oids=" + oids + ", communityRead=" + communityRead
+				+ ", delay=" + delay + "]";
+	}
+
 }
