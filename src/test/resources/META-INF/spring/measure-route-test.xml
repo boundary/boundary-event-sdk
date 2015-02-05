@@ -26,11 +26,17 @@ limitations under the License.
 		<property name="startUpOrder" value="100"/>
 		<property name="user" value="#{systemEnvironment['BOUNDARY_PREMIUM_EMAIL']}"/>
 		<property name="password" value="#{systemEnvironment['BOUNDARY_PREMIUM_API_TOKEN']}"/>
-		<property name="fromUri" value="direct:measure-in" />
+		<property name="fromUri" value="direct:api-in" />
 		<property name="toUri" value="mock:measure-out"/>
 	</bean>
 
 	<camelContext id="measure-context" xmlns="http://camel.apache.org/schema/spring">
 			<routeBuilder ref="measure-route"/>
+			
+			<route id="SERIALIZE">
+				<from uri="direct:measure-in"/>
+				<marshal><serialization/></marshal>
+				<to uri="direct:api-in"/>
+			</route>
 	</camelContext>
 </beans>
