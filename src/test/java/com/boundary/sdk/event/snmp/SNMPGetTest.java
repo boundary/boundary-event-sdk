@@ -18,12 +18,19 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.camel.EndpointInject;
 import org.apache.camel.Exchange;
+import org.apache.camel.Header;
+import org.apache.camel.Message;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.spring.CamelSpringTestSupport;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.boundary.sdk.metric.MeasureRouteBuilder;
+import com.boundary.sdk.metric.Measurement;
 
 
 /**
@@ -32,26 +39,34 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class SNMPGetTest extends CamelSpringTestSupport  {
 	
+	private static Logger LOG = LoggerFactory.getLogger(SNMPGetTest.class);
+	
     @EndpointInject(uri = "mock:out")
     private MockEndpoint out;
 
-    @Ignore
 	@Test
 	public void testSnmpGet() throws InterruptedException {
-//		out.await(8,TimeUnit.SECONDS);
+		out.await(8,TimeUnit.SECONDS);
 		out.setMinimumExpectedMessageCount(1);
 		
 		out.assertIsSatisfied();
 		List<Exchange> exchanges = out.getExchanges();
 		for (Exchange exchange : exchanges) {
-			assertNotNull("Body is null",exchange.getIn().getBody());
-			System.out.println(exchange.getIn().getBody());
+			Message message = exchange.getIn();
+			Object o = message.getBody();
+			assertNotNull("Check for null body",o);
+			LOG.info("Body class: {}",o.getClass().toString());
+			LOG.info("Body content: {}",o.toString());
+
+			Number httpCode = message.getHeader(Exchange.HTTP_RESPONSE_CODE,Number.class);
+			assertNotNull("check for null result code",httpCode);
+			assertEquals("check HTTP result code",200,httpCode);
 		}
 		
 	}
 	
 	@Override
 	protected AbstractApplicationContext createApplicationContext() {
-		return new ClassPathXmlApplicationContext("META-INF/spring/snmp-collector.xml");
+		return new ClassPathXmlApplicationContext("META-INF/spring/test-snmp-collector.xml");
 	}
 }

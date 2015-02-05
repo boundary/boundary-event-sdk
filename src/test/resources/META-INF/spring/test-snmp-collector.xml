@@ -53,6 +53,7 @@ limitations under the License.
     <property name="host" value="#{systemEnvironment['BOUNDARY_PREMIUM_API_HOST']}"/>
     <property name="user" value="#{systemEnvironment['BOUNDARY_PREMIUM_EMAIL']}"/>
     <property name="password" value="#{systemEnvironment['BOUNDARY_PREMIUM_API_TOKEN']}"/>
+    <property name="toUri" value="mock:out"/>
   </bean>
   
   <!-- Processor that takes Oid/Value pairs and creates a Measurement -->
