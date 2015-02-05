@@ -14,9 +14,11 @@
 package com.boundary.sdk.event.snmp;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -60,6 +62,16 @@ public class SnmpPollerConfiguration {
 
 	public void addOid(Oid oid) {
 		oids.add(oid);
+	}
+	
+	public Map<String,Oid> getOidMap() {
+		Map<String,Oid> map = new HashMap<String,Oid>();
+		
+		for (Oid oid: oids) {
+			map.put(oid.getOid(), oid);
+		}
+		
+		return map;
 	}
 	
 	public String getOidsAsString() {
