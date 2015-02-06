@@ -30,49 +30,16 @@ import static org.apache.camel.LoggingLevel.*;
 
 public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 	
-	public final static String BOUNDARY_HOSTNAME="boundary.hostname";
+	public final static String BOUNDARY_SNMP_POLLER_CONFIG="boundary.snmp.poller.configuration";
 	
 	private static Logger LOG = LoggerFactory.getLogger(SnmpPollerRouteBuilder.class);
 	
-//	private String communityRead;
-//	private String oids;
-//	private int delay;
 	private SnmpMetricCatalog catalog;
 	private List<SnmpPollerConfiguration> configuration;
 	
 	public SnmpPollerRouteBuilder() {
-//		communityRead="public";
-//		delay = 5;
-//		setPort(161);
-//		setToUri("seda:metric-translate");
 		catalog = new SnmpMetricCatalog();
 	}
-	
-//	public SnmpPollerRouteBuilder(List<SnmpPollerConfiguration> configuration) {
-//		this.configuration = configuration;
-//	}
-
-//	public void setOids(String oids) {
-//		this.oids = oids;
-//	}
-//	public String getOids() {
-//		return this.oids;
-//	}
-//
-//	public void setCommunityRead(String communityRead) {
-//		this.communityRead = communityRead;
-//	}
-//	public String getCommunityRead() {
-//		return this.communityRead;
-//	}
-//
-//	public int getDelay() {
-//		return delay;
-//	}
-//
-//	public void setDelay(int delay) {
-//		this.delay = delay;
-//	}
 	
 	public void loadConfiguration() throws Exception {
 		this.configuration = this.catalog.load();
@@ -120,10 +87,10 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 
 				RouteDefinition routeDefinition = from(fromUri)
 						.routeId(this.routeId)
-						.setHeader(BOUNDARY_HOSTNAME,
-								constant(config.getHost()))
-						.log(DEBUG, "body: ${body}").unmarshal(jaxb).marshal()
-						.serialization().to(this.getToUri());
+						.startupOrder(startUpOrder++)
+						.setHeader(BOUNDARY_SNMP_POLLER_CONFIG,constant(config))
+						.log(DEBUG, "body: ${body}").unmarshal(jaxb)
+						.marshal().serialization().to(this.getToUri());
 
 				// Setup startup order only if it had been configured
 				if (this.getStartUpOrder() != 0) {

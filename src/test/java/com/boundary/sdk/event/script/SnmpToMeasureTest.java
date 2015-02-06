@@ -15,6 +15,7 @@ package com.boundary.sdk.event.script;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Calendar.Builder;
 import java.util.Date;
@@ -31,8 +32,10 @@ import org.junit.Test;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.boundary.sdk.event.snmp.SnmpPollerConfiguration;
 import com.boundary.sdk.event.snmp.entry;
 import com.boundary.sdk.metric.Measurement;
+import com.boundary.sdk.snmp.metric.Oid;
 
 import static com.boundary.sdk.event.script.ScriptTestUtils.*;
 
@@ -48,6 +51,19 @@ public class SnmpToMeasureTest extends CamelSpringTestSupport {
 	public void test() throws InterruptedException {
 		String expectedOid = "1.3.6.1.2.1.1.3.0";
 		Number expectedValue = 2929358;
+		String expectedSource = "www.myweb.com";
+		String expectedMetricId = "MY_FAVORITE_METRIC";
+		
+		SnmpPollerConfiguration config = new SnmpPollerConfiguration();
+		config.setCommunityRead("foobar");
+		config.setDelay(30);
+		config.setPort(1161);
+		config.setHost(expectedSource);
+		Oid oid = new Oid();
+		oid.setMetricId(expectedMetricId);
+		oid.setOid(expectedOid);
+		config.addOid(oid);
+
 		// Build Date of 2014-12-31 13:13:13
 		Builder builder = new Calendar.Builder();
 		builder.setDate(2014, 11, 31);
@@ -58,7 +74,7 @@ public class SnmpToMeasureTest extends CamelSpringTestSupport {
 		entry.setValue(expectedValue.toString());
 		
 		out.expectedMessageCount(1);
-		in.sendBodyAndHeaders(entry,setScriptHeader("classpath:META-INF/js/snmp-to-measure.js"));
+		in.sendBodyAndHeaders(entry,setScriptHeaders("classpath:META-INF/js/snmp-to-measure.js",config));
 		out.assertIsSatisfied();
 		
 		List<Exchange> exchanges = out.getExchanges();
@@ -67,8 +83,8 @@ public class SnmpToMeasureTest extends CamelSpringTestSupport {
 		Message message = exchange.getIn();
 		Measurement m = message.getBody(Measurement.class);
 		assertNotNull("check event for null",m);
-		assertEquals("check source","SNMP",m.getSource());
-		assertEquals("check metric",expectedOid,m.getMetric());
+		assertEquals("check source",expectedSource,m.getSource());
+		assertEquals("check metric",expectedMetricId,m.getMetric());
 		assertEquals("check measure",entry.getValue(),Integer.toString(m.getMeasure().intValue()));
 		assertEquals("check timestamp",expectedTimestamp,m.getTimestamp());
 		System.out.println(m);

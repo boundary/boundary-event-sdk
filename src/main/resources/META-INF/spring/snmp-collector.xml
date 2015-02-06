@@ -54,10 +54,7 @@ limitations under the License.
     <property name="user" value="#{systemEnvironment['BOUNDARY_PREMIUM_EMAIL']}"/>
     <property name="password" value="#{systemEnvironment['BOUNDARY_PREMIUM_API_TOKEN']}"/>
   </bean>
-  
-  <!-- Processor that takes Oid/Value pairs and creates a Measurement -->
-  <bean id="oid-to-measure" class="com.boundary.sdk.event.snmp.OidValueToMeasurement"/>
-
+ 
   <camelContext id="snmp-metrics" xmlns="http://camel.apache.org/schema/spring">
 
     <routeBuilder ref="api-route"/>

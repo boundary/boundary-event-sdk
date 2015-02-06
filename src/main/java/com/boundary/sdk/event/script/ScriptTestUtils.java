@@ -16,11 +16,21 @@ package com.boundary.sdk.event.script;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.boundary.sdk.event.snmp.SnmpPollerConfiguration;
+import static com.boundary.sdk.event.snmp.SnmpPollerRouteBuilder.*;
+
 public class ScriptTestUtils {
 
 	public static Map<String,Object> setScriptHeader(String script) {
 		Map <String,Object> headers = new HashMap<String,Object>();
 		headers.put("CamelLanguageScript",script);
+		return headers;
+	}
+	
+	public static Map<String,Object> setScriptHeaders(String script,SnmpPollerConfiguration config) {
+		Map <String,Object> headers = new HashMap<String,Object>();
+		headers.put("CamelLanguageScript",script);
+		headers.put(BOUNDARY_SNMP_POLLER_CONFIG,config);
 
 		return headers;
 	}

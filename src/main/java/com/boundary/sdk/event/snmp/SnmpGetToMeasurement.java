@@ -16,7 +16,7 @@ package com.boundary.sdk.event.snmp;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 
-public class OidValueToMeasurement implements Processor {
+public class SnmpGetToMeasurement implements Processor {
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
