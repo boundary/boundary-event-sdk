@@ -13,13 +13,43 @@
 // limitations under the License.
 package com.boundary.sdk.event.snmp;
 
+import java.util.Vector;
+
 import org.apache.camel.Exchange;
+import org.apache.camel.Message;
 import org.apache.camel.Processor;
+import org.apache.camel.component.snmp.SnmpMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.snmp4j.PDU;
+import org.snmp4j.mp.SnmpConstants;
+import org.snmp4j.smi.OID;
+import org.snmp4j.smi.Variable;
+import org.snmp4j.smi.VariableBinding;
 
 public class SnmpGetToMeasurement implements Processor {
 
+	private static Logger LOG = LoggerFactory.getLogger(SNMPRouteBuilder.class);
+
+	private SnmpPollerConfiguration config;
+
+	public SnmpGetToMeasurement(SnmpPollerConfiguration config) {
+		this.config = config;
+	}
+
 	@Override
 	public void process(Exchange exchange) throws Exception {
-		// TODO Auto-generated method stub
+		// Extract the SnmpMessage and PDU instances from the Camel Exchange
+		Message message = exchange.getIn();
+		SnmpMessage snmpMessage = message.getBody(SnmpMessage.class);
+		PDU pdu = snmpMessage.getSnmpMessage();
+		
+		// Get the variable bindings from the trap and create properties in the event
+		Vector<? extends VariableBinding> varBinds = pdu.getVariableBindings();
+		for (VariableBinding var : varBinds) {
+			OID oid = var.getOid();
+			Variable variable = var.getVariable();
+			LOG.info("oid: {}, value: {}, syntax: {}",oid,variable.toLong(),variable.getSyntaxString());
+		}
 	}
 }
