@@ -75,6 +75,7 @@
 
        <!-- Properties for all of the java packages versions -->
        <activemq-version>5.9.0</activemq-version>
+       <java-plugin-sdk-version>0.5.0</java-plugin-sdk-version>
        <camel-version>2.14.1</camel-version>
        <camel-esper-version>2.13.2</camel-esper-version>
        <camel-service-version>0.4.0</camel-service-version>
@@ -459,6 +460,11 @@
 		</plugins>
   </build>
   <dependencies>
+    <dependency>
+      <groupId>com.boundary</groupId>
+      <artifactId>java-plugin-sdk</artifactId>
+      <version>${java-plugin-sdk-version}</version>
+    </dependency>
     <dependency>
       <groupId>javax</groupId>
       <artifactId>javaee-api</artifactId>
