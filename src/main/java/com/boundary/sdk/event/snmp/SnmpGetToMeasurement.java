@@ -33,6 +33,9 @@ public class SnmpGetToMeasurement implements Processor {
 
 	private SnmpPollerConfiguration config;
 
+	public SnmpGetToMeasurement() {
+		
+	}
 	public SnmpGetToMeasurement(SnmpPollerConfiguration config) {
 		this.config = config;
 	}
@@ -43,13 +46,6 @@ public class SnmpGetToMeasurement implements Processor {
 		Message message = exchange.getIn();
 		SnmpMessage snmpMessage = message.getBody(SnmpMessage.class);
 		PDU pdu = snmpMessage.getSnmpMessage();
-		
-		// Get the variable bindings from the trap and create properties in the event
-		Vector<? extends VariableBinding> varBinds = pdu.getVariableBindings();
-		for (VariableBinding var : varBinds) {
-			OID oid = var.getOid();
-			Variable variable = var.getVariable();
-			LOG.info("oid: {}, value: {}, syntax: {}",oid,variable.toLong(),variable.getSyntaxString());
-		}
+		message.setBody(pdu.getVariableBindings());
 	}
 }

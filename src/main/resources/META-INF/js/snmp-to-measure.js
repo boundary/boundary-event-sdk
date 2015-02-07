@@ -1,6 +1,8 @@
 
 // Extract the bind variable
-var bindVar = body;
+var varBind = body;
+
+var oid = varBind.getOid();
 
 // The configuration for this poller is stored in the following header of the message
 var config = request.getHeader("boundary.snmp.poller.configuration");
@@ -15,13 +17,13 @@ var measure = new com.boundary.sdk.metric.Measurement()
  *  Metric Id
  */
 // Lookup the OID for the bind variable
-var oid = map.get(bindVar.getOid());
-measure.metric = oid.getMetricId();
+var oidDef = map.get(oid.toDottedString());
+measure.metric = oidDef.getMetricId();
 
 /*
  * Measure
  */
-measure.measure = bindVar.getValue();
+measure.measure = varBind.getVariable().getValue();
 
 /*
  * Source
@@ -31,11 +33,7 @@ measure.source = config.getHost();
 /*
  * Timestamp
  */
-
-//Build Date of 2014-12-31 13:13:13
 var builder = new java.util.Calendar.Builder();
-builder.setDate(2014,11,31);
-builder.setTimeOfDay(13,13,13);
 measure.timestamp = builder.build().getTime();
 
 result = measure

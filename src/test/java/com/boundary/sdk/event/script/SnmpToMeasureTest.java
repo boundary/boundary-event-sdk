@@ -29,6 +29,14 @@ import org.apache.camel.ProducerTemplate;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.spring.CamelSpringTestSupport;
 import org.junit.Test;
+import org.snmp4j.smi.OID;
+import org.snmp4j.smi.TimeTicks;
+import org.snmp4j.smi.Counter64;
+import org.snmp4j.smi.Counter32;
+import org.snmp4j.smi.Gauge32;
+import org.snmp4j.smi.UnsignedInteger32;
+import org.snmp4j.smi.Variable;
+import org.snmp4j.smi.VariableBinding;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -46,14 +54,9 @@ public class SnmpToMeasureTest extends CamelSpringTestSupport {
 
 	@EndpointInject(uri = "mock:out")
 	private MockEndpoint out;
-
-	@Test
-	public void test() throws InterruptedException {
-		String expectedOid = "1.3.6.1.2.1.1.3.0";
-		Number expectedValue = 2929358;
-		String expectedSource = "www.myweb.com";
-		String expectedMetricId = "MY_FAVORITE_METRIC";
-		
+	
+	private SnmpPollerConfiguration getSnmpPollerConfiguration(String expectedSource,
+			String expectedMetricId,String expectedOid) {
 		SnmpPollerConfiguration config = new SnmpPollerConfiguration();
 		config.setCommunityRead("foobar");
 		config.setDelay(30);
@@ -63,31 +66,76 @@ public class SnmpToMeasureTest extends CamelSpringTestSupport {
 		oid.setMetricId(expectedMetricId);
 		oid.setOid(expectedOid);
 		config.addOid(oid);
-
-		// Build Date of 2014-12-31 13:13:13
-		Builder builder = new Calendar.Builder();
-		builder.setDate(2014, 11, 31);
-		builder.setTimeOfDay(13,13,13);
-		Date expectedTimestamp = builder.build().getTime();
-		entry entry = new entry();
-		entry.setOid(expectedOid);
-		entry.setValue(expectedValue.toString());
 		
-		out.expectedMessageCount(1);
-		in.sendBodyAndHeaders(entry,setScriptHeaders("classpath:META-INF/js/snmp-to-measure.js",config));
-		out.assertIsSatisfied();
-		
+		return config;
+	}
+	
+	private Measurement getMeasurement(MockEndpoint out) {
 		List<Exchange> exchanges = out.getExchanges();
 		assertEquals("check exchange count",1,exchanges.size());
 		Exchange exchange = exchanges.get(0);
 		Message message = exchange.getIn();
 		Measurement m = message.getBody(Measurement.class);
+		return m;
+	}
+
+	@Test
+	public void testTimeTickVariable() throws InterruptedException {
+		String expectedOid = "1.3.6.1.2.1.1.3.0";
+		Number expectedValue = 2929358;
+		String expectedSource = "www.myweb.com";
+		String expectedMetricId = "MY_FAVORITE_METRIC";
+		
+		VariableBinding vb = new VariableBinding();
+		TimeTicks v = new TimeTicks();
+		v.setValue(expectedValue.longValue());
+		
+		vb.setOid(new OID(expectedOid));
+		vb.setVariable(v);
+
+		SnmpPollerConfiguration config = getSnmpPollerConfiguration(
+				expectedSource,expectedMetricId,expectedOid);
+		out.expectedMessageCount(1);
+		in.sendBodyAndHeaders(vb,setScriptHeaders("classpath:META-INF/js/snmp-to-measure.js",config));
+		out.assertIsSatisfied();
+		
+		Measurement m = getMeasurement(out);
 		assertNotNull("check event for null",m);
 		assertEquals("check source",expectedSource,m.getSource());
 		assertEquals("check metric",expectedMetricId,m.getMetric());
-		assertEquals("check measure",entry.getValue(),Integer.toString(m.getMeasure().intValue()));
-		assertEquals("check timestamp",expectedTimestamp,m.getTimestamp());
-		System.out.println(m);
+		assertEquals("check measure",v.getValue(),m.getMeasure().intValue());
+	}
+	
+	@Test
+	public void testCounter32Variable() throws InterruptedException {
+		String expectedOid = "1.3.6.1.2.1.4.3.0";
+		Number expectedValue = 1588007;
+		String expectedSource = "www.myweb.com";
+		String expectedMetricId = "MY_FAVORITE_METRIC";
+		
+		VariableBinding vb = new VariableBinding();
+		Counter32 v = new Counter32();
+		v.setValue(expectedValue.longValue());
+		
+		vb.setOid(new OID(expectedOid));
+		vb.setVariable(v);
+
+		SnmpPollerConfiguration config = getSnmpPollerConfiguration(
+				expectedSource,expectedMetricId,expectedOid);
+		out.expectedMessageCount(1);
+		in.sendBodyAndHeaders(vb,setScriptHeaders("classpath:META-INF/js/snmp-to-measure.js",config));
+		out.assertIsSatisfied();
+		
+		Measurement m = getMeasurement(out);
+		assertNotNull("check event for null",m);
+		assertEquals("check source",expectedSource,m.getSource());
+		assertEquals("check metric",expectedMetricId,m.getMetric());
+		assertEquals("check measure",v.getValue(),m.getMeasure().intValue());
+	}
+	
+	@Test
+	public void testGauge() {
+		
 	}
 
 	@Override
@@ -95,5 +143,4 @@ public class SnmpToMeasureTest extends CamelSpringTestSupport {
 		return new ClassPathXmlApplicationContext(
 				"META-INF/spring/test-snmp-to-measure.xml");
 	}
-
 }

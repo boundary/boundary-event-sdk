@@ -36,7 +36,8 @@ limitations under the License.
   <bean id="script-route" class="com.boundary.sdk.event.script.ScriptRouteBuilder">
     <property name="routeId" value="TRANSFORM-SNMP"/>
     <property name="startUpOrder" value="120"/>
-    <property name="fromUri" value="direct:translate"/>
+    <property name="fromUri" value="seda:snmp-poller-out"/>
+    <!-- <property name="fromUri" value="direct:translate"/> -->
     <property name="toUri" value="seda:boundary-metric"/>
     <property name="transform" value="true"/>
     <property name="cacheScript" value="true"/>
@@ -62,7 +63,7 @@ limitations under the License.
     <routeBuilder ref="poller-route"/>
     <routeBuilder ref="script-route"/>
     
-    <route id="SPLIT-SNMP-XML" startupOrder="100">
+    <!-- <route id="SPLIT-SNMP-XML" startupOrder="100">
       <from uri="seda:snmp-poller-out?concurrentConsumers=10"/>
       <unmarshal><serialization/></unmarshal>
       <split>
@@ -70,7 +71,7 @@ limitations under the License.
         <marshal><serialization/></marshal> 
         <to uri="direct:translate"/>
       </split>
-    </route>
+    </route> -->
 
   </camelContext>
 </beans>

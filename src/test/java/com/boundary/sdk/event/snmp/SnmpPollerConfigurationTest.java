@@ -16,6 +16,7 @@ package com.boundary.sdk.event.snmp;
 import static org.junit.Assert.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.After;
@@ -25,6 +26,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.boundary.sdk.snmp.metric.Oid;
+import com.boundary.sdk.snmp.metric.SnmpMetricCatalog;
 
 public class SnmpPollerConfigurationTest {
 
@@ -95,11 +97,25 @@ public class SnmpPollerConfigurationTest {
 	}
 
 	@Test
+	public void testGetOidMap() throws Exception {
+		SnmpMetricCatalog catalog = new SnmpMetricCatalog();
+		List<SnmpPollerConfiguration> configs = catalog.load();
+		SnmpPollerConfiguration config = configs.get(0);
+		Map<String, Oid> map = config.getOidMap();
+		Oid oid = map.get("1.3.6.1.2.1.4.3.0");
+		System.out.println(map);
+		System.out.println(oid);
+		assertNotNull("check for not null",oid);
+		assertTrue("check enabled",oid.isEnabled());
+	}
+	
+	@Test
 	public void testCommunity() {
 		SnmpPollerConfiguration config = new SnmpPollerConfiguration();
 		config.setCommunityRead("foobar");
 		assertEquals("check community","foobar",config.getCommunityRead());
 	}
+
 	
 	@Test
 	public void testDelay() {
