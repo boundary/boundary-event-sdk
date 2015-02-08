@@ -26,8 +26,6 @@ import org.slf4j.LoggerFactory;
 
 import com.boundary.sdk.snmp.metric.MibExporter.ExportType;
 
-import static com.boundary.sdk.snmp.metric.MibExporter.*;
-
 public class ExportMibCli {
 	
 	private static Logger LOG = LoggerFactory.getLogger(ExportMibCli.class);
@@ -98,7 +96,7 @@ public class ExportMibCli {
 		exportOption = OptionBuilder
 				.withArgName("type")
 				.hasArgs(1)
-				.withDescription("Selects what to export which is either: oids, or metric. Defaults to metrics.")
+				.withDescription("Selects what to export which is either: METRIC,OID, or OUT. Defaults to METRIC.")
 				.withLongOpt("export")
 				.create("e");
 		
@@ -187,7 +185,12 @@ public class ExportMibCli {
 		// MIBs using the enterprise branch
 		getCompilerLicense();
 		
-		mibExporter.setExportType(exportType);
+		String exportOption = cmd.getOptionValue("e");
+		exportType = ExportType.valueOf(exportOption);
+		System.out.println(exportType);
+		if (exportType != null) {
+			mibExporter.setExportType(exportType);
+		}
 	}
 	
 
