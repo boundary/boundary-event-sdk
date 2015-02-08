@@ -13,9 +13,6 @@
 // limitations under the License.
 package com.boundary.sdk.snmp.metric;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -26,20 +23,12 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.snmp4j.smi.OID;
-import org.snmp4j.smi.SMIConstants;
 
-import com.boundary.plugin.sdk.MetricDefinitionBuilder;
-import com.boundary.plugin.sdk.MetricDefinitionList;
-import com.boundary.plugin.sdk.PluginUtil;
-import com.boundary.sdk.event.snmp.SmiSupport;
-import com.snmp4j.smi.SmiManager;
-import com.snmp4j.smi.SmiModule;
-import com.snmp4j.smi.SmiObject;
-import com.snmp4j.smi.SmiType;
+import com.boundary.sdk.snmp.metric.MibExporter.ExportType;
 
+import static com.boundary.sdk.snmp.metric.MibExporter.*;
 
-public class ExportMibCli extends SmiSupport {
+public class ExportMibCli {
 	
 	private static Logger LOG = LoggerFactory.getLogger(ExportMibCli.class);
 
@@ -47,8 +36,6 @@ public class ExportMibCli extends SmiSupport {
 	private String commandName;
 	
 	public static final String LICENSE="boundary.tools.snmp.license";
-	private static String license;
-
 
 	private CommandLine cmd;
 	private Options options;
@@ -56,24 +43,18 @@ public class ExportMibCli extends SmiSupport {
 	private Option helpOption;
 	private Option licenseOption;
 	private Option repoDirOption;
-	private Option silentOption;
+	private Option verboseOption;
 	private Option mibOption;
-	
-	private enum ExportType {METRICS,OIDS};
-	private ExportType exportType;
-	
-	private List<String> mibList;
-	
-	private boolean silent;
 
+	private MibExporter mibExporter;
+
+	private ExportType exportType;
 
 	public ExportMibCli() {
 		options = new Options();
-		mibList = new ArrayList<String>();
 		commandName = System.getProperty(COMMAND_NAME,this.getClass().getSimpleName());
-		exportType = ExportType.METRICS;
-		license = null;
-		silent = false;
+		mibExporter = new MibExporter();
+		exportType = ExportType.OID_MAP;
 	}
 	
 	/**
@@ -109,10 +90,10 @@ public class ExportMibCli extends SmiSupport {
 				.withLongOpt("repository-dir")
 				.create("r");
 		
-		silentOption = OptionBuilder
-				.withDescription("Quiet mode, suppress normal output.")
-				.withLongOpt("quiet")
-				.create("q");
+		verboseOption = OptionBuilder
+				.withDescription("Verbose mode, provide additional debug output.")
+				.withLongOpt("verbose")
+				.create("v");
 		
 		exportOption = OptionBuilder
 				.withArgName("type")
@@ -127,32 +108,29 @@ public class ExportMibCli extends SmiSupport {
 				.withValueSeparator(',')
 				.withDescription("List of MIB(s) to export. Example: SNMPv2-MIB")
 				.withLongOpt("mib")
-				.create("f");
+				.create("m");
 
 		options.addOption(helpOption);
+		options.addOption(verboseOption);
 		options.addOption(licenseOption);
-		options.addOption(silentOption);
 		options.addOption(repoDirOption);
 		options.addOption(exportOption);
 		options.addOption(mibOption);
 
 	}
 	
-	private void getMIBs() {
-		String[] mibs = cmd.getOptionValues("f");
+	private void getModules() {
+		String[] mibs = cmd.getOptionValues("m");
 
 		for (String mib : mibs) {
-			mibList.add(mib);
-		}
-		if (silent == false) {
-			System.out.printf("MIBs to export: %s%n",mibList);
+			mibExporter.addModule(mib);
 		}
 	}
 	
 	public void setOutputDirectory() {
 		if (cmd.hasOption("r")) {
 			String mibTargetDir = cmd.getOptionValue("r");
-			setRepository(mibTargetDir);
+			mibExporter.setRepository(mibTargetDir);
 		}
 	}
 	
@@ -175,7 +153,7 @@ public class ExportMibCli extends SmiSupport {
 				first = false;
 			}
 			LOG.debug("license: " + license.toString());
-			setLicense(license.toString());
+			mibExporter.setLicense(license.toString());
 		}
 		else {
 			// If the property boundary.tools.snmp.license is set use this value
@@ -183,7 +161,7 @@ public class ExportMibCli extends SmiSupport {
 			// the execution of the java program
 			String license = System.getProperty(LICENSE);
 			if (license != null) {
-				setLicense(license);
+				mibExporter.setLicense(license);
 			}
 		}
 	}
@@ -200,119 +178,23 @@ public class ExportMibCli extends SmiSupport {
 			usage();
 		}
 		
-		silent = cmd.hasOption("q");
-		
-		getMIBs();
+		mibExporter.setVerbose(cmd.hasOption("v"));
+
+		// Extract the module names passed on the command line
+		getModules();
 		setOutputDirectory();
 		// Set the SNMP4J compiler license if provided, required for
 		// MIBs using the enterprise branch
 		getCompilerLicense();
+		
+		mibExporter.setExportType(exportType);
 	}
 	
-	private String getSmiSyntax(int syntax) {
-		String s = null;
-		
-		switch(syntax) {
-		case SMIConstants.EXCEPTION_NO_SUCH_INSTANCE:
-			s = "EXCEPTION_NO_SUCH_INSTANCE";
-			break;
-		case SMIConstants.EXCEPTION_END_OF_MIB_VIEW:
-			s = "EXCEPTION_END_OF_MIB_VIEW";
-			break;
-			
-		case SMIConstants.EXCEPTION_NO_SUCH_OBJECT:
-			s = "EXCEPTION_NO_SUCH_OBJECT";
-			break;
-//		case SMIConstants.SYNTAX_BITS:
-//			s = "SYNTAX_BITS";
-//			break;
-		case SMIConstants.SYNTAX_COUNTER32:
-			s = "SYNTAX_COUNTER32";
-			break;
-		case SMIConstants.SYNTAX_COUNTER64:
-			s = "SYNTAX_COUNTER64";
-			break;
-		case SMIConstants.SYNTAX_GAUGE32:
-			s = "SYNTAX_GAUGE32";
-			break;
-		case SMIConstants.SYNTAX_INTEGER32:
-			s = "SYNTAX_INTEGER32";
-			break;
-		case SMIConstants.SYNTAX_IPADDRESS:
-			s = "SYNTAX_IPADDRESS";
-			break;
-		case SMIConstants.SYNTAX_NULL:
-			s = "SYNTAX_NULL";
-			break;
-		case SMIConstants.SYNTAX_OBJECT_IDENTIFIER:
-			s = "SYNTAX_OBJECT_IDENTIFIER";
-			break;
-		case SMIConstants.SYNTAX_OCTET_STRING:
-			s = "SYNTAX_OCTET_STRING";
-			break;
-		case SMIConstants.SYNTAX_OPAQUE:
-			s = "SYNTAX_OPAQUE";
-			break;
-		case SMIConstants.SYNTAX_TIMETICKS:
-			s = "";
-			break;
-//		case SMIConstants.SYNTAX_UNSIGNED_INTEGER32:
-//			s = "";
-//			break;
-		}
-		
-		return s;
-	}
-
-	
-	private void export() {
-		MetricDefinitionList list = new MetricDefinitionList();
-		MetricDefinitionBuilder builder = new MetricDefinitionBuilder();
-
-		initialize();
-		loadModules();
-		SmiManager smiManager = getSmiManager();
-		for (String mib : mibList) {
-			smiManager.loadModule(mib);
-			SmiObject root = smiManager.findRootSmiObject();
-			System.out.println(root.getOID());
-			SmiModule module = smiManager.findSmiModule(mib);
-			System.out.println(module.getModuleName());
-			List<String> objectList = module.getObjectNames();
-			for (String objectName : objectList) {
-				SmiObject object = smiManager.findSmiObject(
-						module.getModuleName(), objectName);
-				OID oid = object.getOID();
-
-				if (object.getType() == SmiType.OBJECT_TYPE_SCALAR) {
-					if (oid != null) {
-						System.out.println("+++++++++++++++++++");
-						System.out.printf("name: %s%noid: %s%n", oid,
-								oid.toDottedString());
-						System.out.printf("SyntaxString: %s%nSyntax: %s%n",
-								oid.getSyntaxString(), oid.getSyntax());
-						System.out.printf("ObjectName: %s%nType: %s%n",
-								object.getObjectName(), object.getType());
-						System.out.printf("ObjectName:SNMP.%s.%s%n",module.getModuleName(),PluginUtil.toUpperUnderscore(object.getObjectName(),'.'));
-						String smiSyntax = getSmiSyntax(object.getSmiSyntax());
-						System.out.printf("SmiSyntax: %s%nReference: %s%n",
-								smiSyntax == null ? object.getSmiSyntax()
-										: smiSyntax, object.getReference());
-						System.out.printf("Description: %s%n",
-								object.getDescription());
-						System.out.println("-------------------");
-
-					}
-				}
-			}
-			smiManager.unloadModule(mib);
-		}
-	}
 
 	private void execute(String [] args) {
 		try {
 			this.parseCommandLineOptions(args);
-			this.export();
+			mibExporter.export();
 		} catch (ParseException e) {
 			this.usage();
 		} catch (Exception e) {
