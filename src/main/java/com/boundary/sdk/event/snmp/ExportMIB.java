@@ -26,6 +26,16 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.snmp4j.smi.OID;
+import org.snmp4j.smi.SMIConstants;
+
+import com.boundary.plugin.sdk.MetricDefinitionBuilder;
+import com.boundary.plugin.sdk.MetricDefinitionList;
+import com.boundary.plugin.sdk.PluginUtil;
+import com.snmp4j.smi.SmiManager;
+import com.snmp4j.smi.SmiModule;
+import com.snmp4j.smi.SmiObject;
+import com.snmp4j.smi.SmiType;
 
 
 public class ExportMIB extends SmiSupport {
@@ -197,12 +207,105 @@ public class ExportMIB extends SmiSupport {
 		// MIBs using the enterprise branch
 		getCompilerLicense();
 	}
+	
+	private String getSmiSyntax(int syntax) {
+		String s = null;
+		
+		switch(syntax) {
+		case SMIConstants.EXCEPTION_NO_SUCH_INSTANCE:
+			s = "EXCEPTION_NO_SUCH_INSTANCE";
+			break;
+		case SMIConstants.EXCEPTION_END_OF_MIB_VIEW:
+			s = "EXCEPTION_END_OF_MIB_VIEW";
+			break;
+			
+		case SMIConstants.EXCEPTION_NO_SUCH_OBJECT:
+			s = "EXCEPTION_NO_SUCH_OBJECT";
+			break;
+//		case SMIConstants.SYNTAX_BITS:
+//			s = "SYNTAX_BITS";
+//			break;
+		case SMIConstants.SYNTAX_COUNTER32:
+			s = "SYNTAX_COUNTER32";
+			break;
+		case SMIConstants.SYNTAX_COUNTER64:
+			s = "SYNTAX_COUNTER64";
+			break;
+		case SMIConstants.SYNTAX_GAUGE32:
+			s = "SYNTAX_GAUGE32";
+			break;
+		case SMIConstants.SYNTAX_INTEGER32:
+			s = "SYNTAX_INTEGER32";
+			break;
+		case SMIConstants.SYNTAX_IPADDRESS:
+			s = "SYNTAX_IPADDRESS";
+			break;
+		case SMIConstants.SYNTAX_NULL:
+			s = "SYNTAX_NULL";
+			break;
+		case SMIConstants.SYNTAX_OBJECT_IDENTIFIER:
+			s = "SYNTAX_OBJECT_IDENTIFIER";
+			break;
+		case SMIConstants.SYNTAX_OCTET_STRING:
+			s = "SYNTAX_OCTET_STRING";
+			break;
+		case SMIConstants.SYNTAX_OPAQUE:
+			s = "SYNTAX_OPAQUE";
+			break;
+		case SMIConstants.SYNTAX_TIMETICKS:
+			s = "";
+			break;
+//		case SMIConstants.SYNTAX_UNSIGNED_INTEGER32:
+//			s = "";
+//			break;
+		}
+		
+		return s;
+	}
 
 	
 	private void export() {
-		
+		MetricDefinitionList list = new MetricDefinitionList();
+		MetricDefinitionBuilder builder = new MetricDefinitionBuilder();
+
 		initialize();
 		loadModules();
+		SmiManager smiManager = getSmiManager();
+		for (String mib : mibList) {
+			smiManager.loadModule(mib);
+			SmiObject root = smiManager.findRootSmiObject();
+			System.out.println(root.getOID());
+			SmiModule module = smiManager.findSmiModule(mib);
+			System.out.println(module.getModuleName());
+			List<String> objectList = module.getObjectNames();
+			for (String objectName : objectList) {
+				SmiObject object = smiManager.findSmiObject(
+						module.getModuleName(), objectName);
+				OID oid = object.getOID();
+
+				if (object.getType() == SmiType.OBJECT_TYPE_SCALAR) {
+					if (oid != null) {
+						System.out.println("+++++++++++++++++++");
+						System.out.printf("name: %s%noid: %s%n", oid,
+								oid.toDottedString());
+						System.out.printf("SyntaxString: %s%nSyntax: %s%n",
+								oid.getSyntaxString(), oid.getSyntax());
+						System.out.printf("ObjectName: %s%nType: %s%n",
+								object.getObjectName(), object.getType());
+						System.out.printf("ObjectName:SNMP.%s.%s%n",module.getModuleName(),PluginUtil.toUpperUnderscore(object.getObjectName(),'.'));
+						String smiSyntax = getSmiSyntax(object.getSmiSyntax());
+						System.out.printf("SmiSyntax: %s%nReference: %s%n",
+								smiSyntax == null ? object.getSmiSyntax()
+										: smiSyntax, object.getReference());
+						System.out.printf("Description: %s%n",
+								object.getDescription());
+						System.out.println("-------------------");
+
+					}
+				}
+			}
+			smiManager.unloadModule(mib);
+		}
 	}
 
 	private void execute(String [] args) {

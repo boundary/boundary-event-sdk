@@ -78,7 +78,7 @@
        <java-plugin-sdk-version>0.5.0</java-plugin-sdk-version>
        <camel-version>2.14.1</camel-version>
        <camel-esper-version>2.13.2</camel-esper-version>
-       <camel-service-version>0.4.0</camel-service-version>
+       <boundary-camel-components-version>0.5.0</boundary-camel-components-version>
        <commons-cli-version>1.2</commons-cli-version>
        <commons-codec-version>1.9</commons-codec-version>
        <commons-daemon-version>1.0.15</commons-daemon-version>
@@ -100,9 +100,9 @@
        <rpm-maven-plugin-version>2.0.1</rpm-maven-plugin-version>
        <slf4j-api-version>1.7.7</slf4j-api-version>
        <slf4j-log4j12-version>1.7.7</slf4j-log4j12-version>
-       <snmp4j-version>2.2.5</snmp4j-version>
+       <snmp4j-version>2.3.1</snmp4j-version>
        <snmp4j-smi-version>1.1.3</snmp4j-smi-version>
-       <snmp4j-smi-pro-version>1.4.2</snmp4j-smi-pro-version>
+       <snmp4j-smi-pro-version>1.5.2</snmp4j-smi-pro-version>
        <spring-version>3.2.5.RELEASE</spring-version>
        <spring-security-version>3.1.4.RELEASE</spring-security-version>
        <syslog4j-version>0.9.30</syslog4j-version>
@@ -551,8 +551,8 @@
     </dependency>
     <dependency>
       <groupId>com.snmp4j</groupId>
-      <artifactId>snmp4j-smi</artifactId>
-      <version>${snmp4j-smi-version}</version>
+      <artifactId>snmp4j-smi-pro</artifactId>
+      <version>${snmp4j-smi-pro-version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
@@ -696,8 +696,8 @@
     </dependency>
     <dependency>
       <groupId>com.boundary</groupId>
-      <artifactId>camel-service</artifactId>
-      <version>${camel-service-version}</version>
+      <artifactId>camel-components</artifactId>
+      <version>${boundary-camel-components-version}</version>
     </dependency>
   </dependencies>
 </project>
