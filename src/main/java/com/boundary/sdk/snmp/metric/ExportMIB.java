@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.boundary.sdk.event.snmp;
+package com.boundary.sdk.snmp.metric;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +32,7 @@ import org.snmp4j.smi.SMIConstants;
 import com.boundary.plugin.sdk.MetricDefinitionBuilder;
 import com.boundary.plugin.sdk.MetricDefinitionList;
 import com.boundary.plugin.sdk.PluginUtil;
+import com.boundary.sdk.event.snmp.SmiSupport;
 import com.snmp4j.smi.SmiManager;
 import com.snmp4j.smi.SmiModule;
 import com.snmp4j.smi.SmiObject;
