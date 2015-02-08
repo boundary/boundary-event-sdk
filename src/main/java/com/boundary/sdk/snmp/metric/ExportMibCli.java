@@ -39,9 +39,9 @@ import com.snmp4j.smi.SmiObject;
 import com.snmp4j.smi.SmiType;
 
 
-public class ExportMIB extends SmiSupport {
+public class ExportMibCli extends SmiSupport {
 	
-	private static Logger LOG = LoggerFactory.getLogger(ExportMIB.class);
+	private static Logger LOG = LoggerFactory.getLogger(ExportMibCli.class);
 
 	private static final String COMMAND_NAME="ExportMIB.command.name";
 	private String commandName;
@@ -67,7 +67,7 @@ public class ExportMIB extends SmiSupport {
 	private boolean silent;
 
 
-	public ExportMIB() {
+	public ExportMibCli() {
 		options = new Options();
 		mibList = new ArrayList<String>();
 		commandName = System.getProperty(COMMAND_NAME,this.getClass().getSimpleName());
@@ -322,7 +322,7 @@ public class ExportMIB extends SmiSupport {
 	}
 	
 	public static void main(String [] args) {
-		ExportMIB mib2metrics = new ExportMIB();
+		ExportMibCli mib2metrics = new ExportMibCli();
 		mib2metrics.execute(args);
 	}
 
