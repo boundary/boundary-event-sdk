@@ -37,8 +37,7 @@ limitations under the License.
     <property name="routeId" value="TRANSFORM-SNMP"/>
     <property name="startUpOrder" value="120"/>
     <property name="fromUri" value="seda:snmp-poller-out"/>
-    <!-- <property name="fromUri" value="direct:translate"/> -->
-    <property name="toUri" value="seda:boundary-metric"/>
+    <property name="toUri" value="direct:remove-header"/>
     <property name="transform" value="true"/>
     <property name="cacheScript" value="true"/>
     <property name="contentCache" value="true"/>
@@ -63,15 +62,11 @@ limitations under the License.
     <routeBuilder ref="poller-route"/>
     <routeBuilder ref="script-route"/>
     
-    <!-- <route id="SPLIT-SNMP-XML" startupOrder="100">
-      <from uri="seda:snmp-poller-out?concurrentConsumers=10"/>
-      <unmarshal><serialization/></unmarshal>
-      <split>
-        <simple>${body.getEntries}</simple>
-        <marshal><serialization/></marshal> 
-        <to uri="direct:translate"/>
-      </split>
-    </route> -->
+    <route id="REMOVE-HEADER">
+    	<from uri="direct:remove-header"/>
+    	<removeHeaders pattern="boundary.snmp.poller.configuration"/>
+    	<to uri="seda:boundary-metric"/>
+    </route>
 
   </camelContext>
 </beans>

@@ -14,7 +14,6 @@
 package com.boundary.sdk.event.script;
 
 import static org.apache.camel.LoggingLevel.DEBUG;
-import static org.apache.camel.LoggingLevel.INFO;
 
 
 import com.boundary.sdk.event.BoundaryRouteBuilder;
@@ -53,9 +52,9 @@ public class ScriptRouteBuilder extends BoundaryRouteBuilder {
 		.routeId(this.getRouteId())
 		.startupOrder(this.getStartUpOrder())
 		.unmarshal().serialization()
-		.log(INFO,"in: ${body}")
+		.log(DEBUG,"in: ${body}")
 		.to(this.getLanguageToUri())
-		.log(INFO,"out: ${body}")
+		.log(DEBUG,"out: ${body}")
 		.marshal().serialization()
 		.to(this.getToUri());
 	}

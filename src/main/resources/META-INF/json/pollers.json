@@ -6,26 +6,14 @@
 			"description":"Polls the local SNMP agent",
 			"delay":5,
 			"host-lists":[
-				{
-					"id":1,
-					"enabled":true
-				}
-				
+				{ "id": 1, "enabled": true }
 			],
 			"oid-lists":[
-				{
-					"id":1,
-					"enabled":true
-				},
-				{
-					"id":2,
-					"enabled":true
-				},
-				{
-					"id":3,
-					"enabled":true
-				}
-				
+				{ "id": 1, "enabled": true },
+				{ "id": 2, "enabled": true },
+				{ "id": 3, "enabled": true },
+				{ "id": 4, "enabled": true },
+				{ "id": 5, "enabled": true }
 			]
 		}
 	]

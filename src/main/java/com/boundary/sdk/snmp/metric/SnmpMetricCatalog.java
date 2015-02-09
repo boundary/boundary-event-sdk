@@ -13,16 +13,13 @@
 // limitations under the License.
 package com.boundary.sdk.snmp.metric;
 
-import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jetty.util.log.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.boundary.sdk.event.snmp.MIBCompiler;
 import com.boundary.sdk.event.snmp.SnmpPollerConfiguration;
 
 /**
@@ -80,7 +77,6 @@ public class SnmpMetricCatalog {
 		LOG.info("Loaded {} poller entries",pollers.getPollers().size());
 		for (PollerEntry entry: pollers.getPollers()) {
 			
-
 			List<Host> hosts = hostLists.getHosts(entry.getHostListIds());
 			LOG.info("Poller \"{}\" (id {}) contains {} host list(s)",
 					entry.getName(),entry.getId(),hosts.size());

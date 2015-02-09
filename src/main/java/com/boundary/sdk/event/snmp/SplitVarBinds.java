@@ -40,7 +40,7 @@ public class SplitVarBinds {
 		for (VariableBinding var : body) {
 			OID oid = var.getOid();
 			Variable variable = var.getVariable();
-			LOG.info("oid: {}, value: {}, syntax: {}",oid,variable.toLong(),variable.getSyntaxString());
+			LOG.debug("oid: {}, value: {}, syntax: {}",oid,variable.toLong(),variable.getSyntaxString());
 			answer.add(var);
 		}
         return answer;
@@ -58,7 +58,7 @@ public class SplitVarBinds {
 		for (VariableBinding var : body) {
 			OID oid = var.getOid();
 			Variable variable = var.getVariable();
-			LOG.info("oid: {}, value: {}, syntax: {}",oid,variable.toLong(),variable.getSyntaxString());
+			LOG.debug("oid: {}, value: {}, syntax: {}",oid,variable.toLong(),variable.getSyntaxString());
 			answer.add(var);
 		}
         return answer;

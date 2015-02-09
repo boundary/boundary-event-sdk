@@ -22,6 +22,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -31,6 +32,8 @@ public class OidMapList {
 	
 	@JsonProperty("oid-list")
 	private List<OidMapEntry> oidList;
+	@JsonIgnore
+	private long nextId;
 	
 	public List<OidMapEntry> getOidList() {
 		return oidList;
@@ -82,5 +85,9 @@ public class OidMapList {
 	@Override
 	public String toString() {
 		return "OidLists [oidList=" + oidList + "]";
+	}
+
+	public long getNextId() {
+		return ++nextId;
 	}
 }

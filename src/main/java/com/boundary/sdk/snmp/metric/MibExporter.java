@@ -67,6 +67,8 @@ public class MibExporter extends SmiSupport {
 		SmiManager smiManager = this.getSmiManager();
 		MibTransform transform = this.getTransform();
 		
+		transform.beginTransform();
+		
 		//
 		// Loop through the module names, load, loop through objects
 		// and call the transform
@@ -75,24 +77,32 @@ public class MibExporter extends SmiSupport {
 			// Load the module
 			smiManager.loadModule(moduleName);
 			
+
+			
 			// Find the root object
 			SmiObject root = smiManager.findRootSmiObject();
 			if (this.verbose) {
 				LOG.info("Root Oid: {}",root.getOID());
 			}
 			SmiModule module = smiManager.findSmiModule(moduleName);
+			// Inform the transform that we are starting a new module
+			transform.beginModule(module);
+	
 			if (this.verbose) {
 				LOG.info(module.getModuleName());
 			}
+			
 			List<String> objectList = module.getObjectNames();
 			for (String objectName : objectList) {
 				SmiObject object = smiManager.findSmiObject(module.getModuleName(), objectName);
 				transform.transform(module,object);
 			}
+			transform.endModule(module);
 			smiManager.unloadModule(moduleName);
+
 		}
 		
-		transform.end();
+		transform.endTransform();
 	}
 
 	public void setVerbose(boolean verbose) {

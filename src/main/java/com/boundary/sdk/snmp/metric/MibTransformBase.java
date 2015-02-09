@@ -15,11 +15,16 @@ package com.boundary.sdk.snmp.metric;
 
 import java.io.IOException;
 
+import org.snmp4j.smi.OID;
 import org.snmp4j.smi.SMIConstants;
 
+import com.boundary.plugin.sdk.PluginUtil;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.snmp4j.smi.SmiModule;
+import com.snmp4j.smi.SmiObject;
+import com.snmp4j.smi.SmiType;
 
 public abstract class MibTransformBase implements MibTransform {
 
@@ -76,6 +81,38 @@ public abstract class MibTransformBase implements MibTransform {
 		}
 		
 		return s;
+	}
+	
+	public String oidToMetricId(String moduleName,String objectName) {
+		String metricId = String.format("SNMP.%s.%s",
+				moduleName.replace('-','_'),
+				PluginUtil.toUpperUnderscore(objectName,'.'));
+		return metricId;
+	}
+	
+	public String oidToDescription(String description) {
+		return description.replace('\n',' ').replace("  "," ");
+	}
+	
+	public String oidToDisplayName(String moduleName,String objectName) {
+		return String.format("%s::%s",moduleName,objectName);
+	}
+	
+	public String oidToGetOid(OID oid) {
+		return String.format("%s.0",oid.toDottedString());
+	}
+	
+	public boolean standardFilterCriteria(SmiModule module,SmiObject object) {
+		boolean output = false;
+		
+		if (object.getType() == SmiType.OBJECT_TYPE_SCALAR &&
+			(object.getSmiSyntax() == SMIConstants.SYNTAX_COUNTER32 ||
+			 object.getSmiSyntax() == SMIConstants.SYNTAX_COUNTER64 ||
+			 object.getSmiSyntax() == SMIConstants.SYNTAX_GAUGE32 ||
+			 object.getSmiSyntax() == SMIConstants.SYNTAX_INTEGER32)) {
+			output = true;
+		}
+		return output;
 	}
 	
 	public void convertToJson(Object obj) {

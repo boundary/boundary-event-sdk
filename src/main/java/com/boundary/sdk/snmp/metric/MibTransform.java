@@ -21,6 +21,9 @@ import com.snmp4j.smi.SmiObject;
  * an alternative form.
  */
 public interface MibTransform {
+	public void beginTransform();
 	public void transform(SmiModule module,SmiObject object);
-	public void end();
+	public void beginModule(SmiModule module);
+	public void endModule(SmiModule module);
+	public void endTransform();
 }

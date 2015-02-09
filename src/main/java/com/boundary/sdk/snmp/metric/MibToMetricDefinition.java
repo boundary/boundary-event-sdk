@@ -13,7 +13,6 @@
 // limitations under the License.
 package com.boundary.sdk.snmp.metric;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.snmp4j.smi.OID;
@@ -23,13 +22,8 @@ import com.boundary.plugin.sdk.MetricDefinition;
 import com.boundary.plugin.sdk.MetricDefinitionBuilder;
 import com.boundary.plugin.sdk.MetricDefinitionList;
 import com.boundary.plugin.sdk.MetricUnit;
-import com.boundary.plugin.sdk.PluginUtil;
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.snmp4j.smi.SmiModule;
 import com.snmp4j.smi.SmiObject;
-import com.snmp4j.smi.SmiType;
 
 public class MibToMetricDefinition extends MibTransformBase {
 	
@@ -46,17 +40,14 @@ public class MibToMetricDefinition extends MibTransformBase {
 		List<MetricDefinition> list = metricDefinitionList.getResult();
 
 		OID oid = object.getOID();
-		if (object.getType() == SmiType.OBJECT_TYPE_SCALAR) {
+		if (standardFilterCriteria(module,object)) {
 			if (oid != null) {
 				String objectName = object.getObjectName();
 				String moduleName = module.getModuleName();
 
-				String metricId = String.format("SNMP.%s.%s",
-						moduleName.replace('-','_'),
-						PluginUtil.toUpperUnderscore(objectName,'.'));
-				
-				String displayName = String.format("%s::%s",moduleName,objectName);
-				String description = object.getDescription().replace('\n',' ');
+				String metricId = oidToMetricId(moduleName,objectName);
+				String displayName = oidToDisplayName(moduleName,objectName);
+				String description = oidToDescription(object.getDescription());
 				
 				builder.setName(metricId);
 				builder.setDisplayName(displayName);
@@ -70,25 +61,30 @@ public class MibToMetricDefinition extends MibTransformBase {
 				System.err.printf("oid is null: %s%n",object.getObjectName());
 			}
 		} 
-
 	}
 	
-	public void convertToJson(Object obj) {
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			mapper.writeValue(System.out,obj);
-		} catch (JsonGenerationException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	@Override
+	public void beginTransform() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void endTransform() {
+		convertToJson(metricDefinitionList);
 	}
 
 
 	@Override
-	public void end() {
-		convertToJson(metricDefinitionList);
+	public void beginModule(SmiModule module) {
+		// TODO Auto-generated method stub
+		
 	}
+
+	@Override
+	public void endModule(SmiModule module) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

@@ -1,49 +1,809 @@
 {
-	"oid-list":[
-		{
-			"id": 1,
-			"name":"SNMPv2-MIB",
-			"enabled": true,
-			"oids":[
-				{
-					"oid":"1.3.6.1.2.1.1.3.0",
-					"metric-id":"SNMPV2-MIB.SYSTEM.SYS.UP.TIME",
-					"enabled": true,
-					"description":"The time (in hundredths of a second) since the network management portion of the system was last re-initialized."
-				}
-			]
-		},
-		{
-			"id": 2,
-			"name": "HOST-RESOURCES-MIB",
-			"enabled": true,
-			"oids": [
-				{
-					"oid": "1.3.6.1.2.1.25.1.1.0",
-					"metric-id": "HOST-RESOURCES-MIB.HRSYSTEM.HRSYSTEMUPTIME",
-					"enabled": true,
-					"description": "The amount of time since this host was last initialized. Note that this is different from sysUpTime in the SNMPv2-MIB [RFC1907] because sysUpTime is the uptime of the network management portion of the system."
-				},
-				{
-					"oid": "1.3.6.1.2.1.25.1.5.0",
-					"metric-id": "HOST-RESOURCES-MIB.HRSYSTEM.HRSYSTEMNUMUSERS",
-					"enabled": true,
-					"description":"The number of user sessions for which this host is storing state information.  A session is a collection of processes requiring a single act of user authentication and possibly subject to collective job control."
-				}
-			]
-		},
-		{
-			"id": 3,
-			"name": "IP-MIB",
-			"enabled": true,
-			"oids": [
-				{
-					"oid": "1.3.6.1.2.1.4.3.0",
-					"metric-id": "IP-MIB.IP.IN.RECEIVES",
-					"enabled": true,
-					"description": ""
-				}
-			]
-		}
-	]
+  "oid-list": [
+    {
+      "id": 1,
+      "name": "HOST-RESOURCES-MIB",
+      "enabled": true,
+      "oids": [
+        {
+          "oid": "1.3.6.1.2.1.25.1.5.0",
+          "name": "HOST-RESOURCES-MIB::hrSystemNumUsers",
+          "enabled": true,
+          "description": "The number of user sessions for which this host is storing state information. A session is a collection of processes requiring a single act of user authentication and possibly subject to collective job control.",
+          "metric-id": "SNMP.HOST_RESOURCES_MIB.HR.SYSTEM.NUM.USERS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.25.2.2.0",
+          "name": "HOST-RESOURCES-MIB::hrMemorySize",
+          "enabled": true,
+          "description": "The amount of physical read-write main memory, typically RAM, contained by the host.",
+          "metric-id": "SNMP.HOST_RESOURCES_MIB.HR.MEMORY.SIZE"
+        },
+        {
+          "oid": "1.3.6.1.2.1.25.1.6.0",
+          "name": "HOST-RESOURCES-MIB::hrSystemProcesses",
+          "enabled": true,
+          "description": "The number of process contexts currently loaded or running on this system.",
+          "metric-id": "SNMP.HOST_RESOURCES_MIB.HR.SYSTEM.PROCESSES"
+        },
+        {
+          "oid": "1.3.6.1.2.1.25.4.1.0",
+          "name": "HOST-RESOURCES-MIB::hrSWOSIndex",
+          "enabled": true,
+          "description": "The value of the hrSWRunIndex for the hrSWRunEntry that represents the primary operating system running on this host. This object is useful for quickly and uniquely identifying that primary operating system.",
+          "metric-id": "SNMP.HOST_RESOURCES_MIB.HRSWOS.INDEX"
+        },
+        {
+          "oid": "1.3.6.1.2.1.25.1.3.0",
+          "name": "HOST-RESOURCES-MIB::hrSystemInitialLoadDevice",
+          "enabled": true,
+          "description": "The index of the hrDeviceEntry for the device from which this host is configured to load its initial operating system configuration (i.e., which operating system code and/or boot parameters). Note that writing to this object just changes the configuration that will be used the next time the operating system is loaded and does not actually cause the reload to occur.",
+          "metric-id": "SNMP.HOST_RESOURCES_MIB.HR.SYSTEM.INITIAL.LOAD.DEVICE"
+        },
+        {
+          "oid": "1.3.6.1.2.1.25.1.7.0",
+          "name": "HOST-RESOURCES-MIB::hrSystemMaxProcesses",
+          "enabled": true,
+          "description": "The maximum number of process contexts this system can support. If there is no fixed maximum, the value should be zero. On systems that have a fixed maximum, this object can help diagnose failures that occur when this maximum is reached.",
+          "metric-id": "SNMP.HOST_RESOURCES_MIB.HR.SYSTEM.MAX.PROCESSES"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "IP-MIB",
+      "enabled": true,
+      "oids": [
+        {
+          "oid": "1.3.6.1.2.1.4.8.0",
+          "name": "IP-MIB::ipInDiscards",
+          "enabled": true,
+          "description": "The number of input IPv4 datagrams for which no problems were encountered to prevent their continued processing, but which were discarded (e.g., for lack of buffer space). Note that this counter does not include any datagrams discarded while awaiting re-assembly. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsInDiscards.",
+          "metric-id": "SNMP.IP_MIB.IP.IN.DISCARDS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.23.0",
+          "name": "IP-MIB::ipRoutingDiscards",
+          "enabled": true,
+          "description": "The number of routing entries which were chosen to be discarded even though they are valid. One possible reason for discarding such an entry could be to free-up buffer space for other routing entries. This object was defined in pre-IPv6 versions of the IP MIB. It was implicitly IPv4 only, but the original specifications did not indicate this protocol restriction. In order to clarify the specifications, this object has been deprecated and a similar, but more thoroughly clarified, object has been added to the IP-FORWARD-MIB.",
+          "metric-id": "SNMP.IP_MIB.IP.ROUTING.DISCARDS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.15.0",
+          "name": "IP-MIB::icmpOutErrors",
+          "enabled": true,
+          "description": "The number of ICMP messages which this entity did not send due to problems discovered within ICMP, such as a lack of buffers. This value should not include errors discovered outside the ICMP layer, such as the inability of IP to route the resultant datagram. In some implementations, there may be no types of error which contribute to this counter's value. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by icmpStatsOutErrors.",
+          "metric-id": "SNMP.IP_MIB.ICMP.OUT.ERRORS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.17.0",
+          "name": "IP-MIB::ipFragOKs",
+          "enabled": true,
+          "description": "The number of IPv4 datagrams that have been successfully fragmented at this entity. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsOutFragOKs.",
+          "metric-id": "SNMP.IP_MIB.IP.FRAGO.KS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.16.0",
+          "name": "IP-MIB::icmpOutDestUnreachs",
+          "enabled": true,
+          "description": "The number of ICMP Destination Unreachable messages sent. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+          "metric-id": "SNMP.IP_MIB.ICMP.OUT.DEST.UNREACHS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.19.0",
+          "name": "IP-MIB::ipFragCreates",
+          "enabled": true,
+          "description": "The number of IPv4 datagram fragments that have been generated as a result of fragmentation at this entity. This object has been deprecated as a new IP version neutral table has been added. It is loosely replaced by ipSystemStatsOutFragCreates.",
+          "metric-id": "SNMP.IP_MIB.IP.FRAG.CREATES"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.17.0",
+          "name": "IP-MIB::icmpOutTimeExcds",
+          "enabled": true,
+          "description": "The number of ICMP Time Exceeded messages sent. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+          "metric-id": "SNMP.IP_MIB.ICMP.OUT.TIME.EXCDS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.25.0",
+          "name": "IP-MIB::ipv6IpForwarding",
+          "enabled": true,
+          "description": "The indication of whether this entity is acting as an IPv6 router on any interface in respect to the forwarding of datagrams received by, but not addressed to, this entity. IPv6 routers forward datagrams. IPv6 hosts do not (except those source-routed via the host). When this object is written, the entity SHOULD save the change to non-volatile storage and restore the object from non-volatile storage upon re-initialization of the system.",
+          "metric-id": "SNMP.IP_MIB.IPV6.IP.FORWARDING"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.6.0",
+          "name": "IP-MIB::ipForwDatagrams",
+          "enabled": true,
+          "description": "The number of input datagrams for which this entity was not their final IPv4 destination, as a result of which an attempt was made to find a route to forward them to that final destination. In entities which do not act as IPv4 routers, this counter will include only those packets which were Source-Routed via this entity, and the Source-Route option processing was successful. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsInForwDatagrams.",
+          "metric-id": "SNMP.IP_MIB.IP.FORW.DATAGRAMS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.1.0",
+          "name": "IP-MIB::icmpInMsgs",
+          "enabled": true,
+          "description": "The total number of ICMP messages which the entity received. Note that this counter includes all those counted by icmpInErrors. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by icmpStatsInMsgs.",
+          "metric-id": "SNMP.IP_MIB.ICMP.IN.MSGS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.4.0",
+          "name": "IP-MIB::ipInHdrErrors",
+          "enabled": true,
+          "description": "The number of input datagrams discarded due to errors in their IPv4 headers, including bad checksums, version number mismatch, other format errors, time-to-live exceeded, errors discovered in processing their IPv4 options, etc. This object has been deprecated as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsInHdrErrors.",
+          "metric-id": "SNMP.IP_MIB.IP.IN.HDR.ERRORS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.19.0",
+          "name": "IP-MIB::icmpOutSrcQuenchs",
+          "enabled": true,
+          "description": "The number of ICMP Source Quench messages sent. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+          "metric-id": "SNMP.IP_MIB.ICMP.OUT.SRC.QUENCHS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.10.0",
+          "name": "IP-MIB::ipOutRequests",
+          "enabled": true,
+          "description": "The total number of IPv4 datagrams which local IPv4 user protocols (including ICMP) supplied to IPv4 in requests for transmission. Note that this counter does not include any datagrams counted in ipForwDatagrams. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsOutRequests.",
+          "metric-id": "SNMP.IP_MIB.IP.OUT.REQUESTS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.26.0",
+          "name": "IP-MIB::ipv6IpDefaultHopLimit",
+          "enabled": true,
+          "description": "The default value inserted into the Hop Limit field of the IPv6 header of datagrams originated at this entity whenever a Hop Limit value is not supplied by the transport layer protocol. When this object is written, the entity SHOULD save the change to non-volatile storage and restore the object from non-volatile storage upon re-initialization of the system.",
+          "metric-id": "SNMP.IP_MIB.IPV6.IP.DEFAULT.HOP.LIMIT"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.7.0",
+          "name": "IP-MIB::icmpInRedirects",
+          "enabled": true,
+          "description": "The number of ICMP Redirect messages received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+          "metric-id": "SNMP.IP_MIB.ICMP.IN.REDIRECTS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.26.0",
+          "name": "IP-MIB::icmpOutAddrMaskReps",
+          "enabled": true,
+          "description": "The number of ICMP Address Mask Reply messages sent. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+          "metric-id": "SNMP.IP_MIB.ICMP.OUT.ADDR.MASK.REPS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.21.0",
+          "name": "IP-MIB::icmpOutEchos",
+          "enabled": true,
+          "description": "The number of ICMP Echo (request) messages sent. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+          "metric-id": "SNMP.IP_MIB.ICMP.OUT.ECHOS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.22.0",
+          "name": "IP-MIB::icmpOutEchoReps",
+          "enabled": true,
+          "description": "The number of ICMP Echo Reply messages sent. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+          "metric-id": "SNMP.IP_MIB.ICMP.OUT.ECHO.REPS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.3.0",
+          "name": "IP-MIB::icmpInDestUnreachs",
+          "enabled": true,
+          "description": "The number of ICMP Destination Unreachable messages received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+          "metric-id": "SNMP.IP_MIB.ICMP.IN.DEST.UNREACHS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.6.0",
+          "name": "IP-MIB::icmpInSrcQuenchs",
+          "enabled": true,
+          "description": "The number of ICMP Source Quench messages received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+          "metric-id": "SNMP.IP_MIB.ICMP.IN.SRC.QUENCHS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.15.0",
+          "name": "IP-MIB::ipReasmOKs",
+          "enabled": true,
+          "description": "The number of IPv4 datagrams successfully re-assembled. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsReasmOKs.",
+          "metric-id": "SNMP.IP_MIB.IP.REASMO.KS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.13.0",
+          "name": "IP-MIB::icmpInAddrMaskReps",
+          "enabled": true,
+          "description": "The number of ICMP Address Mask Reply messages received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+          "metric-id": "SNMP.IP_MIB.ICMP.IN.ADDR.MASK.REPS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.8.0",
+          "name": "IP-MIB::icmpInEchos",
+          "enabled": true,
+          "description": "The number of ICMP Echo (request) messages received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+          "metric-id": "SNMP.IP_MIB.ICMP.IN.ECHOS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.20.0",
+          "name": "IP-MIB::icmpOutRedirects",
+          "enabled": true,
+          "description": "The number of ICMP Redirect messages sent. For a host, this object will always be zero, since hosts do not send redirects. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+          "metric-id": "SNMP.IP_MIB.ICMP.OUT.REDIRECTS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.16.0",
+          "name": "IP-MIB::ipReasmFails",
+          "enabled": true,
+          "description": "The number of failures detected by the IPv4 re-assembly algorithm (for whatever reason: timed out, errors, etc). Note that this is not necessarily a count of discarded IPv4 fragments since some algorithms (notably the algorithm in RFC 815) can lose track of the number of fragments by combining them as they are received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsReasmFails.",
+          "metric-id": "SNMP.IP_MIB.IP.REASM.FAILS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.18.0",
+          "name": "IP-MIB::ipFragFails",
+          "enabled": true,
+          "description": "The number of IPv4 datagrams that have been discarded because they needed to be fragmented at this entity but could not be, e.g., because their Don't Fragment flag was set. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsOutFragFails.",
+          "metric-id": "SNMP.IP_MIB.IP.FRAG.FAILS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.12.0",
+          "name": "IP-MIB::icmpInAddrMasks",
+          "enabled": true,
+          "description": "The number of ICMP Address Mask Request messages received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+          "metric-id": "SNMP.IP_MIB.ICMP.IN.ADDR.MASKS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.2.0",
+          "name": "IP-MIB::ipDefaultTTL",
+          "enabled": true,
+          "description": "The default value inserted into the Time-To-Live field of the IPv4 header of datagrams originated at this entity, whenever a TTL value is not supplied by the transport layer protocol. When this object is written, the entity should save the change to non-volatile storage and restore the object from non-volatile storage upon re-initialization of the system. Note: a stronger requirement is not used because this object was previously defined.",
+          "metric-id": "SNMP.IP_MIB.IP.DEFAULTTTL"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.33.0",
+          "name": "IP-MIB::ipAddressSpinLock",
+          "enabled": true,
+          "description": "An advisory lock used to allow cooperating SNMP managers to coordinate their use of the set operation in creating or modifying rows within this table. In order to use this lock to coordinate the use of set operations, managers should first retrieve ipAddressTableSpinLock. They should then determine the appropriate row to create or modify. Finally, they should issue the appropriate set command, including the retrieved value of ipAddressSpinLock. If another manager has altered the table in the meantime, then the value of ipAddressSpinLock will have changed, and the creation will fail as it will be specifying an incorrect value for ipAddressSpinLock. It is suggested, but not required, that the ipAddressSpinLock be the first var bind for each set of objects representing a 'row' in a PDU.",
+          "metric-id": "SNMP.IP_MIB.IP.ADDRESS.SPIN.LOCK"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.14.0",
+          "name": "IP-MIB::ipReasmReqds",
+          "enabled": true,
+          "description": "The number of IPv4 fragments received which needed to be reassembled at this entity. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsReasmReqds.",
+          "metric-id": "SNMP.IP_MIB.IP.REASM.REQDS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.3.0",
+          "name": "IP-MIB::ipInReceives",
+          "enabled": true,
+          "description": "The total number of input datagrams received from interfaces, including those received in error. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsInRecieves.",
+          "metric-id": "SNMP.IP_MIB.IP.IN.RECEIVES"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.24.0",
+          "name": "IP-MIB::icmpOutTimestampReps",
+          "enabled": true,
+          "description": "The number of ICMP Timestamp Reply messages sent. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+          "metric-id": "SNMP.IP_MIB.ICMP.OUT.TIMESTAMP.REPS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.11.0",
+          "name": "IP-MIB::icmpInTimestampReps",
+          "enabled": true,
+          "description": "The number of ICMP Timestamp Reply messages received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+          "metric-id": "SNMP.IP_MIB.ICMP.IN.TIMESTAMP.REPS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.13.0",
+          "name": "IP-MIB::ipReasmTimeout",
+          "enabled": true,
+          "description": "The maximum number of seconds that received fragments are held while they are awaiting reassembly at this entity.",
+          "metric-id": "SNMP.IP_MIB.IP.REASM.TIMEOUT"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.1.0",
+          "name": "IP-MIB::ipForwarding",
+          "enabled": true,
+          "description": "The indication of whether this entity is acting as an IPv4 router in respect to the forwarding of datagrams received by, but not addressed to, this entity. IPv4 routers forward datagrams. IPv4 hosts do not (except those source-routed via the host). When this object is written, the entity should save the change to non-volatile storage and restore the object from non-volatile storage upon re-initialization of the system. Note: a stronger requirement is not used because this object was previously defined.",
+          "metric-id": "SNMP.IP_MIB.IP.FORWARDING"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.12.0",
+          "name": "IP-MIB::ipOutNoRoutes",
+          "enabled": true,
+          "description": "The number of IPv4 datagrams discarded because no route could be found to transmit them to their destination. Note that this counter includes any packets counted in ipForwDatagrams which meet this `no-route' criterion. Note that this includes any datagrams which a host cannot route because all of its default routers are down. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsOutNoRoutes.",
+          "metric-id": "SNMP.IP_MIB.IP.OUT.NO.ROUTES"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.25.0",
+          "name": "IP-MIB::icmpOutAddrMasks",
+          "enabled": true,
+          "description": "The number of ICMP Address Mask Request messages sent. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+          "metric-id": "SNMP.IP_MIB.ICMP.OUT.ADDR.MASKS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.18.0",
+          "name": "IP-MIB::icmpOutParmProbs",
+          "enabled": true,
+          "description": "The number of ICMP Parameter Problem messages sent. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+          "metric-id": "SNMP.IP_MIB.ICMP.OUT.PARM.PROBS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.9.0",
+          "name": "IP-MIB::ipInDelivers",
+          "enabled": true,
+          "description": "The total number of input datagrams successfully delivered to IPv4 user-protocols (including ICMP). This object has been deprecated as a new IP version neutral table has been added. It is loosely replaced by ipSystemStatsIndelivers.",
+          "metric-id": "SNMP.IP_MIB.IP.IN.DELIVERS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.14.0",
+          "name": "IP-MIB::icmpOutMsgs",
+          "enabled": true,
+          "description": "The total number of ICMP messages which this entity attempted to send. Note that this counter includes all those counted by icmpOutErrors. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by icmpStatsOutMsgs.",
+          "metric-id": "SNMP.IP_MIB.ICMP.OUT.MSGS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.2.0",
+          "name": "IP-MIB::icmpInErrors",
+          "enabled": true,
+          "description": "The number of ICMP messages which the entity received but determined as having ICMP-specific errors (bad ICMP checksums, bad length, etc.). This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by icmpStatsInErrors.",
+          "metric-id": "SNMP.IP_MIB.ICMP.IN.ERRORS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.7.0",
+          "name": "IP-MIB::ipInUnknownProtos",
+          "enabled": true,
+          "description": "The number of locally-addressed datagrams received successfully but discarded because of an unknown or unsupported protocol. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsInUnknownProtos.",
+          "metric-id": "SNMP.IP_MIB.IP.IN.UNKNOWN.PROTOS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.23.0",
+          "name": "IP-MIB::icmpOutTimestamps",
+          "enabled": true,
+          "description": "The number of ICMP Timestamp (request) messages sent. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+          "metric-id": "SNMP.IP_MIB.ICMP.OUT.TIMESTAMPS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.9.0",
+          "name": "IP-MIB::icmpInEchoReps",
+          "enabled": true,
+          "description": "The number of ICMP Echo Reply messages received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+          "metric-id": "SNMP.IP_MIB.ICMP.IN.ECHO.REPS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.5.0",
+          "name": "IP-MIB::ipInAddrErrors",
+          "enabled": true,
+          "description": "The number of input datagrams discarded because the IPv4 address in their IPv4 header's destination field was not a valid address to be received at this entity. This count includes invalid addresses (e.g., 0.0.0.0) and addresses of unsupported Classes (e.g., Class E). For entities which are not IPv4 routers, and therefore do not forward datagrams, this counter includes datagrams discarded because the destination address was not a local address. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsInAddrErrors.",
+          "metric-id": "SNMP.IP_MIB.IP.IN.ADDR.ERRORS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.11.0",
+          "name": "IP-MIB::ipOutDiscards",
+          "enabled": true,
+          "description": "The number of output IPv4 datagrams for which no problem was encountered to prevent their transmission to their destination, but which were discarded (e.g., for lack of buffer space). Note that this counter would include datagrams counted in ipForwDatagrams if any such packets met this (discretionary) discard criterion. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsOutDiscards.",
+          "metric-id": "SNMP.IP_MIB.IP.OUT.DISCARDS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.4.0",
+          "name": "IP-MIB::icmpInTimeExcds",
+          "enabled": true,
+          "description": "The number of ICMP Time Exceeded messages received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+          "metric-id": "SNMP.IP_MIB.ICMP.IN.TIME.EXCDS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.5.0",
+          "name": "IP-MIB::icmpInParmProbs",
+          "enabled": true,
+          "description": "The number of ICMP Parameter Problem messages received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+          "metric-id": "SNMP.IP_MIB.ICMP.IN.PARM.PROBS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.5.10.0",
+          "name": "IP-MIB::icmpInTimestamps",
+          "enabled": true,
+          "description": "The number of ICMP Timestamp (request) messages received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+          "metric-id": "SNMP.IP_MIB.ICMP.IN.TIMESTAMPS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.4.38.0",
+          "name": "IP-MIB::ipv6RouterAdvertSpinLock",
+          "enabled": true,
+          "description": "An advisory lock used to allow cooperating SNMP managers to coordinate their use of the set operation in creating or modifying rows within this table. In order to use this lock to coordinate the use of set operations, managers should first retrieve ipv6RouterAdvertSpinLock. They should then determine the appropriate row to create or modify. Finally, they should issue the appropriate set command including the retrieved value of ipv6RouterAdvertSpinLock. If another manager has altered the table in the meantime, then the value of ipv6RouterAdvertSpinLock will have changed and the creation will fail as it will be specifying an incorrect value for ipv6RouterAdvertSpinLock. It is suggested, but not required, that the ipv6RouterAdvertSpinLock be the first var bind for each set of objects representing a 'row' in a PDU.",
+          "metric-id": "SNMP.IP_MIB.IPV6.ROUTER.ADVERT.SPIN.LOCK"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "UDP-MIB",
+      "enabled": true,
+      "oids": [
+        {
+          "oid": "1.3.6.1.2.1.7.4.0",
+          "name": "UDP-MIB::udpOutDatagrams",
+          "enabled": true,
+          "description": "The total number of UDP datagrams sent from this entity. Discontinuities in the value of this counter can occur at re-initialization of the management system, and at other times as indicated by discontinuities in the value of sysUpTime.",
+          "metric-id": "SNMP.UDP_MIB.UDP.OUT.DATAGRAMS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.7.3.0",
+          "name": "UDP-MIB::udpInErrors",
+          "enabled": true,
+          "description": "The number of received UDP datagrams that could not be delivered for reasons other than the lack of an application at the destination port. Discontinuities in the value of this counter can occur at re-initialization of the management system, and at other times as indicated by discontinuities in the value of sysUpTime.",
+          "metric-id": "SNMP.UDP_MIB.UDP.IN.ERRORS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.7.9.0",
+          "name": "UDP-MIB::udpHCOutDatagrams",
+          "enabled": true,
+          "description": "The total number of UDP datagrams sent from this entity, for devices that can transmit more than 1 million UDP datagrams per second. Discontinuities in the value of this counter can occur at re-initialization of the management system, and at other times as indicated by discontinuities in the value of sysUpTime.",
+          "metric-id": "SNMP.UDP_MIB.UDPHC.OUT.DATAGRAMS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.7.2.0",
+          "name": "UDP-MIB::udpNoPorts",
+          "enabled": true,
+          "description": "The total number of received UDP datagrams for which there was no application at the destination port. Discontinuities in the value of this counter can occur at re-initialization of the management system, and at other times as indicated by discontinuities in the value of sysUpTime.",
+          "metric-id": "SNMP.UDP_MIB.UDP.NO.PORTS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.7.1.0",
+          "name": "UDP-MIB::udpInDatagrams",
+          "enabled": true,
+          "description": "The total number of UDP datagrams delivered to UDP users. Discontinuities in the value of this counter can occur at re-initialization of the management system, and at other times as indicated by discontinuities in the value of sysUpTime.",
+          "metric-id": "SNMP.UDP_MIB.UDP.IN.DATAGRAMS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.7.8.0",
+          "name": "UDP-MIB::udpHCInDatagrams",
+          "enabled": true,
+          "description": "The total number of UDP datagrams delivered to UDP users, for devices that can receive more than 1 million UDP datagrams per second. Discontinuities in the value of this counter can occur at re-initialization of the management system, and at other times as indicated by discontinuities in the value of sysUpTime.",
+          "metric-id": "SNMP.UDP_MIB.UDPHC.IN.DATAGRAMS"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "TCP-MIB",
+      "enabled": true,
+      "oids": [
+        {
+          "oid": "1.3.6.1.2.1.6.18.0",
+          "name": "TCP-MIB::tcpHCOutSegs",
+          "enabled": true,
+          "description": "The total number of segments sent, including those on current connections but excluding those containing only retransmitted octets. This object is the 64-bit equivalent of tcpOutSegs. Discontinuities in the value of this counter are indicated via discontinuities in the value of sysUpTime.",
+          "metric-id": "SNMP.TCP_MIB.TCPHC.OUT.SEGS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.6.14.0",
+          "name": "TCP-MIB::tcpInErrs",
+          "enabled": true,
+          "description": "The total number of segments received in error (e.g., bad TCP checksums). Discontinuities in the value of this counter are indicated via discontinuities in the value of sysUpTime.",
+          "metric-id": "SNMP.TCP_MIB.TCP.IN.ERRS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.6.3.0",
+          "name": "TCP-MIB::tcpRtoMax",
+          "enabled": true,
+          "description": "The maximum value permitted by a TCP implementation for the retransmission timeout, measured in milliseconds. More refined semantics for objects of this type depend on the algorithm used to determine the retransmission timeout; in particular, the IETF standard algorithm rfc2988(5) provides an upper bound (as part of an adaptive backoff algorithm).",
+          "metric-id": "SNMP.TCP_MIB.TCP.RTO.MAX"
+        },
+        {
+          "oid": "1.3.6.1.2.1.6.2.0",
+          "name": "TCP-MIB::tcpRtoMin",
+          "enabled": true,
+          "description": "The minimum value permitted by a TCP implementation for the retransmission timeout, measured in milliseconds. More refined semantics for objects of this type depend on the algorithm used to determine the retransmission timeout; in particular, the IETF standard algorithm rfc2988(5) provides a minimum value.",
+          "metric-id": "SNMP.TCP_MIB.TCP.RTO.MIN"
+        },
+        {
+          "oid": "1.3.6.1.2.1.6.15.0",
+          "name": "TCP-MIB::tcpOutRsts",
+          "enabled": true,
+          "description": "The number of TCP segments sent containing the RST flag. Discontinuities in the value of this counter are indicated via discontinuities in the value of sysUpTime.",
+          "metric-id": "SNMP.TCP_MIB.TCP.OUT.RSTS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.6.9.0",
+          "name": "TCP-MIB::tcpCurrEstab",
+          "enabled": true,
+          "description": "The number of TCP connections for which the current state is either ESTABLISHED or CLOSE-WAIT.",
+          "metric-id": "SNMP.TCP_MIB.TCP.CURR.ESTAB"
+        },
+        {
+          "oid": "1.3.6.1.2.1.6.12.0",
+          "name": "TCP-MIB::tcpRetransSegs",
+          "enabled": true,
+          "description": "The total number of segments retransmitted; that is, the number of TCP segments transmitted containing one or more previously transmitted octets. Discontinuities in the value of this counter are indicated via discontinuities in the value of sysUpTime.",
+          "metric-id": "SNMP.TCP_MIB.TCP.RETRANS.SEGS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.6.8.0",
+          "name": "TCP-MIB::tcpEstabResets",
+          "enabled": true,
+          "description": "The number of times that TCP connections have made a direct transition to the CLOSED state from either the ESTABLISHED state or the CLOSE-WAIT state. Discontinuities in the value of this counter are indicated via discontinuities in the value of sysUpTime.",
+          "metric-id": "SNMP.TCP_MIB.TCP.ESTAB.RESETS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.6.1.0",
+          "name": "TCP-MIB::tcpRtoAlgorithm",
+          "enabled": true,
+          "description": "The algorithm used to determine the timeout value used for retransmitting unacknowledged octets.",
+          "metric-id": "SNMP.TCP_MIB.TCP.RTO.ALGORITHM"
+        },
+        {
+          "oid": "1.3.6.1.2.1.6.4.0",
+          "name": "TCP-MIB::tcpMaxConn",
+          "enabled": true,
+          "description": "The limit on the total number of TCP connections the entity can support. In entities where the maximum number of connections is dynamic, this object should contain the value -1.",
+          "metric-id": "SNMP.TCP_MIB.TCP.MAX.CONN"
+        },
+        {
+          "oid": "1.3.6.1.2.1.6.6.0",
+          "name": "TCP-MIB::tcpPassiveOpens",
+          "enabled": true,
+          "description": "The number of times TCP connections have made a direct transition to the SYN-RCVD state from the LISTEN state. Discontinuities in the value of this counter are indicated via discontinuities in the value of sysUpTime.",
+          "metric-id": "SNMP.TCP_MIB.TCP.PASSIVE.OPENS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.6.7.0",
+          "name": "TCP-MIB::tcpAttemptFails",
+          "enabled": true,
+          "description": "The number of times that TCP connections have made a direct transition to the CLOSED state from either the SYN-SENT state or the SYN-RCVD state, plus the number of times that TCP connections have made a direct transition to the LISTEN state from the SYN-RCVD state. Discontinuities in the value of this counter are indicated via discontinuities in the value of sysUpTime.",
+          "metric-id": "SNMP.TCP_MIB.TCP.ATTEMPT.FAILS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.6.10.0",
+          "name": "TCP-MIB::tcpInSegs",
+          "enabled": true,
+          "description": "The total number of segments received, including those received in error. This count includes segments received on currently established connections. Discontinuities in the value of this counter are indicated via discontinuities in the value of sysUpTime.",
+          "metric-id": "SNMP.TCP_MIB.TCP.IN.SEGS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.6.5.0",
+          "name": "TCP-MIB::tcpActiveOpens",
+          "enabled": true,
+          "description": "The number of times that TCP connections have made a direct transition to the SYN-SENT state from the CLOSED state. Discontinuities in the value of this counter are indicated via discontinuities in the value of sysUpTime.",
+          "metric-id": "SNMP.TCP_MIB.TCP.ACTIVE.OPENS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.6.17.0",
+          "name": "TCP-MIB::tcpHCInSegs",
+          "enabled": true,
+          "description": "The total number of segments received, including those received in error. This count includes segments received on currently established connections. This object is the 64-bit equivalent of tcpInSegs. Discontinuities in the value of this counter are indicated via discontinuities in the value of sysUpTime.",
+          "metric-id": "SNMP.TCP_MIB.TCPHC.IN.SEGS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.6.11.0",
+          "name": "TCP-MIB::tcpOutSegs",
+          "enabled": true,
+          "description": "The total number of segments sent, including those on current connections but excluding those containing only retransmitted octets. Discontinuities in the value of this counter are indicated via discontinuities in the value of sysUpTime.",
+          "metric-id": "SNMP.TCP_MIB.TCP.OUT.SEGS"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "SNMPv2-MIB",
+      "enabled": true,
+      "oids": [
+        {
+          "oid": "1.3.6.1.2.1.11.19.0",
+          "name": "SNMPv2-MIB::snmpInTraps",
+          "enabled": true,
+          "description": "The total number of SNMP Trap PDUs which have been accepted and processed by the SNMP protocol entity.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.IN.TRAPS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.1.7.0",
+          "name": "SNMPv2-MIB::sysServices",
+          "enabled": true,
+          "description": "A value which indicates the set of services that this entity may potentially offer. The value is a sum. This sum initially takes the value zero. Then, for each layer, L, in the range 1 through 7, that this node performs transactions for, 2 raised to (L - 1) is added to the sum. For example, a node which performs only routing functions would have a value of 4 (2^(3-1)). In contrast, a node which is a host offering application services would have a value of 72 (2^(4-1) + 2^(7-1)). Note that in the context of the Internet suite of protocols, values should be calculated accordingly:    layer   functionality    1    physical (e.g., repeaters)    2    datalink/subnetwork (e.g., bridges)    3    internet (e.g., supports the IP)    4    end-to-end (e.g., supports the TCP)    7    applications (e.g., supports the SMTP) For systems including OSI protocols, layers 5 and 6 may also be counted.",
+          "metric-id": "SNMP.SNMPv2_MIB.SYS.SERVICES"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.27.0",
+          "name": "SNMPv2-MIB::snmpOutSetRequests",
+          "enabled": true,
+          "description": "The total number of SNMP Set-Request PDUs which have been generated by the SNMP protocol entity.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.OUT.SET.REQUESTS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.3.0",
+          "name": "SNMPv2-MIB::snmpInBadVersions",
+          "enabled": true,
+          "description": "The total number of SNMP messages which were delivered to the SNMP entity and were for an unsupported SNMP version.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.IN.BAD.VERSIONS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.30.0",
+          "name": "SNMPv2-MIB::snmpEnableAuthenTraps",
+          "enabled": true,
+          "description": "Indicates whether the SNMP entity is permitted to generate authenticationFailure traps. The value of this object overrides any configuration information; as such, it provides a means whereby all authenticationFailure traps may be disabled. Note that it is strongly recommended that this object be stored in non-volatile memory so that it remains constant across re-initializations of the network management system.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.ENABLE.AUTHEN.TRAPS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.10.0",
+          "name": "SNMPv2-MIB::snmpInBadValues",
+          "enabled": true,
+          "description": "The total number of SNMP PDUs which were delivered to the SNMP protocol entity and for which the value of the error-status field was `badValue'.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.IN.BAD.VALUES"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.1.0",
+          "name": "SNMPv2-MIB::snmpInPkts",
+          "enabled": true,
+          "description": "The total number of messages delivered to the SNMP entity from the transport service.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.IN.PKTS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.5.0",
+          "name": "SNMPv2-MIB::snmpInBadCommunityUses",
+          "enabled": true,
+          "description": "The total number of community-based SNMP messages (for example, SNMPv1) delivered to the SNMP entity which represented an SNMP operation that was not allowed for the SNMP community named in the message. The precise conditions under which this counter is incremented (if at all) depend on how the SNMP entity implements its access control mechanism and how its applications interact with that access control mechanism. It is strongly RECOMMENDED that the documentation for any access control mechanism which is used to control access to and visibility of MIB instrumentation specify the precise conditions that contribute to this value.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.IN.BAD.COMMUNITY.USES"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.2.0",
+          "name": "SNMPv2-MIB::snmpOutPkts",
+          "enabled": true,
+          "description": "The total number of SNMP Messages which were passed from the SNMP protocol entity to the transport service.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.OUT.PKTS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.25.0",
+          "name": "SNMPv2-MIB::snmpOutGetRequests",
+          "enabled": true,
+          "description": "The total number of SNMP Get-Request PDUs which have been generated by the SNMP protocol entity.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.OUT.GET.REQUESTS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.18.0",
+          "name": "SNMPv2-MIB::snmpInGetResponses",
+          "enabled": true,
+          "description": "The total number of SNMP Get-Response PDUs which have been accepted and processed by the SNMP protocol entity.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.IN.GET.RESPONSES"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.14.0",
+          "name": "SNMPv2-MIB::snmpInTotalSetVars",
+          "enabled": true,
+          "description": "The total number of MIB objects which have been altered successfully by the SNMP protocol entity as the result of receiving valid SNMP Set-Request PDUs.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.IN.TOTAL.SET.VARS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.4.0",
+          "name": "SNMPv2-MIB::snmpInBadCommunityNames",
+          "enabled": true,
+          "description": "The total number of community-based SNMP messages (for example, SNMPv1) delivered to the SNMP entity which used an SNMP community name not known to said entity. Also, implementations which authenticate community-based SNMP messages using check(s) in addition to matching the community name (for example, by also checking whether the message originated from a transport address allowed to use a specified community name) MAY include in this value the number of messages which failed the additional check(s). It is strongly RECOMMENDED that the documentation for any security model which is used to authenticate community-based SNMP messages specify the precise conditions that contribute to this value.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.IN.BAD.COMMUNITY.NAMES"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.24.0",
+          "name": "SNMPv2-MIB::snmpOutGenErrs",
+          "enabled": true,
+          "description": "The total number of SNMP PDUs which were generated by the SNMP protocol entity and for which the value of the error-status field was `genErr'.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.OUT.GEN.ERRS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.21.0",
+          "name": "SNMPv2-MIB::snmpOutNoSuchNames",
+          "enabled": true,
+          "description": "The total number of SNMP PDUs which were generated by the SNMP protocol entity and for which the value of the error-status was `noSuchName'.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.OUT.NO.SUCH.NAMES"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.12.0",
+          "name": "SNMPv2-MIB::snmpInGenErrs",
+          "enabled": true,
+          "description": "The total number of SNMP PDUs which were delivered to the SNMP protocol entity and for which the value of the error-status field was `genErr'.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.IN.GEN.ERRS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.26.0",
+          "name": "SNMPv2-MIB::snmpOutGetNexts",
+          "enabled": true,
+          "description": "The total number of SNMP Get-Next PDUs which have been generated by the SNMP protocol entity.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.OUT.GET.NEXTS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.9.0",
+          "name": "SNMPv2-MIB::snmpInNoSuchNames",
+          "enabled": true,
+          "description": "The total number of SNMP PDUs which were delivered to the SNMP protocol entity and for which the value of the error-status field was `noSuchName'.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.IN.NO.SUCH.NAMES"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.15.0",
+          "name": "SNMPv2-MIB::snmpInGetRequests",
+          "enabled": true,
+          "description": "The total number of SNMP Get-Request PDUs which have been accepted and processed by the SNMP protocol entity.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.IN.GET.REQUESTS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.8.0",
+          "name": "SNMPv2-MIB::snmpInTooBigs",
+          "enabled": true,
+          "description": "The total number of SNMP PDUs which were delivered to the SNMP protocol entity and for which the value of the error-status field was `tooBig'.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.IN.TOO.BIGS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.29.0",
+          "name": "SNMPv2-MIB::snmpOutTraps",
+          "enabled": true,
+          "description": "The total number of SNMP Trap PDUs which have been generated by the SNMP protocol entity.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.OUT.TRAPS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.11.0",
+          "name": "SNMPv2-MIB::snmpInReadOnlys",
+          "enabled": true,
+          "description": "The total number valid SNMP PDUs which were delivered to the SNMP protocol entity and for which the value of the error-status field was `readOnly'. It should be noted that it is a protocol error to generate an SNMP PDU which contains the value `readOnly' in the error-status field, as such this object is provided as a means of detecting incorrect implementations of the SNMP.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.IN.READ.ONLYS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.31.0",
+          "name": "SNMPv2-MIB::snmpSilentDrops",
+          "enabled": true,
+          "description": "The total number of Confirmed Class PDUs (such as GetRequest-PDUs, GetNextRequest-PDUs, GetBulkRequest-PDUs, SetRequest-PDUs, and InformRequest-PDUs) delivered to the SNMP entity which were silently dropped because the size of a reply containing an alternate Response Class PDU (such as a Response-PDU) with an empty variable-bindings field was greater than either a local constraint or the maximum message size associated with the originator of the request.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.SILENT.DROPS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.20.0",
+          "name": "SNMPv2-MIB::snmpOutTooBigs",
+          "enabled": true,
+          "description": "The total number of SNMP PDUs which were generated by the SNMP protocol entity and for which the value of the error-status field was `tooBig.'",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.OUT.TOO.BIGS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.28.0",
+          "name": "SNMPv2-MIB::snmpOutGetResponses",
+          "enabled": true,
+          "description": "The total number of SNMP Get-Response PDUs which have been generated by the SNMP protocol entity.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.OUT.GET.RESPONSES"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.16.0",
+          "name": "SNMPv2-MIB::snmpInGetNexts",
+          "enabled": true,
+          "description": "The total number of SNMP Get-Next PDUs which have been accepted and processed by the SNMP protocol entity.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.IN.GET.NEXTS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.13.0",
+          "name": "SNMPv2-MIB::snmpInTotalReqVars",
+          "enabled": true,
+          "description": "The total number of MIB objects which have been retrieved successfully by the SNMP protocol entity as the result of receiving valid SNMP Get-Request and Get-Next PDUs.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.IN.TOTAL.REQ.VARS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.22.0",
+          "name": "SNMPv2-MIB::snmpOutBadValues",
+          "enabled": true,
+          "description": "The total number of SNMP PDUs which were generated by the SNMP protocol entity and for which the value of the error-status field was `badValue'.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.OUT.BAD.VALUES"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.17.0",
+          "name": "SNMPv2-MIB::snmpInSetRequests",
+          "enabled": true,
+          "description": "The total number of SNMP Set-Request PDUs which have been accepted and processed by the SNMP protocol entity.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.IN.SET.REQUESTS"
+        },
+        {
+          "oid": "1.3.6.1.6.3.1.1.6.1.0",
+          "name": "SNMPv2-MIB::snmpSetSerialNo",
+          "enabled": true,
+          "description": "An advisory lock used to allow several cooperating command generator applications to coordinate their use of the SNMP set operation. This object is used for coarse-grain coordination. To achieve fine-grain coordination, one or more similar objects might be defined within each MIB group, as appropriate.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.SET.SERIAL.NO"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.6.0",
+          "name": "SNMPv2-MIB::snmpInASNParseErrs",
+          "enabled": true,
+          "description": "The total number of ASN.1 or BER errors encountered by the SNMP entity when decoding received SNMP messages.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.INASN.PARSE.ERRS"
+        },
+        {
+          "oid": "1.3.6.1.2.1.11.32.0",
+          "name": "SNMPv2-MIB::snmpProxyDrops",
+          "enabled": true,
+          "description": "The total number of Confirmed Class PDUs (such as GetRequest-PDUs, GetNextRequest-PDUs, GetBulkRequest-PDUs, SetRequest-PDUs, and InformRequest-PDUs) delivered to the SNMP entity which were silently dropped because the transmission of the (possibly translated) message to a proxy target failed in a manner (other than a time-out) such that no Response Class PDU (such as a Response-PDU) could be returned.",
+          "metric-id": "SNMP.SNMPv2_MIB.SNMP.PROXY.DROPS"
+        }
+      ]
+    }
+  ]
 }

@@ -18,7 +18,6 @@ import org.snmp4j.smi.OID;
 import com.boundary.plugin.sdk.PluginUtil;
 import com.snmp4j.smi.SmiModule;
 import com.snmp4j.smi.SmiObject;
-import com.snmp4j.smi.SmiType;
 
 public class MibToStandardOut extends MibTransformBase {
 	
@@ -30,7 +29,7 @@ public class MibToStandardOut extends MibTransformBase {
 	public void transform(SmiModule module, SmiObject object) {
 		OID oid = object.getOID();
 
-		if (object.getType() == SmiType.OBJECT_TYPE_SCALAR) {
+		if (standardFilterCriteria(module,object)) {
 			if (oid != null) {
 				System.out.println("+++++++++++++++++++");
 				System.out.printf("name: %s%noid: %s%n", oid,
@@ -46,14 +45,25 @@ public class MibToStandardOut extends MibTransformBase {
 								: smiSyntax, object.getReference());
 				System.out.printf("Description: %s%n",
 						object.getDescription());
+				System.out.printf("Oid Syntax: %s%n",oid.getSyntaxString());
 				System.out.println("-------------------");
-
 			}
 		}
 	}
-
+	
 	@Override
-	public void end() {
+	public void beginTransform() {
+	}
+	
+	@Override
+	public void endTransform() {
 	}
 
+	@Override
+	public void beginModule(SmiModule module) {
+	}
+
+	@Override
+	public void endModule(SmiModule module) {
+	}
 }

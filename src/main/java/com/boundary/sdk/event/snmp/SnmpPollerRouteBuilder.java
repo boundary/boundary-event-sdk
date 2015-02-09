@@ -86,6 +86,7 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 					.log(DEBUG,"Before split - body: ${body}")
 					.split().method(new SplitVarBinds(),"splitBody")
 					.setHeader(BOUNDARY_SNMP_POLLER_CONFIG,constant(config))
+					.process(new SnmpHandleException())
 					.log(DEBUG,"After split - body: ${body}")
 					.marshal().serialization()
 					.to(this.getToUri())
