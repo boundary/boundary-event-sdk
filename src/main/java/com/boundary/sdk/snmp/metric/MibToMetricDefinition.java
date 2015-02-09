@@ -47,31 +47,33 @@ public class MibToMetricDefinition extends MibTransformBase {
 
 		OID oid = object.getOID();
 		if (object.getType() == SmiType.OBJECT_TYPE_SCALAR) {
-
 			if (oid != null) {
-				String metricId = String.format("SNMP.%s.%s%n", module
-						.getModuleName(), PluginUtil.toUpperUnderscore(
-						object.getObjectName(), '.'));
-				builder.setName(metricId);
+				String objectName = object.getObjectName();
+				String moduleName = module.getModuleName();
 
-				String displayName = String.format("%s:%s",
-						module.getModuleName(), object.getObjectName());
+				String metricId = String.format("SNMP.%s.%s",
+						moduleName.replace('-','_'),
+						PluginUtil.toUpperUnderscore(objectName,'.'));
+				
+				String displayName = String.format("%s::%s",moduleName,objectName);
+				String description = object.getDescription().replace('\n',' ');
+				
+				builder.setName(metricId);
 				builder.setDisplayName(displayName);
 				builder.setDisplayNameShort("");
-				builder.setDescription(object.getDescription());
+				builder.setDescription(description);
 				builder.setDefaultResolutionMS(5000);
 				builder.setDefaultAggregate(MetricAggregate.avg);
 				builder.setUnit(MetricUnit.number);
 				list.add(builder.build());
+			} else {
+				System.err.printf("oid is null: %s%n",object.getObjectName());
 			}
-		} else {
-			System.err.printf("oid is null: %s%n",object.getObjectName());
-		}
+		} 
 
 	}
 	
 	public void convertToJson() {
-
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			mapper.writeValue(System.out,metricDefinitionList);
@@ -87,11 +89,6 @@ public class MibToMetricDefinition extends MibTransformBase {
 
 	@Override
 	public void end() {
-//		
-//		System.out.println(metricDefinitionList.getResult().size());
-//		for (MetricDefinition def : metricDefinitionList.getResult()) {
-//			System.out.println(def);
-//		}
 		convertToJson();
 	}
 }

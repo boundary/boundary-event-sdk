@@ -187,7 +187,6 @@ public class ExportMibCli {
 		
 		String exportOption = cmd.getOptionValue("e");
 		exportType = ExportType.valueOf(exportOption);
-		System.out.println(exportType);
 		if (exportType != null) {
 			mibExporter.setExportType(exportType);
 		}

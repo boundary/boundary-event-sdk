@@ -42,13 +42,11 @@ public class MibExporter extends SmiSupport {
 
 
 	public void addModule(String moduleName) {
-		System.out.println(moduleName);
 		moduleList.add(moduleName);
 	}
 	
 	public MibTransform getTransform() {
 		MibTransform transform = null;
-		System.out.println(this.exportType);
 		switch(this.exportType) {
 		case METRIC:
 			transform = new MibToMetricDefinition();
@@ -66,7 +64,6 @@ public class MibExporter extends SmiSupport {
 	public void export() {
 
 		this.initialize();
-		this.loadModules();
 		SmiManager smiManager = this.getSmiManager();
 		MibTransform transform = this.getTransform();
 		
