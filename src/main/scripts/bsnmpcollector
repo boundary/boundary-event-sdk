@@ -14,4 +14,4 @@
 #
 #exec java -cp "$CLASSPATH" -Dboundary.application.context.uri="$CONFIG_URI" "$MAIN_CLASS"
 
-mvn exec:java -Dexec.mainClass=com.boundary.sdk.event.app.SNMPCollector
+mvn exec:java -Dexec.mainClass=com.boundary.sdk.app.SNMPCollector
