@@ -6,7 +6,7 @@
   <groupId>com.boundary</groupId>
   <artifactId>boundary-event-sdk</artifactId>
   <packaging>jar</packaging>
-  <version>00.05.01</version>
+  <version>00.06.00</version>
 
   <name>boundary-event-sdk</name>
   <description>Boundary Event SDK enables the rapid integration of foreign events into the Boundary monitoring platform</description>
@@ -75,10 +75,10 @@
 
        <!-- Properties for all of the java packages versions -->
        <activemq-version>5.9.0</activemq-version>
-       <java-plugin-sdk-version>0.5.0</java-plugin-sdk-version>
+       <java-plugin-sdk-version>0.6.0</java-plugin-sdk-version>
        <camel-version>2.14.1</camel-version>
        <camel-esper-version>2.13.2</camel-esper-version>
-       <boundary-camel-components-version>0.5.0</boundary-camel-components-version>
+       <boundary-camel-components-version>0.6.0</boundary-camel-components-version>
        <commons-cli-version>1.2</commons-cli-version>
        <commons-codec-version>1.9</commons-codec-version>
        <commons-daemon-version>1.0.15</commons-daemon-version>
