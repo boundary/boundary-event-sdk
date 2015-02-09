@@ -55,8 +55,8 @@ public class SnmpMetricCatalogTest {
 		
 		List<SnmpPollerConfiguration> configs = catalog.load();
 		SnmpPollerConfiguration config = configs.get(0);
-		Map<String, Oid> map = config.getOidMap();
-		Oid oid = map.get("1.3.6.1.2.1.4.3.0");
+		Map<String, OidMap> map = config.getOidMap();
+		OidMap oid = map.get("1.3.6.1.2.1.4.3.0");
 		System.out.println(map);
 		System.out.println(oid);
 		assertNotNull("check for not null",oid);

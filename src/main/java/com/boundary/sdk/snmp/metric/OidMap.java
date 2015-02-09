@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Oid {
+public class OidMap {
 	
 	@NotNull
 	@JsonProperty
@@ -30,7 +30,7 @@ public class Oid {
 	@JsonProperty
 	private String description;
 	
-	public Oid() {
+	public OidMap() {
 		this.enabled = true;
 	}
 	
@@ -79,7 +79,7 @@ public class Oid {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Oid other = (Oid) obj;
+		OidMap other = (OidMap) obj;
 		if (description == null) {
 			if (other.description != null)
 				return false;

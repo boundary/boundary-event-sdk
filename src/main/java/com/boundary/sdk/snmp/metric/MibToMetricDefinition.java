@@ -73,10 +73,10 @@ public class MibToMetricDefinition extends MibTransformBase {
 
 	}
 	
-	public void convertToJson() {
+	public void convertToJson(Object obj) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			mapper.writeValue(System.out,metricDefinitionList);
+			mapper.writeValue(System.out,obj);
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -89,6 +89,6 @@ public class MibToMetricDefinition extends MibTransformBase {
 
 	@Override
 	public void end() {
-		convertToJson();
+		convertToJson(metricDefinitionList);
 	}
 }

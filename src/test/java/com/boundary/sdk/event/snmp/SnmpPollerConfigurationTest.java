@@ -25,7 +25,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.boundary.sdk.snmp.metric.Oid;
+import com.boundary.sdk.snmp.metric.OidMap;
 import com.boundary.sdk.snmp.metric.SnmpMetricCatalog;
 
 public class SnmpPollerConfigurationTest {
@@ -38,7 +38,7 @@ public class SnmpPollerConfigurationTest {
 	@Test
 	public void testAddOid() {
 		SnmpPollerConfiguration config = new SnmpPollerConfiguration();
-		Oid oid = new Oid();
+		OidMap oid = new OidMap();
 		oid.setOid("1.3.6.1.2.1.25.1.5.0");
 		config.addOid(oid);
 	}
@@ -46,14 +46,14 @@ public class SnmpPollerConfigurationTest {
 	@Test
 	public void testGetOidsSize() {
 		SnmpPollerConfiguration config = new SnmpPollerConfiguration();
-		Oid oid1 = new Oid();
+		OidMap oid1 = new OidMap();
 		oid1.setOid("1.3.6.1.2.1.25.1.5.0");
 		config.addOid(oid1);
-		Oid oid2 = new Oid();
+		OidMap oid2 = new OidMap();
 		oid2.setOid("1.3.6.1.2.1.25.1.5.0");
 		config.addOid(oid2);
 		
-		List<Oid> set = config.getOids();
+		List<OidMap> set = config.getOids();
 		assertEquals("check set count",2,set.size());
 		assertEquals("check getOidsAsString","1.3.6.1.2.1.25.1.5.0,1.3.6.1.2.1.25.1.5.0",config.getOidsAsString());
 	}
@@ -63,35 +63,35 @@ public class SnmpPollerConfigurationTest {
 		String expectedOidString = "1.3.6.1.2.1.25.1.5.0,1.3.6.1.2.1.25.1.6.0,1.3.6.1.2.1.6.9.0,1.3.6.1.2.1.7.1.0,1.3.6.1.2.1.7.4.0,1.3.6.1.2.1.6.10.0,1.3.6.1.2.1.6.11.0,1.3.6.1.2.1.4.3.0,1.3.6.1.2.1.4.10.0";
 		SnmpPollerConfiguration config = new SnmpPollerConfiguration();
 		
-		Oid oid1 = new Oid();
+		OidMap oid1 = new OidMap();
 		oid1.setOid("1.3.6.1.2.1.25.1.5.0");
 		config.addOid(oid1);
-		Oid oid2 = new Oid();
+		OidMap oid2 = new OidMap();
 		oid2.setOid("1.3.6.1.2.1.25.1.6.0");
 		config.addOid(oid2);
-		Oid oid3 = new Oid();
+		OidMap oid3 = new OidMap();
 		oid3.setOid("1.3.6.1.2.1.6.9.0");
 		config.addOid(oid3);
-		Oid oid4 = new Oid();
+		OidMap oid4 = new OidMap();
 		oid4.setOid("1.3.6.1.2.1.7.1.0");
 		config.addOid(oid4);
-		Oid oid5 = new Oid();
+		OidMap oid5 = new OidMap();
 		oid5.setOid("1.3.6.1.2.1.7.4.0");
 		config.addOid(oid5);
-		Oid oid6 = new Oid();
+		OidMap oid6 = new OidMap();
 		oid6.setOid("1.3.6.1.2.1.6.10.0");
 		config.addOid(oid6);
-		Oid oid7 = new Oid();
+		OidMap oid7 = new OidMap();
 		oid7.setOid("1.3.6.1.2.1.6.11.0");
 		config.addOid(oid7);
-		Oid oid8 = new Oid();
+		OidMap oid8 = new OidMap();
 		oid8.setOid("1.3.6.1.2.1.4.3.0");
 		config.addOid(oid8);
-		Oid oid9 = new Oid();
+		OidMap oid9 = new OidMap();
 		oid9.setOid("1.3.6.1.2.1.4.10.0");
 		config.addOid(oid9);
 
-		List<Oid> set = config.getOids();
+		List<OidMap> set = config.getOids();
 		assertEquals("check set count",9,set.size());
 		assertEquals("check getOidsAsString",expectedOidString,config.getOidsAsString());
 	}
@@ -101,8 +101,8 @@ public class SnmpPollerConfigurationTest {
 		SnmpMetricCatalog catalog = new SnmpMetricCatalog();
 		List<SnmpPollerConfiguration> configs = catalog.load();
 		SnmpPollerConfiguration config = configs.get(0);
-		Map<String, Oid> map = config.getOidMap();
-		Oid oid = map.get("1.3.6.1.2.1.4.3.0");
+		Map<String, OidMap> map = config.getOidMap();
+		OidMap oid = map.get("1.3.6.1.2.1.4.3.0");
 		System.out.println(map);
 		System.out.println(oid);
 		assertNotNull("check for not null",oid);

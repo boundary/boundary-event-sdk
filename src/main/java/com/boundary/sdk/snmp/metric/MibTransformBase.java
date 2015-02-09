@@ -13,7 +13,13 @@
 // limitations under the License.
 package com.boundary.sdk.snmp.metric;
 
+import java.io.IOException;
+
 import org.snmp4j.smi.SMIConstants;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public abstract class MibTransformBase implements MibTransform {
 
@@ -70,6 +76,19 @@ public abstract class MibTransformBase implements MibTransform {
 		}
 		
 		return s;
+	}
+	
+	public void convertToJson(Object obj) {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			mapper.writeValue(System.out,obj);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

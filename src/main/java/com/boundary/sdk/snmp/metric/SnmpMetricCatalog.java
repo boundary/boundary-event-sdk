@@ -36,7 +36,7 @@ public class SnmpMetricCatalog {
 	private static final String POLLERS_CONFIG_FILENAME = "pollers.json";
 	private static final String HOST_LISTS_CONFIG_FILENAME = "hosts.json";
 	private static final String OID_LISTS_CONFIG_FILENAME = "oids.json";
-	private OidLists oidLists;
+	private OidMapList oidLists;
 	private HostLists hostLists;
 	private Pollers pollers;
 	private String configDirectory;
@@ -60,7 +60,7 @@ public class SnmpMetricCatalog {
 
 			hostLists = HostLists.load(this.hostListsResource);
 			LOG.info("Loading oids from {}",this.oidListsResource);
-			oidLists = OidLists.load(this.oidListsResource);
+			oidLists = OidMapList.load(this.oidListsResource);
 		} catch (URISyntaxException e) {
 			throw new Exception("Configuration Error");
 		}
@@ -92,7 +92,7 @@ public class SnmpMetricCatalog {
 				configuration.setPort(host.getPort());
 				configuration.setCommunityRead(host.getCommunityRead());
 				
-				List<Oid> oids = oidLists.getOids(entry.getOidListIds());
+				List<OidMap> oids = oidLists.getOids(entry.getOidListIds());
 				configuration.setOids(oids);
 				list.add(configuration);
 			}

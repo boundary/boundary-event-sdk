@@ -27,21 +27,21 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class OidLists {
+public class OidMapList {
 	
 	@JsonProperty("oid-list")
-	private List<OidListEntry> oidList;
+	private List<OidMapEntry> oidList;
 	
-	public List<OidListEntry> getOidList() {
+	public List<OidMapEntry> getOidList() {
 		return oidList;
 	}
 
-	public void setOidList(List<OidListEntry> oidList) {
+	public void setOidList(List<OidMapEntry> oidList) {
 		this.oidList = oidList;
 	}
 
-	public static OidLists load(String resource) throws URISyntaxException {
-		OidLists instance = new OidLists();
+	public static OidMapList load(String resource) throws URISyntaxException {
+		OidMapList instance = new OidMapList();
 
 		ClassLoader classLoader = instance.getClass().getClassLoader();
 		URL url = classLoader.getResource(resource);
@@ -50,7 +50,7 @@ public class OidLists {
 		ObjectMapper mapper = new ObjectMapper();
 
 		try {
-			instance = mapper.readValue(file,OidLists.class);
+			instance = mapper.readValue(file,OidMapList.class);
 		} catch (JsonParseException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -61,12 +61,12 @@ public class OidLists {
 		return instance;
 	}
 	
-	public List<Oid> getOids(List<Long> ids) {
-		Set<Oid> oids = new LinkedHashSet<Oid>();
+	public List<OidMap> getOids(List<Long> ids) {
+		Set<OidMap> oids = new LinkedHashSet<OidMap>();
 		
-		for (OidListEntry entry : oidList) {
+		for (OidMapEntry entry : oidList) {
 			if (ids.contains(entry.getId())) {
-				for (Oid oid : entry.getOids()) {
+				for (OidMap oid : entry.getOids()) {
 					if (oid.isEnabled()) {
 						oids.add(oid);
 					}
@@ -74,7 +74,7 @@ public class OidLists {
 			}
 		}
 		
-		List<Oid> list = new ArrayList<Oid>();
+		List<OidMap> list = new ArrayList<OidMap>();
 		list.addAll(oids);
 		return list;
 	}

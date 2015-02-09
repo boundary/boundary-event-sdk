@@ -43,7 +43,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.boundary.sdk.event.snmp.SnmpPollerConfiguration;
 import com.boundary.sdk.event.snmp.entry;
 import com.boundary.sdk.metric.Measurement;
-import com.boundary.sdk.snmp.metric.Oid;
+import com.boundary.sdk.snmp.metric.OidMap;
 
 import static com.boundary.sdk.event.script.ScriptTestUtils.*;
 
@@ -62,7 +62,7 @@ public class SnmpToMeasureTest extends CamelSpringTestSupport {
 		config.setDelay(30);
 		config.setPort(1161);
 		config.setHost(expectedSource);
-		Oid oid = new Oid();
+		OidMap oid = new OidMap();
 		oid.setMetricId(expectedMetricId);
 		oid.setOid(expectedOid);
 		config.addOid(oid);
