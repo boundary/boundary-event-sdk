@@ -28,6 +28,8 @@ import com.snmp4j.smi.SmiType;
 
 public abstract class MibTransformBase implements MibTransform {
 
+	private static final int SHORT_DISPLAY_NAME_MAX_INDEX = 19;
+
 	protected String getSmiSyntax(int syntax) {
 		String s = null;
 		
@@ -98,6 +100,13 @@ public abstract class MibTransformBase implements MibTransform {
 		return String.format("%s::%s",moduleName,objectName);
 	}
 	
+	public String oidToShortDisplayName(String moduleName,String objectName) {
+		String shortDisplayName = String.format("%s",objectName);
+		int endIndex = Math.min(SHORT_DISPLAY_NAME_MAX_INDEX,shortDisplayName.length()-1);
+		shortDisplayName.substring(0,endIndex);
+		return shortDisplayName;
+	}
+
 	public String oidToGetOid(OID oid) {
 		return String.format("%s.0",oid.toDottedString());
 	}

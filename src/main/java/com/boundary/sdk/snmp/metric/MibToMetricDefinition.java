@@ -47,11 +47,12 @@ public class MibToMetricDefinition extends MibTransformBase {
 
 				String metricId = oidToMetricId(moduleName,objectName);
 				String displayName = oidToDisplayName(moduleName,objectName);
+				String shortDisplayName = oidToShortDisplayName(moduleName,objectName);
 				String description = oidToDescription(object.getDescription());
 				
 				builder.setName(metricId);
 				builder.setDisplayName(displayName);
-				builder.setDisplayNameShort("");
+				builder.setDisplayNameShort(shortDisplayName);
 				builder.setDescription(description);
 				builder.setDefaultResolutionMS(5000);
 				builder.setDefaultAggregate(MetricAggregate.avg);
