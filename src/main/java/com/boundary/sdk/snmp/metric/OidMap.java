@@ -22,6 +22,8 @@ public class OidMap {
 	@NotNull
 	@JsonProperty
 	private String oid;
+	@JsonProperty
+	private String name;
 	@NotNull
 	@JsonProperty("metric-id")
 	private String metricId;
@@ -45,6 +47,12 @@ public class OidMap {
 	}
 	public void setMetricId(String metricId) {
 		this.metricId = metricId;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public boolean isEnabled() {
 		return enabled;
