@@ -30,7 +30,7 @@ limitations under the License.
   <bean id="poller-route" class="com.boundary.sdk.event.snmp.SnmpPollerRouteBuilder">
     <property name="routeId" value="SNMP-POLLER"/>
     <property name="startUpOrder" value="200"/>
-    <property name="toUri" value="seda:snmp-poller-out?concurrentConsumers=10"/>
+    <property name="toUri" value="seda:snmp-poller-out"/>
   </bean>
   
   <bean id="script-route" class="com.boundary.sdk.event.script.ScriptRouteBuilder">
@@ -53,8 +53,9 @@ limitations under the License.
     <property name="host" value="#{systemEnvironment['BOUNDARY_PREMIUM_API_HOST']}"/>
     <property name="user" value="#{systemEnvironment['BOUNDARY_PREMIUM_EMAIL']}"/>
     <property name="password" value="#{systemEnvironment['BOUNDARY_PREMIUM_API_TOKEN']}"/>
+    <property name="toUri" value="mock:out"/>
   </bean>
- 
+  
   <camelContext id="snmp-metrics" xmlns="http://camel.apache.org/schema/spring">
 
     <routeBuilder ref="api-route"/>
@@ -66,6 +67,6 @@ limitations under the License.
     	<removeHeaders pattern="boundary.snmp.poller.configuration"/>
     	<to uri="seda:boundary-metric"/>
     </route>
-    
+
   </camelContext>
 </beans>

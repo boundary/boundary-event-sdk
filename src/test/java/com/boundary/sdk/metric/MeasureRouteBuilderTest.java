@@ -59,36 +59,6 @@ public class MeasureRouteBuilderTest extends CamelSpringTestSupport {
 		super.tearDown();
 	}
 
-//	@Test
-//	public void testGetScheme() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testGetOrgId() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testGetUser() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testGetPassword() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testGetPort() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testGetHost() {
-//		fail("Not yet implemented");
-//	}
-//
 	//@Ignore("BROKEN: Does not send BASIC authentication")
 	@Test
 	public void testSendMetric() throws InterruptedException {

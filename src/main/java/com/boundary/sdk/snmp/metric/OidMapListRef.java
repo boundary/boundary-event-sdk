@@ -13,7 +13,7 @@
 // limitations under the License.
 package com.boundary.sdk.snmp.metric;
 
-public class OidListRef {
+public class OidMapListRef {
 	
 	private long id;
 	private boolean enabled;

@@ -14,12 +14,28 @@
 package com.boundary.sdk.event.snmp;
 
 import org.apache.camel.Exchange;
+import org.apache.camel.Message;
 import org.apache.camel.Processor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.snmp4j.smi.VariableBinding;
 
-public class OidValueToMeasurement implements Processor {
+/**
+ * Handles the exceptions from SNMP polling
+ */
+public class SnmpHandleException implements Processor {
+
+	private static Logger LOG = LoggerFactory.getLogger(SnmpHandleException.class);
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
-		// TODO Auto-generated method stub
+		Message message = exchange.getIn();
+		
+		VariableBinding varBind = message.getBody(VariableBinding.class);
+
+		if (varBind.isException()) {
+			LOG.warn("VariableBind Exception: {},",varBind);
+			exchange.setProperty(Exchange.ROUTE_STOP, Boolean.TRUE); 
+		}
 	}
 }

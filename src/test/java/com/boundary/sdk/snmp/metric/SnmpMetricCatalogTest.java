@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -46,5 +47,19 @@ public class SnmpMetricCatalogTest {
 		assertEquals("check configuration size",1,configs.size());
 		SnmpPollerConfiguration conf = configs.get(0);
 		assertEquals("check configuration host","localhost",conf.getHost());
+	}
+	
+	@Test
+	public void testGetOidMap() throws Exception {
+		SnmpMetricCatalog catalog = new SnmpMetricCatalog();
+		
+		List<SnmpPollerConfiguration> configs = catalog.load();
+		SnmpPollerConfiguration config = configs.get(0);
+		Map<String, OidMap> map = config.getOidMap();
+		OidMap oid = map.get("1.3.6.1.2.1.4.3.0");
+		System.out.println(map);
+		System.out.println(oid);
+		assertNotNull("check for not null",oid);
+		assertTrue("check enabled",oid.isEnabled());
 	}
 }

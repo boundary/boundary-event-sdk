@@ -14,13 +14,15 @@
 package com.boundary.sdk.event.snmp;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.boundary.sdk.snmp.metric.Oid;
+import com.boundary.sdk.snmp.metric.OidMap;
 
 public class SnmpPollerConfiguration {
 	
@@ -30,12 +32,12 @@ public class SnmpPollerConfiguration {
 	private static final long DEFAULT_DELAY = 5;
 	private String host;
 	private long port;
-	private List<Oid> oids;
+	private List<OidMap> oids;
 	private String communityRead;
 	private long delay;
 	
 	public SnmpPollerConfiguration() {
-		this.oids = new ArrayList<Oid>();
+		this.oids = new ArrayList<OidMap>();
 		this.host = DEFAULT_HOST;
 		this.port = DEFAULT_SNMP_PORT;
 		this.communityRead = DEFAULT_COMMUNITY_READ;
@@ -58,15 +60,25 @@ public class SnmpPollerConfiguration {
 		this.port = port;
 	}
 
-	public void addOid(Oid oid) {
+	public void addOid(OidMap oid) {
 		oids.add(oid);
+	}
+	
+	public Map<String,OidMap> getOidMap() {
+		Map<String,OidMap> map = new HashMap<String,OidMap>();
+		
+		for (OidMap oid: oids) {
+			map.put(oid.getOid(), oid);
+		}
+		
+		return map;
 	}
 	
 	public String getOidsAsString() {
 		StringBuilder builder = new StringBuilder();
 		
 		boolean first = true;
-		for (Oid oid: oids) {
+		for (OidMap oid: oids) {
 			if (first == false) {
 				builder.append(",");
 			}
@@ -77,11 +89,11 @@ public class SnmpPollerConfiguration {
 		return builder.toString();
 	}
 	
-	public void setOids(List<Oid> oids) {
+	public void setOids(List<OidMap> oids) {
 		this.oids = oids;
 	}
 	
-	public List<Oid> getOids() {
+	public List<OidMap> getOids() {
 		return this.oids;
 	}
 

@@ -27,7 +27,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class OidListEntry {
+public class OidMapEntry {
 	@Min(1)
 	@JsonProperty
 	private long id;
@@ -38,9 +38,9 @@ public class OidListEntry {
 	private boolean enabled;
 	@NotNull
 	@JsonProperty
-	private List<Oid> oids;
+	private List<OidMap> oids;
 	
-	public OidListEntry() {
+	public OidMapEntry() {
 		this.enabled = true;
 	}
 	
@@ -63,10 +63,10 @@ public class OidListEntry {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
-	public List<Oid> getOids() {
+	public List<OidMap> getOids() {
 		return oids;
 	}
-	public void setOids(List<Oid> oids) {
+	public void setOids(List<OidMap> oids) {
 		this.oids = oids;
 	}
 	

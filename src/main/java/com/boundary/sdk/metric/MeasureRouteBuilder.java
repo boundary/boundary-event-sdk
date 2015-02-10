@@ -49,6 +49,7 @@ public class MeasureRouteBuilder extends BoundaryAPIRouteBuilder {
 		RouteDefinition routeDefinition = from(this.getFromUri())
 			.startupOrder(startUpOrder)
 			.routeId(routeId)
+			.unmarshal().serialization()
 			.marshal().json(JsonLibrary.Jackson)
 			.log(INFO,"Measurement: ${body}")
 			.setHeader(HTTP_AUTHORIZATION,constant(" Basic " + getAuthentication()))
@@ -56,11 +57,11 @@ public class MeasureRouteBuilder extends BoundaryAPIRouteBuilder {
 			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
 			.setHeader(Exchange.HTTP_METHOD, constant("POST"))
 			.to("log:com.boundary.sdk.metric.MeasureRouteBuilder?level=INFO&groupInterval=60000&groupDelay=60000&groupActiveOnly=false")
-			.log(INFO, url.toString())
-			.log(INFO,"${headers}")
+			.log(DEBUG, url.toString())
+			.log(DEBUG,"${headers}")
 			.to(url.toString())
 			.log(DEBUG,"HTTP Method: ${headers.CamelHttpMethod},AcceptContentType={headers.CamelAcceptContentType}")
-			.log(INFO,"HTTP Response Code: ${headers.CamelHttpResponseCode},Location: ${headers.Location}")
+			.log(INFO,"HTTP Response Code: ${headers.CamelHttpResponseCode}")
 			;
 		if (this.getToUri() != null && this.getToUri().length() > 0) {
 			routeDefinition.to(getToUri());

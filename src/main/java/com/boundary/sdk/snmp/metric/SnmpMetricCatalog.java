@@ -13,16 +13,13 @@
 // limitations under the License.
 package com.boundary.sdk.snmp.metric;
 
-import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jetty.util.log.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.boundary.sdk.event.snmp.MIBCompiler;
 import com.boundary.sdk.event.snmp.SnmpPollerConfiguration;
 
 /**
@@ -36,7 +33,7 @@ public class SnmpMetricCatalog {
 	private static final String POLLERS_CONFIG_FILENAME = "pollers.json";
 	private static final String HOST_LISTS_CONFIG_FILENAME = "hosts.json";
 	private static final String OID_LISTS_CONFIG_FILENAME = "oids.json";
-	private OidLists oidLists;
+	private OidMapList oidLists;
 	private HostLists hostLists;
 	private Pollers pollers;
 	private String configDirectory;
@@ -60,7 +57,7 @@ public class SnmpMetricCatalog {
 
 			hostLists = HostLists.load(this.hostListsResource);
 			LOG.info("Loading oids from {}",this.oidListsResource);
-			oidLists = OidLists.load(this.oidListsResource);
+			oidLists = OidMapList.load(this.oidListsResource);
 		} catch (URISyntaxException e) {
 			throw new Exception("Configuration Error");
 		}
@@ -80,7 +77,6 @@ public class SnmpMetricCatalog {
 		LOG.info("Loaded {} poller entries",pollers.getPollers().size());
 		for (PollerEntry entry: pollers.getPollers()) {
 			
-
 			List<Host> hosts = hostLists.getHosts(entry.getHostListIds());
 			LOG.info("Poller \"{}\" (id {}) contains {} host list(s)",
 					entry.getName(),entry.getId(),hosts.size());
@@ -92,7 +88,7 @@ public class SnmpMetricCatalog {
 				configuration.setPort(host.getPort());
 				configuration.setCommunityRead(host.getCommunityRead());
 				
-				List<Oid> oids = oidLists.getOids(entry.getOidListIds());
+				List<OidMap> oids = oidLists.getOids(entry.getOidListIds());
 				configuration.setOids(oids);
 				list.add(configuration);
 			}

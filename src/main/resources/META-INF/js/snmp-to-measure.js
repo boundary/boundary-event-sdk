@@ -1,20 +1,40 @@
 
-// Extract the body from the request message
-var entry = request.getBody();
+// Extract the bind variable
+var varBind = body;
 
+var oid = varBind.getOid();
+
+// The configuration for this poller is stored in the following header of the message
+var config = request.getHeader("boundary.snmp.poller.configuration");
+// Retrieve a map of Oid instances keyed by the string representation of the OID
+var map = config.getOidMap();
+
+// Create a new Measurement instance to populate
 var measure = new com.boundary.sdk.metric.Measurement()
 
-// Build Date of 2014-12-31 13:13:13
-var builder = new  java.util.Calendar.Builder();
-builder.setDate(2014,11,31);
-builder.setTimeOfDay(13,13,13);
-var timestamp = builder.build().getTime();
 
+/*
+ *  Metric Id
+ */
+// Lookup the OID for the bind variable
+var oidDef = map.get(oid.toDottedString());
+measure.metric = oidDef.getMetricId();
 
-measure.metric = entry.getOid();
-measure.measure = entry.getValue();
-measure.source = "SNMP";
-measure.timestamp = timestamp;
+/*
+ * Measure
+ */
+measure.measure = varBind.getVariable().getValue();
+
+/*
+ * Source
+ */
+measure.source = config.getHost();
+
+/*
+ * Timestamp
+ */
+var builder = new java.util.Calendar.Builder();
+measure.timestamp = builder.build().getTime();
 
 result = measure
 

@@ -13,6 +13,9 @@
 // limitations under the License.
 package com.boundary.sdk.event.script;
 
+import static org.apache.camel.LoggingLevel.DEBUG;
+
+
 import com.boundary.sdk.event.BoundaryRouteBuilder;
 
 public class ScriptRouteBuilder extends BoundaryRouteBuilder {
@@ -49,7 +52,9 @@ public class ScriptRouteBuilder extends BoundaryRouteBuilder {
 		.routeId(this.getRouteId())
 		.startupOrder(this.getStartUpOrder())
 		.unmarshal().serialization()
+		.log(DEBUG,"in: ${body}")
 		.to(this.getLanguageToUri())
+		.log(DEBUG,"out: ${body}")
 		.marshal().serialization()
 		.to(this.getToUri());
 	}

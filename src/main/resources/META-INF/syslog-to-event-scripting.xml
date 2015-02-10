@@ -24,7 +24,7 @@ limitations under the License.
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
 		<route id="SYSLOG-TO-EVENT-JS">
 			<from uri="direct:syslog-js-in" />
-			<to uri="language:javascript:classpath:META-INF/js/syslog_to_event.js" />
+			<to uri="language:javascript:classpath:META-INF/js/syslog-to-event.js" />
 			<to uri="mock:event-js-out"/>
 		</route>
 		

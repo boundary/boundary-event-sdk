@@ -1,0 +1,1104 @@
+{
+  "result": [
+    {
+      "name": "SNMP.HOST_RESOURCES_MIB.HR.SYSTEM.NUM.USERS",
+      "displayName": "HOST-RESOURCES-MIB::hrSystemNumUsers",
+      "displayNameShort": "hrSystemNumUsers",
+      "description": "The number of user sessions for which this host is storing state information. A session is a collection of processes requiring a single act of user authentication and possibly subject to collective job control.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.HOST_RESOURCES_MIB.HR.MEMORY.SIZE",
+      "displayName": "HOST-RESOURCES-MIB::hrMemorySize",
+      "displayNameShort": "hrMemorySize",
+      "description": "The amount of physical read-write main memory, typically RAM, contained by the host.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.HOST_RESOURCES_MIB.HR.SYSTEM.PROCESSES",
+      "displayName": "HOST-RESOURCES-MIB::hrSystemProcesses",
+      "displayNameShort": "hrSystemProcesses",
+      "description": "The number of process contexts currently loaded or running on this system.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.HOST_RESOURCES_MIB.HRSWOS.INDEX",
+      "displayName": "HOST-RESOURCES-MIB::hrSWOSIndex",
+      "displayNameShort": "hrSWOSIndex",
+      "description": "The value of the hrSWRunIndex for the hrSWRunEntry that represents the primary operating system running on this host. This object is useful for quickly and uniquely identifying that primary operating system.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.HOST_RESOURCES_MIB.HR.SYSTEM.INITIAL.LOAD.DEVICE",
+      "displayName": "HOST-RESOURCES-MIB::hrSystemInitialLoadDevice",
+      "displayNameShort": "hrSystemInitialLoadDevice",
+      "description": "The index of the hrDeviceEntry for the device from which this host is configured to load its initial operating system configuration (i.e., which operating system code and/or boot parameters). Note that writing to this object just changes the configuration that will be used the next time the operating system is loaded and does not actually cause the reload to occur.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.HOST_RESOURCES_MIB.HR.SYSTEM.MAX.PROCESSES",
+      "displayName": "HOST-RESOURCES-MIB::hrSystemMaxProcesses",
+      "displayNameShort": "hrSystemMaxProcesses",
+      "description": "The maximum number of process contexts this system can support. If there is no fixed maximum, the value should be zero. On systems that have a fixed maximum, this object can help diagnose failures that occur when this maximum is reached.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IP.IN.DISCARDS",
+      "displayName": "IP-MIB::ipInDiscards",
+      "displayNameShort": "ipInDiscards",
+      "description": "The number of input IPv4 datagrams for which no problems were encountered to prevent their continued processing, but which were discarded (e.g., for lack of buffer space). Note that this counter does not include any datagrams discarded while awaiting re-assembly. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsInDiscards.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IP.ROUTING.DISCARDS",
+      "displayName": "IP-MIB::ipRoutingDiscards",
+      "displayNameShort": "ipRoutingDiscards",
+      "description": "The number of routing entries which were chosen to be discarded even though they are valid. One possible reason for discarding such an entry could be to free-up buffer space for other routing entries. This object was defined in pre-IPv6 versions of the IP MIB. It was implicitly IPv4 only, but the original specifications did not indicate this protocol restriction. In order to clarify the specifications, this object has been deprecated and a similar, but more thoroughly clarified, object has been added to the IP-FORWARD-MIB.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.OUT.ERRORS",
+      "displayName": "IP-MIB::icmpOutErrors",
+      "displayNameShort": "icmpOutErrors",
+      "description": "The number of ICMP messages which this entity did not send due to problems discovered within ICMP, such as a lack of buffers. This value should not include errors discovered outside the ICMP layer, such as the inability of IP to route the resultant datagram. In some implementations, there may be no types of error which contribute to this counter's value. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by icmpStatsOutErrors.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IP.FRAGO.KS",
+      "displayName": "IP-MIB::ipFragOKs",
+      "displayNameShort": "ipFragOKs",
+      "description": "The number of IPv4 datagrams that have been successfully fragmented at this entity. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsOutFragOKs.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.OUT.DEST.UNREACHS",
+      "displayName": "IP-MIB::icmpOutDestUnreachs",
+      "displayNameShort": "icmpOutDestUnreachs",
+      "description": "The number of ICMP Destination Unreachable messages sent. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IP.FRAG.CREATES",
+      "displayName": "IP-MIB::ipFragCreates",
+      "displayNameShort": "ipFragCreates",
+      "description": "The number of IPv4 datagram fragments that have been generated as a result of fragmentation at this entity. This object has been deprecated as a new IP version neutral table has been added. It is loosely replaced by ipSystemStatsOutFragCreates.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.OUT.TIME.EXCDS",
+      "displayName": "IP-MIB::icmpOutTimeExcds",
+      "displayNameShort": "icmpOutTimeExcds",
+      "description": "The number of ICMP Time Exceeded messages sent. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IPV6.IP.FORWARDING",
+      "displayName": "IP-MIB::ipv6IpForwarding",
+      "displayNameShort": "ipv6IpForwarding",
+      "description": "The indication of whether this entity is acting as an IPv6 router on any interface in respect to the forwarding of datagrams received by, but not addressed to, this entity. IPv6 routers forward datagrams. IPv6 hosts do not (except those source-routed via the host). When this object is written, the entity SHOULD save the change to non-volatile storage and restore the object from non-volatile storage upon re-initialization of the system.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IP.FORW.DATAGRAMS",
+      "displayName": "IP-MIB::ipForwDatagrams",
+      "displayNameShort": "ipForwDatagrams",
+      "description": "The number of input datagrams for which this entity was not their final IPv4 destination, as a result of which an attempt was made to find a route to forward them to that final destination. In entities which do not act as IPv4 routers, this counter will include only those packets which were Source-Routed via this entity, and the Source-Route option processing was successful. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsInForwDatagrams.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.IN.MSGS",
+      "displayName": "IP-MIB::icmpInMsgs",
+      "displayNameShort": "icmpInMsgs",
+      "description": "The total number of ICMP messages which the entity received. Note that this counter includes all those counted by icmpInErrors. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by icmpStatsInMsgs.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IP.IN.HDR.ERRORS",
+      "displayName": "IP-MIB::ipInHdrErrors",
+      "displayNameShort": "ipInHdrErrors",
+      "description": "The number of input datagrams discarded due to errors in their IPv4 headers, including bad checksums, version number mismatch, other format errors, time-to-live exceeded, errors discovered in processing their IPv4 options, etc. This object has been deprecated as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsInHdrErrors.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.OUT.SRC.QUENCHS",
+      "displayName": "IP-MIB::icmpOutSrcQuenchs",
+      "displayNameShort": "icmpOutSrcQuenchs",
+      "description": "The number of ICMP Source Quench messages sent. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IP.OUT.REQUESTS",
+      "displayName": "IP-MIB::ipOutRequests",
+      "displayNameShort": "ipOutRequests",
+      "description": "The total number of IPv4 datagrams which local IPv4 user protocols (including ICMP) supplied to IPv4 in requests for transmission. Note that this counter does not include any datagrams counted in ipForwDatagrams. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsOutRequests.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IPV6.IP.DEFAULT.HOP.LIMIT",
+      "displayName": "IP-MIB::ipv6IpDefaultHopLimit",
+      "displayNameShort": "ipv6IpDefaultHopLimit",
+      "description": "The default value inserted into the Hop Limit field of the IPv6 header of datagrams originated at this entity whenever a Hop Limit value is not supplied by the transport layer protocol. When this object is written, the entity SHOULD save the change to non-volatile storage and restore the object from non-volatile storage upon re-initialization of the system.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.IN.REDIRECTS",
+      "displayName": "IP-MIB::icmpInRedirects",
+      "displayNameShort": "icmpInRedirects",
+      "description": "The number of ICMP Redirect messages received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.OUT.ADDR.MASK.REPS",
+      "displayName": "IP-MIB::icmpOutAddrMaskReps",
+      "displayNameShort": "icmpOutAddrMaskReps",
+      "description": "The number of ICMP Address Mask Reply messages sent. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.OUT.ECHOS",
+      "displayName": "IP-MIB::icmpOutEchos",
+      "displayNameShort": "icmpOutEchos",
+      "description": "The number of ICMP Echo (request) messages sent. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.OUT.ECHO.REPS",
+      "displayName": "IP-MIB::icmpOutEchoReps",
+      "displayNameShort": "icmpOutEchoReps",
+      "description": "The number of ICMP Echo Reply messages sent. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.IN.DEST.UNREACHS",
+      "displayName": "IP-MIB::icmpInDestUnreachs",
+      "displayNameShort": "icmpInDestUnreachs",
+      "description": "The number of ICMP Destination Unreachable messages received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.IN.SRC.QUENCHS",
+      "displayName": "IP-MIB::icmpInSrcQuenchs",
+      "displayNameShort": "icmpInSrcQuenchs",
+      "description": "The number of ICMP Source Quench messages received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IP.REASMO.KS",
+      "displayName": "IP-MIB::ipReasmOKs",
+      "displayNameShort": "ipReasmOKs",
+      "description": "The number of IPv4 datagrams successfully re-assembled. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsReasmOKs.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.IN.ADDR.MASK.REPS",
+      "displayName": "IP-MIB::icmpInAddrMaskReps",
+      "displayNameShort": "icmpInAddrMaskReps",
+      "description": "The number of ICMP Address Mask Reply messages received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.IN.ECHOS",
+      "displayName": "IP-MIB::icmpInEchos",
+      "displayNameShort": "icmpInEchos",
+      "description": "The number of ICMP Echo (request) messages received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.OUT.REDIRECTS",
+      "displayName": "IP-MIB::icmpOutRedirects",
+      "displayNameShort": "icmpOutRedirects",
+      "description": "The number of ICMP Redirect messages sent. For a host, this object will always be zero, since hosts do not send redirects. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IP.REASM.FAILS",
+      "displayName": "IP-MIB::ipReasmFails",
+      "displayNameShort": "ipReasmFails",
+      "description": "The number of failures detected by the IPv4 re-assembly algorithm (for whatever reason: timed out, errors, etc). Note that this is not necessarily a count of discarded IPv4 fragments since some algorithms (notably the algorithm in RFC 815) can lose track of the number of fragments by combining them as they are received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsReasmFails.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IP.FRAG.FAILS",
+      "displayName": "IP-MIB::ipFragFails",
+      "displayNameShort": "ipFragFails",
+      "description": "The number of IPv4 datagrams that have been discarded because they needed to be fragmented at this entity but could not be, e.g., because their Don't Fragment flag was set. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsOutFragFails.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.IN.ADDR.MASKS",
+      "displayName": "IP-MIB::icmpInAddrMasks",
+      "displayNameShort": "icmpInAddrMasks",
+      "description": "The number of ICMP Address Mask Request messages received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IP.DEFAULTTTL",
+      "displayName": "IP-MIB::ipDefaultTTL",
+      "displayNameShort": "ipDefaultTTL",
+      "description": "The default value inserted into the Time-To-Live field of the IPv4 header of datagrams originated at this entity, whenever a TTL value is not supplied by the transport layer protocol. When this object is written, the entity should save the change to non-volatile storage and restore the object from non-volatile storage upon re-initialization of the system. Note: a stronger requirement is not used because this object was previously defined.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IP.ADDRESS.SPIN.LOCK",
+      "displayName": "IP-MIB::ipAddressSpinLock",
+      "displayNameShort": "ipAddressSpinLock",
+      "description": "An advisory lock used to allow cooperating SNMP managers to coordinate their use of the set operation in creating or modifying rows within this table. In order to use this lock to coordinate the use of set operations, managers should first retrieve ipAddressTableSpinLock. They should then determine the appropriate row to create or modify. Finally, they should issue the appropriate set command, including the retrieved value of ipAddressSpinLock. If another manager has altered the table in the meantime, then the value of ipAddressSpinLock will have changed, and the creation will fail as it will be specifying an incorrect value for ipAddressSpinLock. It is suggested, but not required, that the ipAddressSpinLock be the first var bind for each set of objects representing a 'row' in a PDU.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IP.REASM.REQDS",
+      "displayName": "IP-MIB::ipReasmReqds",
+      "displayNameShort": "ipReasmReqds",
+      "description": "The number of IPv4 fragments received which needed to be reassembled at this entity. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsReasmReqds.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IP.IN.RECEIVES",
+      "displayName": "IP-MIB::ipInReceives",
+      "displayNameShort": "ipInReceives",
+      "description": "The total number of input datagrams received from interfaces, including those received in error. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsInRecieves.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.OUT.TIMESTAMP.REPS",
+      "displayName": "IP-MIB::icmpOutTimestampReps",
+      "displayNameShort": "icmpOutTimestampReps",
+      "description": "The number of ICMP Timestamp Reply messages sent. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.IN.TIMESTAMP.REPS",
+      "displayName": "IP-MIB::icmpInTimestampReps",
+      "displayNameShort": "icmpInTimestampReps",
+      "description": "The number of ICMP Timestamp Reply messages received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IP.REASM.TIMEOUT",
+      "displayName": "IP-MIB::ipReasmTimeout",
+      "displayNameShort": "ipReasmTimeout",
+      "description": "The maximum number of seconds that received fragments are held while they are awaiting reassembly at this entity.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IP.FORWARDING",
+      "displayName": "IP-MIB::ipForwarding",
+      "displayNameShort": "ipForwarding",
+      "description": "The indication of whether this entity is acting as an IPv4 router in respect to the forwarding of datagrams received by, but not addressed to, this entity. IPv4 routers forward datagrams. IPv4 hosts do not (except those source-routed via the host). When this object is written, the entity should save the change to non-volatile storage and restore the object from non-volatile storage upon re-initialization of the system. Note: a stronger requirement is not used because this object was previously defined.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IP.OUT.NO.ROUTES",
+      "displayName": "IP-MIB::ipOutNoRoutes",
+      "displayNameShort": "ipOutNoRoutes",
+      "description": "The number of IPv4 datagrams discarded because no route could be found to transmit them to their destination. Note that this counter includes any packets counted in ipForwDatagrams which meet this `no-route' criterion. Note that this includes any datagrams which a host cannot route because all of its default routers are down. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsOutNoRoutes.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.OUT.ADDR.MASKS",
+      "displayName": "IP-MIB::icmpOutAddrMasks",
+      "displayNameShort": "icmpOutAddrMasks",
+      "description": "The number of ICMP Address Mask Request messages sent. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.OUT.PARM.PROBS",
+      "displayName": "IP-MIB::icmpOutParmProbs",
+      "displayNameShort": "icmpOutParmProbs",
+      "description": "The number of ICMP Parameter Problem messages sent. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IP.IN.DELIVERS",
+      "displayName": "IP-MIB::ipInDelivers",
+      "displayNameShort": "ipInDelivers",
+      "description": "The total number of input datagrams successfully delivered to IPv4 user-protocols (including ICMP). This object has been deprecated as a new IP version neutral table has been added. It is loosely replaced by ipSystemStatsIndelivers.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.OUT.MSGS",
+      "displayName": "IP-MIB::icmpOutMsgs",
+      "displayNameShort": "icmpOutMsgs",
+      "description": "The total number of ICMP messages which this entity attempted to send. Note that this counter includes all those counted by icmpOutErrors. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by icmpStatsOutMsgs.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.IN.ERRORS",
+      "displayName": "IP-MIB::icmpInErrors",
+      "displayNameShort": "icmpInErrors",
+      "description": "The number of ICMP messages which the entity received but determined as having ICMP-specific errors (bad ICMP checksums, bad length, etc.). This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by icmpStatsInErrors.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IP.IN.UNKNOWN.PROTOS",
+      "displayName": "IP-MIB::ipInUnknownProtos",
+      "displayNameShort": "ipInUnknownProtos",
+      "description": "The number of locally-addressed datagrams received successfully but discarded because of an unknown or unsupported protocol. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsInUnknownProtos.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.OUT.TIMESTAMPS",
+      "displayName": "IP-MIB::icmpOutTimestamps",
+      "displayNameShort": "icmpOutTimestamps",
+      "description": "The number of ICMP Timestamp (request) messages sent. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.IN.ECHO.REPS",
+      "displayName": "IP-MIB::icmpInEchoReps",
+      "displayNameShort": "icmpInEchoReps",
+      "description": "The number of ICMP Echo Reply messages received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IP.IN.ADDR.ERRORS",
+      "displayName": "IP-MIB::ipInAddrErrors",
+      "displayNameShort": "ipInAddrErrors",
+      "description": "The number of input datagrams discarded because the IPv4 address in their IPv4 header's destination field was not a valid address to be received at this entity. This count includes invalid addresses (e.g., 0.0.0.0) and addresses of unsupported Classes (e.g., Class E). For entities which are not IPv4 routers, and therefore do not forward datagrams, this counter includes datagrams discarded because the destination address was not a local address. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsInAddrErrors.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IP.OUT.DISCARDS",
+      "displayName": "IP-MIB::ipOutDiscards",
+      "displayNameShort": "ipOutDiscards",
+      "description": "The number of output IPv4 datagrams for which no problem was encountered to prevent their transmission to their destination, but which were discarded (e.g., for lack of buffer space). Note that this counter would include datagrams counted in ipForwDatagrams if any such packets met this (discretionary) discard criterion. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by ipSystemStatsOutDiscards.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.IN.TIME.EXCDS",
+      "displayName": "IP-MIB::icmpInTimeExcds",
+      "displayNameShort": "icmpInTimeExcds",
+      "description": "The number of ICMP Time Exceeded messages received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.IN.PARM.PROBS",
+      "displayName": "IP-MIB::icmpInParmProbs",
+      "displayNameShort": "icmpInParmProbs",
+      "description": "The number of ICMP Parameter Problem messages received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.ICMP.IN.TIMESTAMPS",
+      "displayName": "IP-MIB::icmpInTimestamps",
+      "displayNameShort": "icmpInTimestamps",
+      "description": "The number of ICMP Timestamp (request) messages received. This object has been deprecated, as a new IP version-neutral table has been added. It is loosely replaced by a column in the icmpMsgStatsTable.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.IP_MIB.IPV6.ROUTER.ADVERT.SPIN.LOCK",
+      "displayName": "IP-MIB::ipv6RouterAdvertSpinLock",
+      "displayNameShort": "ipv6RouterAdvertSpinLock",
+      "description": "An advisory lock used to allow cooperating SNMP managers to coordinate their use of the set operation in creating or modifying rows within this table. In order to use this lock to coordinate the use of set operations, managers should first retrieve ipv6RouterAdvertSpinLock. They should then determine the appropriate row to create or modify. Finally, they should issue the appropriate set command including the retrieved value of ipv6RouterAdvertSpinLock. If another manager has altered the table in the meantime, then the value of ipv6RouterAdvertSpinLock will have changed and the creation will fail as it will be specifying an incorrect value for ipv6RouterAdvertSpinLock. It is suggested, but not required, that the ipv6RouterAdvertSpinLock be the first var bind for each set of objects representing a 'row' in a PDU.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.UDP_MIB.UDP.OUT.DATAGRAMS",
+      "displayName": "UDP-MIB::udpOutDatagrams",
+      "displayNameShort": "udpOutDatagrams",
+      "description": "The total number of UDP datagrams sent from this entity. Discontinuities in the value of this counter can occur at re-initialization of the management system, and at other times as indicated by discontinuities in the value of sysUpTime.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.UDP_MIB.UDP.IN.ERRORS",
+      "displayName": "UDP-MIB::udpInErrors",
+      "displayNameShort": "udpInErrors",
+      "description": "The number of received UDP datagrams that could not be delivered for reasons other than the lack of an application at the destination port. Discontinuities in the value of this counter can occur at re-initialization of the management system, and at other times as indicated by discontinuities in the value of sysUpTime.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.UDP_MIB.UDPHC.OUT.DATAGRAMS",
+      "displayName": "UDP-MIB::udpHCOutDatagrams",
+      "displayNameShort": "udpHCOutDatagrams",
+      "description": "The total number of UDP datagrams sent from this entity, for devices that can transmit more than 1 million UDP datagrams per second. Discontinuities in the value of this counter can occur at re-initialization of the management system, and at other times as indicated by discontinuities in the value of sysUpTime.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.UDP_MIB.UDP.NO.PORTS",
+      "displayName": "UDP-MIB::udpNoPorts",
+      "displayNameShort": "udpNoPorts",
+      "description": "The total number of received UDP datagrams for which there was no application at the destination port. Discontinuities in the value of this counter can occur at re-initialization of the management system, and at other times as indicated by discontinuities in the value of sysUpTime.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.UDP_MIB.UDP.IN.DATAGRAMS",
+      "displayName": "UDP-MIB::udpInDatagrams",
+      "displayNameShort": "udpInDatagrams",
+      "description": "The total number of UDP datagrams delivered to UDP users. Discontinuities in the value of this counter can occur at re-initialization of the management system, and at other times as indicated by discontinuities in the value of sysUpTime.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.UDP_MIB.UDPHC.IN.DATAGRAMS",
+      "displayName": "UDP-MIB::udpHCInDatagrams",
+      "displayNameShort": "udpHCInDatagrams",
+      "description": "The total number of UDP datagrams delivered to UDP users, for devices that can receive more than 1 million UDP datagrams per second. Discontinuities in the value of this counter can occur at re-initialization of the management system, and at other times as indicated by discontinuities in the value of sysUpTime.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.TCP_MIB.TCPHC.OUT.SEGS",
+      "displayName": "TCP-MIB::tcpHCOutSegs",
+      "displayNameShort": "tcpHCOutSegs",
+      "description": "The total number of segments sent, including those on current connections but excluding those containing only retransmitted octets. This object is the 64-bit equivalent of tcpOutSegs. Discontinuities in the value of this counter are indicated via discontinuities in the value of sysUpTime.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.TCP_MIB.TCP.IN.ERRS",
+      "displayName": "TCP-MIB::tcpInErrs",
+      "displayNameShort": "tcpInErrs",
+      "description": "The total number of segments received in error (e.g., bad TCP checksums). Discontinuities in the value of this counter are indicated via discontinuities in the value of sysUpTime.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.TCP_MIB.TCP.RTO.MAX",
+      "displayName": "TCP-MIB::tcpRtoMax",
+      "displayNameShort": "tcpRtoMax",
+      "description": "The maximum value permitted by a TCP implementation for the retransmission timeout, measured in milliseconds. More refined semantics for objects of this type depend on the algorithm used to determine the retransmission timeout; in particular, the IETF standard algorithm rfc2988(5) provides an upper bound (as part of an adaptive backoff algorithm).",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.TCP_MIB.TCP.RTO.MIN",
+      "displayName": "TCP-MIB::tcpRtoMin",
+      "displayNameShort": "tcpRtoMin",
+      "description": "The minimum value permitted by a TCP implementation for the retransmission timeout, measured in milliseconds. More refined semantics for objects of this type depend on the algorithm used to determine the retransmission timeout; in particular, the IETF standard algorithm rfc2988(5) provides a minimum value.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.TCP_MIB.TCP.OUT.RSTS",
+      "displayName": "TCP-MIB::tcpOutRsts",
+      "displayNameShort": "tcpOutRsts",
+      "description": "The number of TCP segments sent containing the RST flag. Discontinuities in the value of this counter are indicated via discontinuities in the value of sysUpTime.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.TCP_MIB.TCP.CURR.ESTAB",
+      "displayName": "TCP-MIB::tcpCurrEstab",
+      "displayNameShort": "tcpCurrEstab",
+      "description": "The number of TCP connections for which the current state is either ESTABLISHED or CLOSE-WAIT.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.TCP_MIB.TCP.RETRANS.SEGS",
+      "displayName": "TCP-MIB::tcpRetransSegs",
+      "displayNameShort": "tcpRetransSegs",
+      "description": "The total number of segments retransmitted; that is, the number of TCP segments transmitted containing one or more previously transmitted octets. Discontinuities in the value of this counter are indicated via discontinuities in the value of sysUpTime.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.TCP_MIB.TCP.ESTAB.RESETS",
+      "displayName": "TCP-MIB::tcpEstabResets",
+      "displayNameShort": "tcpEstabResets",
+      "description": "The number of times that TCP connections have made a direct transition to the CLOSED state from either the ESTABLISHED state or the CLOSE-WAIT state. Discontinuities in the value of this counter are indicated via discontinuities in the value of sysUpTime.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.TCP_MIB.TCP.RTO.ALGORITHM",
+      "displayName": "TCP-MIB::tcpRtoAlgorithm",
+      "displayNameShort": "tcpRtoAlgorithm",
+      "description": "The algorithm used to determine the timeout value used for retransmitting unacknowledged octets.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.TCP_MIB.TCP.MAX.CONN",
+      "displayName": "TCP-MIB::tcpMaxConn",
+      "displayNameShort": "tcpMaxConn",
+      "description": "The limit on the total number of TCP connections the entity can support. In entities where the maximum number of connections is dynamic, this object should contain the value -1.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.TCP_MIB.TCP.PASSIVE.OPENS",
+      "displayName": "TCP-MIB::tcpPassiveOpens",
+      "displayNameShort": "tcpPassiveOpens",
+      "description": "The number of times TCP connections have made a direct transition to the SYN-RCVD state from the LISTEN state. Discontinuities in the value of this counter are indicated via discontinuities in the value of sysUpTime.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.TCP_MIB.TCP.ATTEMPT.FAILS",
+      "displayName": "TCP-MIB::tcpAttemptFails",
+      "displayNameShort": "tcpAttemptFails",
+      "description": "The number of times that TCP connections have made a direct transition to the CLOSED state from either the SYN-SENT state or the SYN-RCVD state, plus the number of times that TCP connections have made a direct transition to the LISTEN state from the SYN-RCVD state. Discontinuities in the value of this counter are indicated via discontinuities in the value of sysUpTime.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.TCP_MIB.TCP.IN.SEGS",
+      "displayName": "TCP-MIB::tcpInSegs",
+      "displayNameShort": "tcpInSegs",
+      "description": "The total number of segments received, including those received in error. This count includes segments received on currently established connections. Discontinuities in the value of this counter are indicated via discontinuities in the value of sysUpTime.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.TCP_MIB.TCP.ACTIVE.OPENS",
+      "displayName": "TCP-MIB::tcpActiveOpens",
+      "displayNameShort": "tcpActiveOpens",
+      "description": "The number of times that TCP connections have made a direct transition to the SYN-SENT state from the CLOSED state. Discontinuities in the value of this counter are indicated via discontinuities in the value of sysUpTime.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.TCP_MIB.TCPHC.IN.SEGS",
+      "displayName": "TCP-MIB::tcpHCInSegs",
+      "displayNameShort": "tcpHCInSegs",
+      "description": "The total number of segments received, including those received in error. This count includes segments received on currently established connections. This object is the 64-bit equivalent of tcpInSegs. Discontinuities in the value of this counter are indicated via discontinuities in the value of sysUpTime.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.TCP_MIB.TCP.OUT.SEGS",
+      "displayName": "TCP-MIB::tcpOutSegs",
+      "displayNameShort": "tcpOutSegs",
+      "description": "The total number of segments sent, including those on current connections but excluding those containing only retransmitted octets. Discontinuities in the value of this counter are indicated via discontinuities in the value of sysUpTime.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.IN.TRAPS",
+      "displayName": "SNMPv2-MIB::snmpInTraps",
+      "displayNameShort": "snmpInTraps",
+      "description": "The total number of SNMP Trap PDUs which have been accepted and processed by the SNMP protocol entity.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SYS.SERVICES",
+      "displayName": "SNMPv2-MIB::sysServices",
+      "displayNameShort": "sysServices",
+      "description": "A value which indicates the set of services that this entity may potentially offer. The value is a sum. This sum initially takes the value zero. Then, for each layer, L, in the range 1 through 7, that this node performs transactions for, 2 raised to (L - 1) is added to the sum. For example, a node which performs only routing functions would have a value of 4 (2^(3-1)). In contrast, a node which is a host offering application services would have a value of 72 (2^(4-1) + 2^(7-1)). Note that in the context of the Internet suite of protocols, values should be calculated accordingly:    layer   functionality    1    physical (e.g., repeaters)    2    datalink/subnetwork (e.g., bridges)    3    internet (e.g., supports the IP)    4    end-to-end (e.g., supports the TCP)    7    applications (e.g., supports the SMTP) For systems including OSI protocols, layers 5 and 6 may also be counted.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.OUT.SET.REQUESTS",
+      "displayName": "SNMPv2-MIB::snmpOutSetRequests",
+      "displayNameShort": "snmpOutSetRequests",
+      "description": "The total number of SNMP Set-Request PDUs which have been generated by the SNMP protocol entity.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.IN.BAD.VERSIONS",
+      "displayName": "SNMPv2-MIB::snmpInBadVersions",
+      "displayNameShort": "snmpInBadVersions",
+      "description": "The total number of SNMP messages which were delivered to the SNMP entity and were for an unsupported SNMP version.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.ENABLE.AUTHEN.TRAPS",
+      "displayName": "SNMPv2-MIB::snmpEnableAuthenTraps",
+      "displayNameShort": "snmpEnableAuthenTraps",
+      "description": "Indicates whether the SNMP entity is permitted to generate authenticationFailure traps. The value of this object overrides any configuration information; as such, it provides a means whereby all authenticationFailure traps may be disabled. Note that it is strongly recommended that this object be stored in non-volatile memory so that it remains constant across re-initializations of the network management system.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.IN.BAD.VALUES",
+      "displayName": "SNMPv2-MIB::snmpInBadValues",
+      "displayNameShort": "snmpInBadValues",
+      "description": "The total number of SNMP PDUs which were delivered to the SNMP protocol entity and for which the value of the error-status field was `badValue'.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.IN.PKTS",
+      "displayName": "SNMPv2-MIB::snmpInPkts",
+      "displayNameShort": "snmpInPkts",
+      "description": "The total number of messages delivered to the SNMP entity from the transport service.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.IN.BAD.COMMUNITY.USES",
+      "displayName": "SNMPv2-MIB::snmpInBadCommunityUses",
+      "displayNameShort": "snmpInBadCommunityUses",
+      "description": "The total number of community-based SNMP messages (for example, SNMPv1) delivered to the SNMP entity which represented an SNMP operation that was not allowed for the SNMP community named in the message. The precise conditions under which this counter is incremented (if at all) depend on how the SNMP entity implements its access control mechanism and how its applications interact with that access control mechanism. It is strongly RECOMMENDED that the documentation for any access control mechanism which is used to control access to and visibility of MIB instrumentation specify the precise conditions that contribute to this value.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.OUT.PKTS",
+      "displayName": "SNMPv2-MIB::snmpOutPkts",
+      "displayNameShort": "snmpOutPkts",
+      "description": "The total number of SNMP Messages which were passed from the SNMP protocol entity to the transport service.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.OUT.GET.REQUESTS",
+      "displayName": "SNMPv2-MIB::snmpOutGetRequests",
+      "displayNameShort": "snmpOutGetRequests",
+      "description": "The total number of SNMP Get-Request PDUs which have been generated by the SNMP protocol entity.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.IN.GET.RESPONSES",
+      "displayName": "SNMPv2-MIB::snmpInGetResponses",
+      "displayNameShort": "snmpInGetResponses",
+      "description": "The total number of SNMP Get-Response PDUs which have been accepted and processed by the SNMP protocol entity.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.IN.TOTAL.SET.VARS",
+      "displayName": "SNMPv2-MIB::snmpInTotalSetVars",
+      "displayNameShort": "snmpInTotalSetVars",
+      "description": "The total number of MIB objects which have been altered successfully by the SNMP protocol entity as the result of receiving valid SNMP Set-Request PDUs.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.IN.BAD.COMMUNITY.NAMES",
+      "displayName": "SNMPv2-MIB::snmpInBadCommunityNames",
+      "displayNameShort": "snmpInBadCommunityNames",
+      "description": "The total number of community-based SNMP messages (for example, SNMPv1) delivered to the SNMP entity which used an SNMP community name not known to said entity. Also, implementations which authenticate community-based SNMP messages using check(s) in addition to matching the community name (for example, by also checking whether the message originated from a transport address allowed to use a specified community name) MAY include in this value the number of messages which failed the additional check(s). It is strongly RECOMMENDED that the documentation for any security model which is used to authenticate community-based SNMP messages specify the precise conditions that contribute to this value.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.OUT.GEN.ERRS",
+      "displayName": "SNMPv2-MIB::snmpOutGenErrs",
+      "displayNameShort": "snmpOutGenErrs",
+      "description": "The total number of SNMP PDUs which were generated by the SNMP protocol entity and for which the value of the error-status field was `genErr'.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.OUT.NO.SUCH.NAMES",
+      "displayName": "SNMPv2-MIB::snmpOutNoSuchNames",
+      "displayNameShort": "snmpOutNoSuchNames",
+      "description": "The total number of SNMP PDUs which were generated by the SNMP protocol entity and for which the value of the error-status was `noSuchName'.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.IN.GEN.ERRS",
+      "displayName": "SNMPv2-MIB::snmpInGenErrs",
+      "displayNameShort": "snmpInGenErrs",
+      "description": "The total number of SNMP PDUs which were delivered to the SNMP protocol entity and for which the value of the error-status field was `genErr'.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.OUT.GET.NEXTS",
+      "displayName": "SNMPv2-MIB::snmpOutGetNexts",
+      "displayNameShort": "snmpOutGetNexts",
+      "description": "The total number of SNMP Get-Next PDUs which have been generated by the SNMP protocol entity.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.IN.NO.SUCH.NAMES",
+      "displayName": "SNMPv2-MIB::snmpInNoSuchNames",
+      "displayNameShort": "snmpInNoSuchNames",
+      "description": "The total number of SNMP PDUs which were delivered to the SNMP protocol entity and for which the value of the error-status field was `noSuchName'.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.IN.GET.REQUESTS",
+      "displayName": "SNMPv2-MIB::snmpInGetRequests",
+      "displayNameShort": "snmpInGetRequests",
+      "description": "The total number of SNMP Get-Request PDUs which have been accepted and processed by the SNMP protocol entity.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.IN.TOO.BIGS",
+      "displayName": "SNMPv2-MIB::snmpInTooBigs",
+      "displayNameShort": "snmpInTooBigs",
+      "description": "The total number of SNMP PDUs which were delivered to the SNMP protocol entity and for which the value of the error-status field was `tooBig'.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.OUT.TRAPS",
+      "displayName": "SNMPv2-MIB::snmpOutTraps",
+      "displayNameShort": "snmpOutTraps",
+      "description": "The total number of SNMP Trap PDUs which have been generated by the SNMP protocol entity.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.IN.READ.ONLYS",
+      "displayName": "SNMPv2-MIB::snmpInReadOnlys",
+      "displayNameShort": "snmpInReadOnlys",
+      "description": "The total number valid SNMP PDUs which were delivered to the SNMP protocol entity and for which the value of the error-status field was `readOnly'. It should be noted that it is a protocol error to generate an SNMP PDU which contains the value `readOnly' in the error-status field, as such this object is provided as a means of detecting incorrect implementations of the SNMP.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.SILENT.DROPS",
+      "displayName": "SNMPv2-MIB::snmpSilentDrops",
+      "displayNameShort": "snmpSilentDrops",
+      "description": "The total number of Confirmed Class PDUs (such as GetRequest-PDUs, GetNextRequest-PDUs, GetBulkRequest-PDUs, SetRequest-PDUs, and InformRequest-PDUs) delivered to the SNMP entity which were silently dropped because the size of a reply containing an alternate Response Class PDU (such as a Response-PDU) with an empty variable-bindings field was greater than either a local constraint or the maximum message size associated with the originator of the request.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.OUT.TOO.BIGS",
+      "displayName": "SNMPv2-MIB::snmpOutTooBigs",
+      "displayNameShort": "snmpOutTooBigs",
+      "description": "The total number of SNMP PDUs which were generated by the SNMP protocol entity and for which the value of the error-status field was `tooBig.'",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.OUT.GET.RESPONSES",
+      "displayName": "SNMPv2-MIB::snmpOutGetResponses",
+      "displayNameShort": "snmpOutGetResponses",
+      "description": "The total number of SNMP Get-Response PDUs which have been generated by the SNMP protocol entity.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.IN.GET.NEXTS",
+      "displayName": "SNMPv2-MIB::snmpInGetNexts",
+      "displayNameShort": "snmpInGetNexts",
+      "description": "The total number of SNMP Get-Next PDUs which have been accepted and processed by the SNMP protocol entity.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.IN.TOTAL.REQ.VARS",
+      "displayName": "SNMPv2-MIB::snmpInTotalReqVars",
+      "displayNameShort": "snmpInTotalReqVars",
+      "description": "The total number of MIB objects which have been retrieved successfully by the SNMP protocol entity as the result of receiving valid SNMP Get-Request and Get-Next PDUs.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.OUT.BAD.VALUES",
+      "displayName": "SNMPv2-MIB::snmpOutBadValues",
+      "displayNameShort": "snmpOutBadValues",
+      "description": "The total number of SNMP PDUs which were generated by the SNMP protocol entity and for which the value of the error-status field was `badValue'.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.IN.SET.REQUESTS",
+      "displayName": "SNMPv2-MIB::snmpInSetRequests",
+      "displayNameShort": "snmpInSetRequests",
+      "description": "The total number of SNMP Set-Request PDUs which have been accepted and processed by the SNMP protocol entity.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.SET.SERIAL.NO",
+      "displayName": "SNMPv2-MIB::snmpSetSerialNo",
+      "displayNameShort": "snmpSetSerialNo",
+      "description": "An advisory lock used to allow several cooperating command generator applications to coordinate their use of the SNMP set operation. This object is used for coarse-grain coordination. To achieve fine-grain coordination, one or more similar objects might be defined within each MIB group, as appropriate.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.INASN.PARSE.ERRS",
+      "displayName": "SNMPv2-MIB::snmpInASNParseErrs",
+      "displayNameShort": "snmpInASNParseErrs",
+      "description": "The total number of ASN.1 or BER errors encountered by the SNMP entity when decoding received SNMP messages.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    },
+    {
+      "name": "SNMP.SNMPv2_MIB.SNMP.PROXY.DROPS",
+      "displayName": "SNMPv2-MIB::snmpProxyDrops",
+      "displayNameShort": "snmpProxyDrops",
+      "description": "The total number of Confirmed Class PDUs (such as GetRequest-PDUs, GetNextRequest-PDUs, GetBulkRequest-PDUs, SetRequest-PDUs, and InformRequest-PDUs) delivered to the SNMP entity which were silently dropped because the transmission of the (possibly translated) message to a proxy target failed in a manner (other than a time-out) such that no Response Class PDU (such as a Response-PDU) could be returned.",
+      "defaultResolutionMS": 5000,
+      "defaultAggregate": "avg",
+      "unit": "number",
+      "isDisabled": false
+    }
+  ]
+}

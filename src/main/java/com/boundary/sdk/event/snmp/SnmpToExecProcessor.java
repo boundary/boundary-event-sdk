@@ -14,7 +14,7 @@
 package com.boundary.sdk.event.snmp;
 
 import static org.apache.camel.component.exec.ExecBinding.*;
-import static com.boundary.sdk.event.snmp.SnmpPollerRouteBuilder.BOUNDARY_HOSTNAME;
+
 import static com.boundary.sdk.event.util.PropertyUtils.*;
 
 import java.io.File;
@@ -45,6 +45,8 @@ import com.boundary.sdk.event.Status;
 public class SnmpToExecProcessor implements Processor {
 	
 	private String command = "metric-add";
+	
+	private final static String BOUNDARY_HOSTNAME = "boundary.hostname";
 	
     private static final Logger LOG = LoggerFactory.getLogger(SnmpToExecProcessor.class);
 
