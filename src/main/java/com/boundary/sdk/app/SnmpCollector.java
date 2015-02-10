@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 import com.boundary.sdk.event.CamelApplication;
 import com.boundary.sdk.event.SNMPTrapEventAdapter;
 
-public class SNMPCollector extends CamelApplication {
+public class SnmpCollector extends CamelApplication {
 	
 	private static Logger LOG = LoggerFactory.getLogger(SNMPTrapEventAdapter.class);
 
@@ -27,12 +27,12 @@ public class SNMPCollector extends CamelApplication {
 			"META-INF/spring/snmp-collector.xml";
 	private static final String SNMP_POLLER_NAME = "SNMP Collector";
 	
-	public SNMPCollector() {
+	public SnmpCollector() {
 		super(SNMP_POLLER_URI,SNMP_POLLER_NAME);
 	}
 	
 	public static void main(String [] args) {
-		SNMPCollector application = new SNMPCollector();
+		SnmpCollector application = new SnmpCollector();
 		try {
 			application.boot();
 		} catch (Exception e) {
