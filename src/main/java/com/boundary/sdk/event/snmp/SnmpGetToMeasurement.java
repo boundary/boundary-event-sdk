@@ -29,7 +29,7 @@ import org.snmp4j.smi.VariableBinding;
 
 public class SnmpGetToMeasurement implements Processor {
 
-	private static Logger LOG = LoggerFactory.getLogger(SNMPRouteBuilder.class);
+	private static Logger LOG = LoggerFactory.getLogger(SnmpTrapRouteBuilder.class);
 
 	private SnmpPollerConfiguration config;
 

@@ -42,9 +42,9 @@ import com.boundary.sdk.event.Status;
  * @author davidg
  * 
  */
-public class SNMPToEventProcessor implements Processor {
+public class SnmpToEventProcessor implements Processor {
 	
-    private static final Logger LOG = LoggerFactory.getLogger(SNMPToEventProcessor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SnmpToEventProcessor.class);
     
     SmiSupport smi;
     
@@ -57,7 +57,7 @@ public class SNMPToEventProcessor implements Processor {
      * @param repositoryPath Path to compiled MIBs
      * @param license SNMP4J-SMI license from <a href="http://www.snmp4j.org">http://www.snmp4j.org</a>
      */
-	public SNMPToEventProcessor(String repositoryPath, String license) {
+	public SnmpToEventProcessor(String repositoryPath, String license) {
 
 		// If the repositoryPath is null or zero length 
 		// then bypass configuring the structured management information.

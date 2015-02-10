@@ -26,9 +26,9 @@ import com.boundary.sdk.event.UDPRouteBuilder;
  * @author davidg
  *
  */
-public class SNMPRouteBuilder extends UDPRouteBuilder {
+public class SnmpTrapRouteBuilder extends UDPRouteBuilder {
 	
-	private static Logger LOG = LoggerFactory.getLogger(SNMPRouteBuilder.class);
+	private static Logger LOG = LoggerFactory.getLogger(SnmpTrapRouteBuilder.class);
 	
 	private final int DEFAULT_SNMP_PORT=162;
 	
@@ -38,7 +38,7 @@ public class SNMPRouteBuilder extends UDPRouteBuilder {
 	/**
 	 * Default constructor
 	 */
-	public SNMPRouteBuilder() {
+	public SnmpTrapRouteBuilder() {
 		this.port = DEFAULT_SNMP_PORT;
 		this.mibRepositoryPath="";
 		this.license = "";
@@ -92,7 +92,7 @@ public class SNMPRouteBuilder extends UDPRouteBuilder {
 		.startupOrder(startUpOrder)
 		.routeId(this.routeId)
 		.to("log:com.boundary.sdk.event.snmp.SNMPRouteBuilder?level=DEBUG&showBody=true&showHeaders=true")
-		.process(new SNMPToEventProcessor(mibRepositoryPath,license))
+		.process(new SnmpToEventProcessor(mibRepositoryPath,license))
 		.marshal().serialization()
 		.to(toUri)
 		;

@@ -23,7 +23,7 @@ import org.snmp4j.mp.SnmpConstants;
 
 import com.boundary.sdk.snmp.metric.SnmpMetricCatalog;
 
-public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
+public class SnmpPollerRouteBuilder extends SnmpTrapRouteBuilder {
 	
 	public final static String BOUNDARY_SNMP_POLLER_CONFIG="boundary.snmp.poller.configuration";
 	
