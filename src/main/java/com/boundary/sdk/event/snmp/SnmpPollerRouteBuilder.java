@@ -82,7 +82,7 @@ public class SnmpPollerRouteBuilder extends SnmpTrapRouteBuilder {
 				from(fromUri)
 					.routeId(this.routeId)
 					.startupOrder(startUpOrder++)
-					.process(new SnmpGetToMeasurement())
+					.process(new SnmpMessageToVarBinds(getMibRepository(),getLicense()))
 					.log(DEBUG,"Before split - body: ${body}")
 					.split().method(new SplitVarBinds(),"splitBody")
 					.setHeader(BOUNDARY_SNMP_POLLER_CONFIG,constant(config))

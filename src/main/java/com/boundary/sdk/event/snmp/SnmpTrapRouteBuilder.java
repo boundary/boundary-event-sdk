@@ -20,10 +20,8 @@ import com.boundary.sdk.event.RawEvent;
 import com.boundary.sdk.event.UDPRouteBuilder;
 
 /**
- * Route builder that receives SNMP messages into {@link RawEvent}
- * and then sends to Boundary event route.
- * 
- * @author davidg
+ * Route builder that receives SNMP Traps and 
+ * extracts the variable bindings from them
  *
  */
 public class SnmpTrapRouteBuilder extends UDPRouteBuilder {
@@ -34,6 +32,7 @@ public class SnmpTrapRouteBuilder extends UDPRouteBuilder {
 	
 	protected String mibRepositoryPath;
 	protected String license;
+	protected boolean convertToEvent;
 
 	/**
 	 * Default constructor
@@ -42,6 +41,7 @@ public class SnmpTrapRouteBuilder extends UDPRouteBuilder {
 		this.port = DEFAULT_SNMP_PORT;
 		this.mibRepositoryPath="";
 		this.license = "";
+		this.convertToEvent = true;
 	}
 	
 	/**
@@ -83,18 +83,36 @@ public class SnmpTrapRouteBuilder extends UDPRouteBuilder {
 	}
 	
 	/**
+	 * Returns the whether the {@link SnmpMessage} is to be converted into {@link RawEvent}
+	 * 
+	 * @return boolean, true - convert event ; false - do not convert
+	 */
+	public boolean isConvertToEvent() {
+		return convertToEvent;
+	}
+
+	/**
+	 * Set whether the {@link SnmpMessage} is converted into a {@link RawEvent}
+	 * 
+	 * @param convertToEvent Flag indicating behavior
+	 */
+	public void setConvertToEvent(boolean convertToEvent) {
+		this.convertToEvent = convertToEvent;
+	}
+
+	/**
 	 * Configuration for the SNMP route 
 	 */
 	@Override
 	public void configure() {
-		String uri = "snmp:" + getBindAddress() + ":" + getPort() + "?protocol=udp&type=TRAP";
+		String uri = String.format("snmp:%s:%d?protocol=udp&type=TRAP",getBindAddress(),getPort());
 		from(uri)
 		.startupOrder(startUpOrder)
 		.routeId(this.routeId)
-		.to("log:com.boundary.sdk.event.snmp.SNMPRouteBuilder?level=DEBUG&showBody=true&showHeaders=true")
-		.process(new SnmpToEventProcessor(mibRepositoryPath,license))
+		.to("log:com.boundary.sdk.event.snmp.SnmpRouteBuilder?level=DEBUG&showBody=true&showHeaders=true")
+		.process(new SnmpMessageToVarBinds(getMibRepository(),getLicense()))
 		.marshal().serialization()
-		.to(toUri)
+		.to(getToUri())
 		;
 	}
 }
