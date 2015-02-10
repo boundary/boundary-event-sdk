@@ -73,7 +73,7 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 			LOG.info("Configuration contains {} pollers to start",this.configList.size());
 			for (SnmpPollerConfiguration config : this.configList) {
 				                                                                                 
-				LOG.info("Create route from: {}",config);
+				LOG.info("Create route for host: {}",config.getHost());
 
 				String fromUri = getUri(config.getHost(), config.getPort(),
 						config.getOidsAsString(), config.getCommunityRead(),
