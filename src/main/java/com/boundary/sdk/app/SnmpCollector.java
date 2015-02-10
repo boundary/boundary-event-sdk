@@ -21,7 +21,7 @@ import com.boundary.sdk.event.SNMPTrapEventAdapter;
 
 public class SnmpCollector extends CamelApplication {
 	
-	private static Logger LOG = LoggerFactory.getLogger(SNMPTrapEventAdapter.class);
+	private static Logger LOG = LoggerFactory.getLogger(SnmpCollector.class);
 
 	private static final String SNMP_POLLER_URI =
 			"META-INF/spring/snmp-collector.xml";
