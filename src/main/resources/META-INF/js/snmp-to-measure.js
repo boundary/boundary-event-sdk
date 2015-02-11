@@ -33,7 +33,7 @@ measure.source = config.getHost();
 /*
  * Timestamp
  */
-// The default constructor for Measurement set the timestamp to "now"
+measure.timestamp = new java.util.Date();
 
 result = measure
 
