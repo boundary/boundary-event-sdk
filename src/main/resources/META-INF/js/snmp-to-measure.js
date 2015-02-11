@@ -33,8 +33,7 @@ measure.source = config.getHost();
 /*
  * Timestamp
  */
-var builder = new java.util.Calendar.Builder();
-measure.timestamp = builder.build().getTime();
+// The default constructor for Measurement set the timestamp to "now"
 
 result = measure
 
