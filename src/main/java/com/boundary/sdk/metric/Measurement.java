@@ -55,7 +55,6 @@ public class Measurement implements Serializable {
 		source = "";
 		metric = "";
 		measure = 0;
-		timestamp = new Date();
 	}
 
 	/**
