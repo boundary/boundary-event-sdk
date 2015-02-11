@@ -23,7 +23,7 @@ import org.snmp4j.mp.SnmpConstants;
 
 import com.boundary.sdk.snmp.metric.SnmpMetricCatalog;
 
-public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
+public class SnmpPollerRouteBuilder extends SnmpTrapRouteBuilder {
 	
 	public final static String BOUNDARY_SNMP_POLLER_CONFIG="boundary.snmp.poller.configuration";
 	
@@ -73,7 +73,7 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 			LOG.info("Configuration contains {} pollers to start",this.configList.size());
 			for (SnmpPollerConfiguration config : this.configList) {
 				                                                                                 
-				LOG.info("Create route from: {}",config);
+				LOG.info("Create route for host: {}",config.getHost());
 
 				String fromUri = getUri(config.getHost(), config.getPort(),
 						config.getOidsAsString(), config.getCommunityRead(),
@@ -82,7 +82,7 @@ public class SnmpPollerRouteBuilder extends SNMPRouteBuilder {
 				from(fromUri)
 					.routeId(this.routeId)
 					.startupOrder(startUpOrder++)
-					.process(new SnmpGetToMeasurement())
+					.process(new SnmpMessageToVarBinds(getMibRepository(),getLicense()))
 					.log(DEBUG,"Before split - body: ${body}")
 					.split().method(new SplitVarBinds(),"splitBody")
 					.setHeader(BOUNDARY_SNMP_POLLER_CONFIG,constant(config))

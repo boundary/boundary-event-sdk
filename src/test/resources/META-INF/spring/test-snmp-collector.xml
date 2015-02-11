@@ -30,6 +30,8 @@ limitations under the License.
   <bean id="poller-route" class="com.boundary.sdk.event.snmp.SnmpPollerRouteBuilder">
     <property name="routeId" value="SNMP-POLLER"/>
     <property name="startUpOrder" value="200"/>
+	<property name="mibRepository" value="#{systemEnvironment['BOUNDARY_MIB_REPOSITORY']}"/>
+	<property name="license" value="#{systemEnvironment['BOUNDARY_MIB_LICENSE']}"/>
     <property name="toUri" value="seda:snmp-poller-out"/>
   </bean>
   

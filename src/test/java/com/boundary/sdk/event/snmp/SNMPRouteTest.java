@@ -32,7 +32,7 @@ public class SNMPRouteTest {
         @Test
         public void testBindAddress() {
             String expectedBindAddress = "1.2.3.4";
-	    SNMPRouteBuilder builder = new SNMPRouteBuilder();
+	    SnmpTrapRouteBuilder builder = new SnmpTrapRouteBuilder();
             builder.setBindAddress(expectedBindAddress);
             assertEquals("check bind address",expectedBindAddress,builder.getBindAddress());
         }
@@ -40,7 +40,7 @@ public class SNMPRouteTest {
 	@Test
 	public void testMibRepository() {
 		String expectedPath = "foobar";
-		SNMPRouteBuilder builder = new SNMPRouteBuilder();
+		SnmpTrapRouteBuilder builder = new SnmpTrapRouteBuilder();
 		
 		builder.setMibRepository(expectedPath);
 		assertEquals("Check license",expectedPath,builder.getMibRepository());
@@ -49,7 +49,7 @@ public class SNMPRouteTest {
 	@Test
 	public void testLicense() {
 		String expectedLicense = "foobar";
-		SNMPRouteBuilder builder = new SNMPRouteBuilder();
+		SnmpTrapRouteBuilder builder = new SnmpTrapRouteBuilder();
 		
 		builder.setLicense(expectedLicense);
 		assertEquals("Check license",expectedLicense,builder.getLicense());

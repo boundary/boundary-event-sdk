@@ -26,14 +26,12 @@ import com.snmp4j.smi.SmiObject;
 
 public class MibExporter extends SmiSupport {
 	
-	
 	private static Logger LOG = LoggerFactory.getLogger(MibExporter.class);
 	
-	public static enum ExportType {METRIC,OID_MAP,OUT};
+	public static enum ExportType {METRIC,OID_MAP,OUT,PLUGIN};
 	private ExportType exportType;
 	private List<String> moduleList;
 	private boolean verbose;
-	
 	
 	public MibExporter() {
 		moduleList = new ArrayList<String>();
@@ -56,6 +54,9 @@ public class MibExporter extends SmiSupport {
 			break;
 		case OUT:
 			transform = new MibToStandardOut();
+			break;
+		case PLUGIN:
+			transform = new MibToPluginMetrics();
 			break;
 		}
 		return transform;
