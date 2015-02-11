@@ -90,6 +90,7 @@ public class SnmpMetricCatalog {
 				
 				List<OidMap> oids = oidLists.getOids(entry.getOidListIds());
 				configuration.setOids(oids);
+				LOG.info("Host \"{}\" to poll {} oids on port {}",host.getHost(),oids.size(),host.getPort());
 				list.add(configuration);
 			}
 		}
