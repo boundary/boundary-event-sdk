@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.boundary.sdk.event.RawEvent;
+import org.apache.camel.component.snmp.SnmpMessage;
 import com.boundary.sdk.event.UDPRouteBuilder;
 
 /**
