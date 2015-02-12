@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.boundary</groupId>
@@ -38,34 +39,34 @@
       <properties>
         <picUrl>https://media.licdn.com/media/p/5/005/03e/1c1/19f5f33.jpg</picUrl>
       </properties>
-		</developer>
-      </developers>
-      <scm>
-        <connection>scm:git:https://github.com/boundary/boundary-event-sdk.git</connection>
-        <url>https://github.com/boundary/boundary-event-sdk</url>
-      </scm>
-      <ciManagement>
-       <system>travis ci</system>
-       <url>https://travis-ci.org/boundary/boundary-event-sdk</url>
-       <notifiers>
-         <notifier>
-           <type>mail</type>
-           <sendOnError>true</sendOnError>
-           <sendOnFailure>true</sendOnFailure>
-           <sendOnSuccess>false</sendOnSuccess>
-           <sendOnWarning>false</sendOnWarning>
-           <configuration>
-             <address>davidg@boundary.com</address>
-           </configuration>
-         </notifier>
-       </notifiers>
-     </ciManagement>
-     <distributionManagement>
-       <site>
-         <id>boundary-sdk-website</id>
-         <url>http://boundary.github.io/boundary-event-sdk</url>
-       </site>
-     </distributionManagement>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://github.com/boundary/boundary-event-sdk.git</connection>
+    <url>https://github.com/boundary/boundary-event-sdk</url>
+  </scm>
+  <ciManagement>
+    <system>travis ci</system>
+    <url>https://travis-ci.org/boundary/boundary-event-sdk</url>
+    <notifiers>
+      <notifier>
+        <type>mail</type>
+        <sendOnError>true</sendOnError>
+        <sendOnFailure>true</sendOnFailure>
+        <sendOnSuccess>false</sendOnSuccess>
+        <sendOnWarning>false</sendOnWarning>
+        <configuration>
+          <address>davidg@boundary.com</address>
+        </configuration>
+      </notifier>
+    </notifiers>
+  </ciManagement>
+  <distributionManagement>
+    <site>
+      <id>boundary-sdk-website</id>
+      <url>http://boundary.github.io/boundary-event-sdk</url>
+    </site>
+  </distributionManagement>
      <properties>
        <!-- Set the project encoding -->
        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -90,6 +91,7 @@
        <javaee-api-version>7.0</javaee-api-version>
        <junit-version>4.8.1</junit-version>
        <log4j-version>1.2.17</log4j-version>
+       <maven-assembly-plugin-version>2.5.3</maven-assembly-plugin-version>
        <maven-compiler-plugin-version>3.1</maven-compiler-plugin-version>
        <maven-dependency-plugin-version>2.8</maven-dependency-plugin-version>
        <maven-javadoc-plugin-version>2.8.1</maven-javadoc-plugin-version>
@@ -123,189 +125,179 @@
        <target-java-version>1.8</target-java-version>
      </properties>
      <build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${maven-compiler-plugin-version}</version>
-				<configuration>
-					<source>${source-java-version}</source>
-					<target>${target-java-version}</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>${maven-dependency-plugin-version}</version>
-				<executions>
-					<execution>
-						<id>copy</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/lib</outputDirectory>
-							<overWriteReleases>false</overWriteReleases>
-							<overWriteSnapshots>true</overWriteSnapshots>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.camel</groupId>
-				<version>${camel-version}</version>
-				<artifactId>camel-maven-plugin</artifactId>
-				<configuration>
-					<applicationContextUri>META-INF/spring/event-application.xml</applicationContextUri>
-					<logClasspath>true</logClasspath>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>${maven-project-info-reports-plugin-version}</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-pdf-plugin</artifactId>
-				<version>${maven-pdf-plugin-version}</version>
-				<executions>
-					<execution>
-						<id>pdf</id>
-						<phase>site</phase>
-						<goals>
-							<goal>pdf</goal>
-						</goals>
-						<configuration>
-						<outputDirectory>${project.reporting.outputDirectory}</outputDirectory>
-						<includeReports>true</includeReports>
-						</configuration>
-					</execution>
-				</executions>
-				<dependencies> 
-					<dependency> 
-						<groupId>org.apache.maven.doxia</groupId> 
-						<artifactId>doxia-module-markdown</artifactId> 
-						<version>${doxia-module-markdown-version}</version>
-					</dependency> 
-				</dependencies> 
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<descriptors>
-						<descriptor>src/main/assembly/default.xml</descriptor>
-						<descriptor>src/main/assembly/tools.xml</descriptor>
-					</descriptors>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>${maven-site-plugin-version}</version>
-				<dependencies>
-					<dependency>
-					<groupId>org.apache.maven.doxia</groupId>
-					<artifactId>doxia-module-markdown</artifactId>
-					<version>${doxia-module-markdown-version}</version>
-					</dependency>
-				</dependencies>
+       <plugins>
+         <plugin>
+           <groupId>org.apache.maven.plugins</groupId>
+           <artifactId>maven-compiler-plugin</artifactId>
+           <version>${maven-compiler-plugin-version}</version>
+           <configuration>
+             <source>${source-java-version}</source>
+             <target>${target-java-version}</target>
+           </configuration>
+         </plugin>
+         <plugin>
+           <groupId>org.apache.maven.plugins</groupId>
+           <artifactId>maven-dependency-plugin</artifactId>
+           <version>${maven-dependency-plugin-version}</version>
+           <executions>
+             <execution>
+               <id>copy</id>
+               <phase>prepare-package</phase>
+               <goals>
+                 <goal>copy-dependencies</goal>
+               </goals>
+               <configuration>
+                 <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                 <overWriteReleases>false</overWriteReleases>
+                 <overWriteSnapshots>true</overWriteSnapshots>
+               </configuration>
+             </execution>
+           </executions>
+	 </plugin>
+         <plugin>
+           <groupId>org.apache.camel</groupId>
+           <version>${camel-version}</version>
+           <artifactId>camel-maven-plugin</artifactId>
+           <configuration>
+             <applicationContextUri>META-INF/spring/event-application.xml</applicationContextUri>
+             <logClasspath>true</logClasspath>
+           </configuration>
+         </plugin>
+         <plugin>
+           <artifactId>maven-project-info-reports-plugin</artifactId>
+           <version>${maven-project-info-reports-plugin-version}</version>
+         </plugin>
+         <plugin>
+           <groupId>org.apache.maven.plugins</groupId>
+           <artifactId>maven-pdf-plugin</artifactId>
+           <version>${maven-pdf-plugin-version}</version>
+           <executions>
+             <execution>
+               <id>pdf</id>
+               <phase>site</phase>
+               <goals>
+                 <goal>pdf</goal>
+               </goals>
+               <configuration>
+                 <outputDirectory>${project.reporting.outputDirectory}</outputDirectory>
+                 <includeReports>true</includeReports>
+               </configuration>
+             </execution>
+           </executions>
+           <dependencies> 
+             <dependency> 
+               <groupId>org.apache.maven.doxia</groupId> 
+               <artifactId>doxia-module-markdown</artifactId> 
+               <version>${doxia-module-markdown-version}</version>
+             </dependency> 
+           </dependencies> 
+         </plugin>
+         <plugin>
+           <groupId>org.apache.maven.plugins</groupId>
+           <artifactId>maven-assembly-plugin</artifactId>
+           <version>${maven-assembly-plugin-version}</version>
+           <configuration>
+           <descriptors>
+             <descriptor>src/main/assembly/default.xml</descriptor>
+               <descriptor>src/main/assembly/tools.xml</descriptor>
+             </descriptors>
+           </configuration>
+         </plugin>
+         <plugin>
+           <groupId>org.apache.maven.plugins</groupId>
+           <artifactId>maven-site-plugin</artifactId>
+           <version>${maven-site-plugin-version}</version>
+           <dependencies>
+             <dependency>
+               <groupId>org.apache.maven.doxia</groupId>
+               <artifactId>doxia-module-markdown</artifactId>
+               <version>${doxia-module-markdown-version}</version>
+             </dependency>
+           </dependencies>
 <!-- Disable execution of the site goal under the package phase
-				<executions>
-					<execution>
-						<id>site-web</id>
-						<phase>package</phase>
-						<goals>
-							<goal>site</goal>
-						</goals>
-					</execution>
-				</executions>
--->
-				<configuration>
-					<generateReports>false</generateReports>
-					<inputEncoding>UTF-8</inputEncoding>
-					<outputEncoding>UTF-8</outputEncoding>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>com.github.github</groupId>
-				<artifactId>site-maven-plugin</artifactId>
-				<version>0.9</version>
-				<configuration>
-					<message>Creating site for ${project.version}</message>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>site</goal>
-						</goals>
-						<phase>site</phase>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>rpm-maven-plugin</artifactId>
-				<version>${rpm-maven-plugin-version}</version>
+           <executions>
+             <execution>
+               <id>site-web</id>
+               <phase>package</phase>
+               <goals>
+                 <goal>site</goal>
+               </goals>
+             </execution>
+           </executions> -->
+           <configuration>
+             <generateReports>false</generateReports>
+             <inputEncoding>UTF-8</inputEncoding>
+             <outputEncoding>UTF-8</outputEncoding>
+           </configuration>
+         </plugin>
+         <plugin>
+           <groupId>com.github.github</groupId>
+           <artifactId>site-maven-plugin</artifactId>
+           <version>0.9</version>
+           <configuration>
+             <message>Creating site for ${project.version}</message>
+           </configuration>
+           <executions>
+             <execution>
+               <goals>
+                 <goal>site</goal>
+               </goals>
+               <phase>site</phase>
+             </execution>
+           </executions>
+         </plugin>
+         <plugin>
+           <groupId>org.codehaus.mojo</groupId>
+           <artifactId>rpm-maven-plugin</artifactId>
+           <version>${rpm-maven-plugin-version}</version>
 <!-- Disable creation of RPM
-				<executions>
-					<execution>
-					<id>generate-rpm</id>
-					<goals>
-						<goal>rpm</goal>
-					</goals>
-					</execution>
-				</executions>
--->
-				<configuration>
-					<license> Apache License Version 2.0, January 2004</license>
-					<distribution>Boundary,Inc 2014</distribution>
-					<group>Application/Collectors</group>
-					<needarch>true</needarch>
-<!-- TBD: Find a suitable icon
-					<icon>src/main/resources/icon.gif</icon>
--->
-					<packager>Boundary, Inc.</packager>
-<!--
-					<prefix>/opt/boundary</prefix>
--->
-<!--
-					<changelogFile>src/changelog</changelogFile>
--->
-					<defineStatements>
-						<defineStatement>_unpackaged_files_terminate_build 0</defineStatement>
-					</defineStatements>
-					<mappings>
-						<mapping>
-							<directory>${boundary-sdk-rpm-bin-dir}</directory>
-							<directoryIncluded>false</directoryIncluded>
-							<filemode>755</filemode>
-							<username>${boundary-sdk-rpm-user-name}</username>
-							<groupname>${boundary-sdk-rpm-group-name}</groupname>
-							<sources>
-                                				<source>
-									<location>src/main/scripts</location>
-									<includes>
-										<include>bmibc</include>
-										<include>send-v1-trap</include>
-										<include>send-v2c-trap</include>
-										<include>send-syslog</include>
-									</includes>
-                                				</source>
-                                				<source>
-                                					<location>src/native/unix</location>
-                                					<includes>
-										<include>jsvc</include>
-                                					</includes>
-                                				</source>
-							</sources>
-						</mapping>
-						<mapping>
-							<directory>${boundary-sdk-rpm-jar-dir}</directory>
-							<directoryIncluded>false</directoryIncluded>
-							<filemode>744</filemode>
+           <executions>
+             <execution>
+               <id>generate-rpm</id>
+               <goals>
+                 <goal>rpm</goal>
+               </goals>
+             </execution>
+           </executions> -->
+           <configuration>
+             <license> Apache License Version 2.0, January 2004</license>
+             <distribution>Boundary,Inc 2014</distribution>
+             <group>Application/Collectors</group>
+             <needarch>true</needarch>
+             <packager>Boundary, Inc.</packager>
+<!--         <prefix>/opt/boundary</prefix> -->
+             <defineStatements>
+               <defineStatement>_unpackaged_files_terminate_build 0</defineStatement>
+             </defineStatements>
+             <mappings>
+               <mapping>
+                 <directory>${boundary-sdk-rpm-bin-dir}</directory>
+                 <directoryIncluded>false</directoryIncluded>
+                 <filemode>755</filemode>
+                 <username>${boundary-sdk-rpm-user-name}</username>
+                 <groupname>${boundary-sdk-rpm-group-name}</groupname>
+                 <sources>
+                   <source>
+                     <location>src/main/scripts</location>
+                     <includes>
+                       <include>bmibc</include>
+                       <include>send-v1-trap</include>
+                       <include>send-v2c-trap</include>
+                       <include>send-syslog</include>
+                     </includes>
+                   </source>
+                   <source>
+                     <location>src/native/unix</location>
+                     <includes>
+                       <include>jsvc</include>
+                     </includes>
+                   </source>
+                 </sources>
+               </mapping>
+               <mapping>
+                 <directory>${boundary-sdk-rpm-jar-dir}</directory>
+                 <directoryIncluded>false</directoryIncluded>
+                 <filemode>744</filemode>
 							<username>${boundary-sdk-rpm-user-name}</username>
 							<groupname>${boundary-sdk-rpm-group-name}</groupname>
 							<sources>
@@ -425,22 +417,7 @@
 							</arguments>
 						</configuration>
  					</execution>
-					<!-- Install the SNMP4J-SMI into our local maven repository -->
-					<!-- Event calling in the validate stage is too late. Build fails. -->
 <!--
-					<execution>
-						<id>Install SNMP4J-SMI</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<configuration>
-							<executable>${basedir}/src/main/scripts/install-snmp4j</executable>
-							<arguments>
-								<argument>${basedir}</argument>
-							</arguments>
-						</configuration>
-					</execution>
 					<execution>
 						<id>Build Native Commons Daemon</id>
 						<phase>compile</phase>
@@ -455,9 +432,9 @@
 						</configuration>
 					</execution>
 -->
-				</executions>
-			</plugin>
-		</plugins>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
   <dependencies>
     <dependency>
