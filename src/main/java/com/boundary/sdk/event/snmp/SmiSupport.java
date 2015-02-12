@@ -14,6 +14,7 @@
 package com.boundary.sdk.event.snmp;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.snmp4j.SNMP4JSettings;
 
+import com.boundary.sdk.event.util.Log;
 import com.snmp4j.smi.CompilationResult;
 import com.snmp4j.smi.SmiError;
 import com.snmp4j.smi.SmiManager;
@@ -162,7 +164,7 @@ public class SmiSupport {
 		    SNMP4JSettings.setVariableTextFormat(smiManager);
 
 		} catch (IOException e) {
-			LOG.error("Failed to initialize SmiManager");
+			Log.error("Failed to initialize SmiManager");
 			e.printStackTrace();
 		}
 		// TBD??
@@ -180,7 +182,7 @@ public class SmiSupport {
 				smiManager.loadModule(name);
 			}
 		} catch (IOException e) {
-			LOG.error(e.getMessage());
+			Log.error(e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -204,7 +206,7 @@ public class SmiSupport {
 				files[0] = file;
 			}
 			
-			LOG.debug("Compiling " + files.length + " MIB files");
+			Log.debug("Compiling " + files.length + " MIB files");
 			// Compile MIB files with the supplied monitor and configuratoin
 			List<CompilationResult> results = null;
 			try {
@@ -218,9 +220,9 @@ public class SmiSupport {
 					ok += result.getModuleNames().size();
 				}
 			}
-			LOG.info("" + file + " contains ");
-			LOG.info(" " + ok + " syntactically correct MIB modules and");
-			LOG.info(" " + (results.size() - ok) + " MIB modules with errors.");
+			Log.info("" + file + " contains ");
+			Log.info(" " + ok + " syntactically correct MIB modules and");
+			Log.info(" " + (results.size() - ok) + " MIB modules with errors.");
 			String lastFile = null;
 
 			for (CompilationResult result : results) {
@@ -228,7 +230,6 @@ public class SmiSupport {
 				String n = result.getFileName();
 				n = n.substring(n.lastIndexOf('/') + 1);
 				if ((lastFile == null) || (!lastFile.equals(n))) {
-					LOG.info("------ " + n + " ------");
 					lastFile = n;
 				}
 				if (smiErrors != null) {
@@ -240,12 +241,12 @@ public class SmiSupport {
 					}
 				} else {
 					String txt = n + ": " + "OK";
-					LOG.info(txt);
+					Log.info(txt);
 				}
 			}
 		}
 		else {
-			LOG.error("Cannot access MIB file '" + file.getName() + "'");
+			Log.error("Cannot access MIB file '" + file.getName() + "'");
 		}
 	}
 	
@@ -255,6 +256,12 @@ public class SmiSupport {
 	 * @throws IOException Exception during compiling process
 	 */
 	public void compile(String fname) throws IOException {
-		this.compile(new File(fname));
+		File file = new File(fname);
+		if (file != null && file.exists()) {
+			this.compile(file);
+		}
+		else {
+			throw new FileNotFoundException();
+		}
 	}
 }
