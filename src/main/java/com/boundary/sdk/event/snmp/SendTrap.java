@@ -13,6 +13,8 @@
 // limitations under the License.
 package com.boundary.sdk.event.snmp;
 
+import java.io.IOException;
+
 import org.snmp4j.CommunityTarget;
 import org.snmp4j.PDU;
 import org.snmp4j.Snmp;
@@ -28,45 +30,101 @@ import org.snmp4j.transport.DefaultUdpTransportMapping;
 
 public class SendTrap {
 	
-	private PDU pdu;
+	public enum TrapVersion {
+		
+		V1(SnmpConstants.version1),
+		V2C(SnmpConstants.version2c),
+		V3(SnmpConstants.version3);
+		
+		private int version;
+
+		TrapVersion(int version) {
+			this.version = version;
+		}
+		
+	};
 	
-	private long timeTicks;
-	private String description;
+	protected final String DEFAULT_HOST = "localhost";
+	protected final int DEFAULT_PORT = 162;
+	protected final long DEFAULT_UP_TIME = 30 * 24 * 60 * 60; // 30 days
+	protected final String DEFAULT_DESCRIPTION = "Test Trap!";
+	protected final TrapVersion DEFAULT_TRAP_VERSION = TrapVersion.V2C;
+	protected final String DEFAULT_COMMUNITY = "public";
+
+	protected long upTime;
+	protected String description;
+	protected String community;
+	protected String host;
+	protected int port;
+	protected TrapVersion version;
 
 	public SendTrap() {
-		this.pdu = new PDU();
-		pdu.setType(PDU.TRAP);
+		this.host = DEFAULT_HOST;
+		this.port = DEFAULT_PORT;
+		this.upTime = DEFAULT_UP_TIME;
+		this.description = DEFAULT_DESCRIPTION;
+		this.version = DEFAULT_TRAP_VERSION;
+		this.community = DEFAULT_COMMUNITY;
+	}
 
+	public void setUpTime(long timeTicks) {
+		this.upTime = timeTicks;
 	}
-	
-	void setUpTime(long timeTicks) {
-		this.timeTicks = timeTicks;
-	}
-	
-	void setDescription(String description) {
+
+	public void setDescription(String description) {
 		this.description = description;
 	}
 	
-	public static void main(String[] args) throws Exception {
-	      // Create PDU           
-	      PDU trap = new PDU();
-	      trap.setType(PDU.TRAP);
+	public void setCommunity(String community) {
+		this.community = community;
+	}
+	
+	public void setHost(String host) {
+		this.host = host;
+	}
+	
+	public void setPort(int port) {
+		this.port = port;
+	}
+	
+	public void setVersion(TrapVersion version) {
+		this.version = version;
+	}
+	
+	private String getTargetAddress() {
+		return String.format("%s/%s",this.host,this.port);
+	}
 
-	      trap.add(new VariableBinding(SnmpConstants.linkDown, new OctetString("Host has been restarted")));
-	      trap.add(new VariableBinding(SnmpConstants.sysUpTime, new TimeTicks(5000))); // put your uptime here, hundredths of a second
-	      trap.add(new VariableBinding(SnmpConstants.sysDescr, new OctetString("Test TRAP")));         
+	public void send() throws IOException {
+		// Create PDU
+		PDU trap = new PDU();
+		trap.setType(PDU.TRAP);
 
-	      // TBD Make this configurable
-	      Address targetaddress = new UdpAddress("localhost/1162");
-	      CommunityTarget target = new CommunityTarget();
-	      // TBD Make this configurable
-	      target.setCommunity(new OctetString("public"));
-	      // TBD make configurable
-	      target.setVersion(SnmpConstants.version2c);
-	      target.setAddress(targetaddress);
+		trap.add(new VariableBinding(SnmpConstants.linkDown, new OctetString("Host has been restarted")));
+		// put your uptime here, hundredths of a second
+		trap.add(new VariableBinding(SnmpConstants.sysUpTime, new TimeTicks(this.upTime))); 
+		trap.add(new VariableBinding(SnmpConstants.sysDescr, new OctetString(this.description)));
 
-	      // Send
-	      Snmp snmp = new Snmp(new DefaultUdpTransportMapping());
-	      snmp.send(trap, target, null, null);                      
+		// Set our target
+		Address targetaddress = new UdpAddress(getTargetAddress());
+		CommunityTarget target = new CommunityTarget();
+		// Set the community read string
+		target.setCommunity(new OctetString(this.community));
+		// Set the version of the trap
+		target.setVersion(version.version);
+		target.setAddress(targetaddress);
+
+		// Send the trap
+		Snmp snmp = new Snmp(new DefaultUdpTransportMapping());
+		snmp.send(trap, target, null, null);
+	}
+
+	public static void main(String[] args) {
+		try {
+			SendTrap trap = new SendTrap();
+			trap.send();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
