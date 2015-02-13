@@ -51,8 +51,7 @@ public class SNMPRouteBuilderTest extends CamelSpringTestSupport {
 		String expectedBindAddress = "1.2.3.4";
 		SnmpTrapRouteBuilder builder = new SnmpTrapRouteBuilder();
 		builder.setBindAddress(expectedBindAddress);
-		assertEquals("check bind address", expectedBindAddress,
-				builder.getBindAddress());
+		assertEquals("check bind address", expectedBindAddress,builder.getBindAddress());
 	}
 
 	@Test
