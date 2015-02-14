@@ -15,9 +15,6 @@
 package com.boundary.sdk.api;
 
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.component.http.AuthMethod;
-import org.apache.camel.component.http.HttpComponent;
-import org.apache.camel.component.http.HttpConfiguration;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +24,6 @@ import com.boundary.sdk.event.BoundaryRouteBuilder;
 /**
  * {@link RouteBuilder} for sending events to Boundary. Accepts serialized requests
  * to invoked the Boundary API
- *  
- * @author davidg
- *
  */
 public abstract class BoundaryAPIRouteBuilder extends BoundaryRouteBuilder {
 	
@@ -47,8 +41,6 @@ public abstract class BoundaryAPIRouteBuilder extends BoundaryRouteBuilder {
 	private String password;
 	private String host;
 	private int port;
-	private String orgId;
-	private String apiKey;
 	private String path;
 	private String authentication;
 
@@ -75,32 +67,7 @@ public abstract class BoundaryAPIRouteBuilder extends BoundaryRouteBuilder {
 	public void setScheme(String scheme) {
 		this.scheme = scheme;
 	}
-
-	/**
-	 * Get the Boundary Organization ID to use by default 
-	 * @return {@link String} organization id
-	 */
-	public String getOrgId() {
-		return this.orgId;
-	}
-		
-	/**
-	 * Set the Boundary Organization ID to use by default
-	 * 
-	 * @param orgId Organization Id from the Boundary console.
-	 */
-	public void setOrgId(String orgId) {
-		this.orgId = orgId;
-	}
 	
-	public String getApiKey() {
-		return apiKey;
-	}
-
-	public void setApiKey(String apiKey) {
-		this.apiKey = apiKey;
-	}
-
 	/**
 	 * Set the user id
 	 * 
@@ -154,22 +121,20 @@ public abstract class BoundaryAPIRouteBuilder extends BoundaryRouteBuilder {
 	}
 
 	/**
-	 * Get the port
-	 * @return {@link int}
+	 * Get the target port of the end point
+	 * @return Port number of the listening port of the API
 	 */
 	public int getPort() {
 		return port;
 	}
 
 	/**
-	 * Set the port
-	 * @param port {@link int} port
+	 * Set the target port of the end point.
+	 * @param port Port number of the listening port of the API
 	 */
 	public void setPort(int port) {
 		this.port = port;
 	}
-
-
 	
 	/**
 	 * Returns the URL for the API call
@@ -188,18 +153,16 @@ public abstract class BoundaryAPIRouteBuilder extends BoundaryRouteBuilder {
 	}
 	/**
 	 * Configure the API end point
-	 * 
 	 */
 	protected void setConfiguration() {
 		
 		LOG.info("SCHEME: {}",getScheme());
 
-		
 		switch(getScheme()) {
 		case "https":
 		case "http":
 			if (getUser() != null || getPassword() != null) {
-				StringBuffer sb = new StringBuffer();
+				StringBuilder sb = new StringBuilder();
 				if (getUser() != null) {
 					sb.append(getUser());
 				}
