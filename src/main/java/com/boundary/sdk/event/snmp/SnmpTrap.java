@@ -16,11 +16,13 @@ package com.boundary.sdk.event.snmp;
 import java.io.Serializable;
 import java.util.Vector;
 
+import org.snmp4j.smi.OID;
 import org.snmp4j.smi.VariableBinding;
 
-public class SnmpTrap implements Serializable{
+public class SnmpTrap implements Serializable {
 	
-	
+	private static final long serialVersionUID = 13630136686664969L;
+
 	private Vector<? extends VariableBinding> variableBindings;
 	
 	private String trapName;
@@ -31,6 +33,25 @@ public class SnmpTrap implements Serializable{
 
 	public Vector<? extends VariableBinding> getVariableBindings() {
 		return variableBindings;
+	}
+	
+	public VariableBinding [] getVarBinds() {
+		return (VariableBinding [])variableBindings.toArray();
+	}
+	
+	public VariableBinding getVarBind(int index) {
+		return variableBindings.get(index);
+	}
+	
+	public VariableBinding getVarBind(OID oid) {
+		VariableBinding varBind = null;
+		
+		for (VariableBinding vb : variableBindings) {
+			if (vb.getOid() == oid) {
+				varBind = vb;
+			}
+		}
+		return varBind;
 	}
 
 	public void setVariableBindings(Vector<? extends VariableBinding> variableBindings) {
