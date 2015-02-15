@@ -4,7 +4,7 @@
 			"name": "default",
 			"enabled": true,
 			"description": "Returns all of the SNMP trap messages",
-			"query": "select * from SNMPTrap"
+			"query": "select * from SnmpTrap"
 		}
 	]
 }

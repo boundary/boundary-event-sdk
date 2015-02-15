@@ -42,8 +42,6 @@ public class MeasureRouteBuilderTest extends CamelSpringTestSupport {
 	
 	private static Logger LOG = LoggerFactory.getLogger(MeasureRouteBuilderTest.class);
 	
-	private final static String DEFAULT_URI="https://metrics-api.boundary.com/v1/post/measurements";
-
     @Produce(uri = "direct:measure-in")
     private ProducerTemplate in;
 
@@ -59,7 +57,6 @@ public class MeasureRouteBuilderTest extends CamelSpringTestSupport {
 		super.tearDown();
 	}
 
-	//@Ignore("BROKEN: Does not send BASIC authentication")
 	@Test
 	public void testSendMetric() throws InterruptedException {
 		Measurement measurement = new Measurement();

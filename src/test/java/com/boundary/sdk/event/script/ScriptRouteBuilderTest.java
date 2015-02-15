@@ -284,7 +284,7 @@ public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
 		ScriptEvent event = new ScriptEvent();
 		
 		out.getExchanges();
-		in.sendBodyAndHeaders(event,setScriptHeader("classpath:test-script-event.js"));
+		in.sendBodyAndHeaders(event,setScriptHeader("classpath:js/test-script-event.js"));
 		out.assertIsSatisfied();
 		
 		List<Exchange> exchanges = out.getExchanges();

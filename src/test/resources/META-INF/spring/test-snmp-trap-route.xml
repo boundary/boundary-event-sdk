@@ -27,48 +27,32 @@ limitations under the License.
                    http://camel.apache.org/schema/spring/camel-spring.xsd">
  	
   <!-- Polls the SNMP agents to collect metrics based on provided configuration -->
-  <bean id="poller-route" class="com.boundary.sdk.event.snmp.SnmpPollerRouteBuilder">
-    <property name="routeId" value="SNMP-POLLER"/>
+  <bean id="trap-route" class="com.boundary.sdk.event.snmp.SnmpTrapRouteBuilder">
+    <property name="routeId" value="SNMP-TRAP"/>
     <property name="startUpOrder" value="200"/>
+    <property name="bindAddress" value="localhost"/>
+    <property name="port" value="1162"/>
 	<property name="mibRepository" value="#{systemEnvironment['BOUNDARY_MIB_REPOSITORY']}"/>
 	<property name="license" value="#{systemEnvironment['BOUNDARY_MIB_LICENSE']}"/>
-    <property name="toUri" value="seda:snmp-poller-out"/>
+    <property name="toUri" value="direct:snmp-trap-out"/>
   </bean>
   
   <bean id="script-route" class="com.boundary.sdk.event.script.ScriptRouteBuilder">
     <property name="routeId" value="TRANSFORM-SNMP"/>
     <property name="startUpOrder" value="120"/>
-    <property name="fromUri" value="seda:snmp-poller-out"/>
-    <property name="toUri" value="direct:remove-header"/>
+    <property name="fromUri" value="direct:snmp-trap-out"/>
+    <property name="toUri" value="mock:out"/>
     <property name="transform" value="true"/>
     <property name="cacheScript" value="true"/>
     <property name="contentCache" value="true"/>
     <property name="languageName" value="javascript"/>
-    <property name="script" value="classpath:META-INF/js/snmp-to-measure.js"/>
+    <property name="script" value="classpath:META-INF/js/snmp-trap-to-event.js"/>
   </bean>
-	
-  <!-- Receives requests to submit measurement values to Boundary -->
-  <bean id="api-route" class="com.boundary.sdk.metric.MeasureRouteBuilder">
-    <property name="routeId" value="MEASUREMENT-API"/>
-    <property name="startUpOrder" value="110"/>
-    <property name="fromUri" value="seda:boundary-metric?concurrentConsumers=10"/>
-    <property name="host" value="#{systemEnvironment['BOUNDARY_API_HOST']}"/>
-    <property name="user" value="#{systemEnvironment['BOUNDARY_EMAIL']}"/>
-    <property name="password" value="#{systemEnvironment['BOUNDARY_API_TOKEN']}"/>
-    <property name="toUri" value="mock:out"/>
-  </bean>
-  
+	  
   <camelContext id="snmp-metrics" xmlns="http://camel.apache.org/schema/spring">
 
-    <routeBuilder ref="api-route"/>
-    <routeBuilder ref="poller-route"/>
     <routeBuilder ref="script-route"/>
-    
-    <route id="REMOVE-HEADER">
-    	<from uri="direct:remove-header"/>
-    	<removeHeaders pattern="boundary.snmp.poller.configuration"/>
-    	<to uri="seda:boundary-metric"/>
-    </route>
+    <routeBuilder ref="trap-route"/>
 
   </camelContext>
 </beans>

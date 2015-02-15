@@ -58,8 +58,8 @@ public class RawEventToBoundaryEvent extends CamelTestSupport {
     	// Create the Boundary Event Route
 		BoundaryEventRouteBuilder boundary = new BoundaryEventRouteBuilder();
 		// Configure our properties
-		boundary.setApiKey(BOUNDARY_API_KEY);
-		boundary.setOrgId(BOUNDARY_ORG_ID);
+		boundary.setPassword(System.getenv("BOUNDARY_API_TOKEN"));
+		boundary.setUser(System.getenv("BOUNDARY_EMAIL"));
 		boundary.setFromUri(BoundaryEventRouteBuilder.DEFAULT_EVENT_TO_URI);
 		
 		routes[0] = boundary;
@@ -78,11 +78,8 @@ public class RawEventToBoundaryEvent extends CamelTestSupport {
 	@Ignore
     @Test
     public void testDefaultEvent() throws Exception {
-
     	RawEvent event = RawEvent.getDefaultEvent();
-    	
     	producerTemplate.sendBody(event);
-
         Thread.sleep(2000);     
     }
 }
