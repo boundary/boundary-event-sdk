@@ -23,7 +23,12 @@ import org.apache.camel.component.snmp.SnmpMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.snmp4j.PDU;
+import org.snmp4j.smi.OID;
 import org.snmp4j.smi.VariableBinding;
+
+import com.snmp4j.smi.SmiManager;
+import com.snmp4j.smi.SmiObject;
+import com.snmp4j.smi.SmiType;
 
 /**
  * Converts and {@link SnmpMessage} to a {@link SnmpTrap}
@@ -32,19 +37,32 @@ public class SnmpMessageToTrap extends SnmpMessageProcessor {
 
 	private static Logger LOG = LoggerFactory.getLogger(SnmpTrapRouteBuilder.class);
 
-    private SmiSupport smi;
-
 	public SnmpMessageToTrap(String repositoryPath, String license) {
 		super(repositoryPath,license);
+	}
+	
+	private void setTrapName(SnmpTrap snmpTrap,Vector<? extends VariableBinding> varBinds) {
+		SmiManager smiManager = this.getSmiManager();
+		
+		for(VariableBinding vb : varBinds) {
+			OID oid = vb.getOid();
+			SmiObject object = smiManager.findSmiObject(oid);
+			if (object != null && object.getType() == SmiType.NOTIFICATION_TYPE) {
+				String objectName = object.getObjectName();
+				snmpTrap.setTrapName(objectName);
+				LOG.info("Setting trap type to: {}");
+			}
+		}
+		
 	}
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
-		Vector<? extends VariableBinding> varBinds = extractVarBinds(exchange);
+		Vector<? extends VariableBinding> varBinds = VarBindUtils.extractVarBinds(exchange);
 		SnmpTrap snmpTrap = new SnmpTrap();
-		
+		setTrapName(snmpTrap,varBinds);
 		snmpTrap.setVariableBindings(varBinds);
 		Message message = exchange.getIn();
-		message.setBody(varBinds);
+		message.setBody(snmpTrap);
 	}
 }

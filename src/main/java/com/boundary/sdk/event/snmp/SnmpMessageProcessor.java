@@ -34,17 +34,7 @@ public abstract class SnmpMessageProcessor implements Processor{
 	public static final String SMI_MANAGER="boundary.snmp.smi.manager";
 	
     private SmiSupport smi;
-    
-    protected Vector<? extends VariableBinding> extractVarBinds(Exchange exchange) {
-		// Extract the SnmpMessage and PDU instances from the Camel Exchange
-		Message message = exchange.getIn();
-		SnmpMessage snmpMessage = message.getBody(SnmpMessage.class);
-		PDU pdu = snmpMessage.getSnmpMessage();
-		Vector<? extends VariableBinding> varBinds = pdu.getVariableBindings();
-		LOG.debug("Extracting {} variable bindings from PDU",varBinds.size());
-		return varBinds;
-    }
-    
+        
     protected SmiManager getSmiManager() {
     	return smi.getSmiManager();
     }

@@ -52,7 +52,7 @@ public class SnmpTrapRouteBuilder extends SnmpBaseRouteBuilder {
 		.startupOrder(startUpOrder)
 		.routeId(this.routeId)
 		.to("log:com.boundary.sdk.event.snmp.SnmpRouteBuilder?level=DEBUG&showBody=true&showHeaders=true")
-		.process(new SnmpMessageToVarBinds(getMibRepository(),getLicense()))
+		.process(new SnmpMessageToTrap(getMibRepository(),getLicense()))
 		.log("class: ${body.getClass.toString}")
 		.marshal().serialization()
 		.to(getToUri())

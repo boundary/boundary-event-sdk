@@ -37,12 +37,9 @@ public class SnmpMessageToVarBinds extends SnmpMessageProcessor {
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
-		// Extract the SnmpMessage and PDU instances from the Camel Exchange
-		Message message = exchange.getIn();
-		SnmpMessage snmpMessage = message.getBody(SnmpMessage.class);
-		PDU pdu = snmpMessage.getSnmpMessage();
-		Vector<? extends VariableBinding> varBinds = pdu.getVariableBindings();
+		Vector<? extends VariableBinding> varBinds = VarBindUtils.extractVarBinds(exchange);
 		LOG.debug("Extracting {} variable bindings from PDU",varBinds.size());
+		Message message = exchange.getIn();
 		message.setHeader(SMI_MANAGER,this.getSmiManager());
 		message.setBody(varBinds);
 	}
