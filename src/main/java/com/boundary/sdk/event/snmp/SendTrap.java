@@ -14,7 +14,12 @@
 package com.boundary.sdk.event.snmp;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.snmp4j.CommunityTarget;
 import org.snmp4j.PDU;
 import org.snmp4j.Snmp;
@@ -29,6 +34,8 @@ import org.snmp4j.smi.VariableBinding;
 import org.snmp4j.transport.DefaultUdpTransportMapping;
 
 public class SendTrap {
+	
+	private static Logger LOG = LoggerFactory.getLogger(SendTrap.class);	
 	
 	public enum TrapVersion {
 		
@@ -57,6 +64,7 @@ public class SendTrap {
 	protected String host;
 	protected int port;
 	protected TrapVersion version;
+	protected Vector<VariableBinding> varBinds;
 
 	public SendTrap() {
 		this.host = DEFAULT_HOST;
@@ -65,6 +73,7 @@ public class SendTrap {
 		this.description = DEFAULT_DESCRIPTION;
 		this.version = DEFAULT_TRAP_VERSION;
 		this.community = DEFAULT_COMMUNITY;
+		this.varBinds = new Vector<VariableBinding>();
 	}
 
 	public void setUpTime(long timeTicks) {
@@ -94,17 +103,31 @@ public class SendTrap {
 	private String getTargetAddress() {
 		return String.format("%s/%s",this.host,this.port);
 	}
+	
+	public void addVariableBinding(VariableBinding varBind) {
+		this.varBinds.add(varBind);
+	}
+	
+	public void addDefaultTrap() {
+		this.varBinds.add(new VariableBinding(SnmpConstants.linkDown, new OctetString("Host has been restarted")));
+		// put your uptime here, hundredths of a second
+		this.varBinds.add(new VariableBinding(SnmpConstants.sysUpTime, new TimeTicks(this.upTime))); 
+		this.varBinds.add(new VariableBinding(SnmpConstants.sysDescr, new OctetString(this.description)));
+	}
 
 	public void send() throws IOException {
 		// Create PDU
 		PDU trap = new PDU();
 		trap.setType(PDU.TRAP);
-
-		trap.add(new VariableBinding(SnmpConstants.linkDown, new OctetString("Host has been restarted")));
-		// put your uptime here, hundredths of a second
-		trap.add(new VariableBinding(SnmpConstants.sysUpTime, new TimeTicks(this.upTime))); 
-		trap.add(new VariableBinding(SnmpConstants.sysDescr, new OctetString(this.description)));
-
+		
+		if (this.varBinds.size() == 0) {
+			addDefaultTrap();
+		}
+		
+		// Add the varbinds to the trap
+		for (VariableBinding vb : this.varBinds) {
+			trap.add(vb);
+		}
 		// Set our target
 		Address targetaddress = new UdpAddress(getTargetAddress());
 		CommunityTarget target = new CommunityTarget();
@@ -113,6 +136,7 @@ public class SendTrap {
 		// Set the version of the trap
 		target.setVersion(version.version);
 		target.setAddress(targetaddress);
+		LOG.info("trap: {}",trap);
 
 		// Send the trap
 		Snmp snmp = new Snmp(new DefaultUdpTransportMapping());
