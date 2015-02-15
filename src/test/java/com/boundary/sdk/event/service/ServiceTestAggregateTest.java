@@ -120,6 +120,7 @@ public class ServiceTestAggregateTest extends CamelSpringTestSupport  {
 		template.sendBody("direct:service-check-request-in",request);
 	}
 
+	@Ignore("Pending new event API")
 	@Test
 	public void testAggregate() throws InterruptedException {
 //		MockEndpoint endPoint = getMockEndpoint("mock:service-test-correlation-out");

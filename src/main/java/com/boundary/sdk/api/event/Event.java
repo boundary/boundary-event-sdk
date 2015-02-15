@@ -51,6 +51,13 @@ import com.boundary.sdk.event.Severity;
  */
 public class Event extends com.boundary.sdk.event.RawEvent {
 	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	
 	private RawEvent rawEvent;
     CamelContext context;
 
@@ -59,8 +66,8 @@ public class Event extends com.boundary.sdk.event.RawEvent {
 	    CamelContext context = new DefaultCamelContext();
 	    BoundaryEventRouteBuilder eventRoute = new BoundaryEventRouteBuilder();
 	    eventRoute.setFromUri("direct:event-api-in");
-	    eventRoute.setOrgId(System.getenv("BOUNDRY_ORG_ID"));
-	    eventRoute.setApiKey(System.getenv("BOUNDARY_API_KEY"));
+	    eventRoute.setUser(System.getenv("BOUNDARY_EMAIL"));
+	    eventRoute.setPassword(System.getenv("BOUNDARY_API_KEY"));
 	    try {
 			context.addRoutes(eventRoute);
 		} catch (Exception e) {
@@ -108,10 +115,6 @@ public class Event extends com.boundary.sdk.event.RawEvent {
 		}
 	}
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	Event() {
 		rawEvent = new RawEvent();
