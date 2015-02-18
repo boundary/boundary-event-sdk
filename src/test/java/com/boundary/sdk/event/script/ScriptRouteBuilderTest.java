@@ -138,7 +138,7 @@ public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
 
 	@Test
 	public void testScript() {
-		String expectedScript = "classpath:example.jons";
+		String expectedScript = "classpath:example.json";
 		ScriptRouteBuilder builder = new ScriptRouteBuilder();
 		builder.setScript(expectedScript);
 		assertEquals("check script", expectedScript, builder.getScript());
