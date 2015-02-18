@@ -68,7 +68,7 @@ public class EsperRouteBuilder extends BoundaryRouteBuilder {
 	private QueryList load(URI uri) {
 		ObjectMapper mapper = new ObjectMapper();
 		QueryList queryList = null;
-		System.out.println(uri);
+		LOG.info("Loading queries from {}",uri);
 		File file = new File(uri);
 
 		try {
