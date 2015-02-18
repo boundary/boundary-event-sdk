@@ -23,21 +23,35 @@ import org.slf4j.LoggerFactory;
 import org.snmp4j.PDU;
 import org.snmp4j.smi.VariableBinding;
 
-public class VarBindUtils {
+public class SnmpExchangeUtils {
 	
-	private static Logger LOG = LoggerFactory.getLogger(VarBindUtils.class);
+	private static Logger LOG = LoggerFactory.getLogger(SnmpExchangeUtils.class);
 	
-    static public Vector<? extends VariableBinding> extractVarBinds(Exchange exchange) {
+	static public SnmpMessage extractSnmpMessage(Exchange exchange) {
 		// Extract the SnmpMessage and PDU instances from the Camel Exchange
 		Message message = exchange.getIn();
 		SnmpMessage snmpMessage = message.getBody(SnmpMessage.class);
+		return snmpMessage;
+	}
+	
+	static public PDU extractPDU(Exchange exchange) {
+		SnmpMessage snmpMessage = SnmpExchangeUtils.extractSnmpMessage(exchange);
 		PDU pdu = snmpMessage.getSnmpMessage();
+		return pdu;
+	}
+	
+    static public Vector<? extends VariableBinding> extractVarBinds(Exchange exchange) {
+		PDU pdu = SnmpExchangeUtils.extractPDU(exchange);
 		Vector<? extends VariableBinding> varBinds = pdu.getVariableBindings();
 		LOG.debug("Extracting {} variable bindings from PDU",varBinds.size());
 		return varBinds;
     }
     
-    
-
-
+    static public String extractHost(Exchange exchange) {
+		Message message = exchange.getIn();
+		String header = message.getHeader("peerAddress",String.class);
+		String [] tokens = header.split("/");
+		String host = tokens[0];
+		return host;
+    }
 }

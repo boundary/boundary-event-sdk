@@ -23,27 +23,66 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.snmp4j.smi.OID;
+import org.snmp4j.smi.OctetString;
+import org.snmp4j.smi.VariableBinding;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.IOException;
 import java.util.List;
 
+import com.boundary.sdk.event.snmp.SmiSupport;
+import com.snmp4j.smi.SmiManager;
+import com.snmp4j.smi.SmiObject;
+
 public class SnmpTrapTest extends CamelSpringTestSupport {
 	
-    @EndpointInject(uri = "mock:out")
+    private static SmiManager smiManager;
+	@EndpointInject(uri = "mock:out")
     private MockEndpoint out;
+    
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+    	SmiSupport smi = new SmiSupport();
+    	smi.setLicense(System.getenv("BOUNDARY_MIB_LICENSE"));
+    	smi.setRepository(System.getenv("BOUNDARY_MIB_REPOSITORY"));
+    	smi.initialize();
+    	smi.loadModules();
+    	smiManager = smi.getSmiManager();
 
+	}
+	
+	@Before
+    public void setUp() throws Exception {
+		super.setUp();
+    }
 
-	@Test
-	public void test() throws InterruptedException, IOException {
-		out.expectedMessageCount(1);
+    
+    private SendTrap SendTrapDefault() {
 		SendTrap sendTrap = new SendTrap();
 		sendTrap.setUpTime(1000000L);
 		sendTrap.setHost("localhost");
 		sendTrap.setPort(1162);
 		sendTrap.setDescription("Sample Trap");
+		return sendTrap;
+    }
+    
+    private SnmpTrap getTrap() {
+		List<Exchange> exchanges = out.getExchanges();
+		SnmpTrap trap = exchanges.get(0).getIn().getBody(SnmpTrap.class);
+    	return trap;
+    }
+
+	@Test
+	public void testTrap() throws InterruptedException, IOException {
+		out.expectedMessageCount(1);
+		SendTrap sendTrap = SendTrapDefault();
 		sendTrap.send();
 		out.assertIsSatisfied();
 		
@@ -51,6 +90,25 @@ public class SnmpTrapTest extends CamelSpringTestSupport {
 		SnmpTrap trap = exchanges.get(0).getIn().getBody(SnmpTrap.class);
 		assertNotNull(trap);
 		assertEquals("check trap name","linkDown",trap.getTrapName());
+	}
+
+	@Ignore("Broken Test, lookup fails in RMON-MIB")
+	@Test
+	public void TestRisingAlarm() throws InterruptedException {
+		out.expectedMessageCount(1);
+		
+		SmiObject notification = smiManager.findSmiObject("RMON-MIB","rmon.rmonEventsV2.risingAlarm");
+		assertNotNull("check for null SmiObject",notification);
+		OID oid = notification.getOID();
+		SendTrap sendTrap = SendTrapDefault();
+		sendTrap.addVariableBinding(new VariableBinding(oid,new OctetString("Rising Alarm")));
+		
+		out.assertIsSatisfied();
+		
+		SnmpTrap trap = getTrap();
+		assertNotNull(trap);
+		assertEquals("check trap name","risingAlarm",trap.getTrapName()); 
+		
 	}
 
 	@Override

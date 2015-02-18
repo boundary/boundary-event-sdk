@@ -31,6 +31,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 
 public class Source implements Serializable {
+	
+	private final static String DEFAULT_SOURCE_TYPE="host";
 	/**
 	 * 
 	 */
@@ -48,6 +50,16 @@ public class Source implements Serializable {
 	 * Default constructor
 	 */
 	public Source() {
+	}
+	
+	/**
+	 * Constructor that uses ref and type
+	 * 
+	 * @param ref {@link String} Source reference
+	 */
+	public Source(String ref) {
+		setRef(ref);
+		setType(DEFAULT_SOURCE_TYPE);
 	}
 	
 	/**

@@ -12,32 +12,77 @@
 	// See the License for the specific language governing permissions and
 	// limitations under the License.
 
-// Extract the bind variable
 load("src/main/resources/META-INF/js/snmp-library.js");
 
-var current = new java.io.File(".").getCanonicalPath();
-print(current);
+// Get out SnmpTrap instance, which contains information received from
+// the SNMP Trap.
+var trap = body;
 
-var varBinds = body;
-var smiManager = getSmiManager();
-print("size: " + varBinds.size());
-for (i = 0; i < varBinds.size(); i++) {
-	print("+++++");
-    v = varBinds.get(i);
-	var oid = v.getOid();
-	print(oid.getClass().toString());
-	print(oid.toDottedString());
-	var obj = smiManager.findSmiObject(oid);
-	if (obj) {
-		var type = obj.getType();
-		print(type);
-		print(v.getClass().toString());
-		print(v);
+// Create a new raw event to populated with SNMP trap information
+event = new com.boundary.sdk.event.RawEvent();
+
+var snmp = new Snmp();
+
+function trapToEvent(trap,event) {
+	var trapName = trap.getTrapName();
+	
+	// createdAt
+	var now = new java.util.Date();
+	event.setCreatedAt(now);
+	
+	// fingerprintFields and properties
+	
+	var varBinds = trap.getVariableBindings();
+	
+	for each (var vb in varBinds) {
+		var oid = vb.getOid();
+		var obj = snmp.findObjectByOid(oid);
+		if (obj) {
+			var objectName = obj.getObjectName();
+			event.addProperty(objectName,vb.toValueString());
+			event.addFingerprintField(objectName);
+		}
+		else {
+			event.addProperty(oid.toString(),vb.toValueString());
+			event.addFingerprintField(oid.toString());
+		}
 	}
-	print("-----");
+	
+	// message
+	event.setMessage("Received " + trap.getTrapName() + " trap");
+	
+	// organization id, Set upon receipt by Boundary
+
+	// receivedAt, set upon receipt within Boundary
+	
+	// Source
+	var source = new com.boundary.sdk.event.Source();
+	source.setRef(trap.getHost());
+	source.setType("host");
+	event.setSource(source);
+
+	// sender
+	var sender = new com.boundary.sdk.event.Source();
+	sender.setRef("Boundary Event SDK");
+	sender.setType("Boundary Event SDK");
+	event.setSender(sender);
+
+	// severity
+	event.setSeverity(SEVERITY.WARN);
+
+	// status
+	event.setStatus(STATUS.OPEN);
+
+	// tags
+	event.addTag(trap.getHost());
+	event.addTag(trap.getTrapName());
+
+	// title
+	event.setTitle(trap.getTrapName() + " trap received from " + trap.getHost());
 }
 
-var event = new com.boundary.sdk.event.RawEvent();
+// Call our function to translate the event
+trapToEvent(trap,event);
 
-
+// Set the return event
 result = event;

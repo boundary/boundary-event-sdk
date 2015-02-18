@@ -20,6 +20,7 @@ import java.util.Calendar;
 import java.util.Calendar.Builder;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.camel.EndpointInject;
 import org.apache.camel.Exchange;
@@ -40,6 +41,7 @@ import org.snmp4j.smi.VariableBinding;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.boundary.sdk.event.RawEvent;
 import com.boundary.sdk.event.snmp.SendTrap;
 import com.boundary.sdk.event.snmp.SnmpPollerConfiguration;
 import com.boundary.sdk.event.snmp.entry;
@@ -66,10 +68,22 @@ public class SnmpToEventTest extends CamelSpringTestSupport {
 	}
 	
 	@Test
-	public void testLoadSnmpLibrary() throws Exception {
+	public void testTranslatedEvent() throws Exception {
 		out.expectedMinimumMessageCount(1);
 		trap.send();
 		out.assertIsSatisfied();
+		List<Exchange> exchanges = out.getExchanges();
+		Exchange exchange = exchanges.get(0);
+		Message message = exchange.getIn();
+		RawEvent event = message.getBody(RawEvent.class);
+		assertNotNull("check for not null",event);
+		assertEquals("check event title","linkDown trap received from 127.0.0.1",event.getTitle());
+		assertEquals("check event message","Received linkDown trap",event.getMessage());
+		Map<String,Object> properties = event.getProperties();
+		assertEquals("check trap property","Host has been restarted",properties.get("linkDown"));
+		assertEquals("check uptime property","7:12:00.00",properties.get("sysUpTimeInstance"));
+		assertEquals("check description property","Test Trap!",properties.get("sysDescr.0"));
+		
 	}
 
 	@Override

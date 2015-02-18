@@ -12,12 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-var SMI_MANAGER = com.boundary.sdk.event.snmp.SnmpMessageToVarBinds.SMI_MANAGER;
+// Definition of the header that is stored in the Camel exchange
 
-function getSmiManager() {
-	return request.getHeader(SMI_MANAGER);
+
+// References to get access to the enumerations for event severity and status
+var SEVERITY = Java.type('com.boundary.sdk.event.Severity');
+var STATUS = Java.type('com.boundary.sdk.event.Status');
+var SNMP_VERSION = Java.type('com.boundary.sdk.event.snmp.SnmpTrap.SnmpVersion');
+
+// Extract
+
+function Snmp() {
+	var BOUNDARY_SMI_MANAGER = com.boundary.sdk.event.snmp.SnmpMessageToVarBinds.BOUNDARY_SMI_MANAGER;
+	this.smi = request.getHeader(BOUNDARY_SMI_MANAGER);
+
+	this.findObjectByOid = function(oid) {
+		var smiManager = this.getSmiManager();
+		return smiManager.findSmiObject(oid);
+	};
+	
+	this.getSmiManager = function() {
+		if (this.smi === null) {
+		}
+		return this.smi;
+	}
 }
 
-function myPrint(message) {
-	print(message);
-}
+

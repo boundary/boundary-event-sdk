@@ -37,10 +37,10 @@ public class SnmpMessageToVarBinds extends SnmpMessageProcessor {
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
-		Vector<? extends VariableBinding> varBinds = VarBindUtils.extractVarBinds(exchange);
+		Vector<? extends VariableBinding> varBinds = SnmpExchangeUtils.extractVarBinds(exchange);
 		LOG.debug("Extracting {} variable bindings from PDU",varBinds.size());
 		Message message = exchange.getIn();
-		message.setHeader(SMI_MANAGER,this.getSmiManager());
+		message.setHeader(BOUNDARY_SMI_MANAGER,this.getSmiManager());
 		message.setBody(varBinds);
 	}
 }

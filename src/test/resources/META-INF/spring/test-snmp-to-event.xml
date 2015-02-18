@@ -41,7 +41,7 @@ limitations under the License.
     <property name="routeId" value="TRANSFORM-SNMP"/>
     <property name="startUpOrder" value="120"/>
     <property name="fromUri" value="direct:snmp-trap-out"/>
-    <property name="toUri" value="mock:out"/>
+    <property name="toUri" value="direct:out"/>
     <property name="transform" value="true"/>
     <property name="cacheScript" value="true"/>
     <property name="contentCache" value="true"/>
@@ -53,6 +53,11 @@ limitations under the License.
 
     <routeBuilder ref="script-route"/>
     <routeBuilder ref="trap-route"/>
+    <route id="DESERIALIZE">
+    	<from uri="direct:out"/>
+    	<unmarshal><serialization/></unmarshal>
+    	<to uri="mock:out"/>
+    </route>
 
   </camelContext>
 </beans>

@@ -31,7 +31,7 @@ public abstract class SnmpMessageProcessor implements Processor{
 	
 	private static Logger LOG = LoggerFactory.getLogger(SnmpMessageProcessor.class);	
 	
-	public static final String SMI_MANAGER="boundary.snmp.smi.manager";
+	public static final String BOUNDARY_SMI_MANAGER="boundary.snmp.smi.manager";
 	
     private SmiSupport smi;
         

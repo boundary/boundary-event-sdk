@@ -30,9 +30,10 @@ import static org.apache.camel.LoggingLevel.*;
  */
 public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	
-	private final String DEFAULT_HOST="premimum-api.boundary.com";
+	private final String DEFAULT_HOST="premium-api.boundary.com";
 	private final int DEFAULT_PORT = 443;
 	private final String DEFAULT_FROM_URI = "direct:boundary-event";
+	private final int DEFAULT_VERSION=1;
 	
 	private static Logger LOG = LoggerFactory.getLogger(BoundaryEventRouteBuilder.class);
 
@@ -40,6 +41,7 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	private int port;
 	private String user;
 	private String password;
+	private int version;
 
 	/**
 	 * Default constructor
@@ -49,6 +51,7 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 		this.port = DEFAULT_PORT;
 		this.fromUri = DEFAULT_FROM_URI;
 		this.password = "";
+		this.version = DEFAULT_VERSION;
 	}
 			
 	/**
@@ -119,7 +122,7 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	@Override
 	public void configure() {
 		// Create the URL used to send events
-		String url = String.format("https://%s:%d/events",host,port);
+		String url = String.format("https://%s:%d/v%d/events",host,port,version);
 		LOG.debug("boundary event api url: " + url);
 		
 		// Configure our HTTP connection to use BASIC authentication

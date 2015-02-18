@@ -26,6 +26,9 @@ public class SnmpTrap implements Serializable {
 	private Vector<? extends VariableBinding> variableBindings;
 	
 	private String trapName;
+	private String host;
+	private SnmpVersion version;
+	public enum SnmpVersion {V1,V2C,V3};
 	
 	public SnmpTrap() {
 		
@@ -64,5 +67,27 @@ public class SnmpTrap implements Serializable {
 
 	public void setTrapName(String trapName) {
 		this.trapName = trapName;
+	}
+
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
+	}
+
+	public SnmpVersion getVersion() {
+		return version;
+	}
+
+	public void setVersion(SnmpVersion version) {
+		this.version = version;
+	}
+
+	@Override
+	public String toString() {
+		return "SnmpTrap [variableBindings=" + variableBindings + ", trapName="
+				+ trapName + ", host=" + host + "]";
 	}
 }

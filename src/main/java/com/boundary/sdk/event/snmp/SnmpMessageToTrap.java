@@ -58,11 +58,14 @@ public class SnmpMessageToTrap extends SnmpMessageProcessor {
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
-		Vector<? extends VariableBinding> varBinds = VarBindUtils.extractVarBinds(exchange);
+		Vector<? extends VariableBinding> varBinds = SnmpExchangeUtils.extractVarBinds(exchange);
 		SnmpTrap snmpTrap = new SnmpTrap();
 		setTrapName(snmpTrap,varBinds);
 		snmpTrap.setVariableBindings(varBinds);
+		snmpTrap.setHost(SnmpExchangeUtils.extractHost(exchange));
+		
 		Message message = exchange.getIn();
+		message.setHeader(BOUNDARY_SMI_MANAGER,this.getSmiManager());
 		message.setBody(snmpTrap);
 	}
 }

@@ -43,6 +43,7 @@ limitations under the License.
     	<from uri="direct:snmp-trap-out"/>
 			<unmarshal><serialization/></unmarshal>
     	<to uri="mock:out"/>
+    	<to uri="stream:out"/>
     </route>
 
   </camelContext>
