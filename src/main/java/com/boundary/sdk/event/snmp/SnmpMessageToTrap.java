@@ -35,7 +35,7 @@ import com.snmp4j.smi.SmiType;
  */
 public class SnmpMessageToTrap extends SnmpMessageProcessor {
 
-	private static Logger LOG = LoggerFactory.getLogger(SnmpTrapRouteBuilder.class);
+	private static Logger LOG = LoggerFactory.getLogger(SnmpMessageToTrap.class);
 
 	public SnmpMessageToTrap(String repositoryPath, String license) {
 		super(repositoryPath,license);
@@ -50,7 +50,7 @@ public class SnmpMessageToTrap extends SnmpMessageProcessor {
 			if (object != null && object.getType() == SmiType.NOTIFICATION_TYPE) {
 				String objectName = object.getObjectName();
 				snmpTrap.setTrapName(objectName);
-				LOG.info("Setting trap type to: {}");
+				LOG.info("Setting trap type to: {}",objectName);
 			}
 		}
 		
