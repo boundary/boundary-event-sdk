@@ -15,10 +15,16 @@ package com.boundary.sdk.event.script;
 
 import static org.apache.camel.LoggingLevel.DEBUG;
 
+import org.eclipse.jetty.util.log.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.boundary.sdk.event.BoundaryEventRouteBuilder;
 import com.boundary.sdk.event.BoundaryRouteBuilder;
 
 public class ScriptRouteBuilder extends BoundaryRouteBuilder {
+	
+	private static Logger LOG = LoggerFactory.getLogger(ScriptRouteBuilder.class);
 
 	private String languageName;
 	private boolean transform;
@@ -48,6 +54,7 @@ public class ScriptRouteBuilder extends BoundaryRouteBuilder {
 	 */
 	@Override
 	public void configure() {
+		LOG.info("Route using script: {}",this.getScript());
 		from(this.getFromUri())
 		.routeId(this.getRouteId())
 		.startupOrder(this.getStartUpOrder())
