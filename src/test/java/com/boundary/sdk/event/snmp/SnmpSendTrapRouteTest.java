@@ -38,7 +38,7 @@ import com.boundary.sdk.event.snmp.SmiSupport;
 import com.snmp4j.smi.SmiManager;
 import com.snmp4j.smi.SmiObject;
 
-public class SnmpTrapTest extends CamelSpringTestSupport {
+public class SnmpSendTrapRouteTest extends CamelSpringTestSupport {
 	
     private static SmiManager smiManager;
 	@EndpointInject(uri = "mock:out")

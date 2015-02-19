@@ -19,22 +19,29 @@ import java.util.Vector;
 import org.snmp4j.smi.OID;
 import org.snmp4j.smi.VariableBinding;
 
+import com.boundary.plugin.sdk.PluginUtil;
+
 public class SnmpTrap implements Serializable {
 	
 	private static final long serialVersionUID = 13630136686664969L;
 
-	private Vector<? extends VariableBinding> variableBindings;
+	private Vector<VariableBinding> variableBindings;
 	
 	private String trapName;
 	private String host;
 	private SnmpVersion version;
 	public enum SnmpVersion {V1,V2C,V3};
+	private boolean raw;
 	
 	public SnmpTrap() {
-		
+		this.trapName = "";
+		this.raw = true;
+		this.version = SnmpVersion.V2C;
+		this.host = "localhost";
+		this.variableBindings = new Vector<VariableBinding>();
 	}
 
-	public Vector<? extends VariableBinding> getVariableBindings() {
+	public Vector<VariableBinding> getVariableBindings() {
 		return variableBindings;
 	}
 	
@@ -57,7 +64,10 @@ public class SnmpTrap implements Serializable {
 		return varBind;
 	}
 
-	public void setVariableBindings(Vector<? extends VariableBinding> variableBindings) {
+	public void setVariableBindings(Vector<VariableBinding> variableBindings) {
+		for (VariableBinding vb : variableBindings) {
+			this.variableBindings.addElement(vb);
+		}
 		this.variableBindings = variableBindings;
 	}
 
@@ -85,9 +95,19 @@ public class SnmpTrap implements Serializable {
 		this.version = version;
 	}
 
+	public boolean isRaw() {
+		return raw;
+	}
+
+	public void setRaw(boolean raw) {
+		this.raw = raw;
+	}
+
 	@Override
 	public String toString() {
 		return "SnmpTrap [variableBindings=" + variableBindings + ", trapName="
-				+ trapName + ", host=" + host + "]";
+				+ trapName + ", host=" + host + ", version=" + version
+				+ ", raw=" + raw + "]";
 	}
+
 }

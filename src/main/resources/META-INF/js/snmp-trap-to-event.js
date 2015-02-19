@@ -18,7 +18,16 @@ load("src/main/resources/META-INF/js/snmp-library.js");
 // the SNMP Trap.
 var trap = body;
 
+// SnmpTrap is instance of a java object with the following properties
+// Host
+// Variable Bindings
+// Snmp Version
+// Raw
+
 // Create a new raw event to populated with SNMP trap information
+
+// A Raw Event consists of the following fields
+// create
 event = new com.boundary.sdk.event.RawEvent();
 
 var snmp = new Snmp();
@@ -76,6 +85,13 @@ function trapToEvent(trap,event) {
 	// tags
 	event.addTag(trap.getHost());
 	event.addTag(trap.getTrapName());
+	
+	// Examine our trap instance to see if it was processed adequately
+	// if not then tag the event as raw so the trap can be configured
+	// to be processed properly
+	if (trap.isRaw()) {
+		event.addTag("raw");
+	}
 
 	// title
 	event.setTitle(trap.getTrapName() + " trap received from " + trap.getHost());

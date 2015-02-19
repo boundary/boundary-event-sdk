@@ -58,7 +58,7 @@ public class SnmpMessageToTrap extends SnmpMessageProcessor {
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
-		Vector<? extends VariableBinding> varBinds = SnmpExchangeUtils.extractVarBinds(exchange);
+		Vector<VariableBinding> varBinds = SnmpExchangeUtils.extractVarBinds(exchange);
 		SnmpTrap snmpTrap = new SnmpTrap();
 		setTrapName(snmpTrap,varBinds);
 		snmpTrap.setVariableBindings(varBinds);

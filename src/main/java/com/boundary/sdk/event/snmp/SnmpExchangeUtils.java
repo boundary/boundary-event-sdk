@@ -40,9 +40,12 @@ public class SnmpExchangeUtils {
 		return pdu;
 	}
 	
-    static public Vector<? extends VariableBinding> extractVarBinds(Exchange exchange) {
+    static public Vector<VariableBinding> extractVarBinds(Exchange exchange) {
 		PDU pdu = SnmpExchangeUtils.extractPDU(exchange);
-		Vector<? extends VariableBinding> varBinds = pdu.getVariableBindings();
+		Vector<VariableBinding> varBinds = new Vector<VariableBinding>();
+		for (VariableBinding var : pdu.getVariableBindings()) {
+			varBinds.addElement(var);
+		}
 		LOG.debug("Extracting {} variable bindings from PDU",varBinds.size());
 		return varBinds;
     }
