@@ -99,8 +99,8 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	}
 
 	/**
-	 * Sets the e-mail use for sending Boundary API requests
-	 * @param email E-mail associated with the Boundary instance
+	 * Sets user for sending Boundary API requests
+	 * @param user
 	 */
 	public void setUser(String user) {
 		this.user = user;
