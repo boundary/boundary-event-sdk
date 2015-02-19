@@ -13,7 +13,7 @@
 // limitations under the License.
 package com.boundary.sdk.event.esper;
 
-import static org.apache.camel.LoggingLevel.INFO;
+import static org.apache.camel.LoggingLevel.DEBUG;
 
 import java.io.File;
 import java.io.IOException;
