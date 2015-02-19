@@ -1,4 +1,4 @@
-//Copyright 2014-2015 Boundary, Inc.
+	//Copyright 2014-2015 Boundary, Inc.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -22,8 +22,7 @@ public class SnmpTrap extends CamelApplication {
 	
 	private static Logger LOG = LoggerFactory.getLogger(SnmpTrap.class);
 
-	private static final String SNMP_TRAP_HANDLER_URI =
-			"META-INF/spring/snmp-trap.xml";
+	private static final String SNMP_TRAP_HANDLER_URI = "META-INF/spring/snmp-trap.xml";
 	private static final String SNMP_TRAP_HANDLER_NAME = "SNMP Trap Handler";
 	
 	public SnmpTrap() {
