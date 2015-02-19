@@ -1,0 +1,22 @@
+{
+	"queries": [
+		{
+			"name": "Name",
+			"enabled": true,
+			"description": "Returns all employee event from Bob",
+			"query": "select * from NewEmployeeEvent where name = 'Bill'"
+		},
+		{
+			"name": "Array",
+			"enabled": true,
+			"description": "Returns all employee events with home addresses on Park Avenue",
+			"query": "select * from NewEmployeeEvent where name = 'Ted' and address('home').streetName='Park Avenue'"
+		},
+		{
+			"name": "Long",
+			"enabled": true,
+			"description": "Returns all employee events with home addresses on Park Avenue",
+			"query": "select * from NewEmployeeEvent where name = 'Bill' and address('work').streetNumber=23"
+		}
+	]
+}
