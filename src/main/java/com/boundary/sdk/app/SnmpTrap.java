@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.boundary.sdk.event.CamelApplication;
-import com.boundary.sdk.event.SNMPTrapEventAdapter;
 
 public class SnmpTrap extends CamelApplication {
 	
