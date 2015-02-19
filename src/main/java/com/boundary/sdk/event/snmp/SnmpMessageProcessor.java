@@ -36,19 +36,19 @@ public abstract class SnmpMessageProcessor implements Processor{
     private SmiSupport smi;
         
     protected SmiManager getSmiManager() {
-    	return smi.getSmiManager();
+    	return this.smi.getSmiManager();
     }
 	
 	public SnmpMessageProcessor(String repositoryPath, String license) {
 		// If the repositoryPath is null or zero length 
 		// then bypass configuring the structured management information.
 		if (repositoryPath != null && repositoryPath.length() > 0) {
-			smi = new SmiSupport();
-			smi.setLicense(license);
+			this.smi = new SmiSupport();
+			this.smi.setLicense(license);
 			File mibDirectory = new File(repositoryPath);
-			smi.setRepository(mibDirectory.getAbsolutePath());
-			smi.initialize();
-			smi.loadModules();
+			this.smi.setRepository(mibDirectory.getAbsolutePath());
+			this.smi.initialize();
+			this.smi.loadModules();
 			LOG.info("SMI initialized");
 		}
 		else {
