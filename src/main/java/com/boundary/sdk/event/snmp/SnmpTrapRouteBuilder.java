@@ -47,13 +47,14 @@ public class SnmpTrapRouteBuilder extends SnmpBaseRouteBuilder {
 	 */
 	@Override
 	public void configure() {
+	
 		String uri = String.format("snmp:%s:%d?protocol=udp&type=TRAP",getBindAddress(),getPort());
 		from(uri)
 		.startupOrder(startUpOrder)
 		.routeId(this.routeId)
 		.to("log:com.boundary.sdk.event.snmp.SnmpRouteBuilder?level=DEBUG&showBody=true&showHeaders=true")
 		.process(new SnmpMessageToTrap(getMibRepository(),getLicense()))
-		.log("class: ${body.getClass.toString}")
+		.to("log:com.boundary.sdk.event.snmp.SnmpRouteBuilder?level=DEBUG&showBody=true&showHeaders=true")
 		.marshal().serialization()
 		.to(getToUri())
 		;
