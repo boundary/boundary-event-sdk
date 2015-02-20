@@ -26,7 +26,7 @@ limitations under the License.
                    http://camel.apache.org/schema/spring
                    http://camel.apache.org/schema/spring/camel-spring.xsd">
  	
-  <!-- Polls the SNMP agents to collect metrics based on provided configuration -->
+  <!-- Listens for Incoming SNMP Traps -->
   <bean id="trap-route" class="com.boundary.sdk.event.snmp.SnmpTrapRouteBuilder">
     <property name="routeId" value="SNMP-TRAP"/>
     <property name="startUpOrder" value="200"/>
