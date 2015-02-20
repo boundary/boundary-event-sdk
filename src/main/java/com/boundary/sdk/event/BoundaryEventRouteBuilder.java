@@ -100,18 +100,28 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 
 	/**
 	 * Sets user for sending Boundary API requests
-	 * @param user
+	 * @param user {@link String} of the user
 	 */
 	public void setUser(String user) {
 		this.user = user;
 	}
 
+	/**
+	 * Returns the password used for authentication
+	 * 
+	 * @return {@link String}
+	 */
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String apiToken) {
-		this.password = apiToken;
+	/**
+	 * Set the password to use for authentication
+	 * 
+	 * @param password {@link String} to use for authentication
+	 */
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	/**
