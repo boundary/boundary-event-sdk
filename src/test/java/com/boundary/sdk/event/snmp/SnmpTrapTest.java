@@ -32,9 +32,13 @@ import com.boundary.sdk.event.snmp.SnmpTrap.SnmpVersion;
 import java.util.Vector;
 
 public class SnmpTrapTest {
+	
+	private static SnmpScript snmpScript = null;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		snmpScript = new SnmpScript();
+		snmpScript.load();
 	}
 
 	@AfterClass
@@ -61,7 +65,7 @@ public class SnmpTrapTest {
 	public void testGetVariableBindings() {
 		SnmpTrap trap = new SnmpTrap();
 		Vector<VariableBinding> varBinds = new Vector<VariableBinding>();
-		varBinds.add(new VariableBinding(SnmpConstants.linkUp,new OctetString()));
+		varBinds.add(new VariableBinding(SnmpConstants.linkUp,new OctetString("Network link is now up")));
 		varBinds.add(new VariableBinding(SnmpConstants.sysUpTime,new TimeTicks(100000L)));
 		trap.setVariableBindings(varBinds);
 		assertTrue("check getVariableBindings()",varBinds.containsAll(trap.getVariableBindings()));
@@ -71,22 +75,22 @@ public class SnmpTrapTest {
 	public void testGetVarBindInt() {
 		SnmpTrap trap = new SnmpTrap();
 		Vector<VariableBinding> varBinds = new Vector<VariableBinding>();
-		varBinds.add(new VariableBinding(SnmpConstants.linkUp,new OctetString("linkUp")));
+		varBinds.add(new VariableBinding(SnmpConstants.linkUp,new OctetString("Network link is now up")));
 		varBinds.add(new VariableBinding(SnmpConstants.sysUpTime,new TimeTicks(100000L)));
 		trap.setVariableBindings(varBinds);
 		VariableBinding variableBinding = trap.getVarBind(0);
-		assertEquals("check variableBinding","1.3.6.1.6.3.1.1.5.4 = linkUp",variableBinding.toString());
+		assertEquals("check variableBinding","linkUp = Network link is now up",variableBinding.toString());
 	}
 
 	@Test
 	public void testGetVarBindOID() {
 		SnmpTrap trap = new SnmpTrap();
 		Vector<VariableBinding> varBinds = new Vector<VariableBinding>();
-		varBinds.add(new VariableBinding(SnmpConstants.linkUp,new OctetString("linkUp")));
+		varBinds.add(new VariableBinding(SnmpConstants.linkUp,new OctetString("Network link is now up")));
 		varBinds.add(new VariableBinding(SnmpConstants.sysUpTime,new TimeTicks(100000L)));
 		trap.setVariableBindings(varBinds);
 		VariableBinding variableBinding = trap.getVarBind(SnmpConstants.linkUp);
-		assertEquals("check variableBinding","1.3.6.1.6.3.1.1.5.4 = linkUp",variableBinding.toString());
+		assertEquals("check variableBinding","linkUp = Network link is now up",variableBinding.toString());
 
 	}
 
@@ -127,7 +131,7 @@ public class SnmpTrapTest {
 	@Test
 	public void testToString() {
 		SnmpTrap trap = new SnmpTrap();
-		String expectedString = "SnmpTrap [variableBindings=[1.3.6.1.6.3.1.1.5.1 = Hello], trapName=warmStart, host=10.10.10.10, version=V3, raw=false]";
+		String expectedString = "SnmpTrap [variableBindings=[coldStart = Hello], trapName=warmStart, host=10.10.10.10, version=V3, raw=false]";
 		trap.setRaw(true);
 		trap.setVersion(SnmpVersion.V3);
 		Vector<VariableBinding> varBinds = new Vector<VariableBinding>();
