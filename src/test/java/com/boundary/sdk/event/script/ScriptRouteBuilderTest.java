@@ -240,7 +240,7 @@ public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
 		out.expectedMessageCount(1);
 		
 		out.getExchanges();
-		in.sendBodyAndHeaders(snmpMessage,setScriptHeader("classpath:snmp-trap-to-event.js"));
+		in.sendBodyAndHeaders(snmpMessage,setScriptHeader("classpath:META-INF/js/snmp-trap-to-event.js"));
 		out.assertIsSatisfied();
 		
 		List<Exchange> exchanges = out.getExchanges();
@@ -249,7 +249,6 @@ public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
 		Message message = exchange.getIn();
 		RawEvent e = message.getBody(RawEvent.class);
 		assertNotNull("check event for not null",e);
-
 	}
 
 	@Test
