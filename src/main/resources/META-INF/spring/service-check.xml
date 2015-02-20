@@ -32,17 +32,9 @@ limitations under the License.
                      configured with a start order higher than 100
 		  -->
 		<property name="startUpOrder" value="100"/>
-		<!-- TBD: Encryption of apiKey using Camel APIs -->
-		
-		<!-- Boundary organization ID and API key can obtained by logging into the web
-		     console. Organization ID and API key are located in the users settings
-		  -->
-		<property name="orgId" value="#{systemEnvironment['BOUNDARY_ORG_ID']}"/>
-		<!-- <property name="orgId" value=""/> -->
-		
-		<property name="apiKey" value="#{systemEnvironment['BOUNDARY_API_KEY']}"/>
-		<!-- <property name="apiKey" value=""/> -->
-
+		<property name="host" value="#{systemEnvironment['BOUNDARY_API_HOST']}"/>
+		<property name="user" value="#{systemEnvironment['BOUNDARY_EMAIL']}"/>
+		<property name="password" value="#{systemEnvironment['BOUNDARY_API_TOKEN']}"/>
          <!-- The endpoint URI to listen for boundary events -->
 		<property name="fromUri" value="seda:boundary-event?concurrentConsumers=35"/>
 	</bean>
