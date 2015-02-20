@@ -43,32 +43,32 @@ public class SnmpTrapRouteBuilderTest extends CamelSpringTestSupport {
     @EndpointInject(uri = "mock:out")
     private MockEndpoint out;
 
-//	@Test
-//	public void testBindAddress() {
-//		String expectedBindAddress = "1.2.3.4";
-//		SnmpTrapRouteBuilder builder = new SnmpTrapRouteBuilder();
-//		builder.setBindAddress(expectedBindAddress);
-//		assertEquals("check bind address", expectedBindAddress,
-//				builder.getBindAddress());
-//	}
-//
-//	@Test
-//	public void testMibRepository() {
-//		String expectedPath = "foobar";
-//		SnmpTrapRouteBuilder builder = new SnmpTrapRouteBuilder();
-//
-//		builder.setMibRepository(expectedPath);
-//		assertEquals("Check license", expectedPath, builder.getMibRepository());
-//	}
-//
-//	@Test
-//	public void testLicense() {
-//		String expectedLicense = "foobar";
-//		SnmpTrapRouteBuilder builder = new SnmpTrapRouteBuilder();
-//
-//		builder.setLicense(expectedLicense);
-//		assertEquals("Check license", expectedLicense, builder.getLicense());
-//	}
+	@Test
+	public void testBindAddress() {
+		String expectedBindAddress = "1.2.3.4";
+		SnmpTrapRouteBuilder builder = new SnmpTrapRouteBuilder();
+		builder.setBindAddress(expectedBindAddress);
+		assertEquals("check bind address", expectedBindAddress,
+				builder.getBindAddress());
+	}
+
+	@Test
+	public void testMibRepository() {
+		String expectedPath = "foobar";
+		SnmpTrapRouteBuilder builder = new SnmpTrapRouteBuilder();
+
+		builder.setMibRepository(expectedPath);
+		assertEquals("Check license", expectedPath, builder.getMibRepository());
+	}
+
+	@Test
+	public void testLicense() {
+		String expectedLicense = "foobar";
+		SnmpTrapRouteBuilder builder = new SnmpTrapRouteBuilder();
+
+		builder.setLicense(expectedLicense);
+		assertEquals("Check license", expectedLicense, builder.getLicense());
+	}
 
 	@Test
 	public void testRun() throws Exception {
