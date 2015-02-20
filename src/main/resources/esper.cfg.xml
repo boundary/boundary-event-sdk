@@ -20,6 +20,6 @@ limitations under the License.
 	<event-type name="RawEvent" class="com.boundary.sdk.event.RawEvent"/>
 	<event-type name="SyslogMessage" class="com.boundary.sdk.event.syslog.SyslogMessageEvent"/>
 	<event-type name="SnmpTrap" class="com.boundary.sdk.event.snmp.SnmpTrap"/>
-	<event-type name="NewEmployeeEvent" class="com.boundary.sdk.event.esper.NewEmployeeEvent"/>
+	<!-- <event-type name="NewEmployeeEvent" class="com.boundary.sdk.event.esper.NewEmployeeEvent"/> -->
 
 </esper-configuration>
