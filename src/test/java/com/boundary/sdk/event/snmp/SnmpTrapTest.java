@@ -68,28 +68,42 @@ public class SnmpTrapTest {
 	}
 
 	@Test
-	public void testGetVarBinds() {
-		fail("Not yet implemented");
-	}
-
-	@Test
 	public void testGetVarBindInt() {
-		fail("Not yet implemented");
+		SnmpTrap trap = new SnmpTrap();
+		Vector<VariableBinding> varBinds = new Vector<VariableBinding>();
+		varBinds.add(new VariableBinding(SnmpConstants.linkUp,new OctetString("linkUp")));
+		varBinds.add(new VariableBinding(SnmpConstants.sysUpTime,new TimeTicks(100000L)));
+		trap.setVariableBindings(varBinds);
+		VariableBinding variableBinding = trap.getVarBind(0);
+		assertEquals("check variableBinding","1.3.6.1.6.3.1.1.5.4 = linkUp",variableBinding.toString());
 	}
 
 	@Test
 	public void testGetVarBindOID() {
-		fail("Not yet implemented");
+		SnmpTrap trap = new SnmpTrap();
+		Vector<VariableBinding> varBinds = new Vector<VariableBinding>();
+		varBinds.add(new VariableBinding(SnmpConstants.linkUp,new OctetString("linkUp")));
+		varBinds.add(new VariableBinding(SnmpConstants.sysUpTime,new TimeTicks(100000L)));
+		trap.setVariableBindings(varBinds);
+		VariableBinding variableBinding = trap.getVarBind(SnmpConstants.linkUp);
+		assertEquals("check variableBinding","1.3.6.1.6.3.1.1.5.4 = linkUp",variableBinding.toString());
+
 	}
 
 	@Test
 	public void testGetTrapName() {
-		fail("Not yet implemented");
+		String expectedTrapName = "linkDown";
+		SnmpTrap trap = new SnmpTrap();
+		trap.setTrapName(expectedTrapName);
+		assertEquals("check Trap name",expectedTrapName,trap.getTrapName());
 	}
 
 	@Test
 	public void testGetHost() {
-		fail("Not yet implemented");
+		String expectedHostNqme = "myHost";
+		SnmpTrap trap = new SnmpTrap();
+		trap.setHost(expectedHostNqme);
+		assertEquals("check Host",expectedHostNqme,trap.getHost());
 	}
 
 	@Test
@@ -97,6 +111,10 @@ public class SnmpTrapTest {
 		SnmpTrap trap = new SnmpTrap();
 		trap.setVersion(SnmpVersion.V3);
 		assertEquals("check getVersion()",SnmpVersion.V3,trap.getVersion());
+		trap.setVersion(SnmpVersion.V2C);
+		assertEquals("check getVersion()",SnmpVersion.V2C,trap.getVersion());
+		trap.setVersion(SnmpVersion.V1);
+		assertEquals("check getVersion()",SnmpVersion.V1,trap.getVersion());
 	}
 
 	@Test
@@ -109,12 +127,16 @@ public class SnmpTrapTest {
 	@Test
 	public void testToString() {
 		SnmpTrap trap = new SnmpTrap();
+		String expectedString = "SnmpTrap [variableBindings=[1.3.6.1.6.3.1.1.5.1 = Hello], trapName=warmStart, host=10.10.10.10, version=V3, raw=false]";
 		trap.setRaw(true);
 		trap.setVersion(SnmpVersion.V3);
 		Vector<VariableBinding> varBinds = new Vector<VariableBinding>();
 		varBinds.add(new VariableBinding(SnmpConstants.coldStart, new OctetString("Hello")));
 		trap.setVariableBindings(varBinds);
-		assertEquals("check toString()","",trap.toString());
+		trap.setTrapName("warmStart");
+		trap.setHost("10.10.10.10");
+		trap.setRaw(false);
+		assertEquals("check toString()",expectedString,trap.toString());
 	}
 
 }
