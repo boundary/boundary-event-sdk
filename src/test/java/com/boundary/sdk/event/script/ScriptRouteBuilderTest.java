@@ -44,6 +44,7 @@ import com.boundary.sdk.event.RawEvent;
 import com.boundary.sdk.event.Severity;
 import com.boundary.sdk.event.Status;
 import com.boundary.sdk.event.snmp.SnmpMessageEvent;
+import com.boundary.sdk.event.snmp.SnmpTrap;
 import com.boundary.sdk.event.syslog.SyslogMessageEvent;
 
 import static com.boundary.sdk.event.script.ScriptTestUtils.*;
@@ -234,13 +235,12 @@ public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
 	
 	@Test
 	public void testSNMPTrapToEvent() throws InterruptedException {
-		PDU pdu = createV2Trap();
-		SnmpMessageEvent snmpMessage = new SnmpMessageEvent(pdu);
+		SnmpTrap snmpTrap = new SnmpTrap();
 
 		out.expectedMessageCount(1);
 		
 		out.getExchanges();
-		in.sendBodyAndHeaders(snmpMessage,setScriptHeader("classpath:META-INF/js/snmp-trap-to-event.js"));
+		in.sendBodyAndHeaders(snmpTrap,setScriptHeader("classpath:META-INF/js/snmp-trap-to-event.js"));
 		out.assertIsSatisfied();
 		
 		List<Exchange> exchanges = out.getExchanges();
