@@ -24,18 +24,13 @@ var SNMP_VERSION = Java.type('com.boundary.sdk.event.snmp.SnmpTrap.SnmpVersion')
 
 function Snmp() {
 	var BOUNDARY_SMI_MANAGER = com.boundary.sdk.event.snmp.SnmpMessageToVarBinds.BOUNDARY_SMI_MANAGER;
-	this.smi = request.getHeader(BOUNDARY_SMI_MANAGER);
-
-	this.findObjectByOid = function(oid) {
-		var smiManager = this.getSmiManager();
-		return smiManager.findSmiObject(oid);
-	};
+	var snmpScript = new com.boundary.sdk.event.snmp.SnmpScript();
+	snmpScript.load();
+	this.smiManager = snmpScript.getSmiManager();
 	
-	this.getSmiManager = function() {
-		if (this.smi === null) {
-		}
-		return this.smi;
-	}
+	this.findObjectByOid = function(oid) {
+		return this.smiManager.findSmiObject(oid);
+	};
 }
 
 
