@@ -18,19 +18,19 @@ import org.slf4j.LoggerFactory;
 
 import com.boundary.sdk.event.CamelApplication;
 
-public class SnmpTrap extends CamelApplication {
+public class SnmpTrapHandler extends CamelApplication {
 	
-	private static Logger LOG = LoggerFactory.getLogger(SnmpTrap.class);
+	private static Logger LOG = LoggerFactory.getLogger(SnmpTrapHandler.class);
 
 	private static final String SNMP_TRAP_HANDLER_URI = "META-INF/spring/snmp-trap.xml";
 	private static final String SNMP_TRAP_HANDLER_NAME = "SNMP Trap Handler";
 	
-	public SnmpTrap() {
+	public SnmpTrapHandler() {
 		super(SNMP_TRAP_HANDLER_URI,SNMP_TRAP_HANDLER_NAME);
 	}
 	
 	public static void main(String [] args) {
-		SnmpTrap application = new SnmpTrap();
+		SnmpTrapHandler application = new SnmpTrapHandler();
 		try {
 			application.boot();
 		} catch (Exception e) {
