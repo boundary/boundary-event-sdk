@@ -53,7 +53,7 @@ public class SyslogToEventScriptingTest extends CamelSpringTestSupport {
 	private static final String EVENT_RB_OUT = "mock:event-rb-out";
 
 	protected AbstractXmlApplicationContext createApplicationContext() {
-		return new ClassPathXmlApplicationContext("META-INF/syslog-to-event-scripting.xml");
+		return new ClassPathXmlApplicationContext("META-INF/spring/test-syslog-event-scripting.xml");
 	}
 	
 	@Before
