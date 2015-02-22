@@ -49,7 +49,7 @@ limitations under the License.
 		<property name="fromUri" value="seda:from-syslog"/>
 		<property name="toUri" value="seda:from-esper"/>
 		<property name="instance" value="events"/>
-		<property name="configuration" value="syslog-filter-queries.json"/>
+		<property name="configuration" value="META-INF/json/syslog-filter-queries.json"/>
 	</bean>
 	
 	<bean id="syslog-route" class="com.boundary.sdk.event.syslog.SysLogRouteBuilder">
