@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <groupId>com.boundary</groupId>
   <artifactId>boundary-event-sdk</artifactId>
   <packaging>jar</packaging>
   <version>00.06.00</version>
-
   <name>boundary-event-sdk</name>
   <description>Boundary Event SDK enables the rapid integration of foreign events into the Boundary monitoring platform</description>
   <url>https://github.com/boundary/boundary-sdk</url>
@@ -67,154 +63,231 @@
       <url>http://boundary.github.io/boundary-event-sdk</url>
     </site>
   </distributionManagement>
-     <properties>
-       <!-- Set the project encoding -->
-       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  <properties>
+    <!-- Set the project encoding -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- Configuration for pushing Git Hub Pages -->
+    <github.global.server>github</github.global.server>
+    <!-- Properties for all of the java packages versions -->
+    <activemq-version>5.9.0</activemq-version>
+    <java-plugin-sdk-version>0.6.0</java-plugin-sdk-version>
+    <camel-version>2.14.1</camel-version>
+    <camel-esper-version>2.13.2</camel-esper-version>
+    <boundary-camel-components-version>0.6.0</boundary-camel-components-version>
+    <commons-cli-version>1.2</commons-cli-version>
+    <commons-codec-version>1.9</commons-codec-version>
+    <commons-daemon-version>1.0.15</commons-daemon-version>
+    <commons-io-version>1.3.2</commons-io-version>
+    <commons-lang3-version>3.3.2</commons-lang3-version>
+    <commons-lang-version>2.6</commons-lang-version>
+    <doxia-module-markdown-version>1.5</doxia-module-markdown-version>
+    <exec-maven-plugin-version>1.3</exec-maven-plugin-version>
+    <javaee-api-version>7.0</javaee-api-version>
+    <junit-version>4.8.1</junit-version>
+    <log4j-version>1.2.17</log4j-version>
+    <slf4j-api-version>1.7.7</slf4j-api-version>
+    <slf4j-log4j12-version>1.7.7</slf4j-log4j12-version>
+    <snmp4j-version>2.3.1</snmp4j-version>
+    <snmp4j-smi-version>1.1.3</snmp4j-smi-version>
+    <snmp4j-smi-pro-version>1.5.2</snmp4j-smi-pro-version>
+    <spring-version>3.2.5.RELEASE</spring-version>
+    <spring-security-version>3.1.4.RELEASE</spring-security-version>
+    <syslog4j-version>0.9.30</syslog4j-version>
 
-       <!-- Configuration for pushing Git Hub Pages -->
-       <github.global.server>github</github.global.server>
+    <appassembler-maven-plugin-version>1.9</appassembler-maven-plugin-version>
+    <maven-assembly-plugin-version>2.5.3</maven-assembly-plugin-version>
+    <maven-compiler-plugin-version>3.1</maven-compiler-plugin-version>
+    <maven-dependency-plugin-version>2.8</maven-dependency-plugin-version>
+    <maven-javadoc-plugin-version>2.8.1</maven-javadoc-plugin-version>
+    <maven-pdf-plugin-version>1.2</maven-pdf-plugin-version>
+    <maven-site-plugin-version>3.3</maven-site-plugin-version>
+    <maven-project-info-reports-plugin-version>2.7</maven-project-info-reports-plugin-version>
+    <mysql-connector-java-version>5.1.31</mysql-connector-java-version>
+    <rpm-maven-plugin-version>2.0.1</rpm-maven-plugin-version>
 
-       <!-- Properties for all of the java packages versions -->
-       <activemq-version>5.9.0</activemq-version>
-       <java-plugin-sdk-version>0.6.0</java-plugin-sdk-version>
-       <camel-version>2.14.1</camel-version>
-       <camel-esper-version>2.13.2</camel-esper-version>
-       <boundary-camel-components-version>0.6.0</boundary-camel-components-version>
-       <commons-cli-version>1.2</commons-cli-version>
-       <commons-codec-version>1.9</commons-codec-version>
-       <commons-daemon-version>1.0.15</commons-daemon-version>
-       <commons-io-version>1.3.2</commons-io-version>
-       <commons-lang3-version>3.3.2</commons-lang3-version>
-       <commons-lang-version>2.6</commons-lang-version>
-       <doxia-module-markdown-version>1.5</doxia-module-markdown-version>
-       <exec-maven-plugin-version>1.3</exec-maven-plugin-version>
-       <javaee-api-version>7.0</javaee-api-version>
-       <junit-version>4.8.1</junit-version>
-       <log4j-version>1.2.17</log4j-version>
-       <maven-assembly-plugin-version>2.5.3</maven-assembly-plugin-version>
-       <maven-compiler-plugin-version>3.1</maven-compiler-plugin-version>
-       <maven-dependency-plugin-version>2.8</maven-dependency-plugin-version>
-       <maven-javadoc-plugin-version>2.8.1</maven-javadoc-plugin-version>
-       <maven-pdf-plugin-version>1.2</maven-pdf-plugin-version>
-       <maven-site-plugin-version>3.3</maven-site-plugin-version>
-       <maven-project-info-reports-plugin-version>2.7</maven-project-info-reports-plugin-version>
-       <mysql-connector-java-version>5.1.31</mysql-connector-java-version>
-       <rpm-maven-plugin-version>2.0.1</rpm-maven-plugin-version>
-       <slf4j-api-version>1.7.7</slf4j-api-version>
-       <slf4j-log4j12-version>1.7.7</slf4j-log4j12-version>
-       <snmp4j-version>2.3.1</snmp4j-version>
-       <snmp4j-smi-version>1.1.3</snmp4j-smi-version>
-       <snmp4j-smi-pro-version>1.5.2</snmp4j-smi-pro-version>
-       <spring-version>3.2.5.RELEASE</spring-version>
-       <spring-security-version>3.1.4.RELEASE</spring-security-version>
-       <syslog4j-version>0.9.30</syslog4j-version>
-       
-       <!-- RPM packaging properties -->
-       <rpm-top-level-dir>/opt/boundary</rpm-top-level-dir>
-       <boundary-sdk-rpm-user-name>root</boundary-sdk-rpm-user-name>
-       <boundary-sdk-rpm-group-name>root</boundary-sdk-rpm-group-name>
-       <boundary-sdk-rpm-app-dir>/usr/share/besdk</boundary-sdk-rpm-app-dir>
-       <boundary-sdk-rpm-bin-dir>/usr/bin</boundary-sdk-rpm-bin-dir>
-       <boundary-sdk-rpm-etc-dir>/etc</boundary-sdk-rpm-etc-dir>
-       <boundary-sdk-rpm-jar-dir>/usr/share/besdk/lib</boundary-sdk-rpm-jar-dir>
-       <boundary-sdk-rpm-man-dir>/usr/share/man</boundary-sdk-rpm-man-dir>
-       <boundary-sdk-rpm-initd-dir>/etc/init.d</boundary-sdk-rpm-initd-dir>
+    <!-- RPM packaging properties -->
+    <rpm-top-level-dir>/opt/boundary</rpm-top-level-dir>
+    <boundary-sdk-rpm-user-name>root</boundary-sdk-rpm-user-name>
+    <boundary-sdk-rpm-group-name>root</boundary-sdk-rpm-group-name>
+    <boundary-sdk-rpm-app-dir>/usr/share/besdk</boundary-sdk-rpm-app-dir>
+    <boundary-sdk-rpm-bin-dir>/usr/bin</boundary-sdk-rpm-bin-dir>
+    <boundary-sdk-rpm-etc-dir>/etc</boundary-sdk-rpm-etc-dir>
+    <boundary-sdk-rpm-jar-dir>/usr/share/besdk/lib</boundary-sdk-rpm-jar-dir>
+    <boundary-sdk-rpm-man-dir>/usr/share/man</boundary-sdk-rpm-man-dir>
+    <boundary-sdk-rpm-initd-dir>/etc/init.d</boundary-sdk-rpm-initd-dir>
+    <!-- JAVA Versions -->
+    <source-java-version>1.8</source-java-version>
+    <target-java-version>1.8</target-java-version>
+  </properties>
+  <build>
+    <finalName>boundary</finalName>
+<!--
+     <testResources>
+      <testResource>
+        <directory>${basedir}/src/test/resources</directory>
+      </testResource>
+      <testResource>
+        <directory>${basedir}/src/main/resources</directory>
+      </testResource>
+    </testResources>
+-->
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin-version}</version>
+        <configuration>
+          <source>${source-java-version}</source>
+          <target>${target-java-version}</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>${maven-dependency-plugin-version}</version>
+        <executions>
+          <execution>
+            <id>copy</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/lib</outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>true</overWriteSnapshots>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>appassembler-maven-plugin</artifactId>
+        <version>${appassembler-maven-plugin-version}</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>assemble</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <!-- Set the target configuration directory to be used in the bin scripts -->
+          <configurationDirectory>etc</configurationDirectory>
+          <configurationSourceDirectory>src/main/etc</configurationSourceDirectory>
+          <!-- Copy the contents from "/src/main/etc" to the target
+               configuration directory in the assembled application -->
+          <copyConfigurationDirectory>false</copyConfigurationDirectory>
+          <!-- Include the target configuration directory in the beginning of
+               the classpath declaration in the bin scripts -->
+          <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
+          <!-- set alternative assemble directory -->
+          <!--<assembleDirectory>${project.build.directory}/mycompany-assemble</assembleDirectory>-->
+          <!-- Extra JVM arguments that will be included in the bin scripts -->
+          <!--<extraJvmArguments>-Xms128m</extraJvmArguments>-->
+          <!-- Generate bin scripts for windows and unix pr default -->
+          <environmentSetupFileName>env.sh</environmentSetupFileName>
+          <!-- Creates a single repository directory with all of the jars -->
+          <repositoryLayout>flat</repositoryLayout>
+          <repositoryName>lib</repositoryName>
+          <logsDirectory>logs</logsDirectory>
+          <!-- Adds the repository directory with a wild card so
+               that all jar files in the directory are added to the class-->
+          <useWildcardClassPath>true</useWildcardClassPath>
+          <!-- Directory use to assemble all of the artifacts -->
+          <assembleDirectory>${project.build.directory}</assembleDirectory>
+          <platforms>
+            <platform>windows</platform>
+            <platform>unix</platform>
+          </platforms>
+          <programs>
+            <program>
+              <id>bsyslog</id>
+              <mainClass>com.boundary.sdk.app.SyslogEventAdapter</mainClass>
+            </program>
+            <program>
+              <id>bsnmpcollector</id>
+              <mainClass>com.boundary.sdk.app.SnmpCollector</mainClass>
+            </program>
+            <program>
+              <id>bsnmptrap</id>
+              <mainClass>com.boundary.sdk.app.SnmpTrapHandler</mainClass>
+            </program>
+          </programs>
+        </configuration>
+      </plugin>
 
-       <!-- JAVA Versions -->
-       <source-java-version>1.8</source-java-version>
-       <target-java-version>1.8</target-java-version>
-     </properties>
-     <build>
-       <plugins>
-         <plugin>
-           <groupId>org.apache.maven.plugins</groupId>
-           <artifactId>maven-compiler-plugin</artifactId>
-           <version>${maven-compiler-plugin-version}</version>
-           <configuration>
-             <source>${source-java-version}</source>
-             <target>${target-java-version}</target>
-           </configuration>
-         </plugin>
-         <plugin>
-           <groupId>org.apache.maven.plugins</groupId>
-           <artifactId>maven-dependency-plugin</artifactId>
-           <version>${maven-dependency-plugin-version}</version>
-           <executions>
-             <execution>
-               <id>copy</id>
-               <phase>prepare-package</phase>
-               <goals>
-                 <goal>copy-dependencies</goal>
-               </goals>
-               <configuration>
-                 <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                 <overWriteReleases>false</overWriteReleases>
-                 <overWriteSnapshots>true</overWriteSnapshots>
-               </configuration>
-             </execution>
-           </executions>
-	 </plugin>
-         <plugin>
-           <groupId>org.apache.camel</groupId>
-           <version>${camel-version}</version>
-           <artifactId>camel-maven-plugin</artifactId>
-           <configuration>
-             <applicationContextUri>META-INF/spring/event-application.xml</applicationContextUri>
-             <logClasspath>true</logClasspath>
-           </configuration>
-         </plugin>
-         <plugin>
-           <artifactId>maven-project-info-reports-plugin</artifactId>
-           <version>${maven-project-info-reports-plugin-version}</version>
-         </plugin>
-         <plugin>
-           <groupId>org.apache.maven.plugins</groupId>
-           <artifactId>maven-pdf-plugin</artifactId>
-           <version>${maven-pdf-plugin-version}</version>
-           <executions>
-             <execution>
-               <id>pdf</id>
-               <phase>site</phase>
-               <goals>
-                 <goal>pdf</goal>
-               </goals>
-               <configuration>
-                 <outputDirectory>${project.reporting.outputDirectory}</outputDirectory>
-                 <includeReports>true</includeReports>
-               </configuration>
-             </execution>
-           </executions>
-           <dependencies> 
-             <dependency> 
-               <groupId>org.apache.maven.doxia</groupId> 
-               <artifactId>doxia-module-markdown</artifactId> 
-               <version>${doxia-module-markdown-version}</version>
-             </dependency> 
-           </dependencies> 
-         </plugin>
-         <plugin>
-           <groupId>org.apache.maven.plugins</groupId>
-           <artifactId>maven-assembly-plugin</artifactId>
-           <version>${maven-assembly-plugin-version}</version>
-           <configuration>
-           <descriptors>
-             <descriptor>src/main/assembly/default.xml</descriptor>
-               <descriptor>src/main/assembly/tools.xml</descriptor>
-             </descriptors>
-           </configuration>
-         </plugin>
-         <plugin>
-           <groupId>org.apache.maven.plugins</groupId>
-           <artifactId>maven-site-plugin</artifactId>
-           <version>${maven-site-plugin-version}</version>
-           <dependencies>
-             <dependency>
-               <groupId>org.apache.maven.doxia</groupId>
-               <artifactId>doxia-module-markdown</artifactId>
-               <version>${doxia-module-markdown-version}</version>
-             </dependency>
-           </dependencies>
-<!-- Disable execution of the site goal under the package phase
+      <plugin>
+        <groupId>org.apache.camel</groupId>
+        <version>${camel-version}</version>
+        <artifactId>camel-maven-plugin</artifactId>
+        <configuration>
+          <applicationContextUri>META-INF/spring/event-application.xml</applicationContextUri>
+          <logClasspath>true</logClasspath>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>${maven-project-info-reports-plugin-version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pdf-plugin</artifactId>
+        <version>${maven-pdf-plugin-version}</version>
+        <executions>
+          <execution>
+            <id>pdf</id>
+            <phase>site</phase>
+            <goals>
+              <goal>pdf</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.reporting.outputDirectory}</outputDirectory>
+              <includeReports>true</includeReports>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.maven.doxia</groupId>
+            <artifactId>doxia-module-markdown</artifactId>
+            <version>${doxia-module-markdown-version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>${maven-assembly-plugin-version}</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>assembly</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <descriptors>
+<!--            <descriptor>src/main/assembly/default.xml</descriptor> -->
+<!--            <descriptor>src/main/assembly/tools.xml</descriptor> -->
+            <descriptor>src/main/assembly/app.xml</descriptor>
+          </descriptors>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>${maven-site-plugin-version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.maven.doxia</groupId>
+            <artifactId>doxia-module-markdown</artifactId>
+            <version>${doxia-module-markdown-version}</version>
+          </dependency>
+        </dependencies>
+        <!-- Disable execution of the site goal under the package phase
            <executions>
              <execution>
                <id>site-web</id>
@@ -224,33 +297,33 @@
                </goals>
              </execution>
            </executions> -->
-           <configuration>
-             <generateReports>false</generateReports>
-             <inputEncoding>UTF-8</inputEncoding>
-             <outputEncoding>UTF-8</outputEncoding>
-           </configuration>
-         </plugin>
-         <plugin>
-           <groupId>com.github.github</groupId>
-           <artifactId>site-maven-plugin</artifactId>
-           <version>0.9</version>
-           <configuration>
-             <message>Creating site for ${project.version}</message>
-           </configuration>
-           <executions>
-             <execution>
-               <goals>
-                 <goal>site</goal>
-               </goals>
-               <phase>site</phase>
-             </execution>
-           </executions>
-         </plugin>
-         <plugin>
-           <groupId>org.codehaus.mojo</groupId>
-           <artifactId>rpm-maven-plugin</artifactId>
-           <version>${rpm-maven-plugin-version}</version>
-<!-- Disable creation of RPM
+        <configuration>
+          <generateReports>false</generateReports>
+          <inputEncoding>UTF-8</inputEncoding>
+          <outputEncoding>UTF-8</outputEncoding>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.github.github</groupId>
+        <artifactId>site-maven-plugin</artifactId>
+        <version>0.9</version>
+        <configuration>
+          <message>Creating site for ${project.version}</message>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>site</goal>
+            </goals>
+            <phase>site</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>rpm-maven-plugin</artifactId>
+        <version>${rpm-maven-plugin-version}</version>
+        <!-- Disable creation of RPM
            <executions>
              <execution>
                <id>generate-rpm</id>
@@ -259,165 +332,165 @@
                </goals>
              </execution>
            </executions> -->
-           <configuration>
-             <license> Apache License Version 2.0, January 2004</license>
-             <distribution>Boundary,Inc 2014</distribution>
-             <group>Application/Collectors</group>
-             <needarch>true</needarch>
-             <packager>Boundary, Inc.</packager>
-<!--         <prefix>/opt/boundary</prefix> -->
-             <defineStatements>
-               <defineStatement>_unpackaged_files_terminate_build 0</defineStatement>
-             </defineStatements>
-             <mappings>
-               <mapping>
-                 <directory>${boundary-sdk-rpm-bin-dir}</directory>
-                 <directoryIncluded>false</directoryIncluded>
-                 <filemode>755</filemode>
-                 <username>${boundary-sdk-rpm-user-name}</username>
-                 <groupname>${boundary-sdk-rpm-group-name}</groupname>
-                 <sources>
-                   <source>
-                     <location>src/main/scripts</location>
-                     <includes>
-                       <include>bmibc</include>
-                       <include>send-v1-trap</include>
-                       <include>send-v2c-trap</include>
-                       <include>send-syslog</include>
-                     </includes>
-                   </source>
-                   <source>
-                     <location>src/native/unix</location>
-                     <includes>
-                       <include>jsvc</include>
-                     </includes>
-                   </source>
-                 </sources>
-               </mapping>
-               <mapping>
-                 <directory>${boundary-sdk-rpm-jar-dir}</directory>
-                 <directoryIncluded>false</directoryIncluded>
-                 <filemode>744</filemode>
-							<username>${boundary-sdk-rpm-user-name}</username>
-							<groupname>${boundary-sdk-rpm-group-name}</groupname>
-							<sources>
-                                				<source>
-									<location>target/lib</location>
-                                				</source>
-							</sources>
-						</mapping>
-						<mapping>
-							<directory>${boundary-sdk-rpm-initd-dir}</directory>
-							<directoryIncluded>false</directoryIncluded>
-							<filemode>755</filemode>
-							<username>${boundary-sdk-rpm-user-name}</username>
-							<groupname>${boundary-sdk-rpm-group-name}</groupname>
-							<sources>
-								<source>
-									<location>src/main/scripts/beventd</location>
-								</source>
-							</sources>
-						</mapping>
-						<mapping>
-							<directory>${boundary-sdk-rpm-etc-dir}/besdk</directory>
-							<directoryIncluded>false</directoryIncluded>
-							<filemode>744</filemode>
-							<username>${boundary-sdk-rpm-user-name}</username>
-							<groupname>${boundary-sdk-rpm-group-name}</groupname>
-							<sources>
-								<source>
-									<location>src/main/scripts/beventd.conf</location>
-								</source>
-								<source>
-									<location>src/main/resources/META-INF/event-application.xml</location>
-								</source>
-								<source>
-									<location>src/main/resources</location>
-									<includes>
-										<include>syslog.status.properties</include>
-										<include>syslog.severity.properties</include>
-										<include>syslog.facility.properties</include>
-										<include>log4j.properties</include>
-									</includes>
-								</source>
-							</sources>
-						</mapping>
-						<mapping>
-							<directory>${boundary-sdk-rpm-app-dir}/mibrepository</directory>
-							<directoryIncluded>false</directoryIncluded>
-							<filemode>744</filemode>
-							<username>${boundary-sdk-rpm-user-name}</username>
-							<groupname>${boundary-sdk-rpm-group-name}</groupname>
-							<sources>
-                                				<source>
-									<location>src/main/resources/mibrepository</location>
-                                				</source>
-							</sources>
-						</mapping>
-						<mapping>
-							<directory>${boundary-sdk-rpm-app-dir}</directory>
-							<directoryIncluded>false</directoryIncluded>
-							<filemode>744</filemode>
-							<sources>
-								<source>
-									<location>target</location>
-									<includes>
-										<include>${project.name}-${project.version}.jar</include>
-									</includes>
-								</source>
-							</sources>
-						</mapping>
-					</mappings>
-					<preinstallScriptlet>
-						<script>echo "installing now"</script>
-					</preinstallScriptlet>
-				</configuration>
-			</plugin>
-			<plugin>
-                                <!-- JavaDoc Plugin to generate a JAR containing documentation from the project. -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>${maven-javadoc-plugin-version}</version>
-				<executions>
-					<execution>
-						<id>attach-javadoc</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-                        </plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>com.boundary.sdk.event.EventApplication</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>exec-maven-plugin</artifactId>
-				<groupId>org.codehaus.mojo</groupId>
-				<version>${exec-maven-plugin-version}</version>
-				<executions>
-					<execution>
-						<id>Invoke Clean Script</id>
-						<phase>clean</phase>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<configuration>
-							<executable>${basedir}/src/main/scripts/clean</executable>
-							<arguments>
-								<argument>${basedir}</argument>
-							</arguments>
-						</configuration>
- 					</execution>
-<!--
+        <configuration>
+          <license> Apache License Version 2.0, January 2004</license>
+          <distribution>Boundary,Inc 2014</distribution>
+          <group>Application/Collectors</group>
+          <needarch>true</needarch>
+          <packager>Boundary, Inc.</packager>
+          <!--         <prefix>/opt/boundary</prefix> -->
+          <defineStatements>
+            <defineStatement>_unpackaged_files_terminate_build 0</defineStatement>
+          </defineStatements>
+          <mappings>
+            <mapping>
+              <directory>${boundary-sdk-rpm-bin-dir}</directory>
+              <directoryIncluded>false</directoryIncluded>
+              <filemode>755</filemode>
+              <username>${boundary-sdk-rpm-user-name}</username>
+              <groupname>${boundary-sdk-rpm-group-name}</groupname>
+              <sources>
+                <source>
+                  <location>src/main/scripts</location>
+                  <includes>
+                    <include>bmibc</include>
+                    <include>send-v1-trap</include>
+                    <include>send-v2c-trap</include>
+                    <include>send-syslog</include>
+                  </includes>
+                </source>
+                <source>
+                  <location>src/native/unix</location>
+                  <includes>
+                    <include>jsvc</include>
+                  </includes>
+                </source>
+              </sources>
+            </mapping>
+            <mapping>
+              <directory>${boundary-sdk-rpm-jar-dir}</directory>
+              <directoryIncluded>false</directoryIncluded>
+              <filemode>744</filemode>
+              <username>${boundary-sdk-rpm-user-name}</username>
+              <groupname>${boundary-sdk-rpm-group-name}</groupname>
+              <sources>
+                <source>
+                  <location>target/lib</location>
+                </source>
+              </sources>
+            </mapping>
+            <mapping>
+              <directory>${boundary-sdk-rpm-initd-dir}</directory>
+              <directoryIncluded>false</directoryIncluded>
+              <filemode>755</filemode>
+              <username>${boundary-sdk-rpm-user-name}</username>
+              <groupname>${boundary-sdk-rpm-group-name}</groupname>
+              <sources>
+                <source>
+                  <location>src/main/scripts/beventd</location>
+                </source>
+              </sources>
+            </mapping>
+            <mapping>
+              <directory>${boundary-sdk-rpm-etc-dir}/besdk</directory>
+              <directoryIncluded>false</directoryIncluded>
+              <filemode>744</filemode>
+              <username>${boundary-sdk-rpm-user-name}</username>
+              <groupname>${boundary-sdk-rpm-group-name}</groupname>
+              <sources>
+                <source>
+                  <location>src/main/scripts/beventd.conf</location>
+                </source>
+                <source>
+                  <location>src/main/resources/META-INF/event-application.xml</location>
+                </source>
+                <source>
+                  <location>src/main/resources</location>
+                  <includes>
+                    <include>syslog.status.properties</include>
+                    <include>syslog.severity.properties</include>
+                    <include>syslog.facility.properties</include>
+                    <include>log4j.properties</include>
+                  </includes>
+                </source>
+              </sources>
+            </mapping>
+            <mapping>
+              <directory>${boundary-sdk-rpm-app-dir}/mibrepository</directory>
+              <directoryIncluded>false</directoryIncluded>
+              <filemode>744</filemode>
+              <username>${boundary-sdk-rpm-user-name}</username>
+              <groupname>${boundary-sdk-rpm-group-name}</groupname>
+              <sources>
+                <source>
+                  <location>src/main/resources/mibrepository</location>
+                </source>
+              </sources>
+            </mapping>
+            <mapping>
+              <directory>${boundary-sdk-rpm-app-dir}</directory>
+              <directoryIncluded>false</directoryIncluded>
+              <filemode>744</filemode>
+              <sources>
+                <source>
+                  <location>target</location>
+                  <includes>
+                    <include>${project.name}-${project.version}.jar</include>
+                  </includes>
+                </source>
+              </sources>
+            </mapping>
+          </mappings>
+          <preinstallScriptlet>
+            <script>echo "installing now"</script>
+          </preinstallScriptlet>
+        </configuration>
+      </plugin>
+      <plugin>
+        <!-- JavaDoc Plugin to generate a JAR containing documentation from the project. -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven-javadoc-plugin-version}</version>
+        <executions>
+          <execution>
+            <id>attach-javadoc</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>com.boundary.sdk.event.EventApplication</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>exec-maven-plugin</artifactId>
+        <groupId>org.codehaus.mojo</groupId>
+        <version>${exec-maven-plugin-version}</version>
+        <executions>
+          <execution>
+            <id>Invoke Clean Script</id>
+            <phase>clean</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>${basedir}/src/main/scripts/clean</executable>
+              <arguments>
+                <argument>${basedir}</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <!--
 					<execution>
 						<id>Build Native Commons Daemon</id>
 						<phase>compile</phase>
@@ -510,7 +583,7 @@
       <artifactId>slf4j-api</artifactId>
       <version>${slf4j-api-version}</version>
     </dependency>
-    <dependency> 
+    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
       <version>${slf4j-log4j12-version}</version>
@@ -602,7 +675,7 @@
       <version>${commons-lang3-version}</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.commons</groupId>
+      <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>${commons-io-version}</version>
     </dependency>
