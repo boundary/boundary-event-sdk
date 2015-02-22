@@ -38,7 +38,7 @@ limitations under the License.
 		<property name="cacheScript" value="true"/>
 		<property name="contentCache" value="true"/>
 		<property name="languageName" value="javascript"/>
-		<property name="script" value="classpath:syslog-to-raw_event.js"/>
+		<property name="script" value="classpath:META-INF/js/syslog-to-event.js"/>
 		<property name="fromUri" value="seda:from-esper"/>
 		<property name="toUri" value="seda:boundary-event"/>
 	</bean>
