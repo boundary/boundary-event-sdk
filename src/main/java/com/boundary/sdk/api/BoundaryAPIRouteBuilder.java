@@ -170,7 +170,6 @@ public abstract class BoundaryAPIRouteBuilder extends BoundaryRouteBuilder {
 				if (getPassword() != null) {
 					sb.append(getPassword());
 				}
-				LOG.info("authentication: " + sb.toString());
 				setAuthentication(Base64.encodeBase64String(sb.toString().getBytes()));
 			}
 			break;
