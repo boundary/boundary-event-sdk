@@ -30,7 +30,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class ServiceDatabaseTest extends CamelSpringTestSupport  {
 
 	/**
-	 * @throws java.lang.Exception
+	 * @throws {@link Exception}
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -38,14 +38,14 @@ public class ServiceDatabaseTest extends CamelSpringTestSupport  {
 	}
 
 	/**
-	 * @throws java.lang.Exception
+	 * @throws {@link Exception}
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 	}
 
 	/**
-	 * @throws java.lang.Exception
+	 * @throws {@link Exception}
 	 */
 	@Before
 	public void setUp() throws Exception {
@@ -54,7 +54,7 @@ public class ServiceDatabaseTest extends CamelSpringTestSupport  {
 	}
 
 	/**
-	 * @throws java.lang.Exception
+	 * @throws {@link Exception}
 	 */
 	@After
 	public void tearDown() throws Exception {
