@@ -48,7 +48,7 @@ limitations under the License.
 		<property name="fromUri" value="seda:to-esper"/>
 		<property name="toUri" value="seda:from-esper"/>
 		<property name="instance" value="events"/>
-		<property name="configuration" value="snmp-trap-filter-queries.json"/>
+		<property name="configuration" value="META-INF/json/snmp-trap-filter-queries.json"/>
 	</bean>	
 	
 	<bean id="snmp-route" class="com.boundary.sdk.event.snmp.SnmpTrapRouteBuilder">
