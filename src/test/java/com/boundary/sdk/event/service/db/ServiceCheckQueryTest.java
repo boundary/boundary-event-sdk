@@ -13,21 +13,15 @@
 // limitations under the License.
 package com.boundary.sdk.event.service.db;
 
-import static org.junit.Assert.*;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.test.junit4.CamelTestSupport;
-import org.apache.camel.test.spring.CamelSpringTestSupport;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.springframework.context.support.AbstractApplicationContext;
 
 public class ServiceCheckQueryTest extends CamelTestSupport {
 	
@@ -51,13 +45,6 @@ public class ServiceCheckQueryTest extends CamelTestSupport {
 	@After
 	public void tearDown() throws Exception {
 	}
-
-	@Ignore("No test implemented yet")
-	@Test
-	public void test() {
-		fail("Not yet implemented");
-	}
-	
 	
     @Override
     protected RouteBuilder createRouteBuilder() throws Exception {

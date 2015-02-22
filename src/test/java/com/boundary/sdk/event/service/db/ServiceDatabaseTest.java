@@ -13,33 +13,20 @@
 // limitations under the License.
 package com.boundary.sdk.event.service.db;
 
-import static org.junit.Assert.*;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.spring.CamelSpringTestSupport;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.boundary.camel.component.ping.PingConfiguration;
-import com.boundary.camel.component.port.PortConfiguration;
 
-import static com.boundary.sdk.event.service.ServiceCheckPropertyNames.*;
-
-
-/**
- * @author davidg
- *
- */
 public class ServiceDatabaseTest extends CamelSpringTestSupport  {
 
 	/**
@@ -47,6 +34,7 @@ public class ServiceDatabaseTest extends CamelSpringTestSupport  {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+
 	}
 
 	/**
@@ -62,6 +50,7 @@ public class ServiceDatabaseTest extends CamelSpringTestSupport  {
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
+		Assume.assumeTrue(DatabaseIsConnected.databaseConnected());
 	}
 
 	/**
