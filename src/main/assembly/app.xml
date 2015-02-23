@@ -21,6 +21,11 @@
         <outputDirectory>bin</outputDirectory>
         <fileMode>0744</fileMode>
       </file>
+      <file>
+        <source>${basedir}/src/main/resources/log4j.properties</source>
+        <outputDirectory>etc</outputDirectory>
+        <fileMode>0744</fileMode>
+      </file>
       <!-- SNMP Trap Handler -->
       <file>
         <source>${basedir}/src/main/resources/META-INF/spring/snmp-trap.xml</source>
