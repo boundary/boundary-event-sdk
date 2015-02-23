@@ -93,9 +93,9 @@
         <fileMode>0755</fileMode>
       </fileSet>
       <fileSet>
-        <directory>${project.build.directory}/src/main/resources/mibrepository</directory>
+        <directory>${basedir}/src/main/resources/mibrepository</directory>
         <outputDirectory>etc/mibrepository</outputDirectory>
-        <fileMode>0755</fileMode>
+        <fileMode>0744</fileMode>
       </fileSet>
     </fileSets>
 </assembly>
