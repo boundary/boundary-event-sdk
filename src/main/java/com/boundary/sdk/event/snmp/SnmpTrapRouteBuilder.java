@@ -25,15 +25,12 @@ import com.boundary.sdk.event.UDPRouteBuilder;
  * extracts the variable bindings from them
  *
  */
-public class SnmpTrapRouteBuilder extends UDPRouteBuilder {
+public class SnmpTrapRouteBuilder extends SnmpBaseRouteBuilder {
 	
 	private static Logger LOG = LoggerFactory.getLogger(SnmpTrapRouteBuilder.class);
 	
 	private final int DEFAULT_SNMP_PORT=162;
 	
-	protected String mibRepositoryPath;
-	protected String license;
-	protected boolean convertToEvent;
 
 	/**
 	 * Default constructor
@@ -44,74 +41,20 @@ public class SnmpTrapRouteBuilder extends UDPRouteBuilder {
 		this.license = "";
 		this.convertToEvent = true;
 	}
-	
-	/**
-	 * Sets the path to the directory
-	 * to the compiled MIBs.
-	 * 
-	 * @param path File path to directory
-	 */
-	public void setMibRepository(String path) {
-		this.mibRepositoryPath = path;
-	}
-	
-	/**
-	 * Returns the currently configured path
-	 * to the compiled MIBs
-	 * 
-	 * @return {@link String} with the path to the MIB repository
-	 */
-	public String getMibRepository() {
-		return this.mibRepositoryPath;
-	}
-	
-	/**
-	 * Sets the SNMP4J-SMI license key
-	 * 
-	 * @param license {@link String} containing the license
-	 */
-	public void setLicense(String license) {
-		this.license = license;
-	}
-	
-	/**
-	 * Returns the current value of the SNMP4J-SMI license key
-	 * 
-	 * @return {@link String} contain the configured license key
-	 */
-	public String getLicense() {
-		return this.license;
-	}
-	
-	/**
-	 * Returns the whether the {@link SnmpMessage} is to be converted into {@link RawEvent}
-	 * 
-	 * @return boolean, true - convert event ; false - do not convert
-	 */
-	public boolean isConvertToEvent() {
-		return convertToEvent;
-	}
-
-	/**
-	 * Set whether the {@link SnmpMessage} is converted into a {@link RawEvent}
-	 * 
-	 * @param convertToEvent Flag indicating behavior
-	 */
-	public void setConvertToEvent(boolean convertToEvent) {
-		this.convertToEvent = convertToEvent;
-	}
 
 	/**
 	 * Configuration for the SNMP route 
 	 */
 	@Override
 	public void configure() {
+	
 		String uri = String.format("snmp:%s:%d?protocol=udp&type=TRAP",getBindAddress(),getPort());
 		from(uri)
 		.startupOrder(startUpOrder)
 		.routeId(this.routeId)
 		.to("log:com.boundary.sdk.event.snmp.SnmpRouteBuilder?level=DEBUG&showBody=true&showHeaders=true")
-		.process(new SnmpMessageToVarBinds(getMibRepository(),getLicense()))
+		.process(new SnmpMessageToTrap(getMibRepository(),getLicense()))
+		.to("log:com.boundary.sdk.event.snmp.SnmpRouteBuilder?level=DEBUG&showBody=true&showHeaders=true")
 		.marshal().serialization()
 		.to(getToUri())
 		;

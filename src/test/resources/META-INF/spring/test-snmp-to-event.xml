@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Copyright 2014-2015 Boundary, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+                   http://www.springframework.org/schema/beans
+                   http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+                   http://www.springframework.org/schema/util
+                   http://www.springframework.org/schema/util/spring-util-2.5.xsd
+                   http://camel.apache.org/schema/spring
+                   http://camel.apache.org/schema/spring/camel-spring.xsd">
+ 	
+  <!-- Listens for Incoming SNMP Traps -->
+  <bean id="trap-route" class="com.boundary.sdk.event.snmp.SnmpTrapRouteBuilder">
+    <property name="routeId" value="SNMP-TRAP"/>
+    <property name="startUpOrder" value="200"/>
+    <property name="bindAddress" value="localhost"/>
+    <property name="port" value="1162"/>
+	<property name="mibRepository" value="#{systemEnvironment['BOUNDARY_MIB_REPOSITORY']}"/>
+	<property name="license" value="#{systemEnvironment['BOUNDARY_MIB_LICENSE']}"/>
+    <property name="toUri" value="direct:snmp-trap-out"/>
+  </bean>
+  
+  <bean id="script-route" class="com.boundary.sdk.event.script.ScriptRouteBuilder">
+    <property name="routeId" value="TRANSFORM-SNMP"/>
+    <property name="startUpOrder" value="120"/>
+    <property name="fromUri" value="direct:snmp-trap-out"/>
+    <property name="toUri" value="direct:out"/>
+    <property name="transform" value="true"/>
+    <property name="cacheScript" value="true"/>
+    <property name="contentCache" value="true"/>
+    <property name="languageName" value="javascript"/>
+    <property name="script" value="classpath:META-INF/js/snmp-trap-to-event.js"/>
+  </bean>
+	  
+  <camelContext id="snmp-metrics" xmlns="http://camel.apache.org/schema/spring">
+
+    <routeBuilder ref="script-route"/>
+    <routeBuilder ref="trap-route"/>
+    <route id="DESERIALIZE">
+    	<from uri="direct:out"/>
+    	<unmarshal><serialization/></unmarshal>
+    	<to uri="mock:out"/>
+    </route>
+
+  </camelContext>
+</beans>

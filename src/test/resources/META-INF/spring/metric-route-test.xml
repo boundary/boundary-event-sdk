@@ -25,10 +25,9 @@ limitations under the License.
 	<bean id="measure-route" class="com.boundary.sdk.event.metric.MeasureRouteBuilder">
 		<property name="routeId" value="BOUNDARY-METRIC"/>
 		<property name="startUpOrder" value="100"/>
-		<property name="orgId" value="#{systemEnvironment['BOUNDARY_ORG_ID']}"/>
-		<property name="host" value="#{systemEnvironment['BOUNDARY_METRICS_API_HOST']}"/>
-		<property name="user" value="#{systemEnvironment['BOUNDARY_METRICS_EMAIL']}"/>
-		<property name="password" value="#{systemEnvironment['BOUNDARY_METRICS_TOKEN']}"/>
+		<property name="host" value="#{systemEnvironment['BOUNDARY_API_HOST']}"/>
+		<property name="user" value="#{systemEnvironment['BOUNDARY_EMAIL']}"/>
+		<property name="password" value="#{systemEnvironment['BOUNDARY_API_TOKEN']}"/>
 		<property name="fromUri" value="direct:measure-in"/>
 		<property name="toUri" value="mock:measure-out"/>
 	</bean>

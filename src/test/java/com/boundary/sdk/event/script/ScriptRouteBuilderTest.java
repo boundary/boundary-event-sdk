@@ -13,6 +13,7 @@
 // limitations under the License.
 package com.boundary.sdk.event.script;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Calendar.Builder;
@@ -31,19 +32,17 @@ import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.component.syslog.SyslogFacility;
 import org.apache.camel.component.syslog.SyslogMessage;
 import org.apache.camel.component.syslog.SyslogSeverity;
-import org.apache.camel.component.snmp.SnmpMessage;
 import org.apache.camel.test.spring.CamelSpringTestSupport;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.snmp4j.PDU;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.boundary.sdk.event.RawEvent;
 import com.boundary.sdk.event.Severity;
 import com.boundary.sdk.event.Status;
-import com.boundary.sdk.event.snmp.SnmpMessageEvent;
+import com.boundary.sdk.event.snmp.SnmpTrap;
 import com.boundary.sdk.event.syslog.SyslogMessageEvent;
 
 import static com.boundary.sdk.event.script.ScriptTestUtils.*;
@@ -138,7 +137,7 @@ public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
 
 	@Test
 	public void testScript() {
-		String expectedScript = "classpath:example.jons";
+		String expectedScript = "classpath:example.json";
 		ScriptRouteBuilder builder = new ScriptRouteBuilder();
 		builder.setScript(expectedScript);
 		assertEquals("check script", expectedScript, builder.getScript());
@@ -169,7 +168,7 @@ public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
 	@Test
 	public void testSyslogToEvent() throws InterruptedException {
 		out.expectedMessageCount(1);
-		in.sendBodyAndHeaders(this.syslogMessageEvent,setScriptHeader("classpath:syslog-to-raw_event.js"));
+		in.sendBodyAndHeaders(this.syslogMessageEvent,setScriptHeader("classpath:META-INF/js/syslog-to-event.js"));
 		out.assertIsSatisfied();
 		
 		List<Exchange> exchanges = out.getExchanges();
@@ -224,23 +223,14 @@ public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
 		assertEquals("check sender type","Boundary Event SDK",e.getSender().getType());
 	}
 	
-	private PDU createV2Trap() {
-		PDU pdu = new PDU();
-		
-		pdu.setType(PDU.TRAP);
-		
-		return pdu;
-	}
-	
 	@Test
 	public void testSNMPTrapToEvent() throws InterruptedException {
-		PDU pdu = createV2Trap();
-		SnmpMessageEvent snmpMessage = new SnmpMessageEvent(pdu);
+		SnmpTrap snmpTrap = new SnmpTrap();
 
 		out.expectedMessageCount(1);
 		
 		out.getExchanges();
-		in.sendBodyAndHeaders(snmpMessage,setScriptHeader("classpath:snmp-trap-to-event.js"));
+		in.sendBodyAndHeaders(snmpTrap,setScriptHeader("classpath:META-INF/js/snmp-trap-to-event.js"));
 		out.assertIsSatisfied();
 		
 		List<Exchange> exchanges = out.getExchanges();
@@ -249,7 +239,6 @@ public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
 		Message message = exchange.getIn();
 		RawEvent e = message.getBody(RawEvent.class);
 		assertNotNull("check event for not null",e);
-
 	}
 
 	@Test
@@ -257,12 +246,12 @@ public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
 		out.expectedMessageCount(1);
 		
 		out.getExchanges();
-		in.sendBodyAndHeaders(this.syslogMessageEvent,setScriptHeader("classpath:test-script-route-builder.json"));
+		in.sendBodyAndHeaders(this.syslogMessageEvent,setScriptHeader("classpath:META-INF/js/test-script-route-builder.js"));
 		out.assertIsSatisfied();
 	}
 	
 	@Test
-	public void testScriptNotFound() throws InterruptedException  {
+	public void testScriptNotFound() throws InterruptedException {
 		exception.expect(CamelExecutionException.class);
 		
 		out.expectedMessageCount(1);
@@ -284,7 +273,7 @@ public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
 		ScriptEvent event = new ScriptEvent();
 		
 		out.getExchanges();
-		in.sendBodyAndHeaders(event,setScriptHeader("classpath:test-script-event.js"));
+		in.sendBodyAndHeaders(event,setScriptHeader("classpath:META-INF/js/test-script-event.js"));
 		out.assertIsSatisfied();
 		
 		List<Exchange> exchanges = out.getExchanges();

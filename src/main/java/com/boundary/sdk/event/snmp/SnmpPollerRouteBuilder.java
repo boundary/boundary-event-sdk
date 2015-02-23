@@ -23,9 +23,11 @@ import org.snmp4j.mp.SnmpConstants;
 
 import com.boundary.sdk.snmp.metric.SnmpMetricCatalog;
 
-public class SnmpPollerRouteBuilder extends SnmpTrapRouteBuilder {
+public class SnmpPollerRouteBuilder extends SnmpBaseRouteBuilder {
 	
 	public final static String BOUNDARY_SNMP_POLLER_CONFIG="boundary.snmp.poller.configuration";
+	
+	private final int DEFAULT_SNMP_PORT=161;
 	
 	private static Logger LOG = LoggerFactory.getLogger(SnmpPollerRouteBuilder.class);
 	
@@ -33,7 +35,9 @@ public class SnmpPollerRouteBuilder extends SnmpTrapRouteBuilder {
 	private List<SnmpPollerConfiguration> configList;
 	
 	public SnmpPollerRouteBuilder() {
+		super();
 		catalog = new SnmpMetricCatalog();
+		this.port = DEFAULT_SNMP_PORT;
 	}
 	
 	public void loadConfiguration() throws Exception {

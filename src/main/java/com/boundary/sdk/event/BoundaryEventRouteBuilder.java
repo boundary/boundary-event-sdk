@@ -26,72 +26,41 @@ import static org.apache.camel.LoggingLevel.*;
 /**
  * {@link RouteBuilder} for sending events to Boundary. Accepts serialized {@link RawEvent}
  * that is transformed to JSON.
- *  
- * @author davidg
  *
  */
 public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	
+	private final String DEFAULT_HOST="premium-api.boundary.com";
+	private final int DEFAULT_PORT = 443;
+	private final String DEFAULT_FROM_URI = "direct:boundary-event";
+	private final int DEFAULT_VERSION=1;
+	
 	private static Logger LOG = LoggerFactory.getLogger(BoundaryEventRouteBuilder.class);
 
-	private String apiHost;
-	private int apiPort;
-	private String orgId;
-	private String apiKey;
+	private String host;
+	private int port;
+	private String user;
+	private String password;
+	private int version;
 
 	/**
 	 * Default constructor
 	 */
 	public BoundaryEventRouteBuilder() {
-		this.apiHost = "api.boundary.com";
-		this.apiPort = 443;
-		this.orgId = "";
-		this.apiKey = "";
-		this.fromUri = "direct:boundary-event";
+		this.host = DEFAULT_HOST;
+		this.port = DEFAULT_PORT;
+		this.fromUri = DEFAULT_FROM_URI;
+		this.password = "";
+		this.version = DEFAULT_VERSION;
 	}
-	
-	/**
-	 * Get the Boundary Organization ID to use by default 
-	 * @return {@link String} organization id
-	 */
-	public String getOrgId() {
-		return this.orgId;
-	}
-		
-	/**
-	 * Set the Boundary Organization ID to use by default
-	 * 
-	 * @param orgId Organization Id from the Boundary console.
-	 */
-	public void setOrgId(String orgId) {
-		this.orgId = orgId;
-	}
-	
-	/**
-	 * Set the Boundary authentication key
-	 * 
-	 * @param apiKey API key from the Boundary Console
-	 */
-	public void setApiKey(String apiKey) {
-		this.apiKey = apiKey;
-	}
-	
-	/**
-	 * Current value of the API key
-	 * 
-	 * @return {@link String}
-	 */
-	public String getApiKey() {
-		return this.apiKey;
-	}
-		
+			
 	/**
 	 * Set the host to use for sending Boundary API requests
 	 * 
-	 * @param apiHost Host that is running the Boundary API
+	 * @param host Host that is running the Boundary API
 	 */
-	public void setApiHost(String apiHost) {
-		this.apiHost = apiHost;
+	public void setHost(String host) {
+		this.host = host;
 	}
 	
 	/**
@@ -99,8 +68,8 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	 * 
 	 * @return {@link String}
 	 */
-	public String getApiHost() {
-		return this.apiHost;
+	public String getHost() {
+		return this.host;
 	}
 
 	/**
@@ -108,19 +77,53 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	 * 
 	 * @param apiPort Port to send Boundary API requests
 	 */
-	public void setApiPort(int apiPort) {
-		this.apiPort = apiPort;
+	public void setPort(int apiPort) {
+		this.port = apiPort;
 	}
 	
 	/**
-	 * Set the port to use for sending Boundary API requests
+	 * Get the port to use for sending Boundary API requests
 	 * 
 	 * @return int Gets the port used to send Boundary API requests
 	 */
-	public int getApiPort() {
-		return this.apiPort;
+	public int getPort() {
+		return this.port;
 	}
 	
+	/**
+	 * Gets the e-mail used for sending Boundary API requests
+	 * @return {@link String} e-mail
+	 */
+	public String getUser() {
+		return user;
+	}
+
+	/**
+	 * Sets user for sending Boundary API requests
+	 * @param user {@link String} of the user
+	 */
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	/**
+	 * Returns the password used for authentication
+	 * 
+	 * @return {@link String}
+	 */
+	public String getPassword() {
+		return password;
+	}
+
+	/**
+	 * Set the password to use for authentication
+	 * 
+	 * @param password {@link String} to use for authentication
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	/**
 	 * Configures the Camel route that receives {@link RawEvent}
 	 * and then sends to the Boundary API
@@ -128,17 +131,15 @@ public class BoundaryEventRouteBuilder extends BoundaryRouteBuilder {
 	 */
 	@Override
 	public void configure() {
-		
 		// Create the URL used to send events
-		String url = "https://" + apiHost + ":" + apiPort + "/" + orgId + "/" + "events";
-		
-		LOG.info("boundary event api url: " + url);
+		String url = String.format("https://%s:%d/v%d/events",host,port,version);
+		LOG.debug("boundary event api url: " + url);
 		
 		// Configure our HTTP connection to use BASIC authentication
 		HttpConfiguration config = new HttpConfiguration();
 		config.setAuthMethod(AuthMethod.Basic);
-		config.setAuthUsername(this.apiKey);
-		config.setAuthPassword("");
+		config.setAuthUsername(this.getUser());
+		config.setAuthPassword(this.getPassword());
 		
 		HttpComponent http = this.getContext().getComponent("https",HttpComponent.class);
 		http.setHttpConfiguration(config);

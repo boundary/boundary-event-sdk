@@ -24,8 +24,8 @@ limitations under the License.
 
 		<property name="routeId" value="BOUNDARY-METRIC"/>
 		<property name="startUpOrder" value="100"/>
-		<property name="user" value="#{systemEnvironment['BOUNDARY_PREMIUM_EMAIL']}"/>
-		<property name="password" value="#{systemEnvironment['BOUNDARY_PREMIUM_API_TOKEN']}"/>
+		<property name="user" value="#{systemEnvironment['BOUNDARY_EMAIL']}"/>
+		<property name="password" value="#{systemEnvironment['BOUNDARY_API_TOKEN']}"/>
 		<property name="fromUri" value="direct:api-in" />
 		<property name="toUri" value="mock:measure-out"/>
 	</bean>

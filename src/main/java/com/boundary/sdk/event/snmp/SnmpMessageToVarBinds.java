@@ -13,12 +13,10 @@
 // limitations under the License.
 package com.boundary.sdk.event.snmp;
 
-import java.io.File;
 import java.util.Vector;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
-import org.apache.camel.Processor;
 import org.apache.camel.component.snmp.SnmpMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,38 +27,20 @@ import org.snmp4j.smi.VariableBinding;
  * Extracts the Variable Bindings from a received
  * SNMP PDU (Protocol Data Unit) instance.
  */
-public class SnmpMessageToVarBinds implements Processor {
+public class SnmpMessageToVarBinds extends SnmpMessageProcessor {
 
-	private static Logger LOG = LoggerFactory.getLogger(SnmpTrapRouteBuilder.class);
-
-    private SmiSupport smi;
-
+	private static Logger LOG = LoggerFactory.getLogger(SnmpMessageToVarBinds.class);
+	
 	public SnmpMessageToVarBinds(String repositoryPath, String license) {
-
-		// If the repositoryPath is null or zero length 
-		// then bypass configuring the structured management information.
-		if (repositoryPath != null && repositoryPath.length() > 0) {
-			smi = new SmiSupport();
-
-			smi.setLicense(license);
-			File mibDirectory = new File(repositoryPath);
-			smi.setRepository(mibDirectory.getAbsolutePath());
-			smi.initialize();
-			smi.loadModules();
-		}
-		else {
-			throw new IllegalStateException("MIB repository path is null or empty.");
-		}
+		super(repositoryPath,license);
 	}
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
-		// Extract the SnmpMessage and PDU instances from the Camel Exchange
-		Message message = exchange.getIn();
-		SnmpMessage snmpMessage = message.getBody(SnmpMessage.class);
-		PDU pdu = snmpMessage.getSnmpMessage();
-		Vector<? extends VariableBinding> varBinds = pdu.getVariableBindings();
+		Vector<? extends VariableBinding> varBinds = SnmpExchangeUtils.extractVarBinds(exchange);
 		LOG.debug("Extracting {} variable bindings from PDU",varBinds.size());
+		Message message = exchange.getIn();
+		message.setHeader(BOUNDARY_SMI_MANAGER,this.getSmiManager());
 		message.setBody(varBinds);
 	}
 }

@@ -13,6 +13,8 @@
 // limitations under the License.
 package com.boundary.sdk.event.esper;
 
+import static org.apache.camel.LoggingLevel.DEBUG;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -68,7 +70,7 @@ public class EsperRouteBuilder extends BoundaryRouteBuilder {
 	private QueryList load(URI uri) {
 		ObjectMapper mapper = new ObjectMapper();
 		QueryList queryList = null;
-		System.out.println(uri);
+		LOG.info("Loading queries from {}",uri);
 		File file = new File(uri);
 
 		try {
@@ -101,6 +103,7 @@ public class EsperRouteBuilder extends BoundaryRouteBuilder {
 		.startupOrder(this.getStartUpOrder())
 		.routeId(this.getRouteId() + "-INPUT")
 		.unmarshal().serialization()
+		.log(DEBUG,"headers: ${headers} body; ${body}, class: ${body.getClass.toString}")
         .to(inputUri);
         
         addQueriesToRoute();
@@ -135,6 +138,7 @@ public class EsperRouteBuilder extends BoundaryRouteBuilder {
                         in.setBody(e);
                     }
                 })
+        .log(DEBUG,"headers: ${headers} body; ${body}, class: ${body.getClass.toString}")
         .marshal().serialization()
         .to(this.toUri);
     }

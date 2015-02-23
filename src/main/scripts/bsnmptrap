@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#if [ -z "$BOUNDARY_SDK_HOME" ]
+#then
+#   echo "BOUNDARY_SDK_HOME must be set"
+#   exit 1
+#fi
+#
+#export LIB=$BOUNDARY_SDK_HOME/lib
+#CLASSPATH=$(JARS=("$LIB"/*.jar); IFS=:; echo "${JARS[*]}")
+#export CLASSPATH="${BOUNDARY_SDK_HOME}/boundary-event-sdk-${BOUNDARY_SDK_VERSION}.jar:${CLASSPATH}"
+#MAIN_CLASS=com.boundary.sdk.event.EventApplication
+#CONFIG_URI="classpath:$BOUNDARY_SDK_HOME/etc/event-application.xml"
+#
+#exec java -cp "$CLASSPATH" -Dboundary.application.context.uri="$CONFIG_URI" "$MAIN_CLASS"
+
+mvn exec:java -Dexec.mainClass=com.boundary.sdk.app.SnmpTrapHandler

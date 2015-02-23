@@ -460,20 +460,13 @@ public class EventCLI {
 		event.getSource().setType("host");
 	}
 	
-	protected void configureApiKey() {
-		String apiKey = cmd.getOptionValue('a');
-		eventRouteBuilder.setApiKey(apiKey);
-	}
-	
-	protected void configureOrgId() {
-		String orgId = cmd.getOptionValue('o');
-		if (orgId != null) {
-			eventRouteBuilder.setOrgId(orgId);
-		}
+	protected void configurePassword() {
+		String password = cmd.getOptionValue('a');
+		eventRouteBuilder.setPassword(password);
 	}
 	
 	protected void configureApiHost() {
-		eventRouteBuilder.setApiHost("api.boundary.com");
+		eventRouteBuilder.setHost("api.boundary.com");
 	}
 
 	public void addEventRoute(CamelContext context) throws Exception {
@@ -481,8 +474,7 @@ public class EventCLI {
 		eventRouteBuilder.setRouteId("EVENT-ROUTE");
 		eventRouteBuilder.setFromUri("direct:event");
 		eventRouteBuilder.setStartUpOrder(100);
-		configureApiKey();
-		configureOrgId();
+		configurePassword();
 		context.addRoutes(eventRouteBuilder);
 	}
 	

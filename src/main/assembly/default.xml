@@ -30,7 +30,7 @@
         <fileMode>0744</fileMode>
       </file>
       <file>
-        <source>src/main/resources/META-INF/spring/snmp-metrics.xml</source>
+        <source>src/main/resources/META-INF/spring/snmp-collector.xml</source>
         <outputDirectory>etc</outputDirectory>
         <fileMode>0744</fileMode>
       </file>

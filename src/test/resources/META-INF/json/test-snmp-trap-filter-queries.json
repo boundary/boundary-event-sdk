@@ -1,0 +1,22 @@
+{
+	"queries": [
+		{
+			"name": "defaults",
+			"enabled": true,
+			"description": "Returns all of the syslog messages",
+			"query": "select * from SnmpTrap"
+		},
+		{
+			"name": "LinkDown",
+			"enabled": true,
+			"description": "Returns all of the SnmpTraps related to linkDown",
+			"query": "select * from SnmpTrap where trapName = 'linkDown'"
+		},
+		{
+			"name": "WarmStart",
+			"enabled": true,
+			"description": "Returns all of the SnmpTraps related to linkDown",
+			"query": "select * from SnmpTrap where trapName != 'warmStart'"
+		}
+	]
+}

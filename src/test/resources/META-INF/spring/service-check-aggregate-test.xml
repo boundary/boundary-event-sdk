@@ -21,25 +21,13 @@ limitations under the License.
                    http://camel.apache.org/schema/spring
                    http://camel.apache.org/schema/spring/camel-spring.xsd">
                    
-    <!-- Definition of the route that communicates with the Boundary API host -->
+        <!-- Definition of the route that communicates with the Boundary API host -->
 	<bean id="boundary-event-route" class="com.boundary.sdk.event.BoundaryEventRouteBuilder">
-	
 		<property name="routeId" value="BOUNDARY-EVENT"/>
-		<!-- This route needs to start first and stop last so all routes
-		     then send events to the boundary event route need to be
-                     configured with a start order higher than 100
-		  -->
 		<property name="startUpOrder" value="1000"/>
-		<!-- TBD: Encryption of apiKey using Camel APIs -->
-		
-		<!-- Boundary organization ID and API key can obtained by logging into the web
-		     console. Organization ID and API key are located in the users settings
-		  -->
-		<property name="orgId" value="#{systemEnvironment['BOUNDARY_ORG_ID']}"/>
-		
-		<property name="apiKey" value="#{systemEnvironment['BOUNDARY_API_KEY']}"/>
-
-         <!-- The endpoint URI to listen for boundary events -->
+		<property name="host" value="#{systemEnvironment['BOUNDARY_API_HOST']}"/>
+		<property name="user" value="#{systemEnvironment['BOUNDARY_EMAIL']}"/>
+		<property name="password" value="#{systemEnvironment['BOUNDARY_API_KEY']}"/>
 		<property name="fromUri" value="seda:boundary-event?concurrentConsumers=10"/>
 	</bean>
 
@@ -51,11 +39,8 @@ limitations under the License.
 	
 	<!-- Extracts the specific service test configuration from a ServiceTest generic instance -->
 	<bean id="configurationProcessor" class="com.boundary.sdk.event.service.ExtractServiceTestConfiguration"/>
-	
 	<bean id="ping-to-event" class="com.boundary.sdk.event.service.ping.PingInfoToEventProcessor"/>
-	
 	<bean id="port-to-event" class="com.boundary.sdk.event.service.port.PortInfoToEventProcessor"/>
-	
 	
 	<!-- Handles the processing of service checks to raw events	 -->
 <!-- 	<bean id="correlationProcessor" class="com.boundary.sdk.event.service.ServiceCheckToRawEvent"/> -->

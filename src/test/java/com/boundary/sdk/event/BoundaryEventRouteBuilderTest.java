@@ -45,22 +45,22 @@ public class BoundaryEventRouteBuilderTest {
 	}
 	
 	@Test
-	public void testEmptyKey() {
-		assertEquals("Check empty key","",route.getApiKey());
+	public void testEmptyPassword() {
+		assertEquals("Check empty password","",route.getPassword());
 	}
 
 	@Test
-	public void testSetApiKey() {
-		String expectedApiKey = "XXXXXXXXXX";
-		route.setApiKey(expectedApiKey);
-		assertEquals("Check apiKey",expectedApiKey,route.getApiKey());
+	public void testSetPassword() {
+		String expectedPassword = "XXXXXXXXXX";
+		route.setPassword(expectedPassword);
+		assertEquals("Check apiKey",expectedPassword,route.getPassword());
 	}
 	
 	@Test
-	public void testApiHost() {
+	public void testHost() {
 		String expectedApiHost = "some.where.but.no.where.com";
-		route.setApiHost(expectedApiHost);
-		assertEquals("Check api host",expectedApiHost,route.getApiHost());
+		route.setHost(expectedApiHost);
+		assertEquals("Check api host",expectedApiHost,route.getHost());
 	}
 	
 	@Test
@@ -79,9 +79,9 @@ public class BoundaryEventRouteBuilderTest {
 
 	@Test
 	public void testApiPort() {
-		int expectedApiPort = 8888;
-		route.setApiPort(expectedApiPort);
-		assertEquals("Check api port",expectedApiPort,route.getApiPort());
+		int expectedPort = 8888;
+		route.setPort(expectedPort);
+		assertEquals("Check api port",expectedPort,route.getPort());
 	}
 
 }

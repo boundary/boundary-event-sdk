@@ -27,6 +27,8 @@ import org.apache.commons.cli.Options;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.boundary.sdk.event.util.Log;
+
 
 /**
  * Command line tool to compile MIBs
@@ -76,6 +78,7 @@ public class MIBCompiler extends SmiSupport {
 		DEBUG=false;
 		mibTargetDir="";
 		mibPath="";
+		Log.logStandard(true);
 	}
 	
 	/**
@@ -190,7 +193,7 @@ public class MIBCompiler extends SmiSupport {
 				license.append(first ? s : " " + s);
 				first = false;
 			}
-			LOG.debug("license: " + license.toString());
+			Log.debug("license: " + license.toString());
 			setLicense(license.toString());
 		}
 		else {
@@ -221,7 +224,7 @@ public class MIBCompiler extends SmiSupport {
 				ok = true;
 			}
 			else {
-				LOG.error("Unable to read MIBs from " + path);
+				Log.error("Unable to read MIBs from " + path);
 			}
 		}
 
@@ -269,9 +272,9 @@ public class MIBCompiler extends SmiSupport {
 		if (setInputMIBs() && setOutputDirectory()) {
 			
 			// Write debug information before compilation
-			LOG.info("Input MIB file(s)/directory: " + mibPath);
-			LOG.info("Output MIB directory: " + mibTargetDir);
-			LOG.info("Compile Leniently: " + isCompileLeniently());
+			Log.info("Input MIB file(s)/directory: " + mibPath);
+			Log.info("Output MIB directory: " + mibTargetDir);
+			Log.info("Compile Leniently: " + isCompileLeniently());
 
 			// Initialize the SMI Manager
 			initialize();

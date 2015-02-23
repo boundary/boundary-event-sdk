@@ -56,9 +56,8 @@ public class SnmpMetricCatalogTest {
 		List<SnmpPollerConfiguration> configs = catalog.load();
 		SnmpPollerConfiguration config = configs.get(0);
 		Map<String, OidMap> map = config.getOidMap();
+		assertEquals("check OidMap size()",110,map.size());
 		OidMap oid = map.get("1.3.6.1.2.1.4.3.0");
-		System.out.println(map);
-		System.out.println(oid);
 		assertNotNull("check for not null",oid);
 		assertTrue("check enabled",oid.isEnabled());
 	}

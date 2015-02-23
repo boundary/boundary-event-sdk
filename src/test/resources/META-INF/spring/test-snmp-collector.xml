@@ -52,9 +52,9 @@ limitations under the License.
     <property name="routeId" value="MEASUREMENT-API"/>
     <property name="startUpOrder" value="110"/>
     <property name="fromUri" value="seda:boundary-metric?concurrentConsumers=10"/>
-    <property name="host" value="#{systemEnvironment['BOUNDARY_PREMIUM_API_HOST']}"/>
-    <property name="user" value="#{systemEnvironment['BOUNDARY_PREMIUM_EMAIL']}"/>
-    <property name="password" value="#{systemEnvironment['BOUNDARY_PREMIUM_API_TOKEN']}"/>
+    <property name="host" value="#{systemEnvironment['BOUNDARY_API_HOST']}"/>
+    <property name="user" value="#{systemEnvironment['BOUNDARY_EMAIL']}"/>
+    <property name="password" value="#{systemEnvironment['BOUNDARY_API_TOKEN']}"/>
     <property name="toUri" value="mock:out"/>
   </bean>
   

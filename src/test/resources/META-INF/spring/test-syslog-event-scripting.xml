@@ -24,19 +24,19 @@ limitations under the License.
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
 		<route id="SYSLOG-TO-EVENT-JS">
 			<from uri="direct:syslog-js-in" />
-			<to uri="language:javascript:classpath:META-INF/js/syslog-to-event.js" />
+			<to uri="language:javascript:classpath:META-INF/js/test-syslog-to-event.js" />
 			<to uri="mock:event-js-out"/>
 		</route>
 		
 		<route id="SYSLOG-TO-EVENT-PY">
 			<from uri="direct:syslog-py-in" />
-			<to uri="language:python:classpath:META-INF/python/syslog_to_event.py" />
+			<to uri="language:python:classpath:META-INF/python/test-syslog_to_event.py" />
 			<to uri="mock:event-py-out"/>
 		</route>
 		
 		<route id="SYSLOG-TO-EVENT-RB">
 			<from uri="direct:syslog-rb-in" />
-			<to uri="language:ruby:classpath:META-INF/ruby/syslog_to_event.rb" />
+			<to uri="language:ruby:classpath:META-INF/ruby/test-syslog_to_event.rb" />
 			<to uri="mock:event-rb-out"/>
 		</route>
 		
