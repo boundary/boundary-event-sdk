@@ -16,13 +16,11 @@
       </dependencySet>
     </dependencySets>
     <files>
-<!--
       <file>
-        <source>src/main/scripts/env.sh</source>
+        <source>src/main/etc/env.sh</source>
         <outputDirectory>bin</outputDirectory>
-        <fileMode>0755</fileMode>
+        <fileMode>0744</fileMode>
       </file>
--->
       <!-- SNMP Trap Handler -->
       <file>
         <source>${basedir}/src/main/resources/META-INF/spring/snmp-trap.xml</source>
@@ -93,29 +91,12 @@
         <directory>${project.build.directory}/bin</directory>
         <outputDirectory>bin</outputDirectory>
         <fileMode>0755</fileMode>
-<!--
-        <filtered>true</filtered>
-        <includes>
-          <include>syslog.*</include>
-          <include>snmp.*</include>
-        </includes>
-        <excludes>
-          <exclude>syslog.event.properties</exclude>
-        </excludes>
--->
-      </fileSet>
-<!--
-      <fileSet>
-        <directory>${project.build.directory}/src/main/log</directory>
-        <outputDirectory>log</outputDirectory>
-        <fileMode>0755</fileMode>
       </fileSet>
       <fileSet>
-        <directory>${project.build.directory}/etc</directory>
-        <outputDirectory>etc</outputDirectory>
+        <directory>${project.build.directory}/src/main/resources/mibrepository</directory>
+        <outputDirectory>etc/mibrepository</outputDirectory>
         <fileMode>0755</fileMode>
       </fileSet>
--->
     </fileSets>
 </assembly>
 
