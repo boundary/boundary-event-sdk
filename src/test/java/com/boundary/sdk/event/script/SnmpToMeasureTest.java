@@ -48,6 +48,8 @@ import com.boundary.sdk.snmp.metric.OidMap;
 import static com.boundary.sdk.event.script.ScriptTestUtils.*;
 
 public class SnmpToMeasureTest extends CamelSpringTestSupport {
+	
+	private final static String SNMP_TO_MEASURE_SCRIPT = "classpath:META-INF/js/lib/snmp-to-measure.js";
 
 	@Produce(uri = "direct:in")
 	private ProducerTemplate in;
@@ -96,7 +98,7 @@ public class SnmpToMeasureTest extends CamelSpringTestSupport {
 		SnmpPollerConfiguration config = getSnmpPollerConfiguration(
 				expectedSource,expectedMetricId,expectedOid);
 		out.expectedMessageCount(1);
-		in.sendBodyAndHeaders(vb,setScriptHeaders("classpath:META-INF/js/snmp-to-measure.js",config));
+		in.sendBodyAndHeaders(vb,setScriptHeaders(SNMP_TO_MEASURE_SCRIPT,config));
 		out.assertIsSatisfied();
 		
 		Measurement m = getMeasurement(out);
@@ -123,7 +125,7 @@ public class SnmpToMeasureTest extends CamelSpringTestSupport {
 		SnmpPollerConfiguration config = getSnmpPollerConfiguration(
 				expectedSource,expectedMetricId,expectedOid);
 		out.expectedMessageCount(1);
-		in.sendBodyAndHeaders(vb,setScriptHeaders("classpath:META-INF/js/snmp-to-measure.js",config));
+		in.sendBodyAndHeaders(vb,setScriptHeaders(SNMP_TO_MEASURE_SCRIPT,config));
 		out.assertIsSatisfied();
 		
 		Measurement m = getMeasurement(out);

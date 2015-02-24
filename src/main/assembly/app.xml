@@ -38,7 +38,12 @@
         <fileMode>0744</fileMode>
       </file>
       <file>
-        <source>${basedir}/src/main/resources/META-INF/js/snmp-trap-to-event.js</source>
+        <source>${basedir}/src/main/resources/META-INF/js/lib/snmp-trap-to-event.js</source>
+        <outputDirectory>etc/META-INF/js</outputDirectory>
+        <fileMode>0744</fileMode>
+      </file>
+      <file>
+        <source>${basedir}/src/main/resources/META-INF/js/lib/snmp-library.js</source>
         <outputDirectory>etc/META-INF/js</outputDirectory>
         <fileMode>0744</fileMode>
       </file>
@@ -69,7 +74,7 @@
         <fileMode>0744</fileMode>
       </file>
       <file>
-        <source>${basedir}/src/main/resources/META-INF/js/snmp-to-measure.js</source>
+        <source>${basedir}/src/main/resources/META-INF/js/lib/snmp-to-measure.js</source>
         <outputDirectory>etc/META-INF/js</outputDirectory>
         <fileMode>0744</fileMode>
       </file>
@@ -86,7 +91,7 @@
         <fileMode>0744</fileMode>
       </file>
       <file>
-        <source>${basedir}/src/main/resources/META-INF/js/syslog-to-event.js</source>
+        <source>${basedir}/src/main/resources/META-INF/js/lib/syslog-to-event.js</source>
         <outputDirectory>etc/META-INF/js</outputDirectory>
         <fileMode>0744</fileMode>
       </file>
