@@ -13,13 +13,24 @@
 // limitations under the License.
 package com.boundary.sdk.event.exec;
 
+import static org.apache.camel.LoggingLevel.INFO;
+
+import org.apache.camel.model.RouteDefinition;
+
 import com.boundary.sdk.event.BoundaryRouteBuilder;
 
 public class RunExec extends BoundaryRouteBuilder {
 
 	@Override
 	public void configure() throws Exception {
-		from(getFromUri())
-		.to(getToUri());
+		RouteDefinition routeDef = from(getFromUri())
+		.routeId(this.getRouteId())
+		.startupOrder(this.getStartUpOrder())
+		.process(new ExecSetHeaders())
+		.log(INFO,"Exec ${headers.CamelExecCommandExecutable} exit code: ${headers.CamelExecExitValue}");
+
+		if (this.getToUri() != null && this.getToUri().length() > 0) {
+			routeDef.to(getToUri());
+		}
 	}
 }
