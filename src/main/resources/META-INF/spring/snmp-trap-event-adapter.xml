@@ -30,52 +30,29 @@ limitations under the License.
 		<property name="fromUri" value="seda:boundary-event?concurrentConsumers=10"/>
 	</bean>
 	
+	<bean id="esper-route" class="com.boundary.sdk.event.esper.EsperRouteBuilder">
+		<property name="routeId" value="ESPER"/>
+		<property name="startUpOrder" value="130"/>
+		<property name="fromUri" value="seda:esper"/>
+		<property name="toUri" value="seda:boundary-event"/>
+		<property name="instance" value="events"/>
+		<property name="configuration" value="snmp-trap-filter-queries.json"/>
+	</bean>	
+	
 	<bean id="syslog-route" class="com.boundary.sdk.event.snmp.SNMPRouteBuilder">
 		<property name="routeId" value="SNMP"/>
 		<property name="startUpOrder" value="120"/>
 		<property name="port" value="1162"/>
 		<property name="mibRepository" value="#{systemEnvironment['BOUNDARY_MIB_REPOSITORY']}"/>
 		<property name="license" value="#{systemEnvironment['BOUNDARY_MIB_LICENSE']}"/>
-		<property name="toUri" value="stream:out"/>
+		<property name="toUri" value="seda:esper"/>
 	</bean>
-	
-	<bean id="esper-route" class="com.boundary.sdk.event.esper.EsperRouteBuilder">
-		<property name="routeId" value="ESPER"/>
-		<property name="startUpOrder" value="130"/>
-		<property name="fromUri" value="seda:to-esper"/>
-		<property name="toUri" value="seda:from-esper"/>
-		<property name="instance" value="events"/>
-		<property name="configuration" value="snmp-trap-filter-queries.json"/>
-	</bean>	
    
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
 			
         <routeBuilder ref="boundary-event-route"/>
+        <routeBuilder ref="esper-route"/>
 		<routeBuilder ref="syslog-route"/>
-		<routeBuilder ref="esper-route"/>
-		
-<!-- 		<route id="TIMER-ROUTE">
-			<from uri="timer://foo?fixedRate=true&amp;period=1000"/>
-			<bean ref="generate-events"/>
-			<to uri="seda:to-esper"/>
-		</route>
- -->		
-<!-- 		<route id="SCOPE-ROUTE">
-			<from uri="seda:out-syslog"/>
-			<unmarshal>
-				<serialization/>
-			</unmarshal>
-			<to uri="stream:out"/>		
-			<marshal>
-				<serialization/>
-			</marshal>
-			<to uri="seda:to-esper"/>
-		</route>
- -->		
-		<route id="OUT-ROUTE">
-			<from uri="seda:from-esper"/>
-			<unmarshal><serialization/></unmarshal>
-			<to uri="stream:out"/>
-		</route>
+
 	</camelContext>
 </beans>

@@ -168,7 +168,7 @@ public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
 	@Test
 	public void testSyslogToEvent() throws InterruptedException {
 		out.expectedMessageCount(1);
-		in.sendBodyAndHeaders(this.syslogMessageEvent,setScriptHeader("classpath:META-INF/js/syslog-to-event.js"));
+		in.sendBodyAndHeaders(this.syslogMessageEvent,setScriptHeader("classpath:META-INF/js/lib/syslog-to-event.js"));
 		out.assertIsSatisfied();
 		
 		List<Exchange> exchanges = out.getExchanges();
@@ -230,7 +230,7 @@ public class ScriptRouteBuilderTest extends CamelSpringTestSupport {
 		out.expectedMessageCount(1);
 		
 		out.getExchanges();
-		in.sendBodyAndHeaders(snmpTrap,setScriptHeader("classpath:META-INF/js/snmp-trap-to-event.js"));
+		in.sendBodyAndHeaders(snmpTrap,setScriptHeader("classpath:META-INF/js/lib/snmp-trap-to-event.js"));
 		out.assertIsSatisfied();
 		
 		List<Exchange> exchanges = out.getExchanges();

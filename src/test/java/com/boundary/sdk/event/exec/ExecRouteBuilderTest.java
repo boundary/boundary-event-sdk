@@ -39,9 +39,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class ExecTest extends CamelSpringTestSupport {
+public class ExecRouteBuilderTest extends CamelSpringTestSupport {
 	
-	private static Logger LOG = LoggerFactory.getLogger(ExecTest.class);
+	private static Logger LOG = LoggerFactory.getLogger(ExecRouteBuilderTest.class);
 	
 	private Map<String,Object> headers;
 	private List<String> args;
@@ -71,6 +71,7 @@ public class ExecTest extends CamelSpringTestSupport {
 		headers.put(EXEC_COMMAND_ARGS,args);
 		in.sendBodyAndHeaders("",headers);
 	}
+
 	@Ignore
 	@Test
 	public void testSimpleExec() throws InterruptedException, IOException {

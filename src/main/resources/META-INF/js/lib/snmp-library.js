@@ -20,7 +20,7 @@ var SEVERITY = Java.type('com.boundary.sdk.event.Severity');
 var STATUS = Java.type('com.boundary.sdk.event.Status');
 var SNMP_VERSION = Java.type('com.boundary.sdk.event.snmp.SnmpTrap.SnmpVersion');
 
-// Extract
+// Define a JavaScript object to interface to SNMP4J in java
 
 function Snmp() {
 	var BOUNDARY_SMI_MANAGER = com.boundary.sdk.event.snmp.SnmpMessageToVarBinds.BOUNDARY_SMI_MANAGER;
@@ -30,6 +30,10 @@ function Snmp() {
 	
 	this.findObjectByOid = function(oid) {
 		return this.smiManager.findSmiObject(oid);
+	};
+	
+	this.getScriptDirectory = function() {
+		return java.lang.System.getenv("BOUNDARY_SDK_SCRIPT_DIR");
 	};
 }
 

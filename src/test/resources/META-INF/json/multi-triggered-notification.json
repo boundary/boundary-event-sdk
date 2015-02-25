@@ -1,0 +1,63 @@
+{
+  "alarmName": "CPU usage is high",
+  "status": "TRIGGERED",
+  "metric": {
+    "id": "cpu",
+    "name": "CPU utilization",
+    "type": "percent"
+  },
+  "affectedServers": {
+    "boundary-snmp-001": {
+      "isSet": true,
+      "hostname": "boundary-snmp-001",
+      "aggregate": "avg",
+      "metric": "CPU utilization",
+      "value": 0.9998737333333333,
+      "threshold": 0.8,
+      "time": 1424793480000,
+      "link": "https://premium.boundary.com/2105/default?ival=60&marker=1424793480000!cpu",
+      "text": {
+        "isSet": true,
+        "serverName": "boundary-snmp-001",
+        "link": "https://premium.boundary.com/2105/default?ival=60&marker=1424793480000!cpu",
+        "labelHTML": "Server <strong>boundary-snmp-001</strong>'s avg CPU utilization is <strong style=\"color:#900\">100.0%</strong> which is greater than the threshold of 80.0%",
+        "labelText": "Server boundary-snmp-001's avg CPU utilization is 100.0% which is greater than the threshold of 80.0%"
+      }
+    },
+    "boundary-snmp-003": {
+      "isSet": true,
+      "hostname": "boundary-snmp-003",
+      "aggregate": "avg",
+      "metric": "CPU utilization",
+      "value": 0.9998349833333333,
+      "threshold": 0.8,
+      "time": 1424793480000,
+      "link": "https://premium.boundary.com/2105/default?ival=60&marker=1424793480000!cpu",
+      "text": {
+        "isSet": true,
+        "serverName": "boundary-snmp-003",
+        "link": "https://premium.boundary.com/2105/default?ival=60&marker=1424793480000!cpu",
+        "labelHTML": "Server <strong>boundary-snmp-003</strong>'s avg CPU utilization is <strong style=\"color:#900\">100.0%</strong> which is greater than the threshold of 80.0%",
+        "labelText": "Server boundary-snmp-003's avg CPU utilization is 100.0% which is greater than the threshold of 80.0%"
+      }
+    },
+    "boundary-snmp-002": {
+      "isSet": true,
+      "hostname": "boundary-snmp-002",
+      "aggregate": "avg",
+      "metric": "CPU utilization",
+      "value": 0.9995898666666665,
+      "threshold": 0.8,
+      "time": 1424793480000,
+      "link": "https://premium.boundary.com/2105/default?ival=60&marker=1424793480000!cpu",
+      "text": {
+        "isSet": true,
+        "serverName": "boundary-snmp-002",
+        "link": "https://premium.boundary.com/2105/default?ival=60&marker=1424793480000!cpu",
+        "labelHTML": "Server <strong>boundary-snmp-002</strong>'s avg CPU utilization is <strong style=\"color:#900\">100.0%</strong> which is greater than the threshold of 80.0%",
+        "labelText": "Server boundary-snmp-002's avg CPU utilization is 100.0% which is greater than the threshold of 80.0%"
+      }
+    }
+  },
+  "resolvedServers": {}
+}

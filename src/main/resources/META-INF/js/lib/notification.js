@@ -11,15 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.boundary.sdk.event.exec;
 
-import com.boundary.sdk.event.BoundaryRouteBuilder;
+var NOTIFICATION_STATUS = Java.type('com.boundary.sdk.event.notification.NotificationStatus');
 
-public class RunExec extends BoundaryRouteBuilder {
+function Notification() {
 
-	@Override
-	public void configure() throws Exception {
-		from(getFromUri())
-		.to(getToUri());
-	}
 }

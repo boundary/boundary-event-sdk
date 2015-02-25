@@ -21,6 +21,11 @@
         <outputDirectory>bin</outputDirectory>
         <fileMode>0744</fileMode>
       </file>
+      <file>
+        <source>${basedir}/src/main/resources/log4j.properties</source>
+        <outputDirectory>etc</outputDirectory>
+        <fileMode>0744</fileMode>
+      </file>
       <!-- SNMP Trap Handler -->
       <file>
         <source>${basedir}/src/main/resources/META-INF/spring/snmp-trap.xml</source>
@@ -33,8 +38,18 @@
         <fileMode>0744</fileMode>
       </file>
       <file>
-        <source>${basedir}/src/main/resources/META-INF/js/snmp-trap-to-event.js</source>
-        <outputDirectory>etc/META-INF/js</outputDirectory>
+        <source>${basedir}/src/main/resources/META-INF/js/lib/snmp-trap-to-event.js</source>
+        <outputDirectory>etc/META-INF/js/lib</outputDirectory>
+        <fileMode>0744</fileMode>
+      </file>
+      <file>
+        <source>${basedir}/src/main/resources/META-INF/js/lib/notification.js</source>
+        <outputDirectory>etc/META-INF/js/lib</outputDirectory>
+        <fileMode>0744</fileMode>
+      </file>
+      <file>
+        <source>${basedir}/src/main/resources/META-INF/js/lib/snmp-library.js</source>
+        <outputDirectory>etc/META-INF/js/lib</outputDirectory>
         <fileMode>0744</fileMode>
       </file>
       <!-- SNMP Collector -->
@@ -64,8 +79,8 @@
         <fileMode>0744</fileMode>
       </file>
       <file>
-        <source>${basedir}/src/main/resources/META-INF/js/snmp-to-measure.js</source>
-        <outputDirectory>etc/META-INF/js</outputDirectory>
+        <source>${basedir}/src/main/resources/META-INF/js/lib/snmp-to-measure.js</source>
+        <outputDirectory>etc/META-INF/lib/js</outputDirectory>
         <fileMode>0744</fileMode>
       </file>
 
@@ -81,8 +96,19 @@
         <fileMode>0744</fileMode>
       </file>
       <file>
-        <source>${basedir}/src/main/resources/META-INF/js/syslog-to-event.js</source>
+        <source>${basedir}/src/main/resources/META-INF/js/lib/syslog-to-event.js</source>
+        <outputDirectory>etc/META-INF/lib/js</outputDirectory>
+        <fileMode>0744</fileMode>
+      </file>
+      <!-- Notification -->
+      <file>
+        <source>${basedir}/src/main/resources/META-INF/js/lib/syslog-to-event.js</source>
         <outputDirectory>etc/META-INF/js</outputDirectory>
+        <fileMode>0744</fileMode>
+      </file>
+      <file>
+        <source>${basedir}/src/main/resources/META-INF/spring/notification-exec.xml</source>
+        <outputDirectory>etc/META-INF/spring</outputDirectory>
         <fileMode>0744</fileMode>
       </file>
     </files>
@@ -93,9 +119,9 @@
         <fileMode>0755</fileMode>
       </fileSet>
       <fileSet>
-        <directory>${project.build.directory}/src/main/resources/mibrepository</directory>
+        <directory>${basedir}/src/main/resources/mibrepository</directory>
         <outputDirectory>etc/mibrepository</outputDirectory>
-        <fileMode>0755</fileMode>
+        <fileMode>0744</fileMode>
       </fileSet>
     </fileSets>
 </assembly>

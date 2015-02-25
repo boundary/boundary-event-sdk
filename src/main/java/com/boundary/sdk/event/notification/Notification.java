@@ -14,8 +14,6 @@
 package com.boundary.sdk.event.notification;
 
 /**
- * 
- * @author davidg
  *
  */
 public class Notification {
