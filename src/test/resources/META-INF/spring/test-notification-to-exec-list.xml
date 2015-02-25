@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-Copyright 2014 Boundary, Inc.
+Copyright 2014-2015 Boundary, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,21 +20,27 @@ limitations under the License.
                    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
                    http://camel.apache.org/schema/spring
                    http://camel.apache.org/schema/spring/camel-spring.xsd">
-                   
-
-	<bean id="syslog-route" class="com.boundary.sdk.event.exec.RunExec">
-		<property name="routeId" value="SYSLOG"/>
-		<property name="startUpOrder" value="120"/>
-		<property name="fromUri" value="seda:exec-bean-in?concurrentConsumers=10"/>
-		<property name="toUri" value="direct:exec-bean"/>
+	
+	<bean id="script-route" class="com.boundary.sdk.event.script.ScriptRouteBuilder">
+		<property name="routeId" value="SCRIPT"/>
+		<property name="startUpOrder" value="100"/>
+		<property name="fromUri" value="direct:script-in"/>
+		<property name="toUri" value="direct:script-out"/>
+		<property name="script" value="classpath:META-INF/js/lib/notification-to-execs.js"/>
 	</bean>
-
-	<camelContext id="exec-test" xmlns="http://camel.apache.org/schema/spring">				
-		<route id="exec-route">
-			<from uri="direct:exec-in"/>
-			<to uri="exec:command"/>
-			<convertBodyTo type="java.lang.String" charset="UTF-8"/>
-			<to uri="mock:exec-out"/>
+   
+	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+		<routeBuilder ref="script-route"/>
+		<route id="SERIALIZE">
+			<from uri="direct:in"/>
+			<marshal><serialization/></marshal>
+			<to uri="direct:script-in"/>
 		</route>
+		<route id="DE-SERIALIZE">
+			<from uri="direct:script-out"/>
+			<unmarshal><serialization/></unmarshal>
+			<to uri="mock:out"/>
+		</route>
+		
 	</camelContext>
 </beans>

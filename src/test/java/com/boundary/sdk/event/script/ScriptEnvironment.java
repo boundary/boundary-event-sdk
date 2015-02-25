@@ -41,7 +41,6 @@ public class ScriptEnvironment {
 
 	@Test
 	public void test() {
-		fail("Not yet implemented");
 	}
 
 	public static void main(String [] args) {

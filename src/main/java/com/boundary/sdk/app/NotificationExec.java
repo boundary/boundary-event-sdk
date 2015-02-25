@@ -39,6 +39,4 @@ public class NotificationExec extends CamelApplication {
 			LOG.error("{}",e.getMessage());
 		}
 	}
-
-
 }

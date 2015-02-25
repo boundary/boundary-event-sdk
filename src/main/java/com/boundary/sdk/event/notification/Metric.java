@@ -51,9 +51,9 @@ public class Metric implements Serializable {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Metric [id=");
 		builder.append(id);
-		builder.append("\n, name=");
+		builder.append(", name=");
 		builder.append(name);
-		builder.append("\n, type=");
+		builder.append(", type=");
 		builder.append(type);
 		builder.append("]");
 		return builder.toString();

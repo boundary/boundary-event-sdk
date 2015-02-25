@@ -12,28 +12,52 @@
                    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
                    http://camel.apache.org/schema/spring
                    http://camel.apache.org/schema/spring/camel-spring.xsd">
-
-
+                   
+    <bean id="split-execs" class="com.boundary.sdk.event.exec.SplitExecs"/>
+    
+    <bean id="script-route" class="com.boundary.sdk.event.script.ScriptRouteBuilder">
+		<property name="routeId" value="NOTIFICATION-TO-EXECS"/>
+		<property name="startUpOrder" value="110"/>
+		<property name="transform" value="true"/>
+		<property name="cacheScript" value="true"/>
+		<property name="contentCache" value="true"/>
+		<property name="languageName" value="javascript"/>
+		<property name="script" value="classpath:META-INF/js/lib/notification-to-execs.js"/>
+		<property name="fromUri" value="seda:notif-out?concurrentConsumers=10"/>
+		<property name="toUri" value="direct:split"/>
+	</bean>
+    
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
 	
+		<routeBuilder ref="script-route"/>
+	
+		<!-- Used to unmarshal into our java object -->
 		<dataFormats>
 		<json id="jackson" library="Jackson" unmarshalTypeName="com.boundary.sdk.event.notification.AlarmNotification" />
 		</dataFormats>
-	
+		
+		<!-- Boundary action calls this end point -->
 		<route id="ALARM-NOTIFICATION">
 			<from uri="jetty:http://0.0.0.0:8127/notification" />
 			<convertBodyTo type="String" />
 			<log message="body: ${body}" />
 			<unmarshal ref="jackson"/>
-			
-			<to uri="stream:out" />
+			<marshal><serialization/></marshal>
+			<to uri="seda:notif-out" />
 		</route>
 		
-<!-- 		<route id="ALARM-TO-EXEC">
+		<route id="SPLIT-EXEC">
+			<from uri="direct:split"/>
+			<unmarshal><serialization/></unmarshal>
+			<split >
+				<simple>${body.getExecList}</simple>
+				<to uri="seda:exec"/>
+			</split>
 		</route>
 		
 		<route id="EXEC">
-			<from uri=""
-		</route> -->
+			<from uri="seda:exec?concurrentConsumers=10"/>
+			<to uri="exec:echo"/>
+		</route>
 	</camelContext>
 </beans>

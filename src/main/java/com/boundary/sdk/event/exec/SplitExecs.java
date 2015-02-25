@@ -13,24 +13,21 @@
 // limitations under the License.
 package com.boundary.sdk.event.exec;
 
-import static org.apache.camel.LoggingLevel.INFO;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.camel.model.RouteDefinition;
+import org.apache.camel.Body;
 
-import com.boundary.sdk.event.BoundaryRouteBuilder;
 
-public class RunExec extends BoundaryRouteBuilder {
+public class SplitExecs {
+    
+    public List<Exec> splitBody(@Body ExecList body) {
 
-	@Override
-	public void configure() throws Exception {
-		RouteDefinition routeDef = from(getFromUri())
-		.routeId(this.getRouteId())
-		.startupOrder(this.getStartUpOrder())
-		.process(new ExecSetHeaders())
-		.log(INFO,"Exec ${headers.CamelExecCommandExecutable} exit code: ${headers.CamelExecExitValue}");
-
-		if (this.getToUri() != null && this.getToUri().length() > 0) {
-			routeDef.to(getToUri());
-		}
-	}
+        List<Exec> answer = new ArrayList<Exec>();
+        for (Exec exec : body.getExecList()) {
+            answer.add(exec);
+        }
+ 
+        return answer;
+    }
 }

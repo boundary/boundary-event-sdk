@@ -44,7 +44,7 @@ limitations under the License.
     <property name="cacheScript" value="true"/>
     <property name="contentCache" value="true"/>
     <property name="languageName" value="javascript"/>
-    <property name="script" value="classpath:META-INF/js/snmp-to-measure.js"/>
+    <property name="script" value="classpath:META-INF/js/lib/snmp-to-measure.js"/>
   </bean>
 	
   <!-- Receives requests to submit measurement values to Boundary -->

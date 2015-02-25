@@ -15,7 +15,7 @@
 // Load our SNMP java script library
 var SCRIPT_DIR=java.lang.System.getenv("BOUNDARY_SDK_SCRIPT_DIR");
 try {
-	load(SCRIPT_DIR + "/snmp-library.js");
+	load(SCRIPT_DIR + "/lib/snmp-library.js");
 	load(SCRIPT_DIR + "/trap-to-event.js")
 } catch(err) {
 	print("Unable to load SNMP javascript library");

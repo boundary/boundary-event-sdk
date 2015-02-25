@@ -11,18 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+package com.boundary.sdk.event.notification;
 
+public enum NotificationStatus {
 
-// Extract the notification object
-var notification = body;
-
-var execList = new com.boundary.sdk.event.exec.ExecList();
-var exec = new com.boundary.sdk.event.exec.Exec();
-
-exec.setExecutable("ls");
-exec.setArgs(".");
-execList.addExec(exec);
-
-
-result = execList;
-
+	RESOLVED,
+	TRIGGERED,
+	UPDATE
+}

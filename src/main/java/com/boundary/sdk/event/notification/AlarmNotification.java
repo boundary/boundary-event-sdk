@@ -20,7 +20,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Map;
 
-import com.boundary.sdk.snmp.metric.Pollers;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -31,14 +30,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class AlarmNotification implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 141334700285462329L;
 	@JsonProperty
 	private String alarmName;
 	@JsonProperty
-	private AlarmNotificationStatus status;
+	private NotificationStatus status;
 	@JsonProperty
 	private Metric metric;
 	@JsonProperty
@@ -51,10 +47,10 @@ public class AlarmNotification implements Serializable {
 	public void setAlarmName(String alarmName) {
 		this.alarmName = alarmName;
 	}
-	public AlarmNotificationStatus getStatus() {
+	public NotificationStatus getStatus() {
 		return status;
 	}
-	public void setStatus(AlarmNotificationStatus status) {
+	public void setStatus(NotificationStatus status) {
 		this.status = status;
 	}
 	public Metric getMetric() {
@@ -83,17 +79,18 @@ public class AlarmNotification implements Serializable {
 		StringBuilder builder = new StringBuilder();
 		builder.append("AlarmNotification [alarmName=");
 		builder.append(alarmName);
-		builder.append("\n, status=");
+		builder.append(", status=");
 		builder.append(status);
-		builder.append("\n, metric=");
+		builder.append(", metric=");
 		builder.append(metric);
-		builder.append("\n, affectedServers=");
+		builder.append(", affectedServers=");
 		builder.append(affectedServers);
-		builder.append("\n, resolvedServers=");
+		builder.append(", resolvedServers=");
 		builder.append(resolvedServers);
 		builder.append("]");
 		return builder.toString();
 	}
+	
 	public static AlarmNotification load(String resource) throws URISyntaxException {
 		AlarmNotification instance = new AlarmNotification();
 

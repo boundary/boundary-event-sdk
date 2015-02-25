@@ -11,11 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.boundary.sdk.event.notification;
 
-public enum AlarmNotificationStatus {
+var NOTIFICATION_STATUS = Java.type('com.boundary.sdk.event.notification.NotificationStatus');
 
-	RESOLVED,
-	TRIGGERED,
-	UPDATE
+function Notification() {
+
 }

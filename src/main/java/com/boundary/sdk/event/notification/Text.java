@@ -51,13 +51,13 @@ public class Text implements Serializable {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Text [set=");
 		builder.append(set);
-		builder.append("\n, serverName=");
+		builder.append(", serverName=");
 		builder.append(serverName);
-		builder.append("\n, link=");
+		builder.append(", link=");
 		builder.append(link);
-		builder.append("\n, labelHTML=");
+		builder.append(", labelHTML=");
 		builder.append(labelHTML);
-		builder.append("\n, labelText=");
+		builder.append(", labelText=");
 		builder.append(labelText);
 		builder.append("]");
 		return builder.toString();
