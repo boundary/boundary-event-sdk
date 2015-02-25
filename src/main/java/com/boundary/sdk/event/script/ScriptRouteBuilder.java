@@ -15,11 +15,9 @@ package com.boundary.sdk.event.script;
 
 import static org.apache.camel.LoggingLevel.DEBUG;
 
-import org.eclipse.jetty.util.log.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.boundary.sdk.event.BoundaryEventRouteBuilder;
 import com.boundary.sdk.event.BoundaryRouteBuilder;
 
 public class ScriptRouteBuilder extends BoundaryRouteBuilder {
