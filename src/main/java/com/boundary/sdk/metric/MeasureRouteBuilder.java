@@ -39,10 +39,7 @@ public class MeasureRouteBuilder extends BoundaryAPIRouteBuilder {
 	@Override
 	public void configure() {
 		String url = getUrl();
-		
-		LOG.info("url: {}",url);
-		LOG.info("getToUri(): {}",this.getToUri());
-		
+				
 		// Configure the HTTP endpoint
 		setConfiguration();
 		
