@@ -15,6 +15,12 @@ package com.boundary.sdk.metric;
 
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Date;
 
 import org.apache.camel.EndpointInject;
@@ -26,6 +32,11 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class MeasurementTest {
 	
@@ -93,5 +104,62 @@ public class MeasurementTest {
 	public void testToString() {
 		String s = "{\"source\": \"\",\"metric\": \"\",\"measure\": 0}";
 		assertEquals("check to string",s,measure.toString());
+	}
+	
+	public static Measurement read(String resource) throws URISyntaxException {
+		Measurement instance = new Measurement();
+
+		ClassLoader classLoader = instance.getClass().getClassLoader();
+		URL url = classLoader.getResource(resource);
+		File file = new File(url.toURI());
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		try {
+			instance = mapper.readValue(file,Measurement.class);
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return instance;
+	}
+	
+	public static void write(OutputStream out, Measurement measurement)
+	{  
+	      ObjectMapper mapper = new ObjectMapper();
+	      try
+	      {
+	         mapper.writeValue(out,measurement);
+	      } catch (JsonGenerationException e)
+	      {
+	         e.printStackTrace();
+	      } catch (JsonMappingException e)
+	      {
+	         e.printStackTrace();
+	      } catch (IOException e)
+	      {
+	         e.printStackTrace();
+	      }
+	   }
+	
+	@Test
+	public void testFromJson() {
+		
+	}
+	
+	@Test
+	public void testToJson() {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		Measurement measurement = new Measurement();
+		
+		measurement.setMeasure(100);
+		measurement.setMetric("MY_METRIC");
+		measurement.setSource("myhost");
+		measurement.setTimestamp(new Date());
+		write(out,measurement);
+		System.out.println(out);
 	}
 }
