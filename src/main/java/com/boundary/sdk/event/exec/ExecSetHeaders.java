@@ -43,7 +43,10 @@ public class ExecSetHeaders implements Processor {
 		} else {
 			message.setHeader(EXEC_COMMAND_ARGS,exec.getArgs());
 		}
-		message.setHeader(EXEC_COMMAND_WORKING_DIR,exec.getWorkingDirectory());
+		String workingDirectory = exec.getWorkingDirectory();
+		if (workingDirectory != null) {
+			message.setHeader(EXEC_COMMAND_WORKING_DIR,exec.getWorkingDirectory());
+		}
 		message.setHeader(EXEC_COMMAND_TIMEOUT,exec.getTimeout());
 	}
 }
