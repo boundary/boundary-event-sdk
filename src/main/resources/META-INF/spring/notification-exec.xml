@@ -42,6 +42,7 @@
 			<convertBodyTo type="String" />
 			<log message="body: ${body}" />
 			<unmarshal ref="jackson"/>
+			<log message="alarm: ${body}"/>
 			<marshal><serialization/></marshal>
 			<to uri="seda:notif-out" />
 		</route>

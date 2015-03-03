@@ -58,11 +58,7 @@
         <outputDirectory>etc/META-INF/spring</outputDirectory>
         <fileMode>0744</fileMode>
       </file>
-      <file>
-        <source>${basedir}/src/main/resources/META-INF/json/syslog-filter-queries.json</source>
-        <outputDirectory>etc/META-INF/json</outputDirectory>
-        <fileMode>0744</fileMode>
-      </file>
+      
       <file>
         <source>${basedir}/src/main/resources/META-INF/json/pollers.json</source>
         <outputDirectory>etc/META-INF/json</outputDirectory>
@@ -97,13 +93,13 @@
       </file>
       <file>
         <source>${basedir}/src/main/resources/META-INF/js/lib/syslog-to-event.js</source>
-        <outputDirectory>etc/META-INF/lib/js</outputDirectory>
+        <outputDirectory>etc/META-INF/js/lib</outputDirectory>
         <fileMode>0744</fileMode>
       </file>
       <!-- Notification -->
       <file>
         <source>${basedir}/src/main/resources/META-INF/js/lib/syslog-to-event.js</source>
-        <outputDirectory>etc/META-INF/js</outputDirectory>
+        <outputDirectory>etc/META-INF/js/lib</outputDirectory>
         <fileMode>0744</fileMode>
       </file>
       <file>
@@ -112,12 +108,14 @@
         <fileMode>0744</fileMode>
       </file>
     </files>
+    <!-- Scripts -->
     <fileSets>
       <fileSet>
         <directory>${project.build.directory}/bin</directory>
         <outputDirectory>bin</outputDirectory>
         <fileMode>0755</fileMode>
       </fileSet>
+      <!-- SNMP MIB Repository for OID to Name mapping -->
       <fileSet>
         <directory>${basedir}/src/main/resources/mibrepository</directory>
         <outputDirectory>etc/mibrepository</outputDirectory>

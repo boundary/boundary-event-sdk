@@ -17,7 +17,7 @@ package com.boundary.sdk.metric;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.boundary.sdk.event.util.UnixTimeSerializer;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -49,8 +49,8 @@ public class Measurement implements Serializable {
 	@JsonProperty
 	@JsonInclude
 	private Number measure;
-	@JsonProperty
-	@JsonFormat(shape = JsonFormat.Shape.NUMBER)
+    @JsonProperty
+	@JsonSerialize(using = UnixTimeSerializer.class)
 	private Date timestamp;
 	
 	public Measurement() {
@@ -116,7 +116,7 @@ public class Measurement implements Serializable {
 	 * @return {@link Date} time of the measurement
 	 */
 	public Date getTimestamp() {
-		return null;
+		return timestamp;
 	}
 	/**
 	 * Gets the timestamp the measurement was taken.
@@ -139,7 +139,6 @@ public class Measurement implements Serializable {
 		sb.append(",");
 		sb.append("\"measure\": ");
 		sb.append(measure);
-
 		sb.append("}");
 		return sb.toString();
 	}
